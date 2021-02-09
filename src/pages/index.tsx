@@ -1,4 +1,4 @@
-import Layout from "@/layout";
+import Layout from "@/layouts";
 import styled from "styled-components";
 const Heading1 = styled.h1`
   font-size: 1.2rem;
