@@ -1,6 +1,6 @@
+import { CommonHead } from "@/components/common/head/index";
 import Link from "next/link";
 import React, { ReactNode } from "react";
-import { CommonHead } from "../components/common/head/index";
 
 type Props = {
   children?: ReactNode;
