@@ -12,11 +12,6 @@ class CustomDocument extends Document<Props> {
       <Html lang="ja">
         <Head>
           <meta charSet="utf-8" />
-          <meta
-            name="viewport"
-            content="width=device-width,height=device-height"
-            key="viewport"
-          />
           <meta name="theme-color" content="#5C6BC0" key="themeColor" />
         </Head>
         <body>
