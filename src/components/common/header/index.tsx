@@ -1,12 +1,13 @@
-import styled from "styled-components";
+import { CustomAppBar } from "@/components/atoms/app-bar";
+import { CustomSolidButton } from "@/components/atoms/solid-button";
+import React from "react";
 
-const StyledHeader = styled.header`
-  font-size: 1.2rem;
-  background: red;
-`;
-
-export const TheHeader = () => (
-  <StyledHeader>
-    <p>logoが入る</p>
-  </StyledHeader>
-);
+export const TheHeader: React.FC = () => {
+  return (
+    <CustomAppBar>
+      <CustomSolidButton sizing="small" width={120}>
+        サインイン
+      </CustomSolidButton>
+    </CustomAppBar>
+  );
+};
