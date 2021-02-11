@@ -14,7 +14,12 @@ export const CustomSolidButton: React.FC<Props> = (props) => {
   `;
 
   return (
-    <StyledSolidButton size={props.sizing} variant="contained" color="primary">
+    <StyledSolidButton
+      size={props.sizing}
+      variant="contained"
+      color="primary"
+      disableElevation
+    >
       {props.children}
     </StyledSolidButton>
   );
