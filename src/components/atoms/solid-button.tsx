@@ -9,12 +9,13 @@ interface Props {
 
 export const CustomSolidButton: React.FC<Props> = (props) => {
   const StyledSolidButton = styled(Button)`
-    background: #5c6bc0;
     color: #ffffff;
     width: ${props.width}px;
   `;
 
   return (
-    <StyledSolidButton size={props.sizing}>{props.children}</StyledSolidButton>
+    <StyledSolidButton size={props.sizing} variant="contained" color="primary">
+      {props.children}
+    </StyledSolidButton>
   );
 };
