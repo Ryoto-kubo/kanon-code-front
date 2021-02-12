@@ -1,5 +1,5 @@
 export const TheFooter = () => (
-  <header>
+  <footer>
     <p>footerが入る</p>
-  </header>
+  </footer>
 );

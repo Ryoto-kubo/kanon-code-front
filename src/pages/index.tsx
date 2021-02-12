@@ -1,13 +1,17 @@
 import Layout from "@/layouts";
+import Paper from "@material-ui/core/Paper";
 import styled from "styled-components";
-import 'modern-css-reset/dist/reset.min.css'
-const Heading1 = styled.h1`
-  font-size: 1.2rem;
-  color: red;
+const StyledPaperItem = styled(Paper)`
+  margin: 0 0 1.25rem;
+  height: 1500px;
+  padding: ${(props) => props.theme.spacing(2)}px;
 `;
+
 const IndexPage = () => (
   <Layout title="KanonCode | コードレビュを全てのエンジニアへ">
-    <Heading1 className="title">Hello Next.js 👋</Heading1>
+    <StyledPaperItem>
+      <p>test</p>
+    </StyledPaperItem>
   </Layout>
 );
 
