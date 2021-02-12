@@ -1,7 +1,6 @@
-// import KanonCodeLogo from "@/assets/logo/kanon-code.svg";
-import Image from "next/image";
 import React from "react";
+import KanonCodeLogo from "../../assets/logo/kanon-code.svg";
 
 export const Logo: React.FC = () => {
-  return <Image src="/images/svg/kanon-code.svg" height={45} width={45} />;
+  return <KanonCodeLogo width={200} height={30} />;
 };

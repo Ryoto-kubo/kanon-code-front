@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const StyledAppBar = styled(AppBar)`
   background: #ffffff;
-  padding: 13px;
+  padding: 8px 0;
 `;
 
 interface Props {

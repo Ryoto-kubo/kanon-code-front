@@ -11,6 +11,7 @@ export const CustomSolidButton: React.FC<Props> = (props) => {
   const StyledSolidButton = styled(Button)`
     color: #ffffff;
     width: ${props.width}px;
+    font-weight: bold;
   `;
 
   return (
