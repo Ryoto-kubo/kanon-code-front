@@ -13,8 +13,11 @@ const theme = createMuiTheme({
       dark: "#b41f40",
       contrastText: "#ffffff",
     },
-    background: {
-      default: "#ffffff",
+  },
+  typography: {
+    fontFamily: "Open Sans",
+    h1: {
+      fontWeight: 700,
     },
   },
 });
