@@ -9,7 +9,7 @@ interface Props {
   isPrimary?: boolean;
   children: string;
 }
-export const CoustomTypography: React.FC<Props> = (props) => {
+export const CustomTypography: React.FC<Props> = (props) => {
   const StyledParagraph = styled(Typography)`
     font-size: ${props.fontSize}px;
     font-weight: ${props.fontWeight};
