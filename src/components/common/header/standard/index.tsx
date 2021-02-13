@@ -4,7 +4,7 @@ import { CustomSolidButton } from "@/components/atoms/solid-button";
 import { Box } from "@material-ui/core/";
 import React from "react";
 
-export const TheHeader: React.FC = () => {
+export const TheStndardHeader: React.FC = () => {
   return (
     <CustomAppBar>
       <Box

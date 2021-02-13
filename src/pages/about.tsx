@@ -1,4 +1,4 @@
-import Layout from "@/layouts";
+import Layout from "@/layouts/standard";
 import Link from "next/link";
 
 const AboutPage = () => (

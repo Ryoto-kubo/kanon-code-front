@@ -1,12 +1,8 @@
+import theme from "@/styles/theme";
 import AppBar from "@material-ui/core/AppBar";
 import useScrollTrigger from "@material-ui/core/useScrollTrigger";
 import React from "react";
 import styled from "styled-components";
-
-const StyledAppBar = styled(AppBar)`
-  background: #ffffff;
-  padding: 8px 0;
-`;
 
 interface Props {
   window?: () => Window;
@@ -24,6 +20,11 @@ function ElevationScroll(props: Props) {
     elevation: trigger ? 4 : 0,
   });
 }
+
+const StyledAppBar = styled(AppBar)`
+  background-color: ${theme.palette.primary.contrastText};
+  padding: 8px 0;
+`;
 
 export const CustomAppBar: React.FC<Props> = (props) => {
   return (
