@@ -1,5 +1,5 @@
 import { CustomAppBar } from "@/components/atoms/AppBar";
-import { Logo } from "@/components/atoms/Logo";
+import { KanonCodeLogo } from "@/components/atoms/Logo";
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { Box } from "@material-ui/core/";
 import React from "react";
@@ -13,7 +13,7 @@ export const TheStndardHeader: React.FC = () => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Logo />
+        <KanonCodeLogo />
         <CustomSolidButton sizing="small">サインイン</CustomSolidButton>
       </Box>
     </CustomAppBar>
