@@ -10,6 +10,7 @@ type Props = {
 };
 const StyledMain = styled.main`
   margin-top: 40px;
+  background: #ffffff;
 `;
 
 const Layout = ({ children, title = "This is the default title" }: Props) => (

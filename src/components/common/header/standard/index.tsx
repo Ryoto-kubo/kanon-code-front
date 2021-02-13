@@ -1,6 +1,6 @@
-import { CustomAppBar } from "@/components/atoms/app-bar";
-import { Logo } from "@/components/atoms/logo";
-import { CustomSolidButton } from "@/components/atoms/solid-button";
+import { CustomAppBar } from "@/components/atoms/AppBar";
+import { Logo } from "@/components/atoms/Logo";
+import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { Box } from "@material-ui/core/";
 import React from "react";
 
@@ -14,9 +14,7 @@ export const TheStndardHeader: React.FC = () => {
         justifyContent="space-between"
       >
         <Logo />
-        <CustomSolidButton sizing="small" width={120}>
-          サインイン
-        </CustomSolidButton>
+        <CustomSolidButton sizing="small">サインイン</CustomSolidButton>
       </Box>
     </CustomAppBar>
   );
