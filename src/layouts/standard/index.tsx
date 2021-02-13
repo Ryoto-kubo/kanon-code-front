@@ -1,20 +1,25 @@
 import { TheFooter } from "@/components/common/footer/index";
 import { CommonHead } from "@/components/common/head/index";
-import { TheHeader } from "@/components/common/header/index";
+import { TheStndardHeader } from "@/components/common/header/standard";
 import React, { ReactNode } from "react";
+import styled from "styled-components";
 
 type Props = {
   children: ReactNode;
   title: string;
 };
+const StyledMain = styled.main`
+  margin-top: 40px;
+  background: #ffffff;
+`;
 
 const Layout = ({ children, title = "This is the default title" }: Props) => (
-  <div>
+  <>
     <CommonHead title={title} />
-    <TheHeader />
-    <main>{children}</main>
+    <TheStndardHeader />
+    <StyledMain>{children}</StyledMain>
     <TheFooter />
-  </div>
+  </>
 );
 
 export default Layout;
