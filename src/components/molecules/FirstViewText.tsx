@@ -13,7 +13,7 @@ export const FirstViewText: React.FC = () => {
         <Heading1 fontSize={48}>Kanon Code</Heading1>
       </Box>
       <Box mb={1.5}>
-        <CoustomTypography fontSize={20} fontWeight="bold" isPrimary={true}>
+        <CoustomTypography fontSize={18} fontWeight="bold" isPrimary={true}>
           コードレビューをもらえる、おくれる。
         </CoustomTypography>
       </Box>
