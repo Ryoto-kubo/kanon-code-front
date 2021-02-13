@@ -25,5 +25,4 @@ const IndexPage: React.FC = () => (
     </StyledMaxWidthContainer>
   </Layout>
 );
-
 export default IndexPage;
