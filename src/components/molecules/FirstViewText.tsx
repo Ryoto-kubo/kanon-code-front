@@ -6,7 +6,7 @@ import React from "react";
 export const FirstViewText: React.FC = () => {
   return (
     <>
-      <CustomTypography fontSize={16} fontWeight="bold">
+      <CustomTypography fontSize={14} fontWeight="bold">
         今より一歩前に。
       </CustomTypography>
       <Box mb={0.5}>
