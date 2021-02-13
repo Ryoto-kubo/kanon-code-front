@@ -38,8 +38,8 @@ export default class CustomDocument extends NextDocument {
         styles: [
           <React.Fragment key="styles">
             {initialProps.styles}
-            {styledComponentsSheet.getStyleElement()}
             {materialUiSheets.getStyleElement()}
+            {styledComponentsSheet.getStyleElement()}
           </React.Fragment>,
         ],
       };
