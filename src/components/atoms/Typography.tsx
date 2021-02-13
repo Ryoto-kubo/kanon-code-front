@@ -15,7 +15,5 @@ export const CustomTypography: React.FC<Props> = (props) => {
     font-weight: ${props.fontWeight};
     color: ${props.isPrimary ? theme.palette.primary.main : "#020202"};
   `;
-  console.log(props.isPrimary);
-
   return <StyledParagraph variant="body1">{props.children}</StyledParagraph>;
 };

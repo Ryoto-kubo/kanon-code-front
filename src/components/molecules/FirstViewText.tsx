@@ -6,14 +6,14 @@ import React from "react";
 export const FirstViewText: React.FC = () => {
   return (
     <>
-      <CustomTypography fontSize={14} fontWeight="bold">
+      <CustomTypography fontSize={16} fontWeight="bold" isPrimary={true}>
         今より一歩前に。
       </CustomTypography>
       <Box mb={0.5}>
         <Heading1 fontSize={48}>Kanon Code</Heading1>
       </Box>
       <Box mb={1.5}>
-        <CustomTypography fontSize={18} fontWeight="bold" isPrimary={true}>
+        <CustomTypography fontSize={18} fontWeight="bold">
           コードレビューをもらえる、おくれる。
         </CustomTypography>
       </Box>
