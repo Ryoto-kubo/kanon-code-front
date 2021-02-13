@@ -1,5 +1,5 @@
 import ListDetail from "@/components/ListDetail";
-import Layout from "@/layouts";
+import Layout from "@/layouts/standard";
 import { sampleUserData } from "@/utils/sample-data";
 import { GetStaticPaths, GetStaticProps } from "next";
 import { User } from "../../../interfaces";

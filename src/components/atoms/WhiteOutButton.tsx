@@ -3,25 +3,23 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
-  width: number;
   sizing: "small" | "medium" | "large";
 }
 
-export const CustomSolidButton: React.FC<Props> = (props) => {
-  const StyledSolidButton = styled(Button)`
-    color: #ffffff;
-    width: ${props.width}px;
+export const CustomWhiteOutButton: React.FC<Props> = (props) => {
+  const StyledWhiteOutButton = styled(Button)`
     font-weight: bold;
+    min-width: 140px;
   `;
 
   return (
-    <StyledSolidButton
+    <StyledWhiteOutButton
       size={props.sizing}
-      variant="contained"
+      variant="outlined"
       color="primary"
       disableElevation
     >
       {props.children}
-    </StyledSolidButton>
+    </StyledWhiteOutButton>
   );
 };

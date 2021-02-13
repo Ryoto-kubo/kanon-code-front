@@ -1,5 +1,5 @@
 import List from "@/components/List";
-import Layout from "@/layouts";
+import Layout from "@/layouts/standard";
 import { sampleUserData } from "@/utils/sample-data";
 import { GetStaticProps } from "next";
 import Link from "next/link";
