@@ -8,7 +8,6 @@ const StyledMaxWidthContainer = styled(Container)`
   max-width: 1200px;
   margin: auto;
 `;
-
 const IndexPage: React.FC = () => (
   <Layout title="KanonCode | コードレビュを全てのエンジニアへ">
     <StyledMaxWidthContainer>
