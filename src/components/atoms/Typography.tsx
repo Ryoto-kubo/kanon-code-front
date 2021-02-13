@@ -14,11 +14,6 @@ export const CustomTypography: React.FC<Props> = (props) => {
     font-size: ${props.fontSize}px;
     font-weight: ${props.fontWeight};
     color: ${props.isPrimary ? theme.palette.primary.main : "#020202"};
-    margin-bottom: 0px;
   `;
-  return (
-    <StyledParagraph variant="body1" gutterBottom>
-      {props.children}
-    </StyledParagraph>
-  );
+  return <StyledParagraph variant="body1">{props.children}</StyledParagraph>;
 };
