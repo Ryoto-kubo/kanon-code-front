@@ -1,3 +1,4 @@
+import { Heading2 } from "@/components/atoms/Heading2";
 import { FirstView } from "@/components/organisms/FirstView";
 import Layout from "@/layouts/standard";
 import { Box, Container } from "@material-ui/core/";
@@ -16,12 +17,14 @@ const IndexPage: React.FC = () => (
         alignItems="center"
         justifyContent="space-around"
         paddingY={7}
+        mb={5}
       >
         <Box textAlign="center">
           <FirstView />
         </Box>
         <PairProramingSvg width={450} />
       </Box>
+      <Heading2 fontSize={20}>フロント言語</Heading2>
     </StyledMaxWidthContainer>
   </Layout>
 );

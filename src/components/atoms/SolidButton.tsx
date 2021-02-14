@@ -6,13 +6,12 @@ interface Props {
   sizing: "small" | "medium" | "large";
 }
 
+const StyledSolidButton = styled(Button)`
+  color: #ffffff;
+  font-weight: bold;
+  min-width: 140px;
+`;
 export const CustomSolidButton: React.FC<Props> = (props) => {
-  const StyledSolidButton = styled(Button)`
-    color: #ffffff;
-    font-weight: bold;
-    min-width: 140px;
-  `;
-
   return (
     <StyledSolidButton
       size={props.sizing}
