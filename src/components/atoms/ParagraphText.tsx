@@ -17,7 +17,7 @@ const StyledParagraph = styled.p<
     isPrimary ? theme.palette.primary.main : "#020202"};
 `;
 
-export const CustomTypography: React.FC<Props> = (props) => {
+export const ParagraphText: React.FC<Props> = (props) => {
   return (
     <StyledParagraph
       fontSize={props.fontSize}
