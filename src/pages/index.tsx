@@ -9,7 +9,7 @@ import styled from "styled-components";
 import PairProramingSvg from "../assets/top/Pair-programming.svg";
 
 const StyledMaxWidthContainer = styled(Container)`
-  max-width: 1200px;
+  max-width: 85%;
   margin: auto;
 `;
 // const StyledGrid = styled(Grid)``;
@@ -37,10 +37,10 @@ const IndexPage: React.FC = () => (
           <Grid
             spacing={3}
             container
-            alignItems="center"
-            justify="space-between"
+            // alignItems="center"
+            // justify="space-between"
           >
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} md={6} lg={4}>
               <Paper>
                 <Post
                   title="reactのatmicDesignについて教えてくださいよろしく"
@@ -56,7 +56,7 @@ const IndexPage: React.FC = () => (
                 />
               </Paper>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} md={6} lg={4}>
               <Paper>
                 <Post
                   title="vueのコードレビューをお願いします"
@@ -72,7 +72,39 @@ const IndexPage: React.FC = () => (
                 />
               </Paper>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Paper>
+                <Post
+                  title="phtyonのオブジェクト指向について"
+                  name="ryoto"
+                  date="あと3日"
+                  tagArray={[
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                  ]}
+                />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={4}>
+              <Paper>
+                <Post
+                  title="phtyonのオブジェクト指向について"
+                  name="ryoto"
+                  date="あと3日"
+                  tagArray={[
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                  ]}
+                />
+              </Paper>
+            </Grid>
+            <Grid item xs={12} sm={6} md={6} lg={4}>
               <Paper>
                 <Post
                   title="phtyonのオブジェクト指向について"
