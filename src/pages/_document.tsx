@@ -38,8 +38,8 @@ export default class CustomDocument extends NextDocument {
         styles: [
           <React.Fragment key="styles">
             {initialProps.styles}
-            {styledComponentsSheet.getStyleElement()}
             {materialUiSheets.getStyleElement()}
+            {styledComponentsSheet.getStyleElement()}
           </React.Fragment>,
         ],
       };
@@ -53,7 +53,23 @@ export default class CustomDocument extends NextDocument {
       <Html lang="ja-JP">
         <Head>
           <meta charSet="utf-8" />
+          <meta
+            name="description"
+            content="Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。まずは自分のコードを投稿してみましょう。"
+          />
           <meta name="theme-color" content="#5C6BC0" key="themeColor" />
+          <meta
+            property="og:title"
+            content="KanonCode | コードレビュを全てのエンジニアへ"
+          />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:description"
+            content="Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。まずは自分のコードを投稿してみましょう。"
+          />
+          <meta property="og:url" content="https://kanon-code.com" />
+          <meta property="og:site_name" content="Kanon Code" />
+          <meta property="og:image" content="/logo.png" />
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <body>
@@ -64,44 +80,3 @@ export default class CustomDocument extends NextDocument {
     );
   }
 }
-// type Props = {
-//   title: string;
-//   locale: "en-US" | "ja-JP";
-// };
-
-// class CustomDocument extends Document<Props> {
-//   static async getInitialProps(ctx) {
-//     const sheets = new ServerStyleSheets();
-
-//     const originalRenderPage = ctx.renderPage({
-//       enhanceApp: (App) => (props) => sheets.collect(),
-//     });
-
-//     const initialProps = await Document.getInitialProps(ctx);
-
-//     return {
-//       ...initialProps,
-//       // Styles fragment is rendered after the app and page rendering finish.
-//       styles: [
-//         ...React.Children.toArray(initialProps.styles),
-//         sheets.getStyleElement(),
-//       ],
-//     };
-//   }
-//   render() {
-//     return (
-//       <Html lang="ja">
-//         <Head>
-//           <meta charSet="utf-8" />
-//           <meta name="theme-color" content="#5C6BC0" key="themeColor" />
-//         </Head>
-//         <body id="jss-server-side">
-//           <Main />
-//           <NextScript />
-//         </body>
-//       </Html>
-//     );
-//   }
-// }
-
-// export default CustomDocument;
