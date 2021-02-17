@@ -5,41 +5,29 @@ import Layout from "@/layouts/standard";
 import { Box, Container, Grid, Paper } from "@material-ui/core/";
 import React from "react";
 import styled from "styled-components";
-// import ReactSvg from "../assets/logo/react.svg";
-import PairProramingSvg from "../assets/top/Pair-programming.svg";
-
-const StyledMaxWidthContainer = styled(Container)`
-  max-width: 85%;
-  margin: auto;
+const StyledBox = styled(Box)`
+  text-align: center;
+  ${(props) => props.theme.breakpoints.up("md")} {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
 `;
-// const StyledGrid = styled(Grid)``;
+
 const IndexPage: React.FC = () => (
   <Layout title="KanonCode | コードレビュを全てのエンジニアへ">
-    <StyledMaxWidthContainer>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-around"
-        pt={7}
-        pb={5}
-        mb={5}
-      >
-        <Box textAlign="center">
-          <FirstView />
-        </Box>
-        <PairProramingSvg width={450} />
-      </Box>
+    <Container>
+      <StyledBox pt={7} pb={5} mb={5}>
+        {/* <Box textAlign="center"> */}
+        <FirstView />
+        {/* </Box> */}
+      </StyledBox>
       <Box component="section">
         <Heading2 fontSize={20} marginBottom={4}>
           フロント言語
         </Heading2>
         <Box mb={4}>
-          <Grid
-            spacing={3}
-            container
-            // alignItems="center"
-            // justify="space-between"
-          >
+          <Grid spacing={3} container>
             <Grid item xs={12} sm={6} md={6} lg={4}>
               <Paper>
                 <Post
@@ -123,7 +111,7 @@ const IndexPage: React.FC = () => (
           </Grid>
         </Box>
       </Box>
-    </StyledMaxWidthContainer>
+    </Container>
   </Layout>
 );
 export default IndexPage;

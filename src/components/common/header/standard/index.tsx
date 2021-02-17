@@ -3,11 +3,19 @@ import { KanonCodeLogo } from "@/components/atoms/Logo";
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { Box } from "@material-ui/core/";
 import React from "react";
+import styled from "styled-components";
+
+const StyledBox = styled(Box)`
+  padding: 0 16px;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    padding: 0 48px;
+  }
+`;
 
 export const TheStndardHeader: React.FC = () => {
   return (
     <CustomAppBar>
-      <Box
+      <StyledBox
         paddingX={6}
         display="flex"
         alignItems="center"
@@ -15,7 +23,7 @@ export const TheStndardHeader: React.FC = () => {
       >
         <KanonCodeLogo />
         <CustomSolidButton sizing="small">サインイン</CustomSolidButton>
-      </Box>
+      </StyledBox>
     </CustomAppBar>
   );
 };
