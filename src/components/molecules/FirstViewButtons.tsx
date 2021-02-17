@@ -8,10 +8,10 @@ const StyledBox = styled(Box)`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
+  max-width: 280px;
+  margin: auto;
   ${(props) => props.theme.breakpoints.up("sm")} {
     max-width: 320px;
-    margin: auto;
   }
 `;
 
