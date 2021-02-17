@@ -2,16 +2,24 @@ import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { CustomWhiteOutButton } from "@/components/atoms/WhiteOutButton";
 import { Box } from "@material-ui/core/";
 import React from "react";
+import styled from "styled-components";
+
+const StyledBox = styled(Box)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    max-width: 320px;
+    margin: auto;
+  }
+`;
 
 export const FirstViewButtons: React.FC = () => {
   return (
-    <>
-      <Box display="flex" alignItems="center" justifyContent="space-around">
-        <CustomSolidButton sizing="small">サインイン</CustomSolidButton>
-        <CustomWhiteOutButton sizing="small">
-          KanonCodeとは
-        </CustomWhiteOutButton>
-      </Box>
-    </>
+    <StyledBox>
+      <CustomSolidButton sizing="small">サインイン</CustomSolidButton>
+      <CustomWhiteOutButton sizing="small">Kanon Codeとは</CustomWhiteOutButton>
+    </StyledBox>
   );
 };

@@ -9,7 +9,10 @@ interface Props {
 const StyledSolidButton = styled(Button)`
   color: #ffffff;
   font-weight: bold;
-  min-width: 140px;
+  min-width: 100px;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    min-width: 140px;
+  }
 `;
 export const CustomSolidButton: React.FC<Props> = (props) => {
   return (
