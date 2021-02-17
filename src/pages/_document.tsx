@@ -63,13 +63,13 @@ export default class CustomDocument extends NextDocument {
             content="KanonCode | コードレビュを全てのエンジニアへ"
           />
           <meta property="og:type" content="website" />
-          <meta
-            property="og:description"
-            content="Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。まずは自分のコードを投稿してみましょう。"
-          />
-          <meta property="og:url" content="https://kanon-code.com" />
+          <meta property="og:description" content="Kanon Code description" />
+          <meta property="og:url" content="https://stg.kanon-code.com" />
           <meta property="og:site_name" content="Kanon Code" />
-          <meta property="og:image" content="/logo.png" />
+          <meta
+            property="og:image"
+            content="https://stg.kanon-code.com/logo.png"
+          />
           <link rel="icon" href="/favicon.ico" />
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
