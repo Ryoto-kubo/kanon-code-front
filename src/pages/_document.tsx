@@ -71,6 +71,11 @@ export default class CustomDocument extends NextDocument {
           <meta property="og:site_name" content="Kanon Code" />
           <meta property="og:image" content="/logo.png" />
           <link rel="icon" href="/favicon.ico" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link
+            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"
+            rel="stylesheet"
+          />
         </Head>
         <body>
           <Main />
