@@ -11,7 +11,7 @@ const StyledBox = styled(Box)`
   max-width: 255px;
   margin: auto;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    max-width: 320px;
+    max-width: 300px;
   }
 `;
 
