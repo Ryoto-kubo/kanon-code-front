@@ -1,19 +1,12 @@
-import { SignInButtons } from '@/components/molecules/SignInButtons'
-import { SignInTexts } from '@/components/molecules/SignInTexts'
+import { SignInContent } from '@/components/organisms/SignInContent'
 import { LayoutNoFooter } from '@/layouts/no-footer'
-import { Box, Container } from '@material-ui/core/'
+import { Container } from '@material-ui/core/'
 import React from 'react'
-import styled from 'styled-components'
-const StyledBox = styled(Box)`
-  text-align: center;
-`
+
 const IndexPage: React.FC = () => (
   <LayoutNoFooter title="Kanon Code | サインイン">
     <Container>
-      <StyledBox>
-        <SignInTexts />
-        <SignInButtons />
-      </StyledBox>
+      <SignInContent />
     </Container>
   </LayoutNoFooter>
 )

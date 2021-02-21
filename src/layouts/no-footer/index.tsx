@@ -8,7 +8,6 @@ type Props = {
   title: string
 }
 const StyledMain = styled.main`
-  margin-top: 51px;
   background: #ffffff;
 `
 
