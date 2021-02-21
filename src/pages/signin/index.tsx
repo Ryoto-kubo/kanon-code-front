@@ -4,6 +4,7 @@ import { LayoutNoFooter } from '@/layouts/no-footer'
 import { Box, Container } from '@material-ui/core/'
 import React from 'react'
 import styled from 'styled-components'
+import GithubSvg from '../../assets/logo/github.svg'
 import GoogleLogoSvg from '../../assets/logo/google.svg'
 
 const StyledBox = styled(Box)`
@@ -18,6 +19,7 @@ const IndexPage: React.FC = () => (
           githubアカウントもしくはgoogleアカウントで新規登録、ログインができます。
         </ParagraphText>
         <GoogleLogoSvg width={25} />
+        <GithubSvg width={25} height={25} />
       </StyledBox>
     </Container>
   </LayoutNoFooter>
