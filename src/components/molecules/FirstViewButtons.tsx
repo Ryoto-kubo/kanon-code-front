@@ -1,7 +1,6 @@
 import { SolidLink } from '@/components/atoms/SolidLink'
-import { CustomWhiteOutButton } from '@/components/atoms/WhiteOutButton'
+import { WhiteOutLink } from '@/components/atoms/WhiteOutLink'
 import { Box } from '@material-ui/core/'
-import Router from 'next/router'
 import React from 'react'
 import styled from 'styled-components'
 
@@ -20,12 +19,7 @@ export const FirstViewButtons: React.FC = () => {
   return (
     <StyledBox>
       <SolidLink href="/signin">サインイン</SolidLink>
-      <CustomWhiteOutButton
-        onClick={() => Router.push('/about')}
-        sizing="small"
-      >
-        Kanon Codeとは
-      </CustomWhiteOutButton>
+      <WhiteOutLink href="/about">Kanon Codeとは</WhiteOutLink>
     </StyledBox>
   )
 }
