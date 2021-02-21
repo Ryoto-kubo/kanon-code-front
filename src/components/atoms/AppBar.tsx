@@ -14,5 +14,5 @@ const StyledAppBar = styled(AppBar)`
 `
 
 export const CustomAppBar: React.FC<Props> = (props) => {
-  return <StyledAppBar>{props.children}</StyledAppBar>
+  return <StyledAppBar elevation={0}>{props.children}</StyledAppBar>
 }
