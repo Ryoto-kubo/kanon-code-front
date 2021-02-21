@@ -1,7 +1,7 @@
-import { Heading1 } from "@/components/atoms/Heading1";
-import { ParagraphText } from "@/components/atoms/ParagraphText";
-import { Box } from "@material-ui/core/";
-import React from "react";
+import { Heading1 } from '@/components/atoms/Heading1'
+import { ParagraphText } from '@/components/atoms/ParagraphText'
+import { Box } from '@material-ui/core/'
+import React from 'react'
 
 export const FirstViewText: React.FC = () => {
   return (
@@ -18,5 +18,5 @@ export const FirstViewText: React.FC = () => {
         </ParagraphText>
       </Box>
     </>
-  );
-};
+  )
+}

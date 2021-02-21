@@ -1,4 +1,6 @@
 import { createMuiTheme } from '@material-ui/core'
+console.log(createMuiTheme())
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -13,11 +15,17 @@ const theme = createMuiTheme({
       dark: '#b41f40',
       contrastText: '#ffffff',
     },
+    text: {
+      primary: '#202020',
+    },
   },
   typography: {
     fontFamily: 'Open Sans',
     h1: {
       fontWeight: 700,
+    },
+    button: {
+      textTransform: 'none',
     },
   },
   // overrides: {
