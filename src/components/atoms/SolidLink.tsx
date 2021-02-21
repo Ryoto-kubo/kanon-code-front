@@ -12,6 +12,7 @@ const StyledSolidLink = styled.a`
   font-weight: bold;
   min-width: 100px;
   text-align: center;
+  display: inline-block;
   padding: 5px 0;
   border-radius: 4px;
   text-decoration: none;
