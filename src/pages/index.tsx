@@ -6,7 +6,7 @@ import { Box, Container, Grid, Paper } from '@material-ui/core/'
 import React from 'react'
 
 const IndexPage: React.FC = () => (
-  <Layout title="KanonCode | コードレビュを全てのエンジニアへ">
+  <Layout title="Kanon Code | コードレビュを全てのエンジニアへ">
     <Container>
       <FirstView />
       <Box component="section">
