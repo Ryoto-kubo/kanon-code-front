@@ -1,5 +1,5 @@
 import { CommonHead } from '@/components/common/head/index'
-import { TheStndardHeader } from '@/components/common/header/standard'
+import { TheNoStickyHeader } from '@/components/common/header/no-sticky'
 import { Toolbar } from '@material-ui/core'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
@@ -18,7 +18,7 @@ export const LayoutNoFooter = ({
 }: Props) => (
   <>
     <CommonHead title={title} />
-    <TheStndardHeader />
+    <TheNoStickyHeader />
     <Toolbar />
     <StyledMain>{children}</StyledMain>
   </>

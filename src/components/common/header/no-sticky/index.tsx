@@ -1,6 +1,6 @@
-import { CustomAppBar } from '@/components/atoms/AppBar'
 import { KanonCodeLogo } from '@/components/atoms/Logo'
 import { SolidLink } from '@/components/atoms/SolidLink'
+import { CustomStickyAppBar } from '@/components/atoms/StickyAppBar'
 import { Box } from '@material-ui/core/'
 import Link from 'next/link'
 import React from 'react'
@@ -15,7 +15,7 @@ const StyledBox = styled(Box)`
 
 export const TheNoStickyHeader: React.FC = () => {
   return (
-    <CustomAppBar>
+    <CustomStickyAppBar>
       <StyledBox
         display="flex"
         alignItems="center"
@@ -28,6 +28,6 @@ export const TheNoStickyHeader: React.FC = () => {
         </Link>
         <SolidLink href="/signin">サインイン</SolidLink>
       </StyledBox>
-    </CustomAppBar>
+    </CustomStickyAppBar>
   )
 }
