@@ -7,9 +7,9 @@ export const SignInTexts: React.FC = () => {
   return (
     <Box mb={4}>
       <Box mb={2}>
-        <Heading1 fontSize={48}>Sign in</Heading1>
+        <Heading1>Sign in</Heading1>
       </Box>
-      <ParagraphText fontSize={16} fontWeight="normal">
+      <ParagraphText variant="subtitle1" component="p">
         githubアカウントもしくはgoogleアカウントで新規登録、ログインができます。
       </ParagraphText>
     </Box>
