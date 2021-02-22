@@ -7,11 +7,11 @@ import styled from 'styled-components'
 const StyledContainer = styled(Container)`
   width: 100%;
   text-align: center;
-  margin-top: 40px;
-  position: relative;
-  top: 250px;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  // margin-top: 40px;
+  // position: relative;
+  // top: 250px;
+  // left: 50%;
+  // transform: translate(-50%, -50%);
 `
 const IndexPage: React.FC = () => (
   <LayoutNoFooter title="Kanon Code | サインイン">
