@@ -1,3 +1,4 @@
+import { TheFooter } from '@/components/common/footer/index'
 import { CommonHead } from '@/components/common/head/index'
 import { TheNoStickyHeader } from '@/components/common/header/no-sticky'
 // import { Toolbar } from '@material-ui/core'
@@ -10,6 +11,15 @@ type Props = {
 }
 const StyledMain = styled.main`
   background: #ffffff;
+  padding-bottom: 572px;
+  ${(props) => props.theme.breakpoints.up('sm')} {
+    padding-bottom: 0px;
+  }
+`
+const StyledBottom = styled.div`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 `
 
 export const LayoutNoFooter = ({
@@ -21,5 +31,8 @@ export const LayoutNoFooter = ({
     <TheNoStickyHeader />
     {/* <Toolbar /> */}
     <StyledMain>{children}</StyledMain>
+    <StyledBottom>
+      <TheFooter />
+    </StyledBottom>
   </>
 )
