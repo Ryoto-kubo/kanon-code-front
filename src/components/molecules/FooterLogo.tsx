@@ -15,7 +15,7 @@ export const FooterLogo: React.FC = () => {
     <StyledNav>
       <div>
         <KanonCodeLogo />
-        <ParagraphText fontSize={12} fontWeight="normal">
+        <ParagraphText variant="body2" component="p">
           全てのエンジニアにコードレビューを
         </ParagraphText>
       </div>

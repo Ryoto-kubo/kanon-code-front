@@ -10,9 +10,10 @@ interface Props {
 const StyledSolidLink = styled.a`
   color: #ffffff;
   font-weight: bold;
-  min-width: 100px;
+  // min-width: 100px;
   text-align: center;
-  padding: 5px 0;
+  display: inline-block;
+  padding: 5px 16px;
   border-radius: 4px;
   text-decoration: none;
   display: inlne-block;

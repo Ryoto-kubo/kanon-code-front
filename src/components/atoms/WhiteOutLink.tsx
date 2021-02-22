@@ -11,9 +11,9 @@ const StyledLink = styled.a`
   color: ${theme.palette.primary.main};
   border: 1px solid ${theme.palette.primary.main};
   font-weight: bold;
-  min-width: 100px;
+  display: inline-block;
   text-align: center;
-  padding: 5px 0;
+  padding: 5px 16px;
   border-radius: 4px;
   text-decoration: none;
   display: inlne-block;

@@ -1,6 +1,4 @@
-import { createMuiTheme } from '@material-ui/core'
-console.log(createMuiTheme())
-
+import { createMuiTheme, responsiveFontSizes } from '@material-ui/core'
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -23,20 +21,14 @@ const theme = createMuiTheme({
     fontFamily: 'Open Sans',
     h1: {
       fontWeight: 700,
+      fontSize: '48px',
+      // '@media (min-width:600px)': {
+      //   fontSize: '32px',
+      // },
     },
     button: {
       textTransform: 'none',
     },
   },
-  // overrides: {
-  //   // Style sheet name ⚛️
-  //   MuiContainer: {
-  //     // Name of the rule
-  //     root: {
-  //       // Some CSS
-  //       padding: 0,
-  //     },
-  //   },
-  // },
 })
-export default theme
+export default responsiveFontSizes(theme)

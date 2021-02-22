@@ -6,18 +6,21 @@ interface Props {
   text: string
 }
 
+const StyledButton = styled(Button)`
+  max-height: 36px;
+`
 const StyledBox = styled(Box)`
   margin-right: 16px;
-  display: flex;s
+  display: flex;
 `
 const StyledSpan = styled.span`
   font-weight: bold;
 `
 export const SocialSignInButton: React.FC<Props> = (props) => {
   return (
-    <Button variant="outlined">
+    <StyledButton variant="outlined">
       <StyledBox>{props.children}</StyledBox>
       <StyledSpan>{props.text}</StyledSpan>
-    </Button>
+    </StyledButton>
   )
 }
