@@ -6,9 +6,9 @@ import React from 'react'
 import styled from 'styled-components'
 
 const StyledContainer = styled(Container)`
-  // width: 100%;
+  width: 100%;
   text-align: center;
-  // margin-top: 70px;
+  margin-top: 70px;
   // margin-bottom: 40px;
 `
 const IndexPage: React.FC = () => (
