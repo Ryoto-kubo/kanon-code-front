@@ -15,11 +15,11 @@ const StyledMain = styled.main`
     padding-bottom: 0px;
   }
 `
-const StyledBottom = styled.div`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-`
+// const StyledBottom = styled.div`
+//   position: absolute;
+//   bottom: 0;
+//   width: 100%;
+// `
 
 export const LayoutNoFooter = ({
   children,
