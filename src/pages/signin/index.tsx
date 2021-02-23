@@ -1,6 +1,5 @@
 import { SignInContent } from '@/components/organisms/SignInContent'
 import { LayoutNoFooter } from '@/layouts/no-footer'
-// import Layout from '@/layouts/standard'
 import { Container } from '@material-ui/core/'
 import React from 'react'
 import styled from 'styled-components'
