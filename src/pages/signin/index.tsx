@@ -9,10 +9,6 @@ import { Container } from "@material-ui/core/";
 // } from "amazon-cognito-identity-js";
 import React from "react";
 import styled from "styled-components";
-
-// console.log(process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID);
-// location.href = `https://kanon-code.auth.ap-northeast-1.amazoncognito.com/oauth2/authEorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&identity_provider=Google`;
-
 // AWS.config.credentials = new CognitoIdentityCredentials({
 //   IdentityPoolId: 'IDENTITY_POOL_ID',
 //   Logins: {
@@ -32,12 +28,12 @@ import styled from "styled-components";
 // const attributeList = [
 //   new CognitoUserAttribute({
 //     Name: "email",
-//     Value: "sax.guiter@icloud.com",
+//     Value: "xxxxx",
 //   }),
 // ];
 // userPool.signUp(
-//   "sax.guiter@icloud.com",
-//   "sr400@HDS",
+//   "xxxxx",
+//   "xxxxx",
 //   attributeList,
 //   [],
 //   (err, result) => {
@@ -54,9 +50,11 @@ const StyledContainer = styled(Container)`
   text-align: center;
   margin-top: 70px;
 `;
+
 const signin = () => {
   location.href = `https://kanon-code${process.env.NEXT_PUBLIC_SUFFIX}.auth.ap-northeast-1.amazoncognito.com/oauth2/authorize?response_type=code&client_id=${process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID}&redirect_uri=${process.env.NEXT_PUBLIC_REDIRECT_URI}&identity_provider=Google`;
 };
+
 const IndexPage: React.FC = () => (
   <LayoutNoFooter title="Kanon Code | サインイン">
     <StyledContainer>
