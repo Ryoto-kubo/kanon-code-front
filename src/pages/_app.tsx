@@ -9,7 +9,6 @@ import "modern-css-reset/dist/reset.min.css";
 import Head from "next/head";
 import React, { useEffect } from "react";
 import { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
-
 const MyApp = ({ Component, pageProps }: any): JSX.Element => {
   // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
   useEffect(() => {
