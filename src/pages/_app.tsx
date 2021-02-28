@@ -1,3 +1,4 @@
+import "@/aws/cognito/config";
 import theme from "@/styles/theme";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {
