@@ -1,38 +1,12 @@
 import Layout from "@/layouts/standard";
-// import { CognitoUser } from "@aws-amplify/auth";
+import { CognitoUser } from "@aws-amplify/auth";
 import { Auth } from "aws-amplify";
 import React from "react";
 
-// interface UserAttributes {
-//   sub: string;
-//   email: string;
-//   username: string;
-// }
-// interface CognitoUserProps extends CognitoUser {
-//   attributes: UserAttributes;
-// }
-
-// const getUrlQueries = (queryKey: string) => {
-//   interface StringKeyObject {
-//     [key: string]: any;
-//   }
-//   const queryStr = window.location.search.slice(1); // 文頭?を除外
-//   let queries: StringKeyObject = {};
-
-//   // クエリがない場合は空のオブジェクトを返す
-//   if (!queryStr) {
-//     return queries;
-//   }
-
-//   // クエリ文字列を & で分割して処理
-//   queryStr.split("&").forEach((queryStr) => {
-//     // = で分割してkey,valueをオブジェクトに格納
-//     const queryArr: string[] = queryStr.split("=");
-//     queries[queryArr[0]] = queryArr[1];
-//   });
-
-//   return queries[queryKey];
-// };
+type Props = {
+  title: string;
+  authUser: CognitoUser;
+};
 
 const signOutHandler = async () => {
   try {
@@ -42,9 +16,10 @@ const signOutHandler = async () => {
     console.log(err);
   }
 };
-const IndexPage: React.FC = () => {
+
+const IndexPage: React.FC<Props> = (props) => {
   return (
-    <Layout title="Kanon Code | サインイン">
+    <Layout title="Kanon Code | サインイン" authUser={props.authUser}>
       <h1>Welcome</h1>
       <button onClick={() => signOutHandler()}>signout</button>
     </Layout>

@@ -20,21 +20,9 @@ const signin = () => {
 
 const IndexPage: React.FC = () => (
   <LayoutNoFooter title="Kanon Code | サインイン">
-    {/* <AmplifyAuthenticator>
-      <AmplifySignUp
-        slot="sign-up"
-        usernameAlias="email"
-        formFields={[
-          {
-            type: "email",
-            required: true,
-          },
-        ]}
-      /> */}
     <StyledContainer>
       <SignInContent onClick={signin} />
     </StyledContainer>
-    {/* </AmplifyAuthenticator> */}
   </LayoutNoFooter>
 );
 export default IndexPage;
