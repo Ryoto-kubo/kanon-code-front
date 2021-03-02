@@ -10,7 +10,7 @@ export const SignInTexts: React.FC = () => {
         <Heading1>Sign in</Heading1>
       </Box>
       <ParagraphText variant="subtitle1" component="p">
-        githubアカウントもしくはgoogleアカウントで新規登録、ログインができます。
+        GoogleアカウントもしくはGithubアカウントで新規登録、ログインができます。
       </ParagraphText>
     </Box>
   )

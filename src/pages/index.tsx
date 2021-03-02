@@ -1,12 +1,21 @@
-import { Heading2 } from '@/components/atoms/Heading2'
-import { FirstView } from '@/components/organisms/FirstView'
-import { Post } from '@/components/organisms/Post'
-import Layout from '@/layouts/standard'
-import { Box, Container, Grid, Paper } from '@material-ui/core/'
-import React from 'react'
+import { Heading2 } from "@/components/atoms/Heading2";
+import { FirstView } from "@/components/organisms/FirstView";
+import { Post } from "@/components/organisms/Post";
+import Layout from "@/layouts/standard";
+import { CognitoUser } from "@aws-amplify/auth";
+import { Box, Container, Grid, Paper } from "@material-ui/core/";
+import React from "react";
 
-const IndexPage: React.FC = () => (
-  <Layout title="Kanon Code | コードレビュを全てのエンジニアへ">
+type Props = {
+  title: string;
+  authUser: CognitoUser;
+};
+
+const IndexPage: React.FC<Props> = (props) => (
+  <Layout
+    title="Kanon Code | コードレビュを全てのエンジニアへ"
+    authUser={props.authUser}
+  >
     <Container>
       <FirstView />
       <Box component="section">
@@ -22,11 +31,11 @@ const IndexPage: React.FC = () => (
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -38,11 +47,11 @@ const IndexPage: React.FC = () => (
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -54,11 +63,11 @@ const IndexPage: React.FC = () => (
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -70,11 +79,11 @@ const IndexPage: React.FC = () => (
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -86,11 +95,11 @@ const IndexPage: React.FC = () => (
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -100,5 +109,5 @@ const IndexPage: React.FC = () => (
       </Box>
     </Container>
   </Layout>
-)
-export default IndexPage
+);
+export default IndexPage;

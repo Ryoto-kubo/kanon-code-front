@@ -1,5 +1,5 @@
-import { ServerStyleSheets as MaterialServerStyleSheets } from '@material-ui/core'
-import { RenderPageResult } from 'next/dist/next-server/lib/utils'
+import { ServerStyleSheets as MaterialServerStyleSheets } from "@material-ui/core";
+import { RenderPageResult } from "next/dist/next-server/lib/utils";
 import NextDocument, {
   DocumentContext,
   DocumentInitialProps,
@@ -7,32 +7,32 @@ import NextDocument, {
   Html,
   Main,
   NextScript,
-} from 'next/document'
-import React from 'react'
-import { ServerStyleSheet } from 'styled-components'
+} from "next/document";
+import React from "react";
+import { ServerStyleSheet } from "styled-components";
 
 export default class CustomDocument extends NextDocument {
   static async getInitialProps(
-    ctx: DocumentContext,
+    ctx: DocumentContext
   ): Promise<DocumentInitialProps> {
-    const styledComponentsSheet = new ServerStyleSheet()
-    const materialUiSheets = new MaterialServerStyleSheets()
-    const originalRenderPage = ctx.renderPage
+    const styledComponentsSheet = new ServerStyleSheet();
+    const materialUiSheets = new MaterialServerStyleSheets();
+    const originalRenderPage = ctx.renderPage;
 
     try {
       ctx.renderPage = (): RenderPageResult | Promise<RenderPageResult> =>
         originalRenderPage({
           enhanceApp: (App) => (
-            props,
+            props
           ): React.ReactElement<{
-            sheet: ServerStyleSheet
+            sheet: ServerStyleSheet;
           }> =>
             styledComponentsSheet.collectStyles(
-              materialUiSheets.collect(<App {...props} />),
+              materialUiSheets.collect(<App {...props} />)
             ),
-        })
+        });
 
-      const initialProps = await NextDocument.getInitialProps(ctx)
+      const initialProps = await NextDocument.getInitialProps(ctx);
       return {
         ...initialProps,
         styles: [
@@ -42,9 +42,9 @@ export default class CustomDocument extends NextDocument {
             {styledComponentsSheet.getStyleElement()}
           </React.Fragment>,
         ],
-      }
+      };
     } finally {
-      styledComponentsSheet.seal()
+      styledComponentsSheet.seal();
     }
   }
 
@@ -71,6 +71,6 @@ export default class CustomDocument extends NextDocument {
           <NextScript />
         </body>
       </Html>
-    )
+    );
   }
 }
