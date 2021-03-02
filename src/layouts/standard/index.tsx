@@ -21,14 +21,11 @@ const Layout = ({
   title = "This is the default title",
   authUser,
 }: Props) => {
-  // console.log("header!!!");
-
   // console.log(authUser, "authUser");
-
   return (
     <>
       <CommonHead title={title} />
-      {authUser && <TheLoggedHeader />}
+      {authUser && <TheLoggedHeader authUser={authUser} />}
       {authUser === null && <TheStndardHeader />}
       <Toolbar />
       <StyledMain>{children}</StyledMain>

@@ -20,6 +20,9 @@ export function useRequireLogin(router: Router): CognitoUserProps | null {
       try {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         setUser(authenticatedUser);
+        if (router.pathname === "/auth/init") {
+          location.href = "/";
+        }
       } catch {
         if (router.pathname === "/" || router.pathname === "/signin") return;
         location.href = "/";
