@@ -41,7 +41,7 @@ const StyledInput = styled(Input)`
 export const TheLoggedHeader: React.FC<Props> = (props) => {
   console.log(props.authUser);
   const userInfo = props.authUser.signInUserSession.idToken.payload;
-  const func = (e: Event) => {
+  const func = (e: React.FormEvent) => {
     console.log("search");
     e.preventDefault();
   };
