@@ -5,7 +5,7 @@ import React from "react";
 interface Props {
   picture: string;
   disableRipple: boolean;
-  func: Function;
+  func: React.MouseEventHandler;
 }
 
 export const UserImageButton: React.FC<Props> = (props) => {

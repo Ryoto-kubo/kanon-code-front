@@ -4,8 +4,9 @@ import styled from "styled-components";
 
 interface Props {
   disableRipple: boolean;
-  func: Function;
+  func: React.MouseEventHandler;
 }
+
 const StyledIconButton = styled(IconButton)`
   padding: 0;
   &:hover {
@@ -15,10 +16,7 @@ const StyledIconButton = styled(IconButton)`
 
 export const CustomIconButton: React.FC<Props> = (props) => {
   return (
-    <StyledIconButton
-      disableRipple={props.disableRipple}
-      onClick={() => props.func()}
-    >
+    <StyledIconButton disableRipple={props.disableRipple} onClick={props.func}>
       {props.children}
     </StyledIconButton>
   );

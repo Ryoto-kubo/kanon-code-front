@@ -5,7 +5,7 @@ import React from "react";
 import styled from "styled-components";
 
 interface Props {
-  func: Function;
+  func: React.MouseEventHandler;
   formFunc: React.FormEventHandler;
 }
 
