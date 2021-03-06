@@ -2,9 +2,15 @@ import { SolidLink } from "@/components/atoms/SolidLink";
 import { NotificationsButton } from "@/components/molecules/NotificationsButton";
 import { SearchButton } from "@/components/molecules/SearchButton";
 import { UserImageButton } from "@/components/molecules/UserImageButton";
+import theme from "@/styles/theme";
 import Hidden from "@material-ui/core/Hidden";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
+import { Auth } from "aws-amplify";
 import React, { useState } from "react";
 import styled from "styled-components";
 
@@ -19,8 +25,9 @@ const StyledUseMr = styled.span`
     margin-right: 24px;
   }
 `;
-const StyledMenuItem = styled(MenuItem)`
-  font-size: 14px;
+const StyledListItemIcon = styled(ListItemIcon)`
+  min-width: 36px;
+  // color: ${theme.palette.primary.main};
 `;
 
 export const LoggedHeaderParts: React.FC<Props> = (props) => {
@@ -31,6 +38,14 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const signOut = async () => {
+    try {
+      const result = await Auth.signOut();
+      console.log(result);
+    } catch (err) {
+      console.log(err);
+    }
   };
   return (
     <>
@@ -54,8 +69,9 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
         <Menu
           id="menu-appbar"
           anchorEl={anchorEl}
+          getContentAnchorEl={null}
           anchorOrigin={{
-            vertical: "top",
+            vertical: "bottom",
             horizontal: "right",
           }}
           keepMounted
@@ -66,8 +82,18 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           open={open}
           onClose={handleClose}
         >
-          <StyledMenuItem onClick={handleClose}>マイページ</StyledMenuItem>
-          <StyledMenuItem onClick={handleClose}>ログアウト</StyledMenuItem>
+          <MenuItem onClick={handleClose}>
+            <StyledListItemIcon>
+              <PersonOutlineOutlinedIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="マイページ" />
+          </MenuItem>
+          <MenuItem onClick={() => signOut()}>
+            <StyledListItemIcon>
+              <ExitToAppIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="ログアウト" />
+          </MenuItem>
         </Menu>
       </StyledUseMr>
     </>
