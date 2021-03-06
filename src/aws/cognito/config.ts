@@ -9,8 +9,8 @@ Amplify.configure({
     oauth: {
       domain: `kanon-code${process.env.NEXT_PUBLIC_SUFFIX}.auth.${process.env.NEXT_PUBLIC_COGNITO_REJION}.amazoncognito.com`,
       scope: ["openid", "email", "profile"],
-      redirectSignIn: "http://localhost:3000/auth/init",
-      redirectSignOut: "http://localhost:3000/",
+      redirectSignIn: process.env.NEXT_PUBLIC_REDIRECT_SIGN_IN,
+      redirectSignOut: process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT,
       responseType: "code",
     },
   },
