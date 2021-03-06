@@ -1,7 +1,8 @@
 import { SolidLink } from "@/components/atoms/SolidLink";
 import { NotificationsButton } from "@/components/molecules/NotificationsButton";
-import { SearchInHeader } from "@/components/molecules/SearchInHeader";
+import { SearchButton } from "@/components/molecules/SearchButton";
 import { UserImageButton } from "@/components/molecules/UserImageButton";
+import Hidden from "@material-ui/core/Hidden";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import React, { useState } from "react";
@@ -34,14 +35,16 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   return (
     <>
       <StyledUseMr>
-        <SearchInHeader formFunc={props.formFunc} func={props.func} />
+        <SearchButton disableRipple={true} func={props.func} />
       </StyledUseMr>
       <StyledUseMr>
         <NotificationsButton disableRipple={true} func={props.func} />
       </StyledUseMr>
-      <StyledUseMr>
-        <SolidLink href="/posts/new">レビューを依頼する</SolidLink>
-      </StyledUseMr>
+      <Hidden xsDown>
+        <StyledUseMr>
+          <SolidLink href="/posts/new">レビューを依頼する</SolidLink>
+        </StyledUseMr>
+      </Hidden>
       <StyledUseMr>
         <UserImageButton
           picture={props.picture}
