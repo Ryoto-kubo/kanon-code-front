@@ -17,7 +17,7 @@ const IndexPage: React.FC<Props> = (props) => (
     authUser={props.authUser}
   >
     <Container>
-      <FirstView />
+      {!props.authUser && <FirstView />}
       <Box component="section">
         <Heading2 fontSize={20} marginBottom={4}>
           フロント言語
