@@ -1,8 +1,6 @@
 import { KanonCodeLogo } from "@/components/atoms/Logo";
-import { SolidLink } from "@/components/atoms/SolidLink";
 import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
-// import { ICognitoUserData } from "@aws-amplify/auth";
-// import {CognitoUserSession} from 'amazon-cognito-identity-js'
+import { LoggedHeaderParts } from "@/components/organisms/LoggedHeaderParts";
 import { Box } from "@material-ui/core/";
 import Link from "next/link";
 import React from "react";
@@ -18,20 +16,17 @@ const StyledBox = styled(Box)`
   width: 100%;
   margin: auto;
 `;
-const StyledUseMr = styled.span`
-  &:not(:last-child) {
-    margin-right: 16px;
-  }
-`;
-const StyledImg = styled.img`
-  border-radius: 50px;
-  width: 40px;
-  width: 40px;
-`;
 
 export const TheLoggedHeader: React.FC<Props> = (props) => {
   console.log(props.authUser);
   const userInfo = props.authUser.signInUserSession.idToken.payload;
+  const formFunc = (e: React.FormEvent) => {
+    console.log("enterを押した検索");
+    e.preventDefault();
+  };
+  const func = () => {
+    console.log("iconを押した検索");
+  };
 
   return (
     <CustomStickyAppBar>
@@ -46,12 +41,11 @@ export const TheLoggedHeader: React.FC<Props> = (props) => {
           </a>
         </Link>
         <Box display="flex" alignItems="center">
-          <StyledUseMr>
-            <SolidLink href="/posts/new">レビューを依頼する</SolidLink>
-          </StyledUseMr>
-          <StyledUseMr>
-            <StyledImg src={userInfo.picture} alt="ユーザーアイコン" />
-          </StyledUseMr>
+          <LoggedHeaderParts
+            picture={userInfo.picture}
+            func={func}
+            formFunc={formFunc}
+          />
         </Box>
       </StyledBox>
     </CustomStickyAppBar>
