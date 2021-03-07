@@ -1,30 +1,43 @@
-import theme from "@/styles/theme";
-import React from "react";
-import styled from "styled-components";
+import Typography from '@material-ui/core/Typography'
+import React from 'react'
 
 interface Props {
-  fontSize: number;
-  fontWeight: string;
-  isPrimary?: boolean;
-  children: string;
+  variant:
+    | 'h1'
+    | 'h2'
+    | 'h3'
+    | 'h4'
+    | 'h5'
+    | 'h6'
+    | 'subtitle1'
+    | 'subtitle2'
+    | 'body1'
+    | 'body2'
+    | 'caption'
+    | 'button'
+    | 'overline'
+    | 'srOnly'
+    | 'inherit'
+    | undefined
+  component: React.ElementType<any>
+  color?:
+    | 'inherit'
+    | 'initial'
+    | 'primary'
+    | 'secondary'
+    | 'textPrimary'
+    | 'textSecondary'
+    | 'error'
+    | undefined
 }
-const StyledParagraph = styled.p<
-  Pick<Props, "fontSize" | "fontWeight" | "isPrimary">
->`
-  font-size: ${({ fontSize }) => fontSize}px;
-  font-weight: ${({ fontWeight }) => fontWeight};
-  color: ${({ isPrimary }) =>
-    isPrimary ? theme.palette.primary.main : "#020202"};
-`;
-
 export const ParagraphText: React.FC<Props> = (props) => {
   return (
-    <StyledParagraph
-      fontSize={props.fontSize}
-      fontWeight={props.fontWeight}
-      isPrimary={props.isPrimary}
+    <Typography
+      variant={props.variant}
+      component={props.component}
+      color={props.color}
     >
       {props.children}
-    </StyledParagraph>
-  );
-};
+    </Typography>
+  )
+}

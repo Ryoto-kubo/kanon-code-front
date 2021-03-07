@@ -2,26 +2,22 @@ import { Heading2 } from "@/components/atoms/Heading2";
 import { FirstView } from "@/components/organisms/FirstView";
 import { Post } from "@/components/organisms/Post";
 import Layout from "@/layouts/standard";
+import { CognitoUser } from "@aws-amplify/auth";
 import { Box, Container, Grid, Paper } from "@material-ui/core/";
 import React from "react";
-import styled from "styled-components";
-const StyledBox = styled(Box)`
-  text-align: center;
-  ${(props) => props.theme.breakpoints.up("md")} {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-  }
-`;
 
-const IndexPage: React.FC = () => (
-  <Layout title="KanonCode | コードレビュを全てのエンジニアへ">
+type Props = {
+  title: string;
+  authUser: CognitoUser;
+};
+
+const IndexPage: React.FC<Props> = (props) => (
+  <Layout
+    title="Kanon Code | コードレビュを全てのエンジニアへ"
+    authUser={props.authUser}
+  >
     <Container>
-      <StyledBox pt={7} pb={5} mb={5}>
-        {/* <Box textAlign="center"> */}
-        <FirstView />
-        {/* </Box> */}
-      </StyledBox>
+      {!props.authUser && <FirstView />}
       <Box component="section">
         <Heading2 fontSize={20} marginBottom={4}>
           フロント言語
