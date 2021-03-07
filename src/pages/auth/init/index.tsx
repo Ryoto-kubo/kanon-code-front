@@ -6,7 +6,7 @@ type Props = {
   authUser: CognitoUser;
 };
 
-const IndexPage: React.FC<Props> = (props) => {
+const IndexPage: React.FC<Props> = () => {
   return (
     <></>
     // <Layout title="Kanon Code | サインイン" authUser={props.authUser}>
