@@ -14,6 +14,8 @@ import Head from "next/head";
 import React, { useEffect, useState } from "react";
 import { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
 
+console.log("hog");
+
 interface UserAttributes {
   sub: string;
   email: string;
