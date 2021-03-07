@@ -1,5 +1,7 @@
 import { Amplify } from "aws-amplify";
 
+console.log(process.env.NEXT_PUBLIC_REDIRECT_SIGN_IN);
+
 Amplify.configure({
   Auth: {
     region: process.env.NEXT_PUBLIC_COGNITO_REJION,
