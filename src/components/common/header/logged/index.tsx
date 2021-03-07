@@ -15,6 +15,9 @@ const StyledBox = styled(Box)`
   max-width: 1280px;
   width: 100%;
   margin: auto;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    padding: 0 24px;
+  }
 `;
 
 export const TheLoggedHeader: React.FC<Props> = (props) => {
