@@ -22,6 +22,7 @@ const Layout = ({
   authUser,
 }: Props) => {
   // console.log(authUser, "authUser");
+
   return (
     <>
       <CommonHead title={title} />
