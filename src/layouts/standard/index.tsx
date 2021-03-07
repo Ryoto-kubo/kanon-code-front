@@ -21,7 +21,6 @@ const Layout = ({
   title = "This is the default title",
   authUser,
 }: Props) => {
-  // console.log(authUser, "authUser");
   return (
     <>
       <CommonHead title={title} />
