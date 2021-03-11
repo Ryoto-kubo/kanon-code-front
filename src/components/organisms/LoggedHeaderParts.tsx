@@ -1,6 +1,6 @@
 import { SolidLink } from "@/components/atoms/SolidLink";
 import { NotificationsButton } from "@/components/molecules/NotificationsButton";
-import { SearchButton } from "@/components/molecules/SearchButton";
+import { SearchLink } from "@/components/molecules/SearchLink";
 import { UserImageButton } from "@/components/molecules/UserImageButton";
 import theme from "@/styles/theme";
 import Hidden from "@material-ui/core/Hidden";
@@ -21,6 +21,8 @@ interface Props {
 }
 
 const StyledUseMr = styled.span`
+  display: inherit;
+
   &:not(:last-child) {
     margin-right: 24px;
   }
@@ -50,7 +52,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   return (
     <>
       <StyledUseMr>
-        <SearchButton disableRipple={true} func={props.func} />
+        <SearchLink />
       </StyledUseMr>
       <StyledUseMr>
         <NotificationsButton disableRipple={true} func={props.func} />

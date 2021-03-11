@@ -1,5 +1,5 @@
 import { CustomIconButton } from "@/components/atoms/IconButton";
-import { Notifications } from "@material-ui/icons";
+import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import React from "react";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 export const NotificationsButton: React.FC<Props> = (props) => {
   return (
     <CustomIconButton disableRipple={true} func={props.func}>
-      <Notifications />
+      <NotificationsNoneIcon color="action" />
     </CustomIconButton>
   );
 };
