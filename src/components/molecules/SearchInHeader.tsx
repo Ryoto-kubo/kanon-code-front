@@ -1,8 +1,13 @@
 import { CustomIconButton } from "@/components/atoms/IconButton";
-import theme from "@/styles/theme";
+// import theme from "@/styles/theme";
 import { InputBase } from "@material-ui/core/";
-import { fade } from "@material-ui/core/styles/colorManipulator";
-import { Search } from "@material-ui/icons";
+import {
+  createStyles,
+  fade,
+  Theme,
+  withStyles,
+} from "@material-ui/core/styles";
+import Search from "@material-ui/icons/Search";
 import React from "react";
 import styled from "styled-components";
 
@@ -12,29 +17,45 @@ interface Props {
 }
 
 const StyledForm = styled.form`
-  width: 70%;
+  width: 75%;
   margin: 50px auto;
+  position: relative;
 `;
-const StyledInput = styled(InputBase)`
-  width: 100%;
-  font-size: 14px;
-  background: ${fade(theme.palette.primary.main, 0.1)};
-  padding: 5px 16px;
-  border-radius: 50px;
+const StyeldAbsolute = styled.div`
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translate(0px, -50%);
 `;
+
+const WithStyledInput = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: "100%",
+    },
+    input: {
+      fontSize: "14px",
+      backgroundColor: fade(theme.palette.primary.main, 0.1),
+      borderRadius: "50px",
+      padding: "10px 16px",
+      transition: theme.transitions.create(["border-color", "box-shadow"]),
+      "&:focus": {
+        boxShadow: `${fade(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  })
+)(InputBase);
 
 export const SearchInHeader: React.FC<Props> = (props) => {
   return (
     <StyledForm onSubmit={props.formFunc}>
-      <StyledInput
-        placeholder="キーワード検索"
-        inputProps={{ "aria-label": "naked" }}
-        endAdornment={
-          <CustomIconButton disableRipple={true} func={props.func}>
-            <Search />
-          </CustomIconButton>
-        }
-      />
+      <WithStyledInput placeholder="キーワード検索" />
+      <StyeldAbsolute>
+        <CustomIconButton disableRipple={true} func={props.func}>
+          <Search />
+        </CustomIconButton>
+      </StyeldAbsolute>
     </StyledForm>
   );
 };
