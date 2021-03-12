@@ -1,28 +1,16 @@
-import { SignInContent } from "@/components/organisms/SignInContent";
-import { LayoutNoFooter } from "@/layouts/no-footer";
-import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
-import { Container } from "@material-ui/core/";
-import { Auth } from "aws-amplify";
+import { SearchInHeader } from "@/components/molecules/SearchInHeader";
+import Layout from "@/layouts/standard";
+import { CognitoUser } from "@aws-amplify/auth";
 import React from "react";
-import styled from "styled-components";
 
-const StyledContainer = styled(Container)`
-  width: 100%;
-  text-align: center;
-  margin-top: 70px;
-`;
-
-const signin = () => {
-  Auth.federatedSignIn({
-    provider: CognitoHostedUIIdentityProvider.Google,
-  });
+type Props = {
+  title: string;
+  authUser: CognitoUser;
 };
 
-const IndexPage: React.FC = () => (
-  <LayoutNoFooter title="Kanon Code | サインイン">
-    <StyledContainer>
-      <SignInContent onClick={signin} />
-    </StyledContainer>
-  </LayoutNoFooter>
+const IndexPage: React.FC<Props> = (props) => (
+  <Layout title="Kanon Code | 検索" authUser={props.authUser}>
+    <SearchInHeader />
+  </Layout>
 );
 export default IndexPage;

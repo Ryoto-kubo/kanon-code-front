@@ -64,7 +64,6 @@ export default class CustomDocument extends NextDocument {
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"
             rel="stylesheet"
           />
-          <style>{`body { background: #ffffff; position: relative;}`}</style>
         </Head>
         <body>
           <Main />

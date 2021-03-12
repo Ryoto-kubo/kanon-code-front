@@ -12,9 +12,9 @@ import "modern-css-reset/dist/reset.min.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
-import { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
-
-console.log("hog");
+import styled, {
+  ThemeProvider as StyledComponentsThemeProvider,
+} from "styled-components";
 
 interface UserAttributes {
   sub: string;
@@ -24,6 +24,17 @@ interface UserAttributes {
 interface CognitoUserProps extends CognitoUser {
   attributes: UserAttributes;
 }
+
+const StyledWrapper = styled.div`
+  background: #ffffff;
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 572px;
+  box-sizing: border-box;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    padding-bottom: 223px;
+  }
+`;
 
 const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
@@ -63,7 +74,9 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             />
           </Head>
           <CssBaseline />
-          <Component {...pageProps} authUser={user} />
+          <StyledWrapper>
+            <Component {...pageProps} authUser={user} />
+          </StyledWrapper>
         </StyledComponentsThemeProvider>
       </MaterialUIThemeProvider>
     </StylesProvider>
