@@ -1,8 +1,8 @@
+import { LinkWrapper } from "@/components/atoms/Link";
 import { KanonCodeLogo } from "@/components/atoms/Logo";
 import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
 import { LoggedHeaderParts } from "@/components/organisms/LoggedHeaderParts";
 import { Box } from "@material-ui/core/";
-import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
@@ -38,11 +38,9 @@ export const TheLoggedHeader: React.FC<Props> = (props) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Link href="/">
-          <a>
-            <KanonCodeLogo />
-          </a>
-        </Link>
+        <LinkWrapper href="/">
+          <KanonCodeLogo />
+        </LinkWrapper>
         <Box display="flex" alignItems="center">
           <LoggedHeaderParts
             picture={userInfo.picture}
