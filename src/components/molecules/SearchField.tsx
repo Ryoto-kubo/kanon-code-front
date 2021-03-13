@@ -1,5 +1,4 @@
 import { CustomIconButton } from "@/components/atoms/IconButton";
-// import theme from "@/styles/theme";
 import { InputBase } from "@material-ui/core/";
 import {
   createStyles,
@@ -17,7 +16,7 @@ interface Props {
 }
 
 const StyledForm = styled.form`
-  width: 75%;
+  width: 90%;
   margin: 50px auto;
   position: relative;
 `;
@@ -47,7 +46,7 @@ const WithStyledInput = withStyles((theme: Theme) =>
   })
 )(InputBase);
 
-export const SearchInHeader: React.FC<Props> = (props) => {
+export const SearchField: React.FC<Props> = (props) => {
   return (
     <StyledForm onSubmit={props.formFunc}>
       <WithStyledInput placeholder="キーワード検索" />
