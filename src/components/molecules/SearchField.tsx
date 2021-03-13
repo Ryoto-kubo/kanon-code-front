@@ -33,7 +33,7 @@ const WithStyledInput = withStyles((theme: Theme) =>
       width: "100%",
     },
     input: {
-      fontSize: "14px",
+      fontSize: "16px",
       backgroundColor: fade(theme.palette.primary.main, 0.1),
       borderRadius: "50px",
       padding: "10px 16px",

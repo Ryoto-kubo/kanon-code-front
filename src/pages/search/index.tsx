@@ -2,7 +2,7 @@ import { CustomIconButton } from "@/components/atoms/IconButton";
 import { SearchField } from "@/components/molecules/SearchField";
 import Layout from "@/layouts/standard";
 import { CognitoUser } from "@aws-amplify/auth";
-import { Container, Grid, Paper } from "@material-ui/core/";
+import { Container, Grid, Grow, Paper } from "@material-ui/core/";
 import { fade } from "@material-ui/core/styles";
 import React from "react";
 import styled from "styled-components";
@@ -57,104 +57,106 @@ const IndexPage: React.FC<Props> = (props) => (
   <Layout title="Kanon Code | 検索" authUser={props.authUser}>
     <Container maxWidth="md">
       <SearchField formFunc={formFunc} func={func} />
-      <Grid container spacing={3}>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <JavaScriptSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>JavaScript</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <VueSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Vue.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <ReactSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>React.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <NuxtSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Nuxt.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <NextSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Next.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <PhpSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>php</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <CakePhpSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Cakephp</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <LaravelSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Laravel</p>
-          </StyledPaper>
-        </StyledGridCenter>
-      </Grid>
+      <Grow in={true}>
+        <Grid container spacing={3}>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <JavaScriptSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>JavaScript</p>
+            </StyledPaper>
+          </StyledGridCenter>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <VueSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>Vue.js</p>
+            </StyledPaper>
+          </StyledGridCenter>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <ReactSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>React.js</p>
+            </StyledPaper>
+          </StyledGridCenter>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <NuxtSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>Nuxt.js</p>
+            </StyledPaper>
+          </StyledGridCenter>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <NextSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>Next.js</p>
+            </StyledPaper>
+          </StyledGridCenter>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <PhpSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>php</p>
+            </StyledPaper>
+          </StyledGridCenter>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <CakePhpSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>Cakephp</p>
+            </StyledPaper>
+          </StyledGridCenter>
+          <StyledGridCenter item xs={6} sm={3} md={2}>
+            <StyledPaper elevation={0}>
+              <StyledCircle>
+                <StyledAbsolute>
+                  <CustomIconButton disableRipple={true} func={func}>
+                    <LaravelSvg width={40} height={40} />
+                  </CustomIconButton>
+                </StyledAbsolute>
+              </StyledCircle>
+              <p>Laravel</p>
+            </StyledPaper>
+          </StyledGridCenter>
+        </Grid>
+      </Grow>
     </Container>
   </Layout>
 );
