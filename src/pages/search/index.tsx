@@ -2,7 +2,7 @@ import { SearchField } from "@/components/molecules/SearchField";
 import { CircleGrids } from "@/components/organisms/CircleGrids";
 import Layout from "@/layouts/standard";
 import { CognitoUser } from "@aws-amplify/auth";
-import { Container, Grow } from "@material-ui/core/";
+import { Container } from "@material-ui/core/";
 import React from "react";
 
 type Props = {
@@ -22,9 +22,7 @@ const IndexPage: React.FC<Props> = (props) => (
   <Layout title="Kanon Code | 検索" authUser={props.authUser}>
     <Container maxWidth="md">
       <SearchField formFunc={formFunc} func={func} />
-      <Grow in={true}>
-        <CircleGrids func={func} />
-      </Grow>
+      <CircleGrids func={func} />
     </Container>
   </Layout>
 );
