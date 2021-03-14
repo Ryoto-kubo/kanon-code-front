@@ -1,161 +1,63 @@
-import { CustomIconButton } from "@/components/atoms/IconButton";
-import { SearchField } from "@/components/molecules/SearchField";
-import Layout from "@/layouts/standard";
-import { CognitoUser } from "@aws-amplify/auth";
-import { Container, Grid, Paper } from "@material-ui/core/";
-import { fade } from "@material-ui/core/styles";
-import React from "react";
-import styled from "styled-components";
-import CakePhpSvg from "../../assets/logo/cakephp.svg";
-import JavaScriptSvg from "../../assets/logo/javascript.svg";
-import LaravelSvg from "../../assets/logo/laravel.svg";
-import NextSvg from "../../assets/logo/next.svg";
-import NuxtSvg from "../../assets/logo/nuxt.svg";
-import PhpSvg from "../../assets/logo/php.svg";
-import ReactSvg from "../../assets/logo/react.svg";
-import VueSvg from "../../assets/logo/vue.svg";
+import { CustomIconButton } from '@/components/atoms/IconButton'
+import { CircleGrid } from '@/components/molecules/CircleGrid'
+import { SearchField } from '@/components/molecules/SearchField'
+import { CircleGrids } from '@/components/organisms/CircleGrids'
+import Layout from '@/layouts/standard'
+import { icons } from '@/services/icons'
+import { CognitoUser } from '@aws-amplify/auth'
+import { Container } from '@material-ui/core/'
+import React, { useState } from 'react'
 
 type Props = {
-  title: string;
-  authUser: CognitoUser;
-};
+  title: string
+  authUser: CognitoUser
+}
 
 const formFunc = (e: React.FormEvent) => {
-  console.log("enterを押した検索");
-  e.preventDefault();
-};
+  console.log('enterを押した検索')
+  e.preventDefault()
+}
 const func = () => {
-  console.log("iconを押した検索");
-};
+  console.log('iconを押した検索')
+}
 
-const StyledPaper = styled(Paper)`
-  padding: 16px;
-  &:hover {
-    box-shadow: 0 3px 6px #707070;
+const initIconComponents = () => {
+  const resutls = []
+  for (const [index, item] of icons.entries()) {
+    resutls.push(
+      <CircleGrid key={index} text={item.text}>
+        <CustomIconButton disableRipple={true} func={func}>
+          {item.dom}
+        </CustomIconButton>
+      </CircleGrid>,
+    )
   }
-`;
-const StyledCircle = styled.div`
-  border-radius: 50px;
-  background: ${fade("#f5f5f5", 0.7)};
-  width: 80px;
-  height: 80px;
-  display: inline-block;
-  position: relative;
-  transition: all 0.3s;
-`;
-const StyledAbsolute = styled.span`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
-const StyledGridCenter = styled(Grid)`
-  text-align: center;
-`;
+  return resutls
+}
 
-const IndexPage: React.FC<Props> = (props) => (
-  <Layout title="Kanon Code | 検索" authUser={props.authUser}>
-    <Container maxWidth="md">
-      <SearchField formFunc={formFunc} func={func} />
-      <Grid container spacing={3}>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <JavaScriptSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>JavaScript</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <VueSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Vue.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <ReactSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>React.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <NuxtSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Nuxt.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <NextSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Next.js</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <PhpSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>php</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <CakePhpSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Cakephp</p>
-          </StyledPaper>
-        </StyledGridCenter>
-        <StyledGridCenter item xs={6} sm={3} md={2}>
-          <StyledPaper elevation={0}>
-            <StyledCircle>
-              <StyledAbsolute>
-                <CustomIconButton disableRipple={true} func={func}>
-                  <LaravelSvg width={40} height={40} />
-                </CustomIconButton>
-              </StyledAbsolute>
-            </StyledCircle>
-            <p>Laravel</p>
-          </StyledPaper>
-        </StyledGridCenter>
-      </Grid>
-    </Container>
-  </Layout>
-);
-export default IndexPage;
+const IndexPage: React.FC<Props> = (props) => {
+  const [renderIcons, setRenderIcons] = useState(initIconComponents)
+
+  const filterdIcons = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    // To identify the dots
+    const searchStr =
+      e.target.value.toLowerCase() === '.'
+        ? '\\.'
+        : e.target.value.toLowerCase()
+    const updateList = initIconComponents().filter((item: any) => {
+      return item.props.text.toLowerCase().search(searchStr) !== -1
+    })
+    setRenderIcons(updateList)
+  }
+
+  return (
+    <Layout title="Kanon Code | 検索" authUser={props.authUser}>
+      <Container maxWidth="md">
+        <SearchField formFunc={formFunc} func={func} onChange={filterdIcons} />
+        <CircleGrids func={func} renderIcons={renderIcons} />
+      </Container>
+    </Layout>
+  )
+}
+
+export default IndexPage
