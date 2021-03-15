@@ -1,10 +1,9 @@
-import { Grid, Grow } from "@material-ui/core/";
-import React from "react";
+import { Grid, Grow } from '@material-ui/core/'
+import React from 'react'
 
 type Props = {
-  func: React.MouseEventHandler;
-  renderIcons: Array<any>;
-};
+  renderIcons: Array<any>
+}
 
 export const CircleGrids: React.FC<Props> = (props) => {
   return (
@@ -13,5 +12,5 @@ export const CircleGrids: React.FC<Props> = (props) => {
         {props.renderIcons}
       </Grid>
     </Grow>
-  );
-};
+  )
+}
