@@ -63,6 +63,8 @@ export const SettingLayout = ({
   const router = useRouter()
   const [value, setValue] = useState(router.pathname)
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
+    console.log(event)
+
     setValue(newValue)
     if (newValue === '/settings/profile') {
       router.push('/settings/profile')
