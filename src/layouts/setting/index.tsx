@@ -50,6 +50,7 @@ function LinkTab(props: LinkTabProps) {
       onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
         event.preventDefault()
       }}
+      disableRipple={true}
       {...props}
     />
   )
