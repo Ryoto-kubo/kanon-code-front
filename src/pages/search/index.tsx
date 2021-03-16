@@ -1,12 +1,12 @@
-import { CustomIconButton } from '@/components/atoms/IconButton'
+import { icons } from '@/components/atoms/Icons'
 import { CircleGrid } from '@/components/molecules/CircleGrid'
 import { SearchField } from '@/components/molecules/SearchField'
 import { CircleGrids } from '@/components/organisms/CircleGrids'
 import Layout from '@/layouts/standard'
-import { icons } from '@/services/icons'
 import { CognitoUser } from '@aws-amplify/auth'
 import { Container } from '@material-ui/core/'
-import React, { useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { MouseEvent, useState } from 'react'
 
 type Props = {
   title: string
@@ -17,26 +17,21 @@ const formFunc = (e: React.FormEvent) => {
   console.log('enterを押した検索')
   e.preventDefault()
 }
-const func = () => {
-  console.log('iconを押した検索')
-}
-
-const initIconComponents = () => {
-  const resutls = []
-  for (const [index, item] of icons.entries()) {
-    resutls.push(
-      <CircleGrid key={index} text={item.text}>
-        <CustomIconButton disableRipple={true} func={func}>
-          {item.dom}
-        </CustomIconButton>
-      </CircleGrid>,
-    )
-  }
-  return resutls
-}
 
 const IndexPage: React.FC<Props> = (props) => {
-  const [renderIcons, setRenderIcons] = useState(initIconComponents)
+  const router = useRouter()
+
+  const initIconComponents = () => {
+    const resutls = []
+    for (const [index, item] of icons.entries()) {
+      resutls.push(
+        <CircleGrid key={index} text={item.text} onClick={iconClick}>
+          {item.dom}
+        </CircleGrid>,
+      )
+    }
+    return resutls
+  }
 
   const filterdIcons = (e: React.ChangeEvent<HTMLInputElement>): void => {
     // To identify the dots
@@ -50,11 +45,25 @@ const IndexPage: React.FC<Props> = (props) => {
     setRenderIcons(updateList)
   }
 
+  const iconClick = (e: MouseEvent) => {
+    const searchStr = e.currentTarget.children[1].textContent
+    console.log(searchStr)
+    router.push({
+      pathname: '/search',
+      query: { keyword: searchStr },
+    })
+  }
+  const [renderIcons, setRenderIcons] = useState(initIconComponents)
+
   return (
     <Layout title="Kanon Code | 検索" authUser={props.authUser}>
       <Container maxWidth="md">
-        <SearchField formFunc={formFunc} func={func} onChange={filterdIcons} />
-        <CircleGrids func={func} renderIcons={renderIcons} />
+        <SearchField
+          formFunc={formFunc}
+          func={iconClick}
+          onChange={filterdIcons}
+        />
+        <CircleGrids renderIcons={renderIcons} />
       </Container>
     </Layout>
   )
