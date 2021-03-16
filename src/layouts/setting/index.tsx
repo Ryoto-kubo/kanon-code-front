@@ -64,19 +64,8 @@ export const SettingLayout = ({
   const [value, setValue] = useState(router.pathname)
   const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
     console.log(event)
-
     setValue(newValue)
-    if (newValue === '/settings/profile') {
-      router.push('/settings/profile')
-    } else if (newValue === '/settings/account') {
-      router.push('/settings/account')
-    } else if (newValue === '/settings/billing') {
-      router.push('/settings/billing')
-    } else if (newValue === '/settings/payments-history') {
-      router.push('/settings/payments-history')
-    } else if (newValue === '/settings/bank') {
-      router.push('/settings/bank')
-    }
+    router.push(newValue)
   }
 
   return (
