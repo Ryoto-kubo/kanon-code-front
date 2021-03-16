@@ -70,6 +70,12 @@ export const SettingLayout = ({
       router.push('/settings/profile')
     } else if (newValue === '/settings/account') {
       router.push('/settings/account')
+    } else if (newValue === '/settings/billing') {
+      router.push('/settings/billing')
+    } else if (newValue === '/settings/payments-history') {
+      router.push('/settings/payments-history')
+    } else if (newValue === '/settings/bank') {
+      router.push('/settings/bank')
     }
   }
 
@@ -104,8 +110,8 @@ export const SettingLayout = ({
             />
             <StyledTab
               label="カード情報"
-              value="/settings/card"
-              href="/settings/card"
+              value="/settings/billing"
+              href="/settings/billing"
               {...a11yProps(2)}
             />
             <StyledTab
@@ -118,7 +124,7 @@ export const SettingLayout = ({
               label="お振込先"
               value="/settings/bank"
               href="/settings/bank"
-              // {...a11yProps(4)}
+              {...a11yProps(4)}
             />
           </StyledTabs>
 
