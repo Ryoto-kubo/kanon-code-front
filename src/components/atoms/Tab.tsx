@@ -1,11 +1,14 @@
 import Tab from '@material-ui/core/Tab'
 import React from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 
 type Props = {
   label: string
   href: string
   value: string
+  onChange?: (event: React.ChangeEvent<{ checked: boolean }>, value: any) => void;
+  onClick?: React.EventHandler<any>;        
 }
 type LinkTabProps = {
   label?: string
@@ -20,14 +23,16 @@ const StyledTab = styled(LinkTab)`
 
 function LinkTab(props: LinkTabProps) {
   return (
+  <Link href={props.href}>
     <Tab
-      component="a"
-      onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        event.preventDefault()
-      }}
+      // onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+      //   event.preventDefault()
+      // }}
+
       disableRipple={true}
       {...props}
     />
+    </Link>
   )
 }
 
