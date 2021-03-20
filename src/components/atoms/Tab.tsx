@@ -15,13 +15,12 @@ const StyledTab = styled(Tab)`
 `
 
 export const CustomTab: React.FC<Props> = (props) => {
-    return (
-   <Link href={props.href}>   
-    <StyledTab
-    disableRipple={true}
-     {...props}
-  />
-    </Link> 
-    ) 
-  }
-  
+  return (
+    <Link href={props.href}>
+      <StyledTab
+        disableRipple={true}
+        {...props}
+      />
+    </Link>
+  )
+}
