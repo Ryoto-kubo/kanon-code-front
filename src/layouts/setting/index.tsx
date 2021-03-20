@@ -6,42 +6,15 @@ import { TheStndardHeader } from '@/components/common/header/standard'
 import { TabsHeader } from '@/components/organisms/TabsHeader'
 import { Toolbar } from '@material-ui/core'
 import { Container } from '@material-ui/core/'
-import Tab from '@material-ui/core/Tab'
-import Tabs from '@material-ui/core/Tabs'
 import { useRouter } from 'next/router'
 import React, { ReactNode, useState } from 'react'
 import styled from 'styled-components'
-// ;<a
-//   class="MuiButtonBase-root MuiTab-root MuiTab-textColorPrimary setting__StyledTab-sc-1kjsxfi-3 jYFBnq"
-//   tabindex="-1"
-//   aria-disabled="false"
-//   role="tab"
-//   aria-selected="false"
-//   href="/settings/profile"
-// >
-//   <span class="MuiTab-wrapper">プロフィール</span>
-// </a>
-// ;<a
-//   class="MuiButtonBase-root MuiTab-root MuiTab-textColorInherit Tab__StyledTab-sc-1tm8ywy-0 cszAjb"
-//   tabindex="-1"
-//   aria-disabled="false"
-//   role="tab"
-//   href="/settings/profile"
-// >
-//   <span class="MuiTab-wrapper">プロフィール</span>
-// </a>
 
 type Props = {
   children: ReactNode
   title: string
   authUser: any
 }
-type LinkTabProps = {
-  label?: string
-  href?: string
-  value: string
-}
-
 const StyledMain = styled.main`
   background: #ffffff;
 `
@@ -49,27 +22,6 @@ const StyledContainer = styled(Container)`
   width: 100%;
   margin-top: 70px;
 `
-const StyledTabs = styled(Tabs)`
-  border-bottom: 1px solid #e8e8e8;
-`
-const StyledTab = styled(LinkTab)`
-  min-width: 130px;
-  font-size: 16px;
-  // font-weight: bold;
-`
-function LinkTab(props: LinkTabProps) {
-  return (
-    <Tab
-      component="a"
-      onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        event.preventDefault()
-      }}
-      disableRipple={true}
-      {...props}
-    />
-  )
-}
-
 export const SettingLayout = ({
   children,
   title = 'This is the default title',
