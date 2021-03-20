@@ -4,7 +4,6 @@ import styled from 'styled-components'
 
 type Props = {
   value: string | number
-  handleChange: (event: React.ChangeEvent<{}>, newValue: string) => void
 }
 
 const StyledTabs = styled(Tabs)`
@@ -16,7 +15,6 @@ export const CustomTabs: React.FC<Props> = (props) => {
   return (
     <StyledTabs
       value={props.value}
-      onChange={props.handleChange}
       indicatorColor="primary"
       textColor="primary"
     >

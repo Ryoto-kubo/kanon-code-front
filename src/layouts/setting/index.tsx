@@ -4,7 +4,6 @@ import { CommonHead } from '@/components/common/head/index'
 import { TheLoggedHeader } from '@/components/common/header/logged'
 import { TheStndardHeader } from '@/components/common/header/standard'
 import { TabsHeader } from '@/components/organisms/TabsHeader'
-import { settingTabs } from '@/consts/setting-tabs'
 import { Toolbar } from '@material-ui/core'
 import { Container } from '@material-ui/core/'
 import { useRouter } from 'next/router'
@@ -16,7 +15,6 @@ type Props = {
   title: string
   authUser: any
 }
-
 const StyledMain = styled.main`
   background: #ffffff;
 `
@@ -24,21 +22,13 @@ const StyledContainer = styled(Container)`
   width: 100%;
   margin-top: 70px;
 `
-
 export const SettingLayout = ({
   children,
   title = 'This is the default title',
   authUser,
 }: Props) => {
   const router = useRouter()
-  const [value, setValue] = useState(router.pathname)
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: string) => {
-    console.log(event)
-    console.log(newValue)
-    setValue(newValue)
-    router.push(newValue)
-  }
-
+  const [value] = useState(router.pathname)
   return (
     <>
       <CommonHead title={title} />
@@ -50,11 +40,7 @@ export const SettingLayout = ({
           <Heading2 fontSize={24} marginBottom={1}>
             アカウント設定
           </Heading2>
-          <TabsHeader
-            value={value}
-            handleChange={handleChange}
-            tabs={settingTabs}
-          />
+          <TabsHeader value={value} />
           {children}
         </StyledMain>
       </StyledContainer>
