@@ -4,12 +4,11 @@ import React from 'react'
 
 type Props = {
   value: string | number
-  handleChange: (event: React.ChangeEvent<{}>, newValue: string) => void
 }
 
 export const Tabs: React.FC<Props> = (props) => {
   return (
-    <CustomTabs value={props.value} handleChange={props.handleChange}>
+    <CustomTabs value={props.value}>
       <CustomTab
         label="プロフィール"
         value="/settings/profile"
