@@ -27,14 +27,7 @@ const StyledTab = styled(LinkTab)`
 function LinkTab(props: LinkTabProps) {
   return (
     <Link href={props.href}>
-      <Tab
-        // onClick={(event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-        //   event.preventDefault()
-        // }}
-
-        disableRipple={true}
-        {...props}
-      />
+      <Tab disableRipple={true} {...props} />
     </Link>
   )
 }
