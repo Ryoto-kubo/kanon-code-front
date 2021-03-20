@@ -1,15 +1,17 @@
-import React from "react";
-import styled from "styled-components";
+import Avatar from '@material-ui/core/Avatar'
+import React from 'react'
 
 interface Props {
-  picture: string;
+  picture: string
+  className?: string
 }
-const StyledImg = styled.img`
-  border-radius: 50px;
-  width: 40px;
-  width: 40px;
-`;
 
 export const UserImgIcon: React.FC<Props> = (props) => {
-  return <StyledImg src={props.picture} alt="ユーザーアイコン" />;
-};
+  return (
+    <Avatar
+      src={props.picture}
+      className={props.className}
+      alt="ユーザーアイコン"
+    />
+  )
+}

@@ -15,12 +15,14 @@ type Props = {
   title: string
   authUser: any
 }
+
 const StyledMain = styled.main`
   background: #ffffff;
 `
 const StyledContainer = styled(Container)`
   width: 100%;
   margin-top: 70px;
+  max-width: 720px;
 `
 export const SettingLayout = ({
   children,
@@ -35,7 +37,7 @@ export const SettingLayout = ({
       {authUser && <TheLoggedHeader authUser={authUser} />}
       {authUser === null && <TheStndardHeader />}
       <Toolbar />
-      <StyledContainer maxWidth="md">
+      <StyledContainer>
         <StyledMain>
           <Heading2 fontSize={24} marginBottom={1}>
             アカウント設定
