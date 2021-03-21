@@ -4,6 +4,7 @@ import { CommonHead } from '@/components/common/head/index'
 import { TheLoggedHeader } from '@/components/common/header/logged'
 import { TheStndardHeader } from '@/components/common/header/standard'
 import { TabsHeader } from '@/components/organisms/TabsHeader'
+import { settingTabs } from '@/consts/setting-tabs'
 import { Toolbar } from '@material-ui/core'
 import { Container } from '@material-ui/core/'
 import { useRouter } from 'next/router'
@@ -31,6 +32,11 @@ export const SettingLayout = ({
 }: Props) => {
   const router = useRouter()
   const [value] = useState(router.pathname)
+  const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
+    event.preventDefault()
+    router.push(newValue)
+  }
+
   return (
     <>
       <CommonHead title={title} />
@@ -42,7 +48,11 @@ export const SettingLayout = ({
           <Heading2 fontSize={24} marginBottom={1}>
             アカウント設定
           </Heading2>
-          <TabsHeader value={value} />
+          <TabsHeader
+            value={value}
+            onChange={changeTab}
+            tabLists={settingTabs}
+          />
           {children}
         </StyledMain>
       </StyledContainer>

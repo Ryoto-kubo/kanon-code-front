@@ -22,18 +22,11 @@ const StyledSection = styled.section`
 `
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (props.authUser === null) {
-    return (
-      <SettingLayout
-        title="Kanon Code | プロフィール設定"
-        authUser={props.authUser}
-      >
-        hoge
-      </SettingLayout>
-    )
-  }
   const classes = useStyles()
-  const userInfo = props.authUser.signInUserSession.idToken.payload
+  const userInfo =
+    props.authUser !== null
+      ? props.authUser.signInUserSession.idToken.payload
+      : 'null'
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     console.log('change icon')
   }
