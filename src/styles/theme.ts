@@ -30,16 +30,12 @@ const theme = createMuiTheme({
       textTransform: 'none',
     },
   },
-  // overrides: {
-  //   // Style sheet name ⚛️
-  //   MuiAvatar: {
-  //     // Name of the rule
-  //     root: {
-  //       // Some CSS
-  //       width: '100%',
-  //       height: '100%',
-  //     },
-  //   },
-  // },
+  overrides: {
+    MuiTextField: {
+      root: {
+        margin: '0',
+      },
+    },
+  },
 })
 export default responsiveFontSizes(theme)
