@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 interface Props {
   sizing: 'small' | 'medium' | 'large'
-  onClick: Function
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
 
 const StyledSolidButton = styled(Button)`
@@ -23,7 +23,7 @@ export const CustomSolidButton: React.FC<Props> = (props) => {
       variant="contained"
       color="primary"
       disableElevation
-      onClick={() => props.onClick()}
+      onClick={props.onClick}
     >
       {props.children}
     </StyledSolidButton>

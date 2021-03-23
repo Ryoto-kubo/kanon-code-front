@@ -22,15 +22,15 @@ const IndexPage: React.FC<Props> = (props) => {
   const router = useRouter()
 
   const initIconComponents = () => {
-    const resutls = []
+    const results = []
     for (const [index, item] of icons.entries()) {
-      resutls.push(
+      results.push(
         <CircleGrid key={index} text={item.text} onClick={iconClick}>
           {item.dom}
         </CircleGrid>,
       )
     }
-    return resutls
+    return results
   }
 
   const filterdIcons = (e: React.ChangeEvent<HTMLInputElement>): void => {

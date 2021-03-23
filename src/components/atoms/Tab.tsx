@@ -7,11 +7,6 @@ type Props = {
   label: string
   href: string
   value: string
-  onChange?: (
-    event: React.ChangeEvent<{ checked: boolean }>,
-    value: any,
-  ) => void
-  onClick?: React.EventHandler<any>
 }
 type LinkTabProps = {
   href: string
@@ -20,8 +15,13 @@ type LinkTabProps = {
 }
 
 const StyledTab = styled(LinkTab)`
-  min-width: 130px;
-  font-size: 16px;
+  min-width: 100px;
+  font-size: 15px;
+  font-weight: bold;
+  color: #707070;
+  &:hover {
+    color: #202020;
+  }
 `
 
 function LinkTab(props: LinkTabProps) {

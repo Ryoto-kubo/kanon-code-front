@@ -4,6 +4,7 @@ import { CommonHead } from '@/components/common/head/index'
 import { TheLoggedHeader } from '@/components/common/header/logged'
 import { TheStndardHeader } from '@/components/common/header/standard'
 import { TabsHeader } from '@/components/organisms/TabsHeader'
+import { settingTabs } from '@/consts/setting-tabs'
 import { Toolbar } from '@material-ui/core'
 import { Container } from '@material-ui/core/'
 import { useRouter } from 'next/router'
@@ -15,12 +16,14 @@ type Props = {
   title: string
   authUser: any
 }
+
 const StyledMain = styled.main`
   background: #ffffff;
 `
 const StyledContainer = styled(Container)`
   width: 100%;
   margin-top: 70px;
+  max-width: 720px;
 `
 export const SettingLayout = ({
   children,
@@ -29,18 +32,27 @@ export const SettingLayout = ({
 }: Props) => {
   const router = useRouter()
   const [value] = useState(router.pathname)
+  const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
+    event.preventDefault()
+    router.push(newValue)
+  }
+
   return (
     <>
       <CommonHead title={title} />
       {authUser && <TheLoggedHeader authUser={authUser} />}
       {authUser === null && <TheStndardHeader />}
       <Toolbar />
-      <StyledContainer maxWidth="md">
+      <StyledContainer>
         <StyledMain>
           <Heading2 fontSize={24} marginBottom={1}>
             アカウント設定
           </Heading2>
-          <TabsHeader value={value} />
+          <TabsHeader
+            value={value}
+            onChange={changeTab}
+            tabLists={settingTabs}
+          />
           {children}
         </StyledMain>
       </StyledContainer>
