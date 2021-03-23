@@ -1,9 +1,11 @@
+import { CustomSolidButton } from '@/components/atoms/SolidButton'
 import { UserImgIcon } from '@/components/atoms/UserImgIcon'
 import { HelpButton } from '@/components/molecules/HelpButton'
 import { SettingLayout } from '@/layouts/setting'
 import theme from '@/styles/theme'
 import Box from '@material-ui/core/Box'
 import InputLabel from '@material-ui/core/InputLabel'
+import MenuItem from '@material-ui/core/MenuItem'
 import Popover from '@material-ui/core/Popover'
 import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
@@ -17,23 +19,53 @@ type Props = {
   authUser: any
 }
 
+const positions = [
+  {
+    value: 0,
+    label: '未選択',
+  },
+  {
+    value: 1,
+    label: 'フルスタックエンジニア',
+  },
+  {
+    value: 2,
+    label: 'フロントエンドエンジニア',
+  },
+  {
+    value: 3,
+    label: 'サーバーサイドエンジニア',
+  },
+  {
+    value: 4,
+    label: 'インフラエンジニア',
+  },
+]
 const useStyles = makeStyles(() => ({
   size: {
     width: '110px',
     height: '110px',
   },
 }))
+const StyledBoxFlex = styled(Box)`
+  ${(props) => props.theme.breakpoints.up('sm')} {
+    display: flex;
+    justify-content: space-between;
+  }
+`
 const StyledSection = styled.section`
   margin-top: 24px;
 `
 const StyledInputLabel = styled(InputLabel)`
+  ${(props) => props.theme.breakpoints.down('sm')} {
+    margin-bottom: 16px;
+  }
+  display: flex;
+  justify-content: center;
   height: 100%;
   &:hover {
     cursor: pointer;
   }
-`
-const StyledBox = styled(Box)`
-  margin-bottom: 24px;
 `
 const StyledBoxHover = styled(Box)`
   transition: all 0.2s;
@@ -42,7 +74,10 @@ const StyledBoxHover = styled(Box)`
   }
 `
 const StyledBoxCalcWidth = styled(Box)`
-  width: calc(100% - 150px);
+  ${(props) => props.theme.breakpoints.up('sm')} {
+    width: calc(100% - 150px);
+    margin-bottom: 40px;
+  }
 `
 const StyledSpan = styled.span`
   font-size: 13px;
@@ -62,6 +97,7 @@ const StyledTextFieldService = styled(TextField)`
 const IndexPage: React.FC<Props> = (props) => {
   const classes = useStyles()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [position, setPosition] = useState(0)
   const [settingParams, setSettingParams] = useState({
     name: '',
     introduction: '',
@@ -81,39 +117,43 @@ const IndexPage: React.FC<Props> = (props) => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  // const nameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ name: event.target.value })
-  // }
-  // const changeIntroduction = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ introduction: event.target.value })
-  // }
+  const changePosition = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPosition(Number(event.target.value))
+  }
+  const update = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    console.log('update')
+  }
   return (
     <SettingLayout
       title="Kanon Code | プロフィール設定"
       authUser={props.authUser}
     >
       <StyledSection>
-        <Box display="flex" justifyContent="space-between">
+        <StyledBoxFlex>
           <StyledInputLabel htmlFor="avatar">
-            <TextField
-              id="avatar"
-              name="avatar"
-              type="file"
-              style={{ display: 'none' }}
-            />
-            <Box mb={1}>
-              <UserImgIcon
-                className={classes.size}
-                picture={userInfo.picture}
+            <div>
+              <TextField
+                id="avatar"
+                name="avatar"
+                type="file"
+                style={{ display: 'none' }}
               />
-            </Box>
-            <StyledBoxHover display="flex" alignItems="center">
-              <Box mr={1}>
-                <CachedRounded />
+              <Box>
+                <Box mb={1}>
+                  <UserImgIcon
+                    className={classes.size}
+                    picture={userInfo.picture}
+                  />
+                </Box>
+                <StyledBoxHover display="flex" alignItems="center">
+                  <Box mr={1}>
+                    <CachedRounded />
+                  </Box>
+                  <StyledSpan>アイコン変更</StyledSpan>
+                </StyledBoxHover>
               </Box>
-              <StyledSpan>アイコン変更</StyledSpan>
-            </StyledBoxHover>
+            </div>
           </StyledInputLabel>
           <StyledBoxCalcWidth>
             <div>
@@ -154,6 +194,29 @@ const IndexPage: React.FC<Props> = (props) => {
                 multiline
                 rows={6}
               />
+            </div>
+            <div>
+              <StyledTextField
+                id="position"
+                select
+                value={position}
+                label="ポジション"
+                fullWidth={true}
+                variant="outlined"
+                onChange={changePosition}
+                InputLabelProps={{
+                  shrink: true,
+                }}
+                SelectProps={{
+                  defaultValue: 0,
+                }}
+              >
+                {positions.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </StyledTextField>
             </div>
             <div>
               <Box mb={1.5} display="flex" alignItems="center">
@@ -267,8 +330,13 @@ const IndexPage: React.FC<Props> = (props) => {
                 }}
               />
             </div>
+            <Box textAlign="center">
+              <CustomSolidButton sizing="medium" onClick={update}>
+                更新する
+              </CustomSolidButton>
+            </Box>
           </StyledBoxCalcWidth>
-        </Box>
+        </StyledBoxFlex>
       </StyledSection>
     </SettingLayout>
   )
