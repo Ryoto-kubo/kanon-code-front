@@ -275,6 +275,9 @@ const IndexPage: React.FC<Props> = (props) => {
                 <StyledTextFieldService
                   id="githubName"
                   type="text"
+                  inputProps={{
+                    inputMode: 'url',
+                  }}
                   style={{ display: 'block' }}
                   value={settingParams.githubName}
                   placeholder="Github name"
@@ -294,6 +297,9 @@ const IndexPage: React.FC<Props> = (props) => {
                 <StyledTextFieldService
                   id="twitterName"
                   type="text"
+                  inputProps={{
+                    inputMode: 'url',
+                  }}
                   style={{ display: 'block' }}
                   value={settingParams.twitterName}
                   placeholder="Twitter name"
@@ -316,6 +322,9 @@ const IndexPage: React.FC<Props> = (props) => {
               <StyledTextField
                 id="webSite"
                 type="text"
+                inputProps={{
+                  inputMode: 'url',
+                }}
                 value={settingParams.webSite}
                 placeholder="https://example.com"
                 label="webサイト"
