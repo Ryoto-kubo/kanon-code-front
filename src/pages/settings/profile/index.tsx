@@ -74,9 +74,9 @@ const StyledBoxHover = styled(Box)`
   }
 `
 const StyledBoxCalcWidth = styled(Box)`
+  margin-bottom: 40px;
   ${(props) => props.theme.breakpoints.up('sm')} {
     width: calc(100% - 150px);
-    margin-bottom: 40px;
   }
 `
 const StyledSpan = styled.span`
@@ -240,12 +240,10 @@ const IndexPage: React.FC<Props> = (props) => {
                   open={open}
                   onClose={handleClose}
                 >
-                  <Box p={2}>
+                  <Box p={2} lineHeight={1.8} maxWidth={375}>
                     コードレビューを行った際に設定できる価格の基準です。
                     <br />
-                    500円に設定し、レビューを600文字かくと最大設定価格
-                    <br />
-                    は3,000円になります。
+                    500円に設定しレビューを600文字書くと、最大設定価格は3,000円になります。
                   </Box>
                 </Popover>
               </Box>
