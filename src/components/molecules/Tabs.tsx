@@ -59,6 +59,7 @@ export const SettingTabs: React.FC<Props> = (props) => {
     <StyledTabs
       value={props.value}
       onChange={props.onChange}
+      variant="scrollable"
       indicatorColor="primary"
       textColor="primary"
     >
