@@ -45,7 +45,7 @@ export const SettingLayout = ({
       <Toolbar />
       <StyledContainer>
         <StyledMain>
-          <Heading2 fontSize={24} marginBottom={1}>
+          <Heading2 fontSize={20} marginBottom={1}>
             アカウント設定
           </Heading2>
           <TabsHeader

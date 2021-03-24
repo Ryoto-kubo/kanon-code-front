@@ -241,7 +241,11 @@ const IndexPage: React.FC<Props> = (props) => {
                   onClose={handleClose}
                 >
                   <Box p={2}>
-                    コードレビューを行った際の金額の目安になります。
+                    コードレビューを行った際に設定できる価格の基準です。
+                    <br />
+                    500円に設定し、レビューを600文字かくと最大設定価格
+                    <br />
+                    は3,000円になります。
                   </Box>
                 </Popover>
               </Box>
