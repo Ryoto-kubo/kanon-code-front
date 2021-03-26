@@ -5,6 +5,11 @@ export const settingTabs = [
     href: '/settings/profile',
   },
   {
+    label: 'スキル',
+    value: '/settings/skil',
+    href: '/settings/skil',
+  },
+  {
     label: 'アカウント',
     value: '/settings/account',
     href: '/settings/account',
