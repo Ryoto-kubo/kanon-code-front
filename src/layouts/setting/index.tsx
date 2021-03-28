@@ -7,6 +7,7 @@ import { TabsHeader } from '@/components/organisms/TabsHeader'
 import { settingTabs } from '@/consts/setting-tabs'
 import { Toolbar } from '@material-ui/core'
 import { Container } from '@material-ui/core/'
+import Box from '@material-ui/core/Box'
 import { useRouter } from 'next/router'
 import React, { ReactNode, useState } from 'react'
 import styled from 'styled-components'
@@ -48,11 +49,13 @@ export const SettingLayout = ({
           <Heading2 fontSize={20} marginBottom={1}>
             アカウント設定
           </Heading2>
-          <TabsHeader
-            value={value}
-            onChange={changeTab}
-            tabLists={settingTabs}
-          />
+          <Box mb={3}>
+            <TabsHeader
+              value={value}
+              onChange={changeTab}
+              tabLists={settingTabs}
+            />
+          </Box>
           {children}
         </StyledMain>
       </StyledContainer>

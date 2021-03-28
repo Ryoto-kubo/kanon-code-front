@@ -20,9 +20,6 @@ const StyledBoxFlex = styled(Box)`
     justify-content: space-between;
   }
 `
-const StyledSection = styled.section`
-  margin-top: 24px;
-`
 const StyledBoxCalcWidth = styled(Box)`
   margin-bottom: 40px;
   ${(props) => props.theme.breakpoints.up('sm')} {
@@ -91,7 +88,7 @@ const IndexPage: React.FC<Props> = (props) => {
       title="Kanon Code | プロフィール設定"
       authUser={props.authUser}
     >
-      <StyledSection>
+      <section>
         <StyledBoxFlex>
           <FileExChange htmlFor="avatar" picture={userInfo.picture} />
           <StyledBoxCalcWidth>
@@ -117,7 +114,7 @@ const IndexPage: React.FC<Props> = (props) => {
             </Box>
           </StyledBoxCalcWidth>
         </StyledBoxFlex>
-      </StyledSection>
+      </section>
     </SettingLayout>
   )
 }

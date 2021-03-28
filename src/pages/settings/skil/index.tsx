@@ -18,9 +18,6 @@ type TypeParams = {
   yearsExperience: number
 }[]
 
-const StyledSection = styled.section`
-  margin-top: 24px;
-`
 const StyledBoxCalcWidth = styled(Box)`
   margin-bottom: 40px;
   ${(props) => props.theme.breakpoints.up('sm')} {
@@ -109,7 +106,7 @@ const IndexPage: React.FC<Props> = (props) => {
 
   return (
     <SettingLayout title="Kanon Code | スキル設定" authUser={props.authUser}>
-      <StyledSection>
+      <section>
         <Box>
           <StyledBoxCalcWidth>
             <div>{renderTextFields()}</div>
@@ -120,7 +117,7 @@ const IndexPage: React.FC<Props> = (props) => {
             </Box>
           </StyledBoxCalcWidth>
         </Box>
-      </StyledSection>
+      </section>
     </SettingLayout>
   )
 }
