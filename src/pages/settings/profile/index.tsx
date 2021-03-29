@@ -21,13 +21,13 @@ const StyledBoxFlex = styled(Box)`
   }
 `;
 const StyledBoxCalcWidth = styled(Box)`
-  margin-bottom: 40px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     width: calc(100% - 150px);
   }
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
+  if (!props.authUser) return <></>;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [settingParams, setSettingParams] = useState({
     name: "",
@@ -91,7 +91,7 @@ const IndexPage: React.FC<Props> = (props) => {
       <section>
         <StyledBoxFlex>
           <FileExChange htmlFor="avatar" picture={userInfo.picture} />
-          <StyledBoxCalcWidth>
+          <StyledBoxCalcWidth mb={5}>
             <SettingProfileFields
               settingParams={settingParams}
               renderOptions={renderOptions()}

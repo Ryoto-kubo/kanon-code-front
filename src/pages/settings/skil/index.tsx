@@ -19,7 +19,6 @@ type TypeParams = {
 }[];
 
 const StyledBoxCalcWidth = styled(Box)`
-  margin-bottom: 40px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     // width: calc(100% - 150px);
   }
@@ -110,7 +109,7 @@ const IndexPage: React.FC<Props> = (props) => {
     <SettingLayout title="Kanon Code | スキル設定" authUser={props.authUser}>
       <section>
         <Box>
-          <StyledBoxCalcWidth>
+          <StyledBoxCalcWidth mb={5}>
             <div>{renderTextFields()}</div>
             <Box textAlign="center">
               <CustomSolidButton sizing="medium" onClick={update}>

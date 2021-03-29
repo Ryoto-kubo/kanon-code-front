@@ -1,4 +1,5 @@
 import { Heading3 } from "@/components/atoms/Heading3";
+import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { SettingLayout } from "@/layouts/setting";
 import theme from "@/styles/theme";
 import { CognitoUser } from "@aws-amplify/auth";
@@ -19,7 +20,8 @@ type Props = {
 const StyledBox = styled(Box)`
   width: 100%;
   margin: auto;
-  max-width: 500px;
+  margin-bottom: 32px;
+  max-width: 600px;
   padding: 16px;
   background: ${fade(theme.palette.primary.main, 0.1)};
 `;
@@ -34,10 +36,13 @@ const IndexPage: React.FC<Props> = (props) => {
   const stripe = loadStripe(
     "pk_test_51Hhw4xJuQS0ZmhQxoAin6ozbLtE2TDYKYp68V528uhGVvlrJBGlWUWN78ux7ux5TmFJpfE9tRUDFsN5rJfuTj2ct00uXjdO5d6"
   );
+  const update = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+  };
 
   return (
     <SettingLayout title="Kanon Code | カード情報" authUser={props.authUser}>
-      <Box textAlign="center">
+      <Box textAlign="center" mb={5}>
         <Box mb={1}>
           <Heading3 fontSize={18} marginBottom={0}>
             支払いカードの登録
@@ -68,16 +73,21 @@ const IndexPage: React.FC<Props> = (props) => {
           </StyledBoxBgColorWhite>
           <List disablePadding>
             <ListItem disableGutters dense>
-              カード情報をStripeにのみ送信・保存されます
+              ・カード情報をStripeにのみ送信・保存されます
             </ListItem>
             <ListItem disableGutters dense>
-              レビュワーのユーザー名を知ることができます
+              ・レビュワーのユーザー名を知ることができます
             </ListItem>
             <ListItem disableGutters dense>
-              お支払いに関するQ＆A
+              ・お支払いに関するQ＆A
             </ListItem>
           </List>
         </StyledBox>
+        <Box textAlign="center">
+          <CustomSolidButton sizing="medium" onClick={update}>
+            登録する
+          </CustomSolidButton>
+        </Box>
       </Box>
     </SettingLayout>
   );
