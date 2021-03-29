@@ -14,6 +14,7 @@ type Props = {
 };
 
 const StyledBoxFlex = styled(Box)`
+  margin-bottom: 16px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     display: flex;
     justify-content: space-between;
@@ -45,7 +46,7 @@ const IndexPage: React.FC<Props> = (props) => {
       title="Kanon Code | アカウント設定"
       authUser={props.authUser}
     >
-      <Box mb={2}>
+      <Box mb={5}>
         <Box mb={2}>
           <Box mb={1}>
             <Box mb={1}>

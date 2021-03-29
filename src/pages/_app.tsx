@@ -16,15 +16,6 @@ import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from "styled-components";
 
-interface UserAttributes {
-  sub: string;
-  email: string;
-  username: string;
-}
-interface CognitoUserProps extends CognitoUser {
-  attributes: UserAttributes;
-}
-
 const StyledWrapper = styled.div`
   background: #ffffff;
   position: relative;
@@ -38,13 +29,13 @@ const StyledWrapper = styled.div`
 
 const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
-  const [user, setUser] = useState<CognitoUserProps | null>(null);
+  const [user, setUser] = useState<CognitoUser | null>(null);
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
-    (async function () {
+    (async () => {
       try {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         setUser(authenticatedUser);
