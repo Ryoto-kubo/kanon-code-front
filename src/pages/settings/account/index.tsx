@@ -27,7 +27,6 @@ const StyledBoxParagraf = styled(Box)`
   }
 `;
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
   const [state, setState] = useState({
     isOpenedReview: false,
     isReviewRequest: false,

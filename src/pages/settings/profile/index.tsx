@@ -28,7 +28,6 @@ const StyledBoxCalcWidth = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [settingParams, setSettingParams] = useState({
     name: "",
