@@ -60,44 +60,23 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   }, []);
   return (
     <>
-      {user && (
-        <StylesProvider injectFirst>
-          <MaterialUIThemeProvider theme={theme}>
-            <StyledComponentsThemeProvider theme={theme}>
-              <Head>
-                <meta
-                  name="viewport"
-                  content="width=device-width,height=device-height"
-                  key="viewport"
-                />
-              </Head>
-              <CssBaseline />
-              <StyledWrapper>
-                <Component {...pageProps} authUser={user} />
-              </StyledWrapper>
-            </StyledComponentsThemeProvider>
-          </MaterialUIThemeProvider>
-        </StylesProvider>
-      )}
-      {!user && (
-        <StylesProvider injectFirst>
-          <MaterialUIThemeProvider theme={theme}>
-            <StyledComponentsThemeProvider theme={theme}>
-              <Head>
-                <meta
-                  name="viewport"
-                  content="width=device-width,height=device-height"
-                  key="viewport"
-                />
-              </Head>
-              <CssBaseline />
-              <StyledWrapper>
-                <Component {...pageProps} />
-              </StyledWrapper>
-            </StyledComponentsThemeProvider>
-          </MaterialUIThemeProvider>
-        </StylesProvider>
-      )}
+      <StylesProvider injectFirst>
+        <MaterialUIThemeProvider theme={theme}>
+          <StyledComponentsThemeProvider theme={theme}>
+            <Head>
+              <meta
+                name="viewport"
+                content="width=device-width,height=device-height"
+                key="viewport"
+              />
+            </Head>
+            <CssBaseline />
+            <StyledWrapper>
+              <Component {...pageProps} authUser={user} />
+            </StyledWrapper>
+          </StyledComponentsThemeProvider>
+        </MaterialUIThemeProvider>
+      </StylesProvider>
     </>
   );
 };
