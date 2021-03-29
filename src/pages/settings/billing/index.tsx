@@ -33,9 +33,9 @@ const StyledBoxBgColorWhite = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  const stripe = loadStripe(
-    "pk_test_51Hhw4xJuQS0ZmhQxoAin6ozbLtE2TDYKYp68V528uhGVvlrJBGlWUWN78ux7ux5TmFJpfE9tRUDFsN5rJfuTj2ct00uXjdO5d6"
-  );
+  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
+  const stripe = loadStripe(stripeKey);
+
   const update = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
   };
@@ -55,7 +55,6 @@ const IndexPage: React.FC<Props> = (props) => {
                 options={{
                   style: {
                     base: {
-                      padding: "16px",
                       fontSize: "16px",
                       color: "#424770",
                       "::placeholder": {
