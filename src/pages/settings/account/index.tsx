@@ -1,43 +1,43 @@
-import { Heading3 } from '@/components/atoms/Heading3'
-import { LinkGithubButton } from '@/components/molecules/LinkGithubButton'
-import { SettingLayout } from '@/layouts/setting'
-import Box from '@material-ui/core/Box'
-import Checkbox from '@material-ui/core/Checkbox'
-import Divider from '@material-ui/core/Divider'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import { Heading3 } from "@/components/atoms/Heading3";
+import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
+import { SettingLayout } from "@/layouts/setting";
+import Box from "@material-ui/core/Box";
+import Checkbox from "@material-ui/core/Checkbox";
+import Divider from "@material-ui/core/Divider";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import React, { useState } from "react";
+import styled from "styled-components";
 
 type Props = {
-  title: string
-  authUser: any
-}
+  title: string;
+  authUser: any;
+};
 
 const StyledBoxFlex = styled(Box)`
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-`
+`;
 const StyledBoxParagraf = styled(Box)`
   margin-bottom: 8px;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     margin-bottom: 0px;
   }
-`
+`;
 const IndexPage: React.FC<Props> = (props) => {
   const [state, setState] = useState({
     isOpenedReview: false,
     isReviewRequest: false,
-  })
+  });
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setState({ ...state, [event.target.name]: event.target.checked })
-  }
+    setState({ ...state, [event.target.name]: event.target.checked });
+  };
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-  }
-  const googleEmail = props.authUser.signInUserSession.idToken.payload.email
+    console.log(event);
+  };
+  const googleEmail = props.authUser.signInUserSession.idToken.payload.email;
 
   return (
     <SettingLayout
@@ -101,7 +101,7 @@ const IndexPage: React.FC<Props> = (props) => {
         </Box>
       </Box>
     </SettingLayout>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;
