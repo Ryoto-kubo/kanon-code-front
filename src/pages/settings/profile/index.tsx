@@ -1,346 +1,113 @@
-import { CustomSolidButton } from '@/components/atoms/SolidButton'
-import { UserImgIcon } from '@/components/atoms/UserImgIcon'
-import { HelpButton } from '@/components/molecules/HelpButton'
-import { SettingLayout } from '@/layouts/setting'
-import theme from '@/styles/theme'
-import Box from '@material-ui/core/Box'
-import InputLabel from '@material-ui/core/InputLabel'
-import MenuItem from '@material-ui/core/MenuItem'
-import Popover from '@material-ui/core/Popover'
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import CachedRounded from '@material-ui/icons/CachedRounded'
+import { CustomSolidButton } from "@/components/atoms/SolidButton";
+import { FileExChange } from "@/components/molecules/FileExChange";
+import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
+import { positions } from "@/consts/select-options";
+import { SettingLayout } from "@/layouts/setting";
+import Box from "@material-ui/core/Box";
+import MenuItem from "@material-ui/core/MenuItem";
 // import { CognitoUser } from '@aws-amplify/auth'
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import React, { useState } from "react";
+import styled from "styled-components";
 
 type Props = {
-  title: string
-  authUser: any
-}
+  title: string;
+  authUser: any;
+};
 
-const positions = [
-  {
-    value: 0,
-    label: '未選択',
-  },
-  {
-    value: 1,
-    label: 'フルスタックエンジニア',
-  },
-  {
-    value: 2,
-    label: 'フロントエンドエンジニア',
-  },
-  {
-    value: 3,
-    label: 'サーバーサイドエンジニア',
-  },
-  {
-    value: 4,
-    label: 'インフラエンジニア',
-  },
-]
-const useStyles = makeStyles(() => ({
-  size: {
-    width: '110px',
-    height: '110px',
-  },
-}))
 const StyledBoxFlex = styled(Box)`
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     display: flex;
     justify-content: space-between;
   }
-`
-const StyledSection = styled.section`
-  margin-top: 24px;
-`
-const StyledInputLabel = styled(InputLabel)`
-  ${(props) => props.theme.breakpoints.down('sm')} {
-    margin-bottom: 16px;
-  }
-  display: flex;
-  justify-content: center;
-  height: 100%;
-  &:hover {
-    cursor: pointer;
-  }
-`
-const StyledBoxHover = styled(Box)`
-  transition: all 0.2s;
-  &:hover {
-    color: ${theme.palette.primary.main};
-  }
-`
+`;
 const StyledBoxCalcWidth = styled(Box)`
   margin-bottom: 40px;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     width: calc(100% - 150px);
   }
-`
-const StyledSpan = styled.span`
-  font-size: 13px;
-  font-weight: bold;
-  &:hover {
-    color: ${theme.palette.primary.main};
-  }
-`
-const StyledTextField = styled(TextField)`
-  margin-bottom: 32px;
-`
-const StyledTextFieldService = styled(TextField)`
-  margin-bottom: 32px;
-  width: 47%;
-`
+`;
 
 const IndexPage: React.FC<Props> = (props) => {
-  const classes = useStyles()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [position, setPosition] = useState(0)
+  if (!props.authUser) return <></>;
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [settingParams, setSettingParams] = useState({
-    name: '',
-    introduction: '',
-    amount: '',
-    githubName: '',
-    twitterName: '',
-    webSite: '',
-  })
+    name: "",
+    introduction: "",
+    amount: 0,
+    position: 0,
+    githubName: "",
+    twitterName: "",
+    webSite: "",
+  });
   const userInfo =
     props.authUser !== null
       ? props.authUser.signInUserSession.idToken.payload
-      : 'null'
-  const open = Boolean(anchorEl)
+      : "null";
+  const open = Boolean(anchorEl);
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
-    setAnchorEl(null)
-  }
-  const changePosition = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPosition(Number(event.target.value))
-  }
+    setAnchorEl(null);
+  };
+  const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingParams({ ...settingParams, name: e.target.value });
+  };
+  const changeIntroduction = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingParams({ ...settingParams, introduction: e.target.value });
+  };
+  const changePosition = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingParams({ ...settingParams, position: Number(e.target.value) });
+  };
+  const changeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingParams({ ...settingParams, amount: Number(e.target.value) });
+  };
+  const changeGithubName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingParams({ ...settingParams, githubName: e.target.value });
+  };
+  const changeTwitterName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingParams({ ...settingParams, twitterName: e.target.value });
+  };
+  const changeWebSite = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSettingParams({ ...settingParams, webSite: e.target.value });
+  };
   const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    console.log('update')
-  }
+    event.preventDefault();
+    console.log(settingParams);
+  };
+
+  const renderOptions = (): JSX.Element[] => {
+    return positions.map((option) => (
+      <MenuItem key={option.value} value={option.value}>
+        {option.label}
+      </MenuItem>
+    ));
+  };
+
   return (
     <SettingLayout
       title="Kanon Code | プロフィール設定"
       authUser={props.authUser}
     >
-      <StyledSection>
+      <section>
         <StyledBoxFlex>
-          <StyledInputLabel htmlFor="avatar">
-            <div>
-              <TextField
-                id="avatar"
-                name="avatar"
-                type="file"
-                style={{ display: 'none' }}
-              />
-              <Box>
-                <Box mb={1}>
-                  <UserImgIcon
-                    className={classes.size}
-                    picture={userInfo.picture}
-                  />
-                </Box>
-                <StyledBoxHover display="flex" alignItems="center">
-                  <Box mr={1}>
-                    <CachedRounded />
-                  </Box>
-                  <StyledSpan>アイコン変更</StyledSpan>
-                </StyledBoxHover>
-              </Box>
-            </div>
-          </StyledInputLabel>
+          <FileExChange htmlFor="avatar" picture={userInfo.picture} />
           <StyledBoxCalcWidth>
-            <div>
-              <StyledTextField
-                id="name"
-                type="text"
-                value={settingParams.name}
-                label="名前"
-                fullWidth={true}
-                placeholder="名前"
-                variant="outlined"
-                onChange={(e) => {
-                  setSettingParams({ ...settingParams, name: e.target.value })
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-            <div>
-              <StyledTextField
-                id="introduction"
-                type="text"
-                value={settingParams.introduction}
-                label="紹介文"
-                fullWidth={true}
-                placeholder="紹介文を入力してください"
-                variant="outlined"
-                onChange={(e) => {
-                  setSettingParams({
-                    ...settingParams,
-                    introduction: e.target.value,
-                  })
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                multiline
-                rows={6}
-              />
-            </div>
-            <div>
-              <StyledTextField
-                id="position"
-                select
-                value={position}
-                label="ポジション"
-                fullWidth={true}
-                variant="outlined"
-                onChange={changePosition}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-                SelectProps={{
-                  defaultValue: 0,
-                }}
-              >
-                {positions.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
-              </StyledTextField>
-            </div>
-            <div>
-              <Box mb={1.5} display="flex" alignItems="center">
-                <Box component="span" mr={0.5}>
-                  100文字あたりの設定金額とは
-                </Box>
-                <HelpButton func={handleMenu} />
-                <Popover
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  getContentAnchorEl={null}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'center',
-                  }}
-                  open={open}
-                  onClose={handleClose}
-                >
-                  <Box p={2} lineHeight={1.8} maxWidth={375}>
-                    コードレビューを行った際に設定できる価格の基準です。
-                    <br />
-                    500円に設定しレビューを600文字書くと、最大設定価格は3,000円になります。
-                  </Box>
-                </Popover>
-              </Box>
-              <StyledTextField
-                id="amount"
-                type="text"
-                inputProps={{
-                  inputMode: 'numeric',
-                  pattern: '[0-9]*',
-                }}
-                value={settingParams.amount}
-                label="100文字あたりの設定金額（円）"
-                fullWidth={true}
-                placeholder="100"
-                variant="outlined"
-                onChange={(e) => {
-                  setSettingParams({
-                    ...settingParams,
-                    amount: e.target.value,
-                  })
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
-            <div>
-              <Box display="flex" justifyContent="space-between">
-                <StyledTextFieldService
-                  id="githubName"
-                  type="text"
-                  inputProps={{
-                    inputMode: 'url',
-                  }}
-                  style={{ display: 'block' }}
-                  value={settingParams.githubName}
-                  placeholder="Github name"
-                  label="Githubユーザー名"
-                  fullWidth={true}
-                  variant="outlined"
-                  onChange={(e) => {
-                    setSettingParams({
-                      ...settingParams,
-                      githubName: e.target.value,
-                    })
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-                <StyledTextFieldService
-                  id="twitterName"
-                  type="text"
-                  inputProps={{
-                    inputMode: 'url',
-                  }}
-                  style={{ display: 'block' }}
-                  value={settingParams.twitterName}
-                  placeholder="Twitter name"
-                  label="Twitterユーザー名"
-                  fullWidth={true}
-                  variant="outlined"
-                  onChange={(e) => {
-                    setSettingParams({
-                      ...settingParams,
-                      twitterName: e.target.value,
-                    })
-                  }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                />
-              </Box>
-            </div>
-            <div>
-              <StyledTextField
-                id="webSite"
-                type="text"
-                inputProps={{
-                  inputMode: 'url',
-                }}
-                value={settingParams.webSite}
-                placeholder="https://example.com"
-                label="webサイト"
-                fullWidth={true}
-                variant="outlined"
-                onChange={(e) => {
-                  setSettingParams({
-                    ...settingParams,
-                    webSite: e.target.value,
-                  })
-                }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
-            </div>
+            <SettingProfileFields
+              settingParams={settingParams}
+              renderOptions={renderOptions()}
+              onChangeName={changeName}
+              onChangeIntroduction={changeIntroduction}
+              onChangePosition={changePosition}
+              onChangeAmount={changeAmount}
+              onChangeGithubName={changeGithubName}
+              onChangeTwitterName={changeTwitterName}
+              onChangeWebSite={changeWebSite}
+              handleMenu={handleMenu}
+              handleClose={handleClose}
+              anchorEl={anchorEl}
+              open={open}
+            />
             <Box textAlign="center">
               <CustomSolidButton sizing="medium" onClick={update}>
                 更新する
@@ -348,9 +115,9 @@ const IndexPage: React.FC<Props> = (props) => {
             </Box>
           </StyledBoxCalcWidth>
         </StyledBoxFlex>
-      </StyledSection>
+      </section>
     </SettingLayout>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;
