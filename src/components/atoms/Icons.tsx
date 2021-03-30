@@ -1,58 +1,58 @@
-import CakePhpSvg from '../../assets/logo/cakephp.svg'
-import JavaScriptSvg from '../../assets/logo/javascript.svg'
-import LaravelSvg from '../../assets/logo/laravel.svg'
-import NextSvg from '../../assets/logo/next.svg'
-import NodeSvg from '../../assets/logo/nodejs-icon.svg'
-import NuxtSvg from '../../assets/logo/nuxt.svg'
-import PhpSvg from '../../assets/logo/php.svg'
-import RailsSvg from '../../assets/logo/rails.svg'
-import ReactSvg from '../../assets/logo/react.svg'
-import RubySvg from '../../assets/logo/ruby.svg'
-import VueSvg from '../../assets/logo/vue.svg'
+import { IconCakePhp } from "@/components/atoms/IconCakePhp";
+import { IconJavaScript } from "@/components/atoms/IconJavaScript";
+import { IconLaravel } from "@/components/atoms/IconLaravel";
+import { IconNext } from "@/components/atoms/IconNext";
+import { IconNode } from "@/components/atoms/IconNode";
+import { IconNuxt } from "@/components/atoms/IconNuxt";
+import { IconPhp } from "@/components/atoms/IconPhp";
+import { IconRails } from "@/components/atoms/IconRails";
+import { IconReact } from "@/components/atoms/IconReact";
+import { IconRuby } from "@/components/atoms/IconRuby";
+import { IconVue } from "@/components/atoms/IconVue";
 
 export const icons = [
   {
-    dom: <JavaScriptSvg width={40} height={40} />,
-    text: 'JavaScript',
+    dom: <IconJavaScript width={40} height={40} />,
+    text: "JavaScript",
   },
   {
-    dom: <NodeSvg width={40} height={40} />,
-    text: 'Node.js',
+    dom: <IconNode width={40} height={40} />,
+    text: "Node.js",
   },
   {
-    dom: <VueSvg width={40} height={40} />,
-    text: 'Vue.js',
+    dom: <IconVue width={40} height={40} />,
+    text: "Vue.js",
   },
   {
-    dom: <ReactSvg width={40} height={40} />,
-    text: 'React.js',
+    dom: <IconReact width={40} height={40} />,
+    text: "React.js",
   },
   {
-    dom: <NuxtSvg width={40} height={40} />,
-    text: 'Nuxt.js',
+    dom: <IconNuxt width={40} height={40} />,
+    text: "Nuxt.js",
   },
   {
-    dom: <NextSvg width={40} height={40} />,
-    text: 'Next.js',
+    dom: <IconNext width={40} height={40} />,
+    text: "Next.js",
   },
   {
-    dom: <PhpSvg width={40} height={40} />,
-    text: 'php',
+    dom: <IconPhp width={40} height={40} />,
+    text: "php",
   },
   {
-    dom: <CakePhpSvg width={40} height={40} />,
-    text: 'cakephp',
+    dom: <IconCakePhp width={40} height={40} />,
+    text: "cakephp",
   },
   {
-    dom: <LaravelSvg width={40} height={40} />,
-    text: 'Laravel',
+    dom: <IconLaravel width={40} height={40} />,
+    text: "Laravel",
   },
   {
-    dom: <RubySvg width={40} height={40} />,
-    text: 'Ruby',
+    dom: <IconRuby width={40} height={40} />,
+    text: "Ruby",
   },
   {
-    dom: <RailsSvg width={40} height={40} />,
-    text: 'rails',
+    dom: <IconRails width={40} height={40} />,
+    text: "rails",
   },
-]
+];

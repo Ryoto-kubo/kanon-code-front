@@ -40,11 +40,13 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         setUser(authenticatedUser);
         if (router.pathname === "/auth/init") {
-          location.href = "/";
+          // location.href = "/";
+          router.push("/");
         }
       } catch {
         if (router.pathname === "/" || router.pathname === "/signin") return;
-        location.href = "/";
+        // location.href = "/";
+        router.push("/");
         setUser(null);
       }
     })();
