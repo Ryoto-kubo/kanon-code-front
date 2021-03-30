@@ -1,4 +1,5 @@
 import { Heading3 } from "@/components/atoms/Heading3";
+import { PostHeader } from "@/components/molecules/PostHeader";
 import { SettingLayout } from "@/layouts/setting";
 import theme from "@/styles/theme";
 import { CognitoUser } from "@aws-amplify/auth";
@@ -22,6 +23,9 @@ const StyledBox = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
+  const isPayments = true;
+  // const getShowProgramingIcon = (key: string) => {};
+
   return (
     <SettingLayout title="Kanon Code | 購入履歴" authUser={props.authUser}>
       <Box mb={5}>
@@ -30,7 +34,19 @@ const IndexPage: React.FC<Props> = (props) => {
             購入したレビュー
           </Heading3>
         </Box>
-        <StyledBox>購入したレビューはありません。</StyledBox>
+        {!isPayments && <StyledBox>購入したレビューはありません。</StyledBox>}
+        {isPayments && (
+          <PostHeader
+            title="reactのatomic designのレビューをお願いします。"
+            tagArray={[
+              "atomicDesi",
+              "atomicDesi",
+              "atomicDesi",
+              "atomicDesi",
+              "atomicDesi",
+            ]}
+          />
+        )}
       </Box>
     </SettingLayout>
   );
