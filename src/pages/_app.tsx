@@ -11,7 +11,7 @@ import { Auth } from "aws-amplify";
 import "modern-css-reset/dist/reset.min.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from "styled-components";
@@ -30,32 +30,42 @@ const StyledWrapper = styled.div`
 const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
   const [user, setUser] = useState<CognitoUser | null>(null);
+  const [isFetch, setisFetch] = useState<boolean>(false);
   // useEffect(() => {
   //   const jssStyles = document.querySelector("#jss-server-side");
   //   if (jssStyles && jssStyles.parentNode) {
   //     jssStyles.parentNode.removeChild(jssStyles);
   //   }
   // }, []);
-  useLayoutEffect(() => {
+  useEffect(() => {
     // useLayoutEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
     (async () => {
+      console.log("ok");
+
       try {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         setUser(authenticatedUser);
+        setisFetch(true);
         if (router.pathname === "/auth/init") {
           router.push("/");
         }
       } catch {
+        console.log("err");
+
+        setUser(null);
+        setisFetch(true);
         if (router.pathname === "/" || router.pathname === "/signin") return;
         router.push("/");
-        setUser(null);
       }
     })();
   }, []);
+
+  console.log(user);
+  if (!isFetch) return <></>;
   return (
     <>
       <StylesProvider injectFirst>
