@@ -44,8 +44,6 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
       jssStyles.parentNode.removeChild(jssStyles);
     }
     (async () => {
-      console.log("ok");
-
       try {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         setUser(authenticatedUser);
@@ -54,8 +52,6 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
           router.push("/");
         }
       } catch {
-        console.log("err");
-
         setUser(null);
         setisFetch(true);
         if (router.pathname === "/" || router.pathname === "/signin") return;
@@ -64,7 +60,6 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
     })();
   }, []);
 
-  console.log(user);
   if (!isFetch) return <></>;
   return (
     <>

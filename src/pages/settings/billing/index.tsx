@@ -43,7 +43,7 @@ const IndexPage: React.FC<Props> = (props) => {
   return (
     <SettingLayout title="Kanon Code | カード情報" authUser={props.authUser}>
       <Box textAlign="center" mb={5}>
-        <Box mb={1}>
+        <Box mb={3}>
           <Heading3 fontSize={18} marginBottom={0}>
             支払いカードの登録
           </Heading3>
