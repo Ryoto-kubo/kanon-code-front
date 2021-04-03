@@ -6,15 +6,15 @@ export const paymentDatas = [
     date: "あと3日",
   },
   {
-    title: "pythonのオブジェクト指向設計について教えてください",
-    tagArray: ["python", "オブジェクト指向", "設計"],
-    iconKey: "python",
+    title: "laravelのオブジェクト指向設計について教えてください",
+    tagArray: ["laravel", "オブジェクト指向", "設計"],
+    iconKey: "laravel",
     date: "あと3日",
   },
   {
-    title: "vuexの使い方を教えてください",
-    tagArray: ["vue", "vuex"],
-    iconKey: "vue",
+    title: "node.jsの使い方を教えてください",
+    tagArray: ["node.js", "node"],
+    iconKey: "node.js",
     date: "あと3日",
   },
 ];
