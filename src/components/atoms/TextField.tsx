@@ -1,27 +1,28 @@
-import TextField from '@material-ui/core/TextField'
-import React from 'react'
+import TextField from "@material-ui/core/TextField";
+import React from "react";
 
 type Props = {
-  id: string
-  type: string
-  value: string | number
-  label: string
-  placeholder: string
-  rows: number
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  id: string;
+  type: string;
+  value: string | number;
+  label: string;
+  placeholder: string;
+  rows: number;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
   inputMode?:
-    | 'text'
-    | 'none'
-    | 'tel'
-    | 'url'
-    | 'email'
-    | 'numeric'
-    | 'decimal'
-    | 'search'
-    | undefined
-  multiline?: boolean
-  style?: object
-}
+    | "text"
+    | "none"
+    | "tel"
+    | "url"
+    | "email"
+    | "numeric"
+    | "decimal"
+    | "search"
+    | undefined;
+  multiline?: boolean;
+  style?: object;
+  error?: boolean;
+};
 export const BaseTextField: React.FC<Props> = (props) => {
   return (
     <TextField
@@ -42,6 +43,7 @@ export const BaseTextField: React.FC<Props> = (props) => {
       onChange={props.onChange}
       multiline={props.multiline}
       rows={props.rows}
+      error={props.error}
     />
-  )
-}
+  );
+};
