@@ -28,7 +28,7 @@ const StyledBox = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  const isPayments = false;
+  const isPayments = true;
   const getProgramingIcon = (iconKey: string) => {
     switch (iconKey) {
       case "vue.js":
