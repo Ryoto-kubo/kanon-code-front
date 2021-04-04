@@ -1,13 +1,13 @@
-import { KanonCodeLogo } from "@/components/atoms/Logo";
-import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
-import { LoggedHeaderParts } from "@/components/organisms/LoggedHeaderParts";
-import { Box } from "@material-ui/core/";
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import { LinkWrapper } from '@/components/atoms/Link'
+import { KanonCodeLogo } from '@/components/atoms/Logo'
+import { CustomStickyAppBar } from '@/components/atoms/StickyAppBar'
+import { LoggedHeaderParts } from '@/components/organisms/LoggedHeaderParts'
+import { Box } from '@material-ui/core/'
+import React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  authUser: any;
+  authUser: any
 }
 
 const StyledBox = styled(Box)`
@@ -15,21 +15,20 @@ const StyledBox = styled(Box)`
   max-width: 1280px;
   width: 100%;
   margin: auto;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     padding: 0 24px;
   }
-`;
+`
 
 export const TheLoggedHeader: React.FC<Props> = (props) => {
-  console.log(props.authUser);
-  const userInfo = props.authUser.signInUserSession.idToken.payload;
+  const userInfo = props.authUser.signInUserSession.idToken.payload
   const formFunc = (e: React.FormEvent) => {
-    console.log("enterを押した検索");
-    e.preventDefault();
-  };
+    console.log('enterを押した検索')
+    e.preventDefault()
+  }
   const func = () => {
-    console.log("iconを押した検索");
-  };
+    console.log('iconを押した検索')
+  }
 
   return (
     <CustomStickyAppBar>
@@ -38,11 +37,9 @@ export const TheLoggedHeader: React.FC<Props> = (props) => {
         alignItems="center"
         justifyContent="space-between"
       >
-        <Link href="/">
-          <a>
-            <KanonCodeLogo />
-          </a>
-        </Link>
+        <LinkWrapper href="/">
+          <KanonCodeLogo />
+        </LinkWrapper>
         <Box display="flex" alignItems="center">
           <LoggedHeaderParts
             picture={userInfo.picture}
@@ -52,5 +49,5 @@ export const TheLoggedHeader: React.FC<Props> = (props) => {
         </Box>
       </StyledBox>
     </CustomStickyAppBar>
-  );
-};
+  )
+}

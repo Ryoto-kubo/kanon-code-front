@@ -26,10 +26,11 @@ export function useRequireLogin(router: Router): CognitoUserProps | null {
       } catch {
         if (router.pathname === "/" || router.pathname === "/signin") return;
         location.href = "/";
+        setUser(null);
         console.log("The user isn't signed in");
       }
     })();
-  }, [router.pathname]);
+  }, []);
 
   return user;
 }

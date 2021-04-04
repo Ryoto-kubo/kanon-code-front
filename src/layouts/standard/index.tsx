@@ -9,7 +9,7 @@ import styled from "styled-components";
 type Props = {
   children: ReactNode;
   title: string;
-  authUser: any;
+  authUser?: any;
 };
 
 const StyledMain = styled.main`
@@ -21,13 +21,11 @@ const Layout = ({
   title = "This is the default title",
   authUser,
 }: Props) => {
-  // console.log(authUser, "authUser");
-
   return (
     <>
       <CommonHead title={title} />
       {authUser && <TheLoggedHeader authUser={authUser} />}
-      {authUser === null && <TheStndardHeader />}
+      {!authUser && <TheStndardHeader />}
       <Toolbar />
       <StyledMain>{children}</StyledMain>
       <TheFooter />

@@ -1,56 +1,64 @@
-import { SolidLink } from "@/components/atoms/SolidLink";
-import { NotificationsButton } from "@/components/molecules/NotificationsButton";
-import { SearchButton } from "@/components/molecules/SearchButton";
-import { UserImageButton } from "@/components/molecules/UserImageButton";
-import theme from "@/styles/theme";
-import Hidden from "@material-ui/core/Hidden";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
-import { Auth } from "aws-amplify";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { SolidLink } from '@/components/atoms/SolidLink'
+import { NotificationsButton } from '@/components/molecules/NotificationsButton'
+import { SearchLink } from '@/components/molecules/SearchLink'
+import { UserImageButton } from '@/components/molecules/UserImageButton'
+import Hidden from '@material-ui/core/Hidden'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import Menu from '@material-ui/core/Menu'
+import MenuItem from '@material-ui/core/MenuItem'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
+import { Auth } from 'aws-amplify'
+import { useRouter } from 'next/router'
+import React, { useState } from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  picture: string;
-  func: React.MouseEventHandler;
-  formFunc: React.FormEventHandler;
+  picture: string
+  func: React.MouseEventHandler
+  formFunc: React.FormEventHandler
 }
 
 const StyledUseMr = styled.span`
+  display: inherit;
   &:not(:last-child) {
     margin-right: 24px;
   }
-`;
+`
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
-  // color: ${theme.palette.primary.main};
-`;
+`
 
 export const LoggedHeaderParts: React.FC<Props> = (props) => {
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
+  const router = useRouter()
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const open = Boolean(anchorEl)
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
+
+  const toSetting = () => {
+    router.push('/settings/profile')
+  }
+
   const signOut = async () => {
     try {
-      const result = await Auth.signOut();
-      console.log(result);
+      const result = await Auth.signOut()
+      console.log(result)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
+
   return (
     <>
       <StyledUseMr>
-        <SearchButton disableRipple={true} func={props.func} />
+        <SearchLink />
       </StyledUseMr>
       <StyledUseMr>
         <NotificationsButton disableRipple={true} func={props.func} />
@@ -71,13 +79,13 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           anchorEl={anchorEl}
           getContentAnchorEl={null}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
+            vertical: 'bottom',
+            horizontal: 'right',
           }}
           keepMounted
           transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
+            vertical: 'top',
+            horizontal: 'right',
           }}
           open={open}
           onClose={handleClose}
@@ -88,6 +96,12 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
             </StyledListItemIcon>
             <ListItemText secondary="マイページ" />
           </MenuItem>
+          <MenuItem onClick={() => toSetting()}>
+            <StyledListItemIcon>
+              <SettingsOutlinedIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="アカウント設定" />
+          </MenuItem>
           <MenuItem onClick={() => signOut()}>
             <StyledListItemIcon>
               <ExitToAppIcon fontSize="small" />
@@ -97,5 +111,5 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
         </Menu>
       </StyledUseMr>
     </>
-  );
-};
+  )
+}

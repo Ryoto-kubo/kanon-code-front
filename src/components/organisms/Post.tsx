@@ -1,9 +1,9 @@
+import { IconReact } from "@/components/atoms/IconReact";
 import { PostFooter } from "@/components/molecules/PostFooter";
 import { PostHeader } from "@/components/molecules/PostHeader";
 import { Box } from "@material-ui/core/";
 import React from "react";
 import styled from "styled-components";
-import ReactSvg from "../../assets/logo/react.svg";
 
 interface Props {
   name: string;
@@ -24,8 +24,8 @@ export const Post: React.FC<Props> = (props) => {
       alignItems="center"
       justifyContent="space-around"
     >
-      <Box mr={1}>
-        <ReactSvg width={50} />
+      <Box mr={2}>
+        <IconReact width={50} height={50} />
       </Box>
       <Box>
         <PostHeader title={props.title} tagArray={props.tagArray} />

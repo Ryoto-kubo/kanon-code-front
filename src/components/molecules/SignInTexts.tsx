@@ -1,7 +1,7 @@
-import { Heading1 } from '@/components/atoms/Heading1'
-import { ParagraphText } from '@/components/atoms/ParagraphText'
-import { Box } from '@material-ui/core/'
-import React from 'react'
+import { Heading1 } from "@/components/atoms/Heading1";
+import { ParagraphText } from "@/components/atoms/ParagraphText";
+import { Box } from "@material-ui/core/";
+import React from "react";
 
 export const SignInTexts: React.FC = () => {
   return (
@@ -10,8 +10,8 @@ export const SignInTexts: React.FC = () => {
         <Heading1>Sign in</Heading1>
       </Box>
       <ParagraphText variant="subtitle1" component="p">
-        GoogleアカウントもしくはGithubアカウントで新規登録、ログインができます。
+        Googleアカウントで新規登録、ログインができます。
       </ParagraphText>
     </Box>
-  )
-}
+  );
+};
