@@ -30,13 +30,13 @@ const contained = {
   color: "#ffffff",
 };
 
-const StyledFlexBox = styled(Box)`
+const StyledBoxFlex = styled(Box)`
   ${(props) => props.theme.breakpoints.up("sm")} {
     display: flex;
     align-items: flex-start;
   }
 `;
-const StyledLabelBox = styled(Box)`
+const StyledBoxLabel = styled(Box)`
   font-weight: bold;
   margin-bottom: 16px;
   ${(props) => props.theme.breakpoints.up("sm")} {
@@ -45,7 +45,7 @@ const StyledLabelBox = styled(Box)`
     margin-bottom: 0px;
   }
 `;
-const StyledBankButton = styled(Button)`
+const StyledButtonBank = styled(Button)`
   font-size: 12px;
   padding: 3px 4px;
   margin-right: 5px;
@@ -138,8 +138,8 @@ const IndexPage: React.FC<Props> = (props) => {
           </Box>
         </Box>
         <section>
-          <StyledFlexBox mb={4}>
-            <StyledLabelBox>銀行コード(半角数字)</StyledLabelBox>
+          <StyledBoxFlex mb={4}>
+            <StyledBoxLabel>銀行コード(半角数字)</StyledBoxLabel>
             <Box>
               <Box mb={1}>
                 <Box mb={0.5} minWidth={343} maxWidth={343}>
@@ -161,7 +161,7 @@ const IndexPage: React.FC<Props> = (props) => {
               </Box>
               <Box>
                 {banks.map((el, index) => (
-                  <StyledBankButton
+                  <StyledButtonBank
                     style={bankAlignment === index ? contained : {}}
                     key={el.id}
                     color="primary"
@@ -172,13 +172,13 @@ const IndexPage: React.FC<Props> = (props) => {
                     onClick={setBankCode}
                   >
                     {el.name}
-                  </StyledBankButton>
+                  </StyledButtonBank>
                 ))}
               </Box>
             </Box>
-          </StyledFlexBox>
-          <StyledFlexBox mb={4}>
-            <StyledLabelBox>銀行名</StyledLabelBox>
+          </StyledBoxFlex>
+          <StyledBoxFlex mb={4}>
+            <StyledBoxLabel>銀行名</StyledBoxLabel>
             <Box mb={1}>
               <Box mb={0.5} minWidth={343} maxWidth={343}>
                 <BaseTextField
@@ -196,9 +196,9 @@ const IndexPage: React.FC<Props> = (props) => {
                 <ValidMessage validText="32文字以下で入力してください" />
               )}
             </Box>
-          </StyledFlexBox>
-          <StyledFlexBox mb={4}>
-            <StyledLabelBox>支店コード(半角数字)</StyledLabelBox>
+          </StyledBoxFlex>
+          <StyledBoxFlex mb={4}>
+            <StyledBoxLabel>支店コード(半角数字)</StyledBoxLabel>
             <Box mb={1}>
               <Box mb={0.5} minWidth={343} maxWidth={343}>
                 <BaseTextField
@@ -217,9 +217,9 @@ const IndexPage: React.FC<Props> = (props) => {
                 <ValidMessage validText="3桁以下の半角数字で入力してください" />
               )}
             </Box>
-          </StyledFlexBox>
-          <StyledFlexBox mb={4}>
-            <StyledLabelBox>支店名</StyledLabelBox>
+          </StyledBoxFlex>
+          <StyledBoxFlex mb={4}>
+            <StyledBoxLabel>支店名</StyledBoxLabel>
             <Box mb={1}>
               <Box mb={0.5} minWidth={343} maxWidth={343}>
                 <BaseTextField
@@ -237,12 +237,12 @@ const IndexPage: React.FC<Props> = (props) => {
                 <ValidMessage validText="32文字以下で入力してください" />
               )}
             </Box>
-          </StyledFlexBox>
-          <StyledFlexBox mb={4}>
-            <StyledLabelBox>預金種類</StyledLabelBox>
+          </StyledBoxFlex>
+          <StyledBoxFlex mb={4}>
+            <StyledBoxLabel>預金種類</StyledBoxLabel>
             <Box>
               {depositTypes.map((el, index) => (
-                <StyledBankButton
+                <StyledButtonBank
                   style={depositAlignment === index ? contained : {}}
                   key={el.id}
                   color="primary"
@@ -253,12 +253,12 @@ const IndexPage: React.FC<Props> = (props) => {
                   onClick={changeDepositType}
                 >
                   {el.name}
-                </StyledBankButton>
+                </StyledButtonBank>
               ))}
             </Box>
-          </StyledFlexBox>
-          <StyledFlexBox mb={4}>
-            <StyledLabelBox>口座番号(半角数字)</StyledLabelBox>
+          </StyledBoxFlex>
+          <StyledBoxFlex mb={4}>
+            <StyledBoxLabel>口座番号(半角数字)</StyledBoxLabel>
             <Box mb={1}>
               <Box mb={0.5} minWidth={343} maxWidth={343}>
                 <BaseTextField
@@ -277,9 +277,9 @@ const IndexPage: React.FC<Props> = (props) => {
                 <ValidMessage validText="7~8桁の半角数字で入力してください" />
               )}
             </Box>
-          </StyledFlexBox>
-          <StyledFlexBox mb={4}>
-            <StyledLabelBox>口座名義カナ(全角)</StyledLabelBox>
+          </StyledBoxFlex>
+          <StyledBoxFlex mb={4}>
+            <StyledBoxLabel>口座名義カナ(全角)</StyledBoxLabel>
             <Box mb={1}>
               <Box mb={0.5} minWidth={343} maxWidth={343}>
                 <BaseTextField
@@ -297,7 +297,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 <ValidMessage validText="32文字以下で入力してください" />
               )}
             </Box>
-          </StyledFlexBox>
+          </StyledBoxFlex>
           <Box textAlign="center">
             <CustomSolidButton sizing="medium" onClick={update}>
               更新する
