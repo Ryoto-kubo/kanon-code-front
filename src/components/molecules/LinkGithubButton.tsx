@@ -10,7 +10,7 @@ export const LinkGithubButton: React.FC<Props> = (props) => {
   return (
     <>
       <SocialSignInButton text="Githubと連携する" onClick={props.onClick}>
-        <IconGithub width={20} height={20} />
+        <IconGithub fontSize="small" />
       </SocialSignInButton>
     </>
   );
