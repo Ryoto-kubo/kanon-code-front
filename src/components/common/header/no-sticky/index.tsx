@@ -29,7 +29,9 @@ export const TheNoStickyHeader: React.FC = () => {
             <KanonCodeLogo />
           </a>
         </Link>
-        <SolidLink href="/signin">サインイン</SolidLink>
+        <SolidLink href="/signin" borderRadius={4}>
+          サインイン
+        </SolidLink>
       </StyledBox>
     </CustomAppBar>
   );

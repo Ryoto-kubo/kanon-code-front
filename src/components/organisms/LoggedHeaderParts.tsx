@@ -1,24 +1,25 @@
-import { SolidLink } from '@/components/atoms/SolidLink'
-import { NotificationsButton } from '@/components/molecules/NotificationsButton'
-import { SearchLink } from '@/components/molecules/SearchLink'
-import { UserImageButton } from '@/components/molecules/UserImageButton'
-import Hidden from '@material-ui/core/Hidden'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import ListItemText from '@material-ui/core/ListItemText'
-import Menu from '@material-ui/core/Menu'
-import MenuItem from '@material-ui/core/MenuItem'
-import ExitToAppIcon from '@material-ui/icons/ExitToApp'
-import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
-import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
-import { Auth } from 'aws-amplify'
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
-import styled from 'styled-components'
+import { SolidLink } from "@/components/atoms/SolidLink";
+import { NotificationsButton } from "@/components/molecules/NotificationsButton";
+import { SearchLink } from "@/components/molecules/SearchLink";
+import { UserImageButton } from "@/components/molecules/UserImageButton";
+import Hidden from "@material-ui/core/Hidden";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
+import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
+import { Auth } from "aws-amplify";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import styled from "styled-components";
 
 interface Props {
-  picture: string
-  func: React.MouseEventHandler
-  formFunc: React.FormEventHandler
+  picture: string;
+  displayName: string;
+  func: React.MouseEventHandler;
+  formFunc: React.FormEventHandler;
 }
 
 const StyledUseMr = styled.span`
@@ -26,34 +27,33 @@ const StyledUseMr = styled.span`
   &:not(:last-child) {
     margin-right: 24px;
   }
-`
+`;
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
-`
+`;
 
 export const LoggedHeaderParts: React.FC<Props> = (props) => {
-  const router = useRouter()
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
+  const router = useRouter();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
+    setAnchorEl(event.currentTarget);
+  };
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
-  const toSetting = () => {
-    router.push('/settings/profile')
-  }
-
+  const toPage = (path: string) => {
+    router.push(path);
+  };
   const signOut = async () => {
     try {
-      const result = await Auth.signOut()
-      console.log(result)
+      const result = await Auth.signOut();
+      console.log(result);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
-  }
+  };
 
   return (
     <>
@@ -65,7 +65,9 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
       </StyledUseMr>
       <Hidden xsDown>
         <StyledUseMr>
-          <SolidLink href="/posts/new">レビューを依頼する</SolidLink>
+          <SolidLink href="/posts/new" borderRadius={4}>
+            レビューを依頼する
+          </SolidLink>
         </StyledUseMr>
       </Hidden>
       <StyledUseMr>
@@ -79,24 +81,24 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           anchorEl={anchorEl}
           getContentAnchorEl={null}
           anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'right',
+            vertical: "bottom",
+            horizontal: "right",
           }}
           keepMounted
           transformOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
+            vertical: "top",
+            horizontal: "right",
           }}
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={() => toPage(`/${props.displayName}`)}>
             <StyledListItemIcon>
               <PersonOutlineOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
             <ListItemText secondary="マイページ" />
           </MenuItem>
-          <MenuItem onClick={() => toSetting()}>
+          <MenuItem onClick={() => toPage("/settings/profile")}>
             <StyledListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
@@ -111,5 +113,5 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
         </Menu>
       </StyledUseMr>
     </>
-  )
-}
+  );
+};

@@ -36,7 +36,9 @@ export const TheStndardHeader: React.FC = () => {
           <StyledUseMr>
             <SearchLink />
           </StyledUseMr>
-          <SolidLink href="/signin">サインイン</SolidLink>
+          <SolidLink href="/signin" borderRadius={4}>
+            サインイン
+          </SolidLink>
         </Box>
       </StyledBox>
     </CustomStickyAppBar>
