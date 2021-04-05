@@ -1,3 +1,4 @@
+import { SolidLink } from "@/components/atoms/SolidLink";
 import { UserImgIcon } from "@/components/atoms/UserImgIcon";
 import { UserLink } from "@/components/organisms/ UserLinks";
 import Layout from "@/layouts/standard";
@@ -23,8 +24,10 @@ const StyledBoxProfileArea = styled(Box)`
   display: flex;
 `;
 const StyledBoxUserProfile = styled(Box)`
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: space-between;
 `;
 const StyledBoxUserName = styled(Box)`
   font-size: 18px;
@@ -44,24 +47,29 @@ const IndexPage: React.FC<Props> = (props) => {
         <Box mt={4}>
           <StyledBoxProfileArea component="section">
             <StyledBoxUserProfile>
-              <Box mr={1}>
-                <UserImgIcon picture={userIcon} className={classes.size} />
-              </Box>
-              <Box>
-                <Box display="flex" alignItems="center">
-                  <Box mr={1}>
-                    <span>{mypageData.contents.position}</span>
-                  </Box>
-                  <UserLink
-                    githubName={mypageData.contents.github_name}
-                    twitterName={mypageData.contents.twitter_name}
-                    webSite={mypageData.contents.web_site}
-                  />
+              <Box display="flex" alignItems="center">
+                <Box mr={1}>
+                  <UserImgIcon picture={userIcon} className={classes.size} />
                 </Box>
-                <StyledBoxUserName>
-                  {mypageData.contents.display_name}
-                </StyledBoxUserName>
+                <Box>
+                  <Box display="flex" alignItems="center">
+                    <Box mr={1}>
+                      <span>{mypageData.contents.position}</span>
+                    </Box>
+                    <UserLink
+                      githubName={mypageData.contents.github_name}
+                      twitterName={mypageData.contents.twitter_name}
+                      webSite={mypageData.contents.web_site}
+                    />
+                  </Box>
+                  <StyledBoxUserName>
+                    {mypageData.contents.display_name}
+                  </StyledBoxUserName>
+                </Box>
               </Box>
+              <SolidLink href="/settings/profile" borderRadius={50}>
+                プロフィールを編集する
+              </SolidLink>
             </StyledBoxUserProfile>
           </StyledBoxProfileArea>
         </Box>

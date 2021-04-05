@@ -64,7 +64,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
       </StyledUseMr>
       <Hidden xsDown>
         <StyledUseMr>
-          <SolidLink href="/posts/new">レビューを依頼する</SolidLink>
+          <SolidLink href="/posts/new" borderRadius={4}>レビューを依頼する</SolidLink>
         </StyledUseMr>
       </Hidden>
       <StyledUseMr>
