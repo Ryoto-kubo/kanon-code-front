@@ -1,7 +1,7 @@
 export const mypageData = {
   contents: {
-    display_name: "ryoto kubo",
-    position: "フロントエンドエンジニア",
+    display_name: "ryoto_kubo",
+    position: "フロントエンド",
     skils: [
       { language: "vue.js", years_experince: 2 },
       { language: "nuxt.js", years_experince: 3 },

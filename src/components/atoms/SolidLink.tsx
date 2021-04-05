@@ -17,13 +17,13 @@ const StyledSolidLink = styled.a`
   display: inline-block;
   padding: 5px 16px;
   text-decoration: none;
-  display: inlne-block;
   // background: ${theme.palette.primary.main};
   ${(props) => props.theme.breakpoints.up("sm")} {
     min-width: 140px;
   }
 `;
 const StyledBox = styled(Box)`
+  display: inline-block;
   transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms,
     border 250ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
@@ -32,6 +32,7 @@ const StyledBox = styled(Box)`
     background: ${theme.palette.primary.dark};
   }
 `;
+
 export const SolidLink: React.FC<Props> = (props) => {
   return (
     <Link href={props.href}>

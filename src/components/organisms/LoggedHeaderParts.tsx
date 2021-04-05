@@ -17,6 +17,7 @@ import styled from "styled-components";
 
 interface Props {
   picture: string;
+  displayName: string;
   func: React.MouseEventHandler;
   formFunc: React.FormEventHandler;
 }
@@ -64,7 +65,9 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
       </StyledUseMr>
       <Hidden xsDown>
         <StyledUseMr>
-          <SolidLink href="/posts/new" borderRadius={4}>レビューを依頼する</SolidLink>
+          <SolidLink href="/posts/new" borderRadius={4}>
+            レビューを依頼する
+          </SolidLink>
         </StyledUseMr>
       </Hidden>
       <StyledUseMr>
@@ -89,7 +92,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={() => toPage("/mypage")}>
+          <MenuItem onClick={() => toPage(`/${props.displayName}`)}>
             <StyledListItemIcon>
               <PersonOutlineOutlinedIcon fontSize="small" />
             </StyledListItemIcon>

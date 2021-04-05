@@ -10,9 +10,9 @@ type Props = {
   webSite: string;
 };
 
-export const UserLink: React.FC<Props> = (props) => {
+export const UserLinks: React.FC<Props> = (props) => {
   return (
-    <>
+    <Box display="flex" alignItems="center">
       {props.githubName !== "" && (
         <Box mr={1}>
           <LinkGithub githubName={props.githubName} />
@@ -28,6 +28,6 @@ export const UserLink: React.FC<Props> = (props) => {
           <LinkWeb webSite={props.webSite} />
         </Box>
       )}
-    </>
+    </Box>
   );
 };
