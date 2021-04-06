@@ -15,7 +15,7 @@ type Props = {
 
 type TypeParams = {
   language: string;
-  yearsExperience: number;
+  yearsExperience: string;
 }[];
 
 const StyledBoxCalcWidth = styled(Box)`
@@ -32,23 +32,23 @@ const IndexPage: React.FC<Props> = (props) => {
   const [skilParams, setSkilParams] = useState<TypeParams>([
     {
       language: "",
-      yearsExperience: 0,
+      yearsExperience: "~1年",
     },
     {
       language: "",
-      yearsExperience: 0,
+      yearsExperience: "~1年",
     },
     {
       language: "",
-      yearsExperience: 0,
+      yearsExperience: "~1年",
     },
     {
       language: "",
-      yearsExperience: 0,
+      yearsExperience: "~1年",
     },
     {
       language: "",
-      yearsExperience: 0,
+      yearsExperience: "~1年",
     },
   ]);
   console.log(setSkilParams);
@@ -93,7 +93,7 @@ const IndexPage: React.FC<Props> = (props) => {
           fullWidth={true}
           variant="outlined"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            elemet.yearsExperience = Number(e.target.value);
+            elemet.yearsExperience = e.target.value;
           }}
           InputLabelProps={{
             shrink: true,

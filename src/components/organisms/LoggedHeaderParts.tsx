@@ -2,6 +2,7 @@ import { SolidLink } from "@/components/atoms/SolidLink";
 import { NotificationsButton } from "@/components/molecules/NotificationsButton";
 import { SearchLink } from "@/components/molecules/SearchLink";
 import { UserImageButton } from "@/components/molecules/UserImageButton";
+import Divider from "@material-ui/core/Divider";
 import Hidden from "@material-ui/core/Hidden";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
@@ -10,6 +11,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
+import SpeedOutlinedIcon from "@material-ui/icons/SpeedOutlined";
 import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -98,6 +100,14 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
             </StyledListItemIcon>
             <ListItemText secondary="マイページ" />
           </MenuItem>
+          <Divider />
+          <MenuItem onClick={() => toPage("/dashboard/reviews")}>
+            <StyledListItemIcon>
+              <SpeedOutlinedIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="ダッシュボード" />
+          </MenuItem>
+          <Divider />
           <MenuItem onClick={() => toPage("/settings/profile")}>
             <StyledListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
