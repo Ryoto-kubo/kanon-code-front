@@ -45,6 +45,7 @@ const StyledBoxUserDescription = styled(Box)`
 const StyledBoxSwitchMargin = styled(Box)`
   margin-bottom: 3px;
   font-size: 15px;
+  color: rgb(136, 153, 166);
   ${(props) => props.theme.breakpoints.up("sm")} {
     margin-bottom: 0px;
     margin-right: 8px;
@@ -96,6 +97,7 @@ export const ProfileArea: React.FC<Props> = (props) => {
                 githubName={props.githubName}
                 twitterName={props.twitterName}
                 webSite={props.webSite}
+                fontSize="small"
               />
             </StyledBoxUserAbout>
             <StyledBoxUserName>{props.displayName}</StyledBoxUserName>

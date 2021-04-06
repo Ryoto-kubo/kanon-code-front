@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 type Props = {
   githubName: string;
+  fontSize: "small" | "inherit" | "default" | "large" | undefined;
 };
 const StyledLinkGithub = styled(Link)`
   color: #707070;
@@ -19,7 +20,7 @@ export const LinkGithub: React.FC<Props> = (props) => {
       href={`https://github.com/${props.githubName}`}
       target="_blank"
     >
-      <IconGithub fontSize="default" />
+      <IconGithub fontSize={props.fontSize} />
     </StyledLinkGithub>
   );
 };

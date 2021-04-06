@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 type Props = {
   webSite: string;
+  fontSize: "small" | "inherit" | "default" | "large" | undefined;
 };
 const StyledLinkWeb = styled(Link)`
   color: #707070;
@@ -17,7 +18,7 @@ const StyledLinkWeb = styled(Link)`
 export const LinkWeb: React.FC<Props> = (props) => {
   return (
     <StyledLinkWeb href={props.webSite} target="_blank">
-      <IconWeb fontSize="default" />
+      <IconWeb fontSize={props.fontSize} />
     </StyledLinkWeb>
   );
 };

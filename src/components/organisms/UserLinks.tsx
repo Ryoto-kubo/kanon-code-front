@@ -8,6 +8,7 @@ type Props = {
   githubName: string;
   twitterName: string;
   webSite: string;
+  fontSize: "small" | "inherit" | "default" | "large" | undefined;
 };
 
 export const UserLinks: React.FC<Props> = (props) => {
@@ -15,17 +16,20 @@ export const UserLinks: React.FC<Props> = (props) => {
     <Box display="flex" alignItems="center">
       {props.githubName !== "" && (
         <Box mr={1}>
-          <LinkGithub githubName={props.githubName} />
+          <LinkGithub githubName={props.githubName} fontSize={props.fontSize} />
         </Box>
       )}
       {props.twitterName !== "" && (
         <Box mr={1}>
-          <LinkTwitter twitterName={props.twitterName} />
+          <LinkTwitter
+            twitterName={props.twitterName}
+            fontSize={props.fontSize}
+          />
         </Box>
       )}
       {props.webSite !== "" && (
         <Box mr={1}>
-          <LinkWeb webSite={props.webSite} />
+          <LinkWeb webSite={props.webSite} fontSize={props.fontSize} />
         </Box>
       )}
     </Box>
