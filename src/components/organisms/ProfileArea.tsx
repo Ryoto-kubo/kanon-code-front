@@ -44,6 +44,7 @@ const StyledBoxUserDescription = styled(Box)`
 `;
 const StyledBoxSwitchMargin = styled(Box)`
   margin-bottom: 3px;
+  font-size: 15px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     margin-bottom: 0px;
     margin-right: 8px;
@@ -89,7 +90,7 @@ export const ProfileArea: React.FC<Props> = (props) => {
           <StyledBoxFlexDirection>
             <StyledBoxUserAbout>
               <StyledBoxSwitchMargin>
-                <span>{props.position}</span>
+                <p>{props.position}</p>
               </StyledBoxSwitchMargin>
               <UserLinks
                 githubName={props.githubName}
