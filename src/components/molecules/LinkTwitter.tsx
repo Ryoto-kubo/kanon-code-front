@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 type Props = {
   twitterName: string;
+  fontSize: "small" | "inherit" | "default" | "large" | undefined;
 };
 const StyledLinkTwitter = styled(Link)`
   color: #707070;
@@ -19,7 +20,7 @@ export const LinkTwitter: React.FC<Props> = (props) => {
       href={`https://twitter.com/${props.twitterName}`}
       target="_blank"
     >
-      <IconTwitter fontSize="default" />
+      <IconTwitter fontSize={props.fontSize} />
     </StyledLinkTwitter>
   );
 };
