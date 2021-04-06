@@ -19,7 +19,7 @@ export const LinkTwitter: React.FC<Props> = (props) => {
       href={`https://twitter.com/${props.twitterName}`}
       target="_blank"
     >
-      <IconTwitter fontSize="small" />
+      <IconTwitter fontSize="default" />
     </StyledLinkTwitter>
   );
 };

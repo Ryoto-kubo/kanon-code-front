@@ -17,7 +17,7 @@ const StyledLinkWeb = styled(Link)`
 export const LinkWeb: React.FC<Props> = (props) => {
   return (
     <StyledLinkWeb href={props.webSite} target="_blank">
-      <IconWeb fontSize="small" />
+      <IconWeb fontSize="default" />
     </StyledLinkWeb>
   );
 };
