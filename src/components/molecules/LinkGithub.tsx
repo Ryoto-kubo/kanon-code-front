@@ -19,7 +19,7 @@ export const LinkGithub: React.FC<Props> = (props) => {
       href={`https://github.com/${props.githubName}`}
       target="_blank"
     >
-      <IconGithub fontSize="small" />
+      <IconGithub fontSize="default" />
     </StyledLinkGithub>
   );
 };
