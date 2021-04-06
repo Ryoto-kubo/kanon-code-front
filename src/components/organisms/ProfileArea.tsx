@@ -56,11 +56,10 @@ const StyledBoxUserAbout = styled(Box)`
   }
 `;
 const StyledBoxUserName = styled(Box)`
-  font-size: 18px;
+  font-size: 20px;
   font-weight: bold;
   margin-bottom: 3px;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    font-size: 20px;
     margin-bottom: 0px;
   }
 `;
