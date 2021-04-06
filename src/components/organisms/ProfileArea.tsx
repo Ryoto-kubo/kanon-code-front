@@ -30,18 +30,23 @@ const StyledBoxProfileArea = styled(Box)`
 `;
 const StyledBoxUserProfile = styled(Box)`
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    display: flex;
     width: 100%;
-    align-items: center;
   }
 `;
 const StyledBoxUserDescription = styled(Box)`
   ${(props) => props.theme.breakpoints.up("sm")} {
     display: flex;
     align-items: center;
+  }
+`;
+const StyledBoxSwitchMargin = styled(Box)`
+  margin-bottom: 3px;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    margin-bottom: 0px;
+    margin-right: 8px;
   }
 `;
 const StyledBoxUserAbout = styled(Box)`
@@ -53,8 +58,10 @@ const StyledBoxUserAbout = styled(Box)`
 const StyledBoxUserName = styled(Box)`
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 3px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     font-size: 20px;
+    margin-bottom: 0px;
   }
 `;
 const StyledBoxFlexDirection = styled(Box)`
@@ -73,18 +80,18 @@ export const ProfileArea: React.FC<Props> = (props) => {
     <StyledBoxProfileArea component="section">
       <StyledBoxUserProfile>
         <StyledBoxUserDescription>
-          <Box mr={1}>
+          <StyledBoxSwitchMargin>
             <Link href={`/${props.displayName}`} passHref>
               <a>
                 <UserImgIcon picture={props.picture} className={classes.size} />
               </a>
             </Link>
-          </Box>
+          </StyledBoxSwitchMargin>
           <StyledBoxFlexDirection>
             <StyledBoxUserAbout>
-              <Box mr={1}>
+              <StyledBoxSwitchMargin>
                 <span>{props.position}</span>
-              </Box>
+              </StyledBoxSwitchMargin>
               <UserLinks
                 githubName={props.githubName}
                 twitterName={props.twitterName}
