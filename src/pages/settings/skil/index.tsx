@@ -1,5 +1,5 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { yearsExperience } from "@/consts/select-options";
+import { yearsExperiences } from "@/consts/select-options";
 import { SettingLayout } from "@/layouts/setting";
 import Box from "@material-ui/core/Box";
 import MenuItem from "@material-ui/core/MenuItem";
@@ -16,6 +16,7 @@ type Props = {
 type TypeParams = {
   language: string;
   yearsExperience: string;
+  value: number;
 }[];
 
 const StyledBoxCalcWidth = styled(Box)`
@@ -32,23 +33,28 @@ const IndexPage: React.FC<Props> = (props) => {
   const [skilParams, setSkilParams] = useState<TypeParams>([
     {
       language: "",
-      yearsExperience: "~1年",
+      yearsExperience: "1年~2年",
+      value: 1,
     },
     {
       language: "",
-      yearsExperience: "~1年",
+      yearsExperience: "1年~2年",
+      value: 1,
     },
     {
       language: "",
-      yearsExperience: "~1年",
+      yearsExperience: "1年~2年",
+      value: 1,
     },
     {
       language: "",
-      yearsExperience: "~1年",
+      yearsExperience: "1年~2年",
+      value: 1,
     },
     {
       language: "",
-      yearsExperience: "~1年",
+      yearsExperience: "1年~2年",
+      value: 1,
     },
   ]);
   console.log(setSkilParams);
@@ -58,7 +64,7 @@ const IndexPage: React.FC<Props> = (props) => {
     console.log(...skilParams);
   };
   const renderOptions = (): JSX.Element[] => {
-    return yearsExperience.map((option) => (
+    return yearsExperiences.map((option) => (
       <MenuItem key={option.value} value={option.value}>
         {option.label}
       </MenuItem>
@@ -68,7 +74,6 @@ const IndexPage: React.FC<Props> = (props) => {
     return skilParams.map((elemet, index) => (
       <Box display="flex" justifyContent="space-between" key={index}>
         <StyledTextFieldService
-          id="language"
           type="text"
           style={{ display: "block" }}
           defaultValue={elemet.language}
@@ -85,15 +90,17 @@ const IndexPage: React.FC<Props> = (props) => {
         />
         <StyledTextFieldService
           select
-          id="twitterName"
           type="text"
           style={{ display: "block" }}
-          defaultValue={elemet.yearsExperience}
+          defaultValue={elemet.value}
           label="経験年数"
           fullWidth={true}
           variant="outlined"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            elemet.yearsExperience = e.target.value;
+            const value = Number(e.target.value);
+            const yearsExperience = yearsExperiences[value - 1].label;
+            elemet.value = value;
+            elemet.yearsExperience = yearsExperience;
           }}
           InputLabelProps={{
             shrink: true,
