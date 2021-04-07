@@ -40,7 +40,7 @@ const LinkTab = (props: LinkTabProps) => {
 };
 
 export const SettingTabs: React.FC<Props> = (props) => {
-  const RenderLists = () => {
+  const renderLists = () => {
     const renderLists = [];
     for (const element of props.tabLists) {
       renderLists.push(
@@ -63,7 +63,7 @@ export const SettingTabs: React.FC<Props> = (props) => {
       indicatorColor="primary"
       textColor="primary"
     >
-      {RenderLists()}
+      {renderLists()}
     </StyledTabs>
   );
 };

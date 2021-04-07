@@ -1,4 +1,5 @@
 import { ProfileArea } from "@/components/organisms/ProfileArea";
+import { Reviews } from "@/components/organisms/Reviews";
 import { SkilsArea } from "@/components/organisms/SkilsArea";
 import Layout from "@/layouts/standard";
 import { mypageData } from "@/mock/mypage";
@@ -33,6 +34,9 @@ const IndexPage: React.FC<Props> = (props) => {
           </Box>
           <Box mb={3} component="section">
             <SkilsArea skils={mypageData.contents.skils} />
+          </Box>
+          <Box mb={3} component="section">
+            <Reviews />
           </Box>
         </Box>
       </Container>

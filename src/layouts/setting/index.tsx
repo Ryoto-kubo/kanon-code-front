@@ -9,7 +9,7 @@ import { Toolbar } from "@material-ui/core";
 import { Container } from "@material-ui/core/";
 import Box from "@material-ui/core/Box";
 import { useRouter } from "next/router";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -32,10 +32,10 @@ export const SettingLayout = ({
   authUser,
 }: Props) => {
   const router = useRouter();
-  const [value] = useState(router.pathname);
+  // const [value] = useState(router.pathname);
   const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     event.preventDefault();
-    router.push(newValue);
+    router.replace(newValue);
   };
 
   return (
@@ -51,7 +51,7 @@ export const SettingLayout = ({
           </Heading2>
           <Box mb={3}>
             <TabsHeader
-              value={value}
+              value={router.pathname}
               onChange={changeTab}
               tabLists={settingTabs}
             />
