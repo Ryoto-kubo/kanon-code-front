@@ -17,7 +17,6 @@ const StyledBoxSkilsArea = styled(Box)`
   height: auto;
   width: 100%;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    max-width: 630px;
     min-width: 375px;
     height: 250px;
     flex-direction: column;
@@ -32,7 +31,7 @@ const StyledBoxSkil = styled(Box)`
   font-weight: bold;
   margin-bottom: 5px;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    width: 180px;
+    width: 300px;
   }
 `;
 const StyledBoxIconStar = styled(Box)`
