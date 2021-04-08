@@ -1,8 +1,6 @@
 import { Heading3 } from "@/components/atoms/Heading3";
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { SettingLayout } from "@/layouts/setting";
 import theme from "@/styles/theme";
-import { CognitoUser } from "@aws-amplify/auth";
 import Box from "@material-ui/core/Box";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -11,11 +9,6 @@ import { CardElement, Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import React from "react";
 import styled from "styled-components";
-
-type Props = {
-  title: string;
-  authUser: CognitoUser;
-};
 
 const StyledBox = styled(Box)`
   width: 100%;
@@ -32,7 +25,14 @@ const StyledBoxBgColorWhite = styled(Box)`
   margin-bottom: 16px;
 `;
 
-const IndexPage: React.FC<Props> = (props) => {
+export const getServerSideProps = async () => ({
+  props: {
+    layout: "SettingLayout",
+    title: "カード情報",
+  },
+});
+
+const IndexPage: React.FC = () => {
   const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
   const stripe = loadStripe(stripeKey);
 
@@ -41,7 +41,7 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   return (
-    <SettingLayout title="Kanon Code | カード情報" authUser={props.authUser}>
+    <section>
       <Box textAlign="center" mb={5}>
         <Box mb={3}>
           <Heading3 fontSize={18} marginBottom={0}>
@@ -88,7 +88,7 @@ const IndexPage: React.FC<Props> = (props) => {
           </CustomSolidButton>
         </Box>
       </Box>
-    </SettingLayout>
+    </section>
   );
 };
 

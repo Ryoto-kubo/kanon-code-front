@@ -1,17 +1,11 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { yearsExperiences } from "@/consts/select-options";
-import { SettingLayout } from "@/layouts/setting";
 import Box from "@material-ui/core/Box";
 import MenuItem from "@material-ui/core/MenuItem";
 import TextField from "@material-ui/core/TextField";
 // import { CognitoUser } from '@aws-amplify/auth'
 import React, { useState } from "react";
 import styled from "styled-components";
-
-type Props = {
-  title: string;
-  authUser: any;
-};
 
 type TypeParams = {
   language: string;
@@ -29,7 +23,14 @@ const StyledTextFieldService = styled(TextField)`
   width: 47%;
 `;
 
-const IndexPage: React.FC<Props> = (props) => {
+export const getServerSideProps = async () => ({
+  props: {
+    layout: "SettingLayout",
+    title: "スキル設定",
+  },
+});
+
+const IndexPage: React.FC = () => {
   const [skilParams, setSkilParams] = useState<TypeParams>([
     {
       language: "",
@@ -113,20 +114,18 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   return (
-    <SettingLayout title="Kanon Code | スキル設定" authUser={props.authUser}>
-      <section>
-        <Box>
-          <StyledBoxCalcWidth mb={5}>
-            <div>{renderTextFields()}</div>
-            <Box textAlign="center">
-              <CustomSolidButton sizing="medium" onClick={update}>
-                更新する
-              </CustomSolidButton>
-            </Box>
-          </StyledBoxCalcWidth>
-        </Box>
-      </section>
-    </SettingLayout>
+    <section>
+      <Box>
+        <StyledBoxCalcWidth mb={5}>
+          <div>{renderTextFields()}</div>
+          <Box textAlign="center">
+            <CustomSolidButton sizing="medium" onClick={update}>
+              更新する
+            </CustomSolidButton>
+          </Box>
+        </StyledBoxCalcWidth>
+      </Box>
+    </section>
   );
 };
 
