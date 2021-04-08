@@ -3,7 +3,6 @@ import React from "react";
 
 type Props = {
   fontSize: "small" | "inherit" | "default" | "large" | undefined;
-  // color: string;
 };
 
 export const IconGithub: React.FC<Props> = (props) => {

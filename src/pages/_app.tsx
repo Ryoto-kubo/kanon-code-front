@@ -78,6 +78,8 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             <Component {...pageProps} authUser={user} />
           </LayoutNoFooter>
         );
+      default:
+        return <Component {...pageProps} authUser={user} />;
     }
   };
 
