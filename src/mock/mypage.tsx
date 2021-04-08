@@ -17,4 +17,5 @@ export const mypageData = {
     twitter_name: "porokyu",
     web_site: "https://ultra-marine.dev/",
   },
+  cognitoId: "google_107217025002724290491",
 };

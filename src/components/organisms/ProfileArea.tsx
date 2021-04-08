@@ -1,4 +1,5 @@
 import { SolidLink } from "@/components/atoms/SolidLink";
+import { SolidLinkSecondary } from "@/components/atoms/SolidLinkSecondary";
 import { UserImgIcon } from "@/components/atoms/UserImgIcon";
 import { UserLinks } from "@/components/organisms/UserLinks";
 import { Box } from "@material-ui/core/";
@@ -14,6 +15,7 @@ type Props = {
   twitterName: string;
   webSite: string;
   displayName: string;
+  isMe: boolean;
 };
 
 const useStyles = makeStyles(() => ({
@@ -103,9 +105,16 @@ export const ProfileArea: React.FC<Props> = (props) => {
             <StyledBoxUserName>{props.displayName}</StyledBoxUserName>
           </StyledBoxFlexDirection>
         </StyledBoxUserDescription>
-        <SolidLink href="/settings/profile" borderRadius={50}>
-          プロフィールを編集
-        </SolidLink>
+        {props.isMe && (
+          <SolidLink href="/settings/profile" borderRadius={50}>
+            プロフィールを編集
+          </SolidLink>
+        )}
+        {!props.isMe && (
+          <SolidLinkSecondary href="/settings/profile" borderRadius={50}>
+            レビューリクエスト
+          </SolidLinkSecondary>
+        )}
       </StyledBoxUserProfile>
     </StyledBoxProfileArea>
   );

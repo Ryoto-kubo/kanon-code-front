@@ -31,7 +31,7 @@ const StyledBoxSkil = styled(Box)`
   font-weight: bold;
   margin-bottom: 5px;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    width: 300px;
+    width: 31%;
   }
 `;
 const StyledBoxIconStar = styled(Box)`
