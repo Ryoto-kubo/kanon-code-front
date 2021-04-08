@@ -5,7 +5,6 @@ import { IconVue } from "@/components/atoms/IconVue";
 import { PostHeader } from "@/components/molecules/PostHeader";
 import { paymentDatas } from "@/mock/payment-datas";
 import theme from "@/styles/theme";
-import { CognitoUser } from "@aws-amplify/auth";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import { fade } from "@material-ui/core/styles";
