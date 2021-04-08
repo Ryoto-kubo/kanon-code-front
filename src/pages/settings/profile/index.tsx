@@ -2,7 +2,7 @@ import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { FileExChange } from "@/components/molecules/FileExChange";
 import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
 import { positions } from "@/consts/select-options";
-import { SettingLayout } from "@/layouts/setting";
+// import { SettingLayout } from "@/layouts/setting";
 import Box from "@material-ui/core/Box";
 import MenuItem from "@material-ui/core/MenuItem";
 // import { CognitoUser } from '@aws-amplify/auth'
@@ -25,6 +25,13 @@ const StyledBoxCalcWidth = styled(Box)`
     width: calc(100% - 150px);
   }
 `;
+
+export const getServerSideProps = async () => ({
+  props: {
+    layout: "SettingLayout",
+    title: "プロフィール",
+  },
+});
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
@@ -84,38 +91,33 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   return (
-    <SettingLayout
-      title="Kanon Code | プロフィール設定"
-      authUser={props.authUser}
-    >
-      <section>
-        <StyledBoxFlex>
-          <FileExChange htmlFor="avatar" picture={userInfo.picture} />
-          <StyledBoxCalcWidth mb={5}>
-            <SettingProfileFields
-              settingParams={settingParams}
-              renderOptions={renderOptions()}
-              onChangeName={changeName}
-              onChangeIntroduction={changeIntroduction}
-              onChangePosition={changePosition}
-              onChangeAmount={changeAmount}
-              onChangeGithubName={changeGithubName}
-              onChangeTwitterName={changeTwitterName}
-              onChangeWebSite={changeWebSite}
-              handleMenu={handleMenu}
-              handleClose={handleClose}
-              anchorEl={anchorEl}
-              open={open}
-            />
-            <Box textAlign="center">
-              <CustomSolidButton sizing="medium" onClick={update}>
-                更新する
-              </CustomSolidButton>
-            </Box>
-          </StyledBoxCalcWidth>
-        </StyledBoxFlex>
-      </section>
-    </SettingLayout>
+    <section>
+      <StyledBoxFlex>
+        <FileExChange htmlFor="avatar" picture={userInfo.picture} />
+        <StyledBoxCalcWidth mb={5}>
+          <SettingProfileFields
+            settingParams={settingParams}
+            renderOptions={renderOptions()}
+            onChangeName={changeName}
+            onChangeIntroduction={changeIntroduction}
+            onChangePosition={changePosition}
+            onChangeAmount={changeAmount}
+            onChangeGithubName={changeGithubName}
+            onChangeTwitterName={changeTwitterName}
+            onChangeWebSite={changeWebSite}
+            handleMenu={handleMenu}
+            handleClose={handleClose}
+            anchorEl={anchorEl}
+            open={open}
+          />
+          <Box textAlign="center">
+            <CustomSolidButton sizing="medium" onClick={update}>
+              更新する
+            </CustomSolidButton>
+          </Box>
+        </StyledBoxCalcWidth>
+      </StyledBoxFlex>
+    </section>
   );
 };
 

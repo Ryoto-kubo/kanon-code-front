@@ -1,6 +1,5 @@
 import { Heading3 } from "@/components/atoms/Heading3";
 import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
-import { SettingLayout } from "@/layouts/setting";
 import Box from "@material-ui/core/Box";
 import Checkbox from "@material-ui/core/Checkbox";
 import Divider from "@material-ui/core/Divider";
@@ -27,6 +26,14 @@ const StyledBoxParagraf = styled(Box)`
     margin-bottom: 0px;
   }
 `;
+
+export const getServerSideProps = async () => ({
+  props: {
+    layout: "SettingLayout",
+    title: "アカウント情報",
+  },
+});
+
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const [state, setState] = useState({
@@ -42,10 +49,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const googleEmail = props.authUser.signInUserSession.idToken.payload.email;
 
   return (
-    <SettingLayout
-      title="Kanon Code | アカウント設定"
-      authUser={props.authUser}
-    >
+    <section>
       <Box mb={5}>
         <Box mb={2}>
           <Box mb={1}>
@@ -102,7 +106,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <Divider />
         </Box>
       </Box>
-    </SettingLayout>
+    </section>
   );
 };
 

@@ -3,20 +3,13 @@ import { IconLaravel } from "@/components/atoms/IconLaravel";
 import { IconNode } from "@/components/atoms/IconNode";
 import { IconVue } from "@/components/atoms/IconVue";
 import { PostHeader } from "@/components/molecules/PostHeader";
-import { SettingLayout } from "@/layouts/setting";
 import { paymentDatas } from "@/mock/payment-datas";
 import theme from "@/styles/theme";
-import { CognitoUser } from "@aws-amplify/auth";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import { fade } from "@material-ui/core/styles";
 import React from "react";
 import styled from "styled-components";
-
-type Props = {
-  title: string;
-  authUser: CognitoUser;
-};
 
 const StyledBox = styled(Box)`
   width: 100%;
@@ -27,7 +20,14 @@ const StyledBox = styled(Box)`
   background: ${fade(theme.palette.primary.main, 0.1)};
 `;
 
-const IndexPage: React.FC<Props> = (props) => {
+export const getServerSideProps = async () => ({
+  props: {
+    layout: "SettingLayout",
+    title: "購入履歴",
+  },
+});
+
+const IndexPage: React.FC = () => {
   const isPayments = true;
   const getProgramingIcon = (iconKey: string) => {
     switch (iconKey) {
@@ -41,7 +41,7 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   return (
-    <SettingLayout title="Kanon Code | 購入履歴" authUser={props.authUser}>
+    <section>
       <Box mb={5}>
         <Box mb={3}>
           <Heading3 fontSize={18} marginBottom={0}>
@@ -64,7 +64,7 @@ const IndexPage: React.FC<Props> = (props) => {
             </Box>
           ))}
       </Box>
-    </SettingLayout>
+    </section>
   );
 };
 

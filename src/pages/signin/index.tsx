@@ -1,5 +1,4 @@
 import { SignInContent } from "@/components/organisms/SignInContent";
-import { LayoutNoFooter } from "@/layouts/no-footer";
 import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
 import { Container } from "@material-ui/core/";
 import { Auth } from "aws-amplify";
@@ -18,11 +17,16 @@ const signin = () => {
   });
 };
 
+export const getServerSideProps = async () => ({
+  props: {
+    layout: "LayoutNoFooter",
+    title: "サインイン",
+  },
+});
+
 const IndexPage: React.FC = () => (
-  <LayoutNoFooter title="Kanon Code | サインイン">
-    <StyledContainer>
-      <SignInContent onClick={signin} />
-    </StyledContainer>
-  </LayoutNoFooter>
+  <StyledContainer>
+    <SignInContent onClick={signin} />
+  </StyledContainer>
 );
 export default IndexPage;

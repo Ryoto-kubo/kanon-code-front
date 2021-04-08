@@ -3,18 +3,12 @@ import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { BaseTextField } from "@/components/atoms/TextField.tsx";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { banks, depositTypes } from "@/consts/banks";
-import { SettingLayout } from "@/layouts/setting";
 import theme from "@/styles/theme";
-import { CognitoUser } from "@aws-amplify/auth";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import React, { useState } from "react";
 import styled from "styled-components";
 
-type Props = {
-  title: string;
-  authUser: CognitoUser;
-};
 type BankParams = {
   bankCode: string;
   bankName: string;
@@ -52,7 +46,14 @@ const StyledButtonBank = styled(Button)`
   margin-bottom: 5px;
 `;
 
-const IndexPage: React.FC<Props> = (props) => {
+export const getServerSideProps = async () => ({
+  props: {
+    layout: "SettingLayout",
+    title: "お振込先",
+  },
+});
+
+const IndexPage: React.FC = () => {
   const [stateValid, setStateValid] = useState({
     isBankCode: false,
     isBankName: false,
@@ -127,7 +128,7 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   return (
-    <SettingLayout title="Kanon Code | お振込先情報" authUser={props.authUser}>
+    <section>
       <Box mb={5}>
         <Box>
           <Box mb={3}>
@@ -305,7 +306,7 @@ const IndexPage: React.FC<Props> = (props) => {
           </Box>
         </section>
       </Box>
-    </SettingLayout>
+    </section>
   );
 };
 

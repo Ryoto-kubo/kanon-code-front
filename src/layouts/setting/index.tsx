@@ -35,7 +35,7 @@ export const SettingLayout = ({
   // const [value] = useState(router.pathname);
   const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     event.preventDefault();
-    router.replace(newValue);
+    router.push(newValue);
   };
 
   return (
