@@ -1,9 +1,8 @@
 import { CustomSwitch } from "@/components/atoms/CustomSwitch";
-// import { LinkWrapper } from "@/components/atoms/Link";
-// import { KanonCodeLogo } from "@/components/atoms/Logo";
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
 import { ArrowButton } from "@/components/molecules/ArrowButton";
+import theme from "@/styles/theme";
 import { Box } from "@material-ui/core/";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -26,21 +25,23 @@ const StyledUseMr = styled(Box)`
 `;
 
 export const ThePostsHeader: React.FC = () => {
+  const mainTextColor = theme.palette.text.primary;
+  const disabledColor = "#707070";
   const [value, setValue] = useState("下書き保存");
-  const [color, setColor] = useState("#707070");
-  const draft = () => {
+  const [color, setColor] = useState(disabledColor);
+  function draft() {
     console.log("下書き");
-  };
-  const switchPublish = (event: React.ChangeEvent<HTMLInputElement>) => {
+  }
+  function switchPublish(event: React.ChangeEvent<HTMLInputElement>) {
     const isChecked = event.currentTarget.checked;
     const value = isChecked ? "公開する" : "下書き保存";
-    const color = isChecked ? "#202020" : "#707070";
+    const color = isChecked ? mainTextColor : disabledColor;
     setValue(value);
     setColor(color);
-  };
-  const previousPage = () => {
+  }
+  function previousPage() {
     history.back();
-  };
+  }
 
   return (
     <CustomStickyAppBar>
@@ -55,9 +56,6 @@ export const ThePostsHeader: React.FC = () => {
           fontSize="default"
           color="primary"
         />
-        {/* <LinkWrapper href="/">
-          <KanonCodeLogo />
-        </LinkWrapper> */}
         <Box display="flex" alignItems="center">
           <StyledUseMr color={color}>
             <CustomSwitch onChange={switchPublish} />
