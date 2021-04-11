@@ -40,7 +40,8 @@ const StyledDivInputWrapper = styled("div")(
     border: 2px solid ${theme.palette.primary.main};
   }
   & input {
-    font-size: 14px;
+    font-size: 16px;
+    // transform: scale(0.8);
     height: 35px;
     box-sizing: border-box;
     padding: 8px;
@@ -92,7 +93,7 @@ const StyledListbox = styled(List)(
   max-width: 375px;
   margin: 2px 0 0;
   padding: 0;
-  position: absolute;
+  // position: rel;
   list-style: none;
   background-color: #ffffff;
   overflow: auto;
