@@ -8,6 +8,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import CodeOutlinedIcon from "@material-ui/icons/CodeOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
@@ -99,6 +100,12 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
               <PersonOutlineOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
             <ListItemText secondary="マイページ" />
+          </MenuItem>
+          <MenuItem onClick={() => toPage("/posts/new")}>
+            <StyledListItemIcon>
+              <CodeOutlinedIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="レビュー依頼" />
           </MenuItem>
           <Divider />
           <MenuItem onClick={() => toPage("/dashboard/reviews")}>
