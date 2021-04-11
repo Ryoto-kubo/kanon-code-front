@@ -1,6 +1,7 @@
 import { CommonHead } from "@/components/common/head/index";
 import { ThePostsHeader } from "@/components/common/header/posts";
 import { Toolbar } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
 
@@ -9,7 +10,7 @@ type Props = {
   title: string;
 };
 
-const StyledMain = styled.main`
+const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 
@@ -22,7 +23,9 @@ const LayoutPosts = ({
       <CommonHead title={title} />
       <ThePostsHeader />
       <Toolbar />
-      <StyledMain>{children}</StyledMain>
+      <StyleBoxMain mt={4} component="main">
+        {children}
+      </StyleBoxMain>
     </>
   );
 };
