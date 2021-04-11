@@ -1,5 +1,4 @@
 import "@/aws/cognito/config";
-import { LayoutNoFooter } from "@/layouts/no-footer";
 // import { useRequireLogin } from "@/hooks/useRequireLogin";
 import { SettingLayout } from "@/layouts/setting";
 import Layout from "@/layouts/standard";
@@ -72,12 +71,8 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             <Component {...pageProps} authUser={user} />
           </Layout>
         );
-      case "LayoutNoFooter":
-        return (
-          <LayoutNoFooter title={`Kanon Code | ${title}`}>
-            <Component {...pageProps} authUser={user} />
-          </LayoutNoFooter>
-        );
+      default:
+        return <Component {...pageProps} authUser={user} />;
     }
   };
 

@@ -18,7 +18,7 @@ type Props = {
   authUser: any;
 };
 
-const StyledMain = styled.main`
+const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 const StyledContainer = styled(Container)`
@@ -45,7 +45,7 @@ export const SettingLayout = ({
       {authUser === null && <TheStndardHeader />}
       <Toolbar />
       <StyledContainer>
-        <StyledMain>
+        <StyleBoxMain mt={4} component="main">
           <Heading2 fontSize={20} marginBottom={1}>
             アカウント設定
           </Heading2>
@@ -57,7 +57,7 @@ export const SettingLayout = ({
             />
           </Box>
           {children}
-        </StyledMain>
+        </StyleBoxMain>
       </StyledContainer>
       <TheFooter />
     </>
