@@ -119,7 +119,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
             <StyledListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
-            <ListItemText secondary="アカウント設定" />
+            <ListItemText secondary="設定" />
           </MenuItem>
           <MenuItem onClick={() => signOut()}>
             <StyledListItemIcon>
