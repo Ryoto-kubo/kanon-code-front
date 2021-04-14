@@ -9,6 +9,7 @@ const StyledContainer = styled("div")`
   border-radius: 8px;
   padding-top: 24px;
   margin-bottom: 80px;
+  overflow: hidden;
 `;
 
 export const ContentWrapper: React.FC<Props> = (props) => {
