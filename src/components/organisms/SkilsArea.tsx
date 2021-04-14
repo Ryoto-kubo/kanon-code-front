@@ -1,4 +1,4 @@
-import { Heading2 } from "@/components/atoms/Heading2";
+import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
 import { IconStar } from "@/components/atoms/IconStar";
 import { Box } from "@material-ui/core/";
 import Divider from "@material-ui/core/Divider";
@@ -55,9 +55,9 @@ export const SkilsArea: React.FC<Props> = (props) => {
   };
   return (
     <>
-      <Heading2 fontSize={20} marginBottom={1}>
+      <CustomHeading2 fontSize={24} marginBottom={1}>
         スキル一覧
-      </Heading2>
+      </CustomHeading2>
       <StyledBoxSkilsArea>
         {props.skils.map((el) => (
           <StyledBoxSkil key={uuidv4()}>

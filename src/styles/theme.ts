@@ -1,6 +1,9 @@
 import { createMuiTheme, responsiveFontSizes } from "@material-ui/core";
 const theme = createMuiTheme({
   palette: {
+    common: {
+      black: "#202124",
+    },
     primary: {
       light: "#8e99f3",
       main: "#5C6BC0",
@@ -14,7 +17,7 @@ const theme = createMuiTheme({
       contrastText: "#ffffff",
     },
     text: {
-      primary: "#202020",
+      primary: "#202124",
     },
     error: {
       main: "#ff604f",
@@ -28,6 +31,10 @@ const theme = createMuiTheme({
       // '@media (min-width:600px)': {
       //   fontSize: '32px',
       // },
+    },
+    h2: {
+      fontSize: "20px",
+      fontWeight: "bold",
     },
     button: {
       textTransform: "none",

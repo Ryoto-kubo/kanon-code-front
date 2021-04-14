@@ -1,4 +1,4 @@
-import { Heading2 } from "@/components/atoms/Heading2";
+import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
 import { TheFooter } from "@/components/common/footer/index";
 import { CommonHead } from "@/components/common/head/index";
 import { TheLoggedHeader } from "@/components/common/header/logged";
@@ -24,7 +24,7 @@ const StyleBoxMain = styled(Box)`
 const StyledContainer = styled(Container)`
   width: 100%;
   margin-top: 70px;
-  max-width: 720px;
+  max-width: 1000px;
 `;
 export const SettingLayout = ({
   children,
@@ -46,9 +46,9 @@ export const SettingLayout = ({
       <Toolbar />
       <StyledContainer>
         <StyleBoxMain mt={4} component="main">
-          <Heading2 fontSize={20} marginBottom={1}>
-            アカウント設定
-          </Heading2>
+          <CustomHeading2 fontSize={24} marginBottom={1}>
+            設定
+          </CustomHeading2>
           <Box mb={3}>
             <TabsHeader
               value={router.pathname}

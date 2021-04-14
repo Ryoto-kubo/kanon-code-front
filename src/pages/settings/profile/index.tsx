@@ -1,6 +1,8 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
+import { ContentHeader } from "@/components/molecules/ContentHeader";
 import { FileExChange } from "@/components/molecules/FileExChange";
 import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
+import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { positions } from "@/consts/select-options";
 // import { SettingLayout } from "@/layouts/setting";
 import Box from "@material-ui/core/Box";
@@ -92,6 +94,14 @@ const IndexPage: React.FC<Props> = (props) => {
 
   return (
     <section>
+      <ContentWrapper>
+        <ContentHeader
+          title="プロフィール"
+          description="Kanon Codeを利用する全てのユーザーに公開されます。"
+          fontSize={20}
+          marginBottom={1}
+        />
+      </ContentWrapper>
       <StyledBoxFlex>
         <FileExChange htmlFor="avatar" picture={userInfo.picture} />
         <StyledBoxCalcWidth mb={5}>

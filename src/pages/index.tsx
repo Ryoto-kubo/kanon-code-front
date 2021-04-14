@@ -1,4 +1,4 @@
-import { Heading2 } from "@/components/atoms/Heading2";
+import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
 import { FirstView } from "@/components/organisms/FirstView";
 import { Post } from "@/components/organisms/Post";
 import { CognitoUser } from "@aws-amplify/auth";
@@ -22,9 +22,7 @@ const IndexPage: React.FC<Props> = (props) => {
     <Container>
       {!props.authUser && <FirstView />}
       <Box component="section">
-        <Heading2 fontSize={20} marginBottom={4}>
-          フロント言語
-        </Heading2>
+        <TypoHeading2 color="initial">フロント言語</TypoHeading2>
         <Box mb={4}>
           <Grid spacing={3} container>
             <Grid item xs={12} sm={6} md={6} lg={4}>
