@@ -19,7 +19,7 @@ const StyledTabs = styled(Tabs)`
   margin-top: 16px;
 `;
 const StyledTab = styled(Tab)`
-  min-width: 100px;
+  min-width: 80px;
   font-size: 15px;
   font-weight: bold;
   &:hover {
