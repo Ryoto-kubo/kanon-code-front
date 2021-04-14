@@ -26,11 +26,9 @@ const StyledBox = styled(Box)`
 `;
 const StyledBoxFlexPC = styled(Box)`
   padding: 16px 24px;
-  ${(props) => props.theme.breakpoints.down("sm")} {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 `;
 const StyledBoxFlexMb = styled(Box)`
   ${(props) => props.theme.breakpoints.up("sm")} {
@@ -42,11 +40,10 @@ const StyledBoxFlexMb = styled(Box)`
 const StyledBoxWrapperLabel = styled(Box)`
   color: #5f6368;
   font-size: 12px;
-  flex-basis: 156px;
+  flex-basis: 196px;
   margin-right: 24px;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    width: 156px;
-    font-weight: bold;
+    width: 196px;
   }
 `;
 const StyledBoxWrapperValue = styled(Box)`
