@@ -15,7 +15,7 @@ const StyledHeading2 = styled.h2<
   color: #202020;
 `;
 
-export const Heading2: React.FC<Props> = (props) => {
+export const CustomHeading2: React.FC<Props> = (props) => {
   return (
     <StyledHeading2 fontSize={props.fontSize} marginBottom={props.marginBottom}>
       {props.children}

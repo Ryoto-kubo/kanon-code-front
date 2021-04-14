@@ -1,3 +1,4 @@
+import Divider from "@material-ui/core/Divider";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
 import React from "react";
@@ -15,11 +16,11 @@ type LinkTabProps = {
 };
 
 const StyledTabs = styled(Tabs)`
-  border-bottom: 1px solid #e8e8e8;
+  // border-bottom: 1px solid #e8e8e8;
   margin-top: 16px;
 `;
 const StyledTab = styled(Tab)`
-  min-width: 100px;
+  min-width: 80px;
   font-size: 15px;
   font-weight: bold;
   &:hover {
@@ -56,14 +57,17 @@ export const SettingTabs: React.FC<Props> = (props) => {
   };
 
   return (
-    <StyledTabs
-      value={props.value}
-      onChange={props.onChange}
-      variant="scrollable"
-      indicatorColor="primary"
-      textColor="primary"
-    >
-      {renderLists()}
-    </StyledTabs>
+    <>
+      <StyledTabs
+        value={props.value}
+        onChange={props.onChange}
+        variant="scrollable"
+        indicatorColor="primary"
+        textColor="primary"
+      >
+        {renderLists()}
+      </StyledTabs>
+      <Divider />
+    </>
   );
 };

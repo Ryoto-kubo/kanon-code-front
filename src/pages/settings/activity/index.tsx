@@ -30,7 +30,7 @@ const StyledBoxParagraf = styled(Box)`
 export const getServerSideProps = async () => ({
   props: {
     layout: "SettingLayout",
-    title: "アカウント情報",
+    title: "アクティビティ",
   },
 });
 
