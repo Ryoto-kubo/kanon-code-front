@@ -46,6 +46,7 @@ const StyledBoxWrapperLabel = styled(Box)`
   margin-right: 24px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     width: 156px;
+    font-weight: bold;
   }
 `;
 const StyledBoxWrapperValue = styled(Box)`
