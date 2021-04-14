@@ -1,4 +1,3 @@
-// import { Heading2 } from "@/components/atoms/Heading2";
 import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
 import Box from "@material-ui/core/Box";
 import React from "react";
@@ -12,6 +11,7 @@ type Props = {
 };
 const StyledBox = styled(Box)`
   margin-bottom: 24px;
+  padding: 0 24px;
 `;
 const StyledPDescription = styled("p")`
   margin-bottom: 24px;

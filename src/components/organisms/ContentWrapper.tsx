@@ -5,9 +5,9 @@ type Props = {
   children: React.ReactNode;
 };
 const StyledContainer = styled("div")`
-  border: 1px solid #e8e8e8;
+  border: 1px solid #dfe0e0;
   border-radius: 8px;
-  padding: 24px;
+  padding: 24px 0;
 `;
 
 export const ContentWrapper: React.FC<Props> = (props) => {

@@ -1,6 +1,7 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { ContentHeader } from "@/components/molecules/ContentHeader";
 import { FileExChange } from "@/components/molecules/FileExChange";
+import { ProfileContent } from "@/components/molecules/ProfileContent";
 import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { positions } from "@/consts/select-options";
@@ -39,8 +40,9 @@ const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [settingParams, setSettingParams] = useState({
-    name: "",
-    introduction: "",
+    name: "ryoto kubo",
+    introduction: `フロントエンドエンジニアです。主にNuxtやNextを触っています。
+    個人開発大好きエンジニアです。よろしくお願いします！`,
     amount: 0,
     position: 0,
     githubName: "",
@@ -100,6 +102,16 @@ const IndexPage: React.FC<Props> = (props) => {
           description="Kanon Codeを利用する全てのユーザーに公開されます。"
           fontSize={20}
           marginBottom={1}
+        />
+        <ProfileContent
+          label="名前"
+          value={settingParams.name}
+          isDivider={true}
+        />
+        <ProfileContent
+          label="紹介文"
+          value={settingParams.introduction}
+          isDivider={true}
         />
       </ContentWrapper>
       <StyledBoxFlex>
