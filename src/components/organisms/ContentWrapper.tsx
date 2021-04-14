@@ -7,7 +7,8 @@ type Props = {
 const StyledContainer = styled("div")`
   border: 1px solid #dfe0e0;
   border-radius: 8px;
-  padding: 24px 0;
+  padding-top: 24px;
+  margin-bottom: 80px;
 `;
 
 export const ContentWrapper: React.FC<Props> = (props) => {
