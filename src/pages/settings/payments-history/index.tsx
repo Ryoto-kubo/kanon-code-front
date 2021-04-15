@@ -1,8 +1,8 @@
 import { Heading3 } from "@/components/atoms/Heading3";
-import { IconLaravel } from "@/components/atoms/IconLaravel";
-import { IconNode } from "@/components/atoms/IconNode";
-import { IconVue } from "@/components/atoms/IconVue";
 import { PostHeader } from "@/components/molecules/PostHeader";
+import { IconLaravel } from "@/components/svg/programing/IconLaravel";
+import { IconNode } from "@/components/svg/programing/IconNode";
+import { IconVue } from "@/components/svg/programing/IconVue";
 import { paymentDatas } from "@/mock/payment-datas";
 import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";

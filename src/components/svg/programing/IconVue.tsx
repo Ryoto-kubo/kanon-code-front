@@ -1,5 +1,5 @@
 import React from "react";
-import VueSvg from "../../assets/logo/vue.svg";
+import VueSvg from "../../../assets/logo/vue.svg";
 
 type Props = {
   width: number;

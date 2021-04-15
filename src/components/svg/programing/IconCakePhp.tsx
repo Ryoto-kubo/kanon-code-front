@@ -1,5 +1,5 @@
 import React from "react";
-import CakePhpSvg from "../../assets/logo/cakephp.svg";
+import CakePhpSvg from "../../../assets/logo/cakephp.svg";
 
 type Props = {
   width: number;

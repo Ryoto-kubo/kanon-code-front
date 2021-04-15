@@ -1,4 +1,4 @@
-import { IconWeb } from "@/components/atoms/IconWeb";
+import { IconWeb } from "@/components/svg/materialIcons/IconWeb";
 import theme from "@/styles/theme";
 import Link from "@material-ui/core/Link";
 import React from "react";

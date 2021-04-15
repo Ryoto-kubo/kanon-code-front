@@ -1,5 +1,5 @@
 import React from "react";
-import RubySvg from "../../assets/logo/ruby.svg";
+import RubySvg from "../../../assets/logo//logo/ruby.svg";
 
 type Props = {
   width: number;

@@ -1,5 +1,5 @@
 import React from "react";
-import LaravelSvg from "../../assets/logo/laravel.svg";
+import LaravelSvg from "../../../assets/logo/laravel.svg";
 
 type Props = {
   width: number;

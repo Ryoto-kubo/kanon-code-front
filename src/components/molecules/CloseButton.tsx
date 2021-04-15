@@ -1,5 +1,5 @@
 import { CustomIconButton } from "@/components/atoms/IconButton";
-import { IconClose } from "@/components/atoms/IconClose";
+import { IconClose } from "@/components/svg/materialIcons/IconClose";
 import React from "react";
 
 interface Props {

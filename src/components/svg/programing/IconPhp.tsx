@@ -1,5 +1,5 @@
 import React from "react";
-import PhpSvg from "../../assets/logo/php.svg";
+import PhpSvg from "../../../assets/logo//logo/php.svg";
 
 type Props = {
   width: number;

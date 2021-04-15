@@ -1,11 +1,11 @@
 // import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { IconArrowNext } from "@/components/atoms/IconArrowNext";
 import { ContentHeader } from "@/components/molecules/ContentHeader";
 import { FileExChange } from "@/components/molecules/FileExChange";
 import { ProfileContentFile } from "@/components/molecules/ProfileContentFile";
 import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 // import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
+import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 // import { positions } from "@/consts/select-options";
 // import { SettingLayout } from "@/layouts/setting";
 // import Box from "@material-ui/core/Box";

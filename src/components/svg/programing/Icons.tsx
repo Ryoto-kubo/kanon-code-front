@@ -1,14 +1,14 @@
-import { IconCakePhp } from "@/components/atoms/IconCakePhp";
-import { IconJavaScript } from "@/components/atoms/IconJavaScript";
-import { IconLaravel } from "@/components/atoms/IconLaravel";
-import { IconNext } from "@/components/atoms/IconNext";
-import { IconNode } from "@/components/atoms/IconNode";
-import { IconNuxt } from "@/components/atoms/IconNuxt";
-import { IconPhp } from "@/components/atoms/IconPhp";
-import { IconRails } from "@/components/atoms/IconRails";
-import { IconReact } from "@/components/atoms/IconReact";
-import { IconRuby } from "@/components/atoms/IconRuby";
-import { IconVue } from "@/components/atoms/IconVue";
+import { IconCakePhp } from "@/components/svg/programing/IconCakePhp";
+import { IconJavaScript } from "@/components/svg/programing/IconJavaScript";
+import { IconLaravel } from "@/components/svg/programing/IconLaravel";
+import { IconNext } from "@/components/svg/programing/IconNext";
+import { IconNode } from "@/components/svg/programing/IconNode";
+import { IconNuxt } from "@/components/svg/programing/IconNuxt";
+import { IconPhp } from "@/components/svg/programing/IconPhp";
+import { IconRails } from "@/components/svg/programing/IconRails";
+import { IconReact } from "@/components/svg/programing/IconReact";
+import { IconRuby } from "@/components/svg/programing/IconRuby";
+import { IconVue } from "@/components/svg/programing/IconVue";
 
 export const icons = [
   {

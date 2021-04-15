@@ -1,5 +1,5 @@
 import React from "react";
-import NodeSvg from "../../assets/logo/nodejs-icon.svg";
+import NodeSvg from "../../../assets/logo/nodejs-icon.svg";
 
 type Props = {
   width: number;

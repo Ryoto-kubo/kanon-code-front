@@ -1,4 +1,4 @@
-import { IconGithub } from "@/components/atoms/IconGithub";
+import { IconGithub } from "@/components/svg/materialIcons/IconGithub";
 import Link from "@material-ui/core/Link";
 import React from "react";
 import styled from "styled-components";

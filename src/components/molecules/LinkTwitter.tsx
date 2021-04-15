@@ -1,4 +1,4 @@
-import { IconTwitter } from "@/components/atoms/IconTwitter";
+import { IconTwitter } from "@/components/svg/materialIcons/IconTwitter";
 import Link from "@material-ui/core/Link";
 import React from "react";
 import styled from "styled-components";

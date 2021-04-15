@@ -1,5 +1,5 @@
 import React from "react";
-import NuxtSvg from "../../assets/logo/nuxt.svg";
+import NuxtSvg from "../../../assets/logo//logo/nuxt.svg";
 
 type Props = {
   width: number;

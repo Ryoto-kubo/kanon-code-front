@@ -1,6 +1,6 @@
 import { SocialSignInButton } from "@/components/atoms/SocialSignInButton";
 import React from "react";
-import GoogleLogoSvg from "../../assets/logo/google.svg";
+import GoogleLogoSvg from "../../../../assets/logo/google.svg";
 
 interface Props {
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;

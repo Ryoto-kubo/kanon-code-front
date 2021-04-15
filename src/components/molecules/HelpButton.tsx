@@ -1,9 +1,9 @@
-import { CustomIconButton } from '@/components/atoms/IconButton'
-import Help from '@material-ui/icons/Help'
-import React from 'react'
+import { CustomIconButton } from "@/components/atoms/IconButton";
+import Help from "@material-ui/icons/Help";
+import React from "react";
 
 interface Props {
-  func: React.MouseEventHandler
+  func: React.MouseEventHandler;
 }
 
 export const HelpButton: React.FC<Props> = (props) => {
@@ -11,5 +11,5 @@ export const HelpButton: React.FC<Props> = (props) => {
     <CustomIconButton disableRipple={true} func={props.func}>
       <Help color="primary" fontSize="small" />
     </CustomIconButton>
-  )
-}
+  );
+};
