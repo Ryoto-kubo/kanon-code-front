@@ -1,5 +1,5 @@
 import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
-import { IconStar } from "@/components/atoms/IconStar";
+import { IconStar } from "@/components/svg/materialIcons/IconStar";
 import { Box } from "@material-ui/core/";
 import Divider from "@material-ui/core/Divider";
 import React from "react";

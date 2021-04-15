@@ -1,5 +1,5 @@
-import { IconGithub } from "@/components/atoms/IconGithub";
 import { SocialSignInButton } from "@/components/atoms/SocialSignInButton";
+import { IconGithub } from "@/components/svg/materialIcons/IconGithub";
 import React from "react";
 
 interface Props {

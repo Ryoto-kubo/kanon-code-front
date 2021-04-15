@@ -1,5 +1,5 @@
 import React from "react";
-import NextSvg from "../../assets/logo/next.svg";
+import NextSvg from "../../../assets/logo/next.svg";
 
 type Props = {
   width: number;

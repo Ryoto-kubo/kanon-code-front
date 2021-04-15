@@ -1,5 +1,5 @@
 import React from "react";
-import JavaScriptSvg from "../../assets/logo/javascript.svg";
+import JavaScriptSvg from "../../../assets/logo/javascript.svg";
 
 type Props = {
   width: number;

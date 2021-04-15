@@ -1,7 +1,7 @@
-import { icons } from "@/components/atoms/Icons";
 import { CircleGrid } from "@/components/molecules/CircleGrid";
 import { SearchField } from "@/components/molecules/SearchField";
 import { CircleGrids } from "@/components/organisms/CircleGrids";
+import { icons } from "@/components/svg/programing/Icons";
 import Layout from "@/layouts/standard";
 import { CognitoUser } from "@aws-amplify/auth";
 import { Container } from "@material-ui/core/";

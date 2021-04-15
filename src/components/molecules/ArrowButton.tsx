@@ -1,5 +1,5 @@
-import { IconArrowBack } from "@/components/atoms/IconArrowBack";
 import { CustomIconButton } from "@/components/atoms/IconButton";
+import { IconArrowBack } from "@/components/svg/materialIcons/IconArrowBack";
 import React from "react";
 
 type Props = {

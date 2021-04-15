@@ -1,6 +1,6 @@
-import { IconReact } from "@/components/atoms/IconReact";
 import { PostFooter } from "@/components/molecules/PostFooter";
 import { PostHeader } from "@/components/molecules/PostHeader";
+import { IconReact } from "@/components/svg/programing/IconReact";
 import { Box } from "@material-ui/core/";
 import React from "react";
 import styled from "styled-components";
