@@ -1,11 +1,17 @@
 // import { CustomSolidButton } from "@/components/atoms/SolidButton";
 // import TextField from "@material-ui/core/TextField";
+import { ContentHeader } from '@/components/molecules/ContentHeader'
+import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
 import { ContentWrapper } from '@/components/organisms/ContentWrapper'
 import { NoSettingDataWrapper } from '@/components/organisms/NoSettingDataWrapper'
 // import { CognitoUser } from '@aws-amplify/auth'
+import { skils } from '@/mock/skils'
+// import {yearsExperiences} from '@/consts/select-options'
 import React from 'react'
 import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
 import SkilSvg from '../../../assets/illustration/skil.svg'
+
 const StyledPairSkilSvg = styled(SkilSvg)`
   width: 100%;
   ${(props) => props.theme.breakpoints.up('sm')} {
@@ -43,7 +49,7 @@ export const getServerSideProps = async () => ({
 
 const IndexPage: React.FC = () => {
   const skilsLength = 0
-  // const skilsLength = yearsExperiences.length
+  // const skilsLength = skils.length
   // const [skilParams, setSkilParams] = useState<TypeParams>([
   //   {
   //     language: "",
@@ -128,7 +134,25 @@ const IndexPage: React.FC = () => {
   return (
     <section>
       {skilsLength > 0 ? (
-        <ContentWrapper>hoge</ContentWrapper>
+        <ContentWrapper>
+          <ContentHeader
+            title="スキル"
+            description="マイページにスキル一覧として表示されます。"
+            fontSize={20}
+            marginBottom={1}
+          />
+          {skils.map((el, index) => (
+            <ProfileContentLink
+              key={uuidv4()}
+              label={el.language}
+              value={el.yearsExperiences}
+              isDivider={index === 0 ? false : true}
+              href=""
+            >
+              {''}
+            </ProfileContentLink>
+          ))}
+        </ContentWrapper>
       ) : (
         <NoSettingDataWrapper
           text="スキルを登録する"
@@ -140,16 +164,6 @@ const IndexPage: React.FC = () => {
           <StyledPairSkilSvg />
         </NoSettingDataWrapper>
       )}
-      {/* <Box>
-        <StyledBoxCalcWidth mb={5}>
-          <div>{renderTextFields()}</div>
-          <Box textAlign="center">
-            <CustomSolidButton sizing="medium" onClick={update}>
-              更新する
-            </CustomSolidButton>
-          </Box>
-        </StyledBoxCalcWidth>
-      </Box> */}
     </section>
   )
 }

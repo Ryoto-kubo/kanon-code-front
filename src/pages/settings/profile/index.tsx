@@ -1,24 +1,24 @@
 // import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { ContentHeader } from "@/components/molecules/ContentHeader";
-import { FileExChange } from "@/components/molecules/FileExChange";
-import { ProfileContentFile } from "@/components/molecules/ProfileContentFile";
-import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
+import { ContentHeader } from '@/components/molecules/ContentHeader'
+import { FileExChange } from '@/components/molecules/FileExChange'
+import { ProfileContentFile } from '@/components/molecules/ProfileContentFile'
+import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
 // import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
-import { ContentWrapper } from "@/components/organisms/ContentWrapper";
-import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
+import { ContentWrapper } from '@/components/organisms/ContentWrapper'
+import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext'
 // import { positions } from "@/consts/select-options";
 // import { SettingLayout } from "@/layouts/setting";
 // import Box from "@material-ui/core/Box";
 // import MenuItem from "@material-ui/core/MenuItem";
 // import { CognitoUser } from '@aws-amplify/auth'
-import React, { useState } from "react";
+import React, { useState } from 'react'
 
 // import styled from "styled-components";
 
 type Props = {
-  title: string;
-  authUser: any;
-};
+  title: string
+  authUser: any
+}
 
 // const StyledBoxFlex = styled(Box)`
 //   ${(props) => props.theme.breakpoints.up("sm")} {
@@ -34,30 +34,30 @@ type Props = {
 
 export const getServerSideProps = async () => ({
   props: {
-    layout: "SettingLayout",
-    title: "プロフィール",
+    layout: 'SettingLayout',
+    title: 'プロフィール',
   },
-});
+})
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
+  if (!props.authUser) return <></>
   // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [settingParams, setSettingParams] = useState({
-    name: "ryoto kubo",
+    name: 'ryoto kubo',
     introduction: `フロントエンドエンジニアです。主にNuxtやNextを触っています。
     個人開発大好きエンジニアです。よろしくお願いします！`,
-    amount: "",
-    position: "",
-    githubName: "",
-    twitterName: "",
-    webSite: "",
-  });
-  console.log(setSettingParams);
+    amount: '',
+    position: '',
+    githubName: '',
+    twitterName: '',
+    webSite: '',
+  })
+  console.log(setSettingParams)
 
   const userInfo =
     props.authUser !== null
       ? props.authUser.signInUserSession.idToken.payload
-      : "null";
+      : 'null'
   // const open = Boolean(anchorEl);
   // const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
   //   setAnchorEl(event.currentTarget);
@@ -204,7 +204,7 @@ const IndexPage: React.FC<Props> = (props) => {
         </StyledBoxCalcWidth>
       </StyledBoxFlex> */}
     </section>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage
