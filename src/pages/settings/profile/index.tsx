@@ -1,7 +1,9 @@
 // import { CustomSolidButton } from "@/components/atoms/SolidButton";
+import { IconArrowNext } from "@/components/atoms/IconArrowNext";
 import { ContentHeader } from "@/components/molecules/ContentHeader";
-// import { FileExChange } from "@/components/molecules/FileExChange";
-import { ProfileContent } from "@/components/molecules/ProfileContent";
+import { FileExChange } from "@/components/molecules/FileExChange";
+import { ProfileContentFile } from "@/components/molecules/ProfileContentFile";
+import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 // import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 // import { positions } from "@/consts/select-options";
@@ -10,6 +12,7 @@ import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 // import MenuItem from "@material-ui/core/MenuItem";
 // import { CognitoUser } from '@aws-amplify/auth'
 import React, { useState } from "react";
+
 // import styled from "styled-components";
 
 type Props = {
@@ -51,10 +54,10 @@ const IndexPage: React.FC<Props> = (props) => {
   });
   console.log(setSettingParams);
 
-  // const userInfo =
-  //   props.authUser !== null
-  //     ? props.authUser.signInUserSession.idToken.payload
-  //     : "null";
+  const userInfo =
+    props.authUser !== null
+      ? props.authUser.signInUserSession.idToken.payload
+      : "null";
   // const open = Boolean(anchorEl);
   // const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
   //   setAnchorEl(event.currentTarget);
@@ -105,41 +108,75 @@ const IndexPage: React.FC<Props> = (props) => {
           fontSize={20}
           marginBottom={1}
         />
-        <ProfileContent
+        <ProfileContentFile
+          label="アイコン"
+          description="写真を追加することでアカウントをカスタマイズできます"
+          isDivider={false}
+          htmlFor="avatar"
+        >
+          <FileExChange htmlFor="avatar" picture={userInfo.picture} />
+        </ProfileContentFile>
+        <ProfileContentLink
           label="名前"
           value={settingParams.name}
-          isDivider={false}
-        />
-        <ProfileContent
+          isDivider={true}
+          href="/"
+        >
+          <IconArrowNext fontSize="large" color="action" />
+        </ProfileContentLink>
+        <ProfileContentLink
           label="紹介文"
           value={settingParams.introduction}
           isDivider={true}
-        />
-        <ProfileContent
+          href="/"
+        >
+          <IconArrowNext fontSize="large" color="action" />
+        </ProfileContentLink>
+
+        <ProfileContentLink
           label="ポジション"
           value={settingParams.position}
           isDivider={true}
-        />
-        <ProfileContent
+          href="/"
+        >
+          <IconArrowNext fontSize="large" color="action" />
+        </ProfileContentLink>
+
+        <ProfileContentLink
           label="100文字あたりの設定金額"
           value={settingParams.amount}
           isDivider={true}
-        />
-        <ProfileContent
+          href="/"
+        >
+          <IconArrowNext fontSize="large" color="action" />
+        </ProfileContentLink>
+
+        <ProfileContentLink
           label="Githubユーザーネーム"
           value={settingParams.githubName}
           isDivider={true}
-        />
-        <ProfileContent
+          href="/"
+        >
+          <IconArrowNext fontSize="large" color="action" />
+        </ProfileContentLink>
+
+        <ProfileContentLink
           label="Twitterユーザーネーム"
           value={settingParams.twitterName}
           isDivider={true}
-        />
-        <ProfileContent
+          href="/"
+        >
+          <IconArrowNext fontSize="large" color="action" />
+        </ProfileContentLink>
+
+        <ProfileContentLink
           label="webサイト"
           value={settingParams.webSite}
           isDivider={true}
-        />
+          href="/"
+        >
+          <IconArrowNext fontSize="large" color="action" />
+        </ProfileContentLink>
       </ContentWrapper>
       {/* <StyledBoxFlex>
         <FileExChange htmlFor="avatar" picture={userInfo.picture} />

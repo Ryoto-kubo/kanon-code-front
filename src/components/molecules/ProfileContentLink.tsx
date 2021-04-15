@@ -1,4 +1,3 @@
-import { IconArrowNext } from "@/components/atoms/IconArrowNext";
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import Link from "next/link";
@@ -9,6 +8,7 @@ type Props = {
   label: string;
   value: string;
   isDivider: boolean;
+  href: string;
 };
 const StyledBox = styled(Box)`
   &:hover {
@@ -60,10 +60,10 @@ const StyledBorderWeapper = styled("div")`
   transition: padding-left 0.1s ease-in-out;
 `;
 
-export const ProfileContent: React.FC<Props> = (props) => {
+export const ProfileContentLink: React.FC<Props> = (props) => {
   const value = !props.value ? "未入力です" : props.value;
   return (
-    <Link href="/">
+    <Link href={props.href}>
       <StyledBox className="profile-wrapper">
         {props.isDivider && (
           <StyledBorderWeapper className="move-border">
@@ -75,7 +75,7 @@ export const ProfileContent: React.FC<Props> = (props) => {
             <StyledBoxWrapperLabel>{props.label}</StyledBoxWrapperLabel>
             <StyledBoxWrapperValue>{value}</StyledBoxWrapperValue>
           </StyledBoxFlexMb>
-          <IconArrowNext fontSize="large" color="action" />
+          {props.children}
         </StyledBoxFlexPC>
       </StyledBox>
     </Link>

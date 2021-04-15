@@ -1,41 +1,42 @@
-import { CustomInputLabel } from '@/components/atoms/InuptLabel'
-import { UserImgIcon } from '@/components/atoms/UserImgIcon'
-import theme from '@/styles/theme'
-import Box from '@material-ui/core/Box'
-import { makeStyles } from '@material-ui/core/styles'
-import TextField from '@material-ui/core/TextField'
-import CachedRounded from '@material-ui/icons/CachedRounded'
-import React from 'react'
-import styled from 'styled-components'
+import { CustomInputLabel } from "@/components/atoms/InuptLabel";
+import { UserImgIcon } from "@/components/atoms/UserImgIcon";
+import theme from "@/styles/theme";
+import Box from "@material-ui/core/Box";
+import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import CachedRounded from "@material-ui/icons/CachedRounded";
+import React from "react";
+import styled from "styled-components";
 
 type Props = {
-  htmlFor: string
-  picture: string
-}
+  htmlFor: string;
+  picture: string;
+};
 
 const useStyles = makeStyles(() => ({
   size: {
-    width: '110px',
-    height: '110px',
+    width: "80px",
+    height: "80px",
+    margin: "auto",
   },
-}))
+}));
 
 const StyledBoxHover = styled(Box)`
   transition: all 0.2s;
   &:hover {
     color: ${theme.palette.primary.main};
   }
-`
+`;
 const StyledSpan = styled.span`
   font-size: 13px;
   font-weight: bold;
   &:hover {
     color: ${theme.palette.primary.main};
   }
-`
+`;
 
 export const FileExChange: React.FC<Props> = (props) => {
-  const classes = useStyles()
+  const classes = useStyles();
 
   return (
     <CustomInputLabel htmlFor={props.htmlFor}>
@@ -44,7 +45,7 @@ export const FileExChange: React.FC<Props> = (props) => {
           id={props.htmlFor}
           name={props.htmlFor}
           type="file"
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         />
         <Box>
           <Box mb={1}>
@@ -59,5 +60,5 @@ export const FileExChange: React.FC<Props> = (props) => {
         </Box>
       </div>
     </CustomInputLabel>
-  )
-}
+  );
+};
