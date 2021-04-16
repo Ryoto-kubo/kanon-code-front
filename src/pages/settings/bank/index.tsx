@@ -1,135 +1,165 @@
-import { Heading3 } from "@/components/atoms/Heading3";
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { BaseTextField } from "@/components/atoms/TextField.tsx";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
-import { banks, depositTypes } from "@/consts/banks";
-import theme from "@/styles/theme";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { ContentHeader } from '@/components/molecules/ContentHeader'
+import { ContentWrapper } from '@/components/organisms/ContentWrapper'
+import { NoSettingDataWrapper } from '@/components/organisms/NoSettingDataWrapper'
+import React from 'react'
+import styled from 'styled-components'
+import BankSvg from '../../../assets/illustration/bank.svg'
+// import {bankData} from '@/mock/bank'
 
-type BankParams = {
-  bankCode: string;
-  bankName: string;
-  branchCode: string;
-  branchName: string;
-  depositType: number | undefined;
-  accountNumber: string;
-  accountName: string;
-};
+// type BankParams = {
+//   bankCode: string;
+//   bankName: string;
+//   branchCode: string;
+//   branchName: string;
+//   depositType: number | undefined;
+//   accountNumber: string;
+//   accountName: string;
+// };
 
-const contained = {
-  background: theme.palette.primary.main,
-  color: "#ffffff",
-};
+// const contained = {
+//   background: theme.palette.primary.main,
+//   color: "#ffffff",
+// };
 
-const StyledBoxFlex = styled(Box)`
-  ${(props) => props.theme.breakpoints.up("sm")} {
-    display: flex;
-    align-items: flex-start;
+// const StyledBoxFlex = styled(Box)`
+//   ${(props) => props.theme.breakpoints.up("sm")} {
+//     display: flex;
+//     align-items: flex-start;
+//   }
+// `;
+// const StyledBoxLabel = styled(Box)`
+//   font-weight: bold;
+//   margin-bottom: 16px;
+//   ${(props) => props.theme.breakpoints.up("sm")} {
+//     flex-shrink: 0;
+//     flex-basis: 180px;
+//     margin-bottom: 0px;
+//   }
+// `;
+// const StyledButtonBank = styled(Button)`
+//   font-size: 12px;
+//   padding: 3px 4px;
+//   margin-right: 5px;
+//   margin-bottom: 5px;
+// `;
+const StyledPairBankSvg = styled(BankSvg)`
+  width: 100%;
+  ${(props) => props.theme.breakpoints.up('sm')} {
+    width: 60%;
   }
-`;
-const StyledBoxLabel = styled(Box)`
-  font-weight: bold;
-  margin-bottom: 16px;
-  ${(props) => props.theme.breakpoints.up("sm")} {
-    flex-shrink: 0;
-    flex-basis: 180px;
-    margin-bottom: 0px;
+  ${(props) => props.theme.breakpoints.up('md')} {
+    width: 450px;
   }
-`;
-const StyledButtonBank = styled(Button)`
-  font-size: 12px;
-  padding: 3px 4px;
-  margin-right: 5px;
-  margin-bottom: 5px;
-`;
+`
 
 export const getServerSideProps = async () => ({
   props: {
-    layout: "SettingLayout",
-    title: "お振込先",
+    layout: 'SettingLayout',
+    title: 'お振込先',
   },
-});
+})
 
 const IndexPage: React.FC = () => {
-  const [stateValid, setStateValid] = useState({
-    isBankCode: false,
-    isBankName: false,
-    isBranchCode: false,
-    isBranchName: false,
-    isDepositType: false,
-    isAccountNumber: false,
-    isAccountName: false,
-  });
-  const [bankParams, setBankParams] = useState<BankParams>({
-    bankCode: "",
-    bankName: "",
-    branchCode: "",
-    branchName: "",
-    depositType: undefined,
-    accountNumber: "",
-    accountName: "",
-  });
-  const [bankAlignment, setBankAlignment] = useState<number | null>(null);
-  const [depositAlignment, setDepositAlignment] = useState<number | null>(null);
+  const bankDataLength = 0
+  // const skilsLength = bankData.length
 
-  const changeBankCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const bankCode = e.target.value;
-    setStateValid({ ...stateValid, isBankCode: bankCode.length > 4 });
-    setBankParams({ ...bankParams, bankCode: e.target.value });
-  };
-  const changeBankName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const bankName = e.target.value;
-    setStateValid({ ...stateValid, isBankName: bankName.length > 32 });
-    setBankParams({ ...bankParams, bankName: bankName });
-  };
-  const changeBranchCode = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const branchCode = e.target.value;
-    setStateValid({ ...stateValid, isBranchCode: branchCode.length > 3 });
-    setBankParams({ ...bankParams, branchCode: branchCode });
-  };
-  const changeBranchName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const branchName = e.target.value;
-    setStateValid({ ...stateValid, isBranchName: branchName.length > 32 });
-    setBankParams({ ...bankParams, branchName: branchName });
-  };
-  const changeDepositType = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const depositType = Number(e.currentTarget.value);
-    setDepositAlignment(depositType);
-    setBankParams({ ...bankParams, depositType: depositType });
-  };
-  const changeAccountNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const accountNumber = e.target.value;
-    setStateValid({ ...stateValid, isAccountNumber: accountNumber.length > 8 });
-    setBankParams({ ...bankParams, accountNumber: accountNumber });
-  };
-  const changeAccountName = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const accountName = e.target.value;
-    setStateValid({ ...stateValid, isAccountName: accountName.length > 32 });
-    setBankParams({ ...bankParams, accountName: accountName });
-  };
-  const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    console.log(bankParams);
-  };
-  const setBankCode = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const index = Number(e.currentTarget.value);
-    const bankCode = banks[index].code;
-    const bankName = banks[index].name;
-    setBankAlignment(index);
-    setBankParams({
-      ...bankParams,
-      bankCode: bankCode,
-      bankName: `${bankName}銀行`,
-    });
-    setStateValid({ ...stateValid, isBankCode: false, isBankName: false });
-  };
+  // const [stateValid, setStateValid] = useState({
+  //   isBankCode: false,
+  //   isBankName: false,
+  //   isBranchCode: false,
+  //   isBranchName: false,
+  //   isDepositType: false,
+  //   isAccountNumber: false,
+  //   isAccountName: false,
+  // });
+  // const [bankParams, setBankParams] = useState<BankParams>({
+  //   bankCode: "",
+  //   bankName: "",
+  //   branchCode: "",
+  //   branchName: "",
+  //   depositType: undefined,
+  //   accountNumber: "",
+  //   accountName: "",
+  // });
+  // const [bankAlignment, setBankAlignment] = useState<number | null>(null);
+  // const [depositAlignment, setDepositAlignment] = useState<number | null>(null);
+
+  // const changeBankCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const bankCode = e.target.value;
+  //   setStateValid({ ...stateValid, isBankCode: bankCode.length > 4 });
+  //   setBankParams({ ...bankParams, bankCode: e.target.value });
+  // };
+  // const changeBankName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const bankName = e.target.value;
+  //   setStateValid({ ...stateValid, isBankName: bankName.length > 32 });
+  //   setBankParams({ ...bankParams, bankName: bankName });
+  // };
+  // const changeBranchCode = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const branchCode = e.target.value;
+  //   setStateValid({ ...stateValid, isBranchCode: branchCode.length > 3 });
+  //   setBankParams({ ...bankParams, branchCode: branchCode });
+  // };
+  // const changeBranchName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const branchName = e.target.value;
+  //   setStateValid({ ...stateValid, isBranchName: branchName.length > 32 });
+  //   setBankParams({ ...bankParams, branchName: branchName });
+  // };
+  // const changeDepositType = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   const depositType = Number(e.currentTarget.value);
+  //   setDepositAlignment(depositType);
+  //   setBankParams({ ...bankParams, depositType: depositType });
+  // };
+  // const changeAccountNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const accountNumber = e.target.value;
+  //   setStateValid({ ...stateValid, isAccountNumber: accountNumber.length > 8 });
+  //   setBankParams({ ...bankParams, accountNumber: accountNumber });
+  // };
+  // const changeAccountName = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   const accountName = e.target.value;
+  //   setStateValid({ ...stateValid, isAccountName: accountName.length > 32 });
+  //   setBankParams({ ...bankParams, accountName: accountName });
+  // };
+  // const update = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault();
+  //   console.log(bankParams);
+  // };
+  // const setBankCode = (e: React.MouseEvent<HTMLButtonElement>) => {
+  //   const index = Number(e.currentTarget.value);
+  //   const bankCode = banks[index].code;
+  //   const bankName = banks[index].name;
+  //   setBankAlignment(index);
+  //   setBankParams({
+  //     ...bankParams,
+  //     bankCode: bankCode,
+  //     bankName: `${bankName}銀行`,
+  //   });
+  //   setStateValid({ ...stateValid, isBankCode: false, isBankName: false });
+  // };
 
   return (
     <section>
-      <Box mb={5}>
+      {bankDataLength > 0 ? (
+        <ContentWrapper>
+          <ContentHeader
+            title="お振込先"
+            description="以下の口座に売り上げ金額を振り込むことができます。"
+            fontSize={20}
+            marginBottom={1}
+          />
+        </ContentWrapper>
+      ) : (
+        <NoSettingDataWrapper
+          text="お振込先を登録する"
+          description="売上の振込をするためにはお振込先の登録が必要です。"
+          href="/bank"
+          borderRadius={4}
+          mb={6}
+        >
+          <StyledPairBankSvg />
+        </NoSettingDataWrapper>
+      )}
+
+      {/* <Box mb={5}>
         <Box>
           <Box mb={3}>
             <Heading3 fontSize={18} marginBottom={0}>
@@ -305,9 +335,9 @@ const IndexPage: React.FC = () => {
             </CustomSolidButton>
           </Box>
         </section>
-      </Box>
+      </Box> */}
     </section>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage

@@ -13,14 +13,7 @@ type Props = {
 export const NoSettingDataWrapper: React.FC<Props> = (props) => {
   return (
     <Box mb={props.mb}>
-      <NoSettingData
-        text={props.text}
-        description={props.description}
-        href={props.href}
-        borderRadius={props.borderRadius}
-      >
-        {props.children}
-      </NoSettingData>
+      <NoSettingData {...props}>{props.children}</NoSettingData>
     </Box>
   )
 }
