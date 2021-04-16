@@ -1,55 +1,69 @@
-import { Heading3 } from "@/components/atoms/Heading3";
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import theme from "@/styles/theme";
-import Box from "@material-ui/core/Box";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import { fade } from "@material-ui/core/styles";
-import { CardElement, Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-import React from "react";
-import styled from "styled-components";
+import { ContentHeader } from '@/components/molecules/ContentHeader'
+import { ContentWrapper } from '@/components/organisms/ContentWrapper'
+import { NoSettingDataWrapper } from '@/components/organisms/NoSettingDataWrapper'
+// import { CardElement, Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js'
+import React from 'react'
+import styled from 'styled-components'
+import CreditSvg from '../../../assets/illustration/credit.svg'
 
-const StyledBox = styled(Box)`
+const StyledPairCreditSvg = styled(CreditSvg)`
   width: 100%;
-  margin: auto;
-  margin-bottom: 32px;
-  max-width: 600px;
-  padding: 16px;
-  background: ${fade(theme.palette.primary.main, 0.1)};
-`;
-const StyledBoxBgColorWhite = styled(Box)`
-  background: #ffffff;
-  padding: 10px;
-  border-radius: 4px;
-  margin-bottom: 16px;
-`;
+  ${(props) => props.theme.breakpoints.up('sm')} {
+    width: 60%;
+  }
+  ${(props) => props.theme.breakpoints.up('md')} {
+    width: 450px;
+  }
+`
 
 export const getServerSideProps = async () => ({
   props: {
-    layout: "SettingLayout",
-    title: "カード情報",
+    layout: 'SettingLayout',
+    title: 'カード情報',
   },
-});
+})
 
 const IndexPage: React.FC = () => {
-  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
-  const stripe = loadStripe(stripeKey);
+  const billingAccountLength = 0
+  // const skilsLength = billingAccount.length
+
+  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+  const stripe = loadStripe(stripeKey)
 
   const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-  };
+    event.preventDefault()
+  }
 
   return (
     <section>
-      <Box textAlign="center" mb={5}>
-        <Box mb={3}>
-          <Heading3 fontSize={18} marginBottom={0}>
-            支払いカードの登録
-          </Heading3>
-        </Box>
-        <StyledBox>
-          <StyledBoxBgColorWhite>
+      {billingAccountLength > 0 ? (
+        <ContentWrapper>
+          <ContentHeader
+            title="カード情報"
+            description={`
+                クレジットカード決済については、Stripeを利用しております。
+                <br />
+                この情報は当社では保持せず、決済代行会社であるStripe社で安全に管理されます。
+              `}
+            fontSize={20}
+            marginBottom={1}
+          />
+        </ContentWrapper>
+      ) : (
+        <NoSettingDataWrapper
+          text="クレジットカードを登録する"
+          description={`
+            レビューを開封するにはクレジットカードの登録が必要です。
+          `}
+          href="/billing"
+          borderRadius={4}
+          mb={6}
+        >
+          <StyledPairCreditSvg />
+        </NoSettingDataWrapper>
+      )}
+      {/*
             <Elements stripe={stripe}>
               <CardElement
                 options={{
@@ -68,28 +82,9 @@ const IndexPage: React.FC = () => {
                   },
                 }}
               />
-            </Elements>
-          </StyledBoxBgColorWhite>
-          <List disablePadding>
-            <ListItem disableGutters dense>
-              ・カード情報をStripeにのみ送信・保存されます
-            </ListItem>
-            <ListItem disableGutters dense>
-              ・レビュワーのユーザー名を知ることができます
-            </ListItem>
-            <ListItem disableGutters dense>
-              ・お支払いに関するQ＆A
-            </ListItem>
-          </List>
-        </StyledBox>
-        <Box textAlign="center">
-          <CustomSolidButton sizing="medium" onClick={update}>
-            登録する
-          </CustomSolidButton>
-        </Box>
-      </Box>
+            </Elements> */}
     </section>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage

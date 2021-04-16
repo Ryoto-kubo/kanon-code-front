@@ -156,7 +156,7 @@ const IndexPage: React.FC = () => {
       ) : (
         <NoSettingDataWrapper
           text="スキルを登録する"
-          description="スキルはまだ登録されていません"
+          description="スキルはまだ登録されていません。"
           href="/skils"
           borderRadius={4}
           mb={6}
