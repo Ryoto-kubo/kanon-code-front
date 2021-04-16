@@ -2,7 +2,7 @@ import { ContentHeader } from '@/components/molecules/ContentHeader'
 import { ContentWrapper } from '@/components/organisms/ContentWrapper'
 import { NoSettingDataWrapper } from '@/components/organisms/NoSettingDataWrapper'
 // import { CardElement, Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from '@stripe/stripe-js'
+// import { loadStripe } from '@stripe/stripe-js'
 import React from 'react'
 import styled from 'styled-components'
 import CreditSvg from '../../../assets/illustration/credit.svg'
@@ -28,12 +28,12 @@ const IndexPage: React.FC = () => {
   const billingAccountLength = 0
   // const skilsLength = billingAccount.length
 
-  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
-  const stripe = loadStripe(stripeKey)
+  // const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
+  // const stripe = loadStripe(stripeKey)
 
-  const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
+  // const update = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   event.preventDefault()
+  // }
 
   return (
     <section>
