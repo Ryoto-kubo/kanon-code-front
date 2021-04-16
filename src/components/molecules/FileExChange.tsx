@@ -1,4 +1,3 @@
-// import { CustomInputLabel } from '@/components/atoms/InuptLabel'
 import { UserImgIcon } from '@/components/atoms/UserImgIcon'
 import theme from '@/styles/theme'
 import Box from '@material-ui/core/Box'
@@ -39,7 +38,6 @@ export const FileExChange: React.FC<Props> = (props) => {
   const classes = useStyles()
 
   return (
-    // <CustomInputLabel htmlFor={props.htmlFor}>
     <div>
       <TextField
         id={props.htmlFor}
@@ -59,6 +57,5 @@ export const FileExChange: React.FC<Props> = (props) => {
         </StyledBoxHover>
       </Box>
     </div>
-    // </CustomInputLabel>
   )
 }
