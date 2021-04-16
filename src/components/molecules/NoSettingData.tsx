@@ -12,7 +12,10 @@ type Props = {
 }
 
 const StyledBoxDescription = styled(Box)`
-  font-size: 16px;
+  font-size: 14px;
+  ${(props) => props.theme.breakpoints.up('sm')} {
+    font-size: 16px;
+  }
 `
 
 export const NoSettingData: React.FC<Props> = (props) => {

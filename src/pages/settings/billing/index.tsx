@@ -53,9 +53,9 @@ const IndexPage: React.FC = () => {
       ) : (
         <NoSettingDataWrapper
           text="クレジットカードを登録する"
-          description={`
+          description="
             レビューを開封するにはクレジットカードの登録が必要です。
-          `}
+          "
           href="/billing"
           borderRadius={4}
           mb={6}
