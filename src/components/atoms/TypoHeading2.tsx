@@ -1,16 +1,16 @@
-import Typography from "@material-ui/core/Typography";
-import React from "react";
+import Typography from '@material-ui/core/Typography'
+import React from 'react'
 
 interface Props {
   color:
-    | "initial"
-    | "inherit"
-    | "primary"
-    | "secondary"
-    | "textPrimary"
-    | "textSecondary"
-    | "error"
-    | undefined;
+    | 'initial'
+    | 'inherit'
+    | 'primary'
+    | 'secondary'
+    | 'textPrimary'
+    | 'textSecondary'
+    | 'error'
+    | undefined
 }
 
 export const TypoHeading2: React.FC<Props> = (props) => {
@@ -19,10 +19,10 @@ export const TypoHeading2: React.FC<Props> = (props) => {
       variant="h2"
       component="h2"
       color={props.color}
-      gutterBottom
-      paragraph
+      // gutterBottom
+      // paragraph
     >
       {props.children}
     </Typography>
-  );
-};
+  )
+}

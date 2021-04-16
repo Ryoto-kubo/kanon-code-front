@@ -21,7 +21,9 @@ const StyledPDescription = styled('p')`
 export const ContentHeader: React.FC<Props> = (props) => {
   return (
     <StyledBox>
-      <TypoHeading2 color="initial">{props.title}</TypoHeading2>
+      <Box mb={1}>
+        <TypoHeading2 color="initial">{props.title}</TypoHeading2>
+      </Box>
       <StyledPDescription>{props.description}</StyledPDescription>
     </StyledBox>
   )
