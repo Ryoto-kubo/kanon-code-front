@@ -1,4 +1,5 @@
 import { BackPage } from '@/components/molecules/BackPage'
+import Box from '@material-ui/core/Box'
 import React from 'react'
 
 type Props = {
@@ -17,8 +18,17 @@ type Props = {
     | undefined
 }
 
-export const SettingSkils: React.FC<Props> = (props) => {
+export const SettingForm: React.FC<Props> = (props) => {
   const { linkText, ...backPageProps } = props
 
-  return <BackPage {...backPageProps}>{linkText}</BackPage>
+  return (
+    <Box mb={6}>
+      <Box mb={2}>
+        <Box mb={4}>
+          <BackPage {...backPageProps}>{linkText}</BackPage>
+        </Box>
+        {props.children}
+      </Box>
+    </Box>
+  )
 }
