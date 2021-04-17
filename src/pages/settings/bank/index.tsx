@@ -1,6 +1,9 @@
 import { ContentHeader } from '@/components/molecules/ContentHeader'
+// import { bankData } from '@/mock/bank'
+import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
 import { ContentWrapper } from '@/components/organisms/ContentWrapper'
 import { NoSettingDataWrapper } from '@/components/organisms/NoSettingDataWrapper'
+import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext'
 import React from 'react'
 import styled from 'styled-components'
 import BankSvg from '../../../assets/illustration/bank.svg'
@@ -23,8 +26,8 @@ export const getServerSideProps = async () => ({
 })
 
 const IndexPage: React.FC = () => {
-  const bankDataLength = 0
-  // const skilsLength = bankData.length
+  const bankDataLength = 1
+  // const bankDataLength = bankData.length
 
   return (
     <section>
@@ -36,6 +39,62 @@ const IndexPage: React.FC = () => {
             fontSize={20}
             marginBottom={1}
           />
+          <ProfileContentLink
+            label="銀行コード"
+            value={'0001'}
+            isDivider={false}
+            href="/"
+          >
+            <IconArrowNext fontSize="large" color="action" />
+          </ProfileContentLink>
+          <ProfileContentLink
+            label="銀行名"
+            value={'ゆうちょ銀行'}
+            isDivider={true}
+            href="/"
+          >
+            <IconArrowNext fontSize="large" color="action" />
+          </ProfileContentLink>
+          <ProfileContentLink
+            label="支店コード"
+            value={'003'}
+            isDivider={true}
+            href="/"
+          >
+            <IconArrowNext fontSize="large" color="action" />
+          </ProfileContentLink>
+          <ProfileContentLink
+            label="支店名"
+            value={'りんご支店'}
+            isDivider={true}
+            href="/"
+          >
+            <IconArrowNext fontSize="large" color="action" />
+          </ProfileContentLink>
+          <ProfileContentLink
+            label="預金種類"
+            value={'普通'}
+            isDivider={true}
+            href="/"
+          >
+            <IconArrowNext fontSize="large" color="action" />
+          </ProfileContentLink>
+          <ProfileContentLink
+            label="口座番号"
+            value={'1234567'}
+            isDivider={true}
+            href="/"
+          >
+            <IconArrowNext fontSize="large" color="action" />
+          </ProfileContentLink>
+          <ProfileContentLink
+            label="口座名義（カナ）"
+            value={'カノンコード'}
+            isDivider={true}
+            href="/"
+          >
+            <IconArrowNext fontSize="large" color="action" />
+          </ProfileContentLink>
         </ContentWrapper>
       ) : (
         <NoSettingDataWrapper

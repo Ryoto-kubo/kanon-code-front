@@ -1,1 +1,1 @@
-export const bankData = []
+export const bankData = [{}]
