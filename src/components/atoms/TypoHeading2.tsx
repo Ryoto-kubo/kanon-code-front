@@ -15,13 +15,7 @@ interface Props {
 
 export const TypoHeading2: React.FC<Props> = (props) => {
   return (
-    <Typography
-      variant="h2"
-      component="h2"
-      color={props.color}
-      // gutterBottom
-      // paragraph
-    >
+    <Typography variant="h2" component="h2" color={props.color}>
       {props.children}
     </Typography>
   )
