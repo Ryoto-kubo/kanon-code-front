@@ -15,6 +15,11 @@ type Props = {
   authUser: any
 }
 
+// const StyledBoxBgPrimary = styled(Box)(
+//   ({ theme }) => `
+//   background: ${fade(theme.palette.primary.main, 0.1)};
+// `,
+// )
 const StyledBox = styled(Box)(
   ({ theme }) => `
     width: 100%;
@@ -41,7 +46,10 @@ const IndexPage: React.FC<Props> = (props) => {
   }
 
   return (
-    <SettingLayout title="Kanon Code | スキル" authUser={props.authUser}>
+    <SettingLayout
+      title="Kanon Code | カード情報設定"
+      authUser={props.authUser}
+    >
       <SettingForm
         linkText="クレジット"
         href="/settings/billing"
@@ -51,6 +59,7 @@ const IndexPage: React.FC<Props> = (props) => {
         marginBottom={0}
       >
         <Box textAlign="center">
+          {/* <StyledBoxBgPrimary> */}
           <StyledBox>
             <StyledBoxBgColorWhite>
               <Elements stripe={stripe}>
@@ -85,6 +94,8 @@ const IndexPage: React.FC<Props> = (props) => {
               </ListItem>
             </List>
           </StyledBox>
+          {/* </StyledBoxBgPrimary> */}
+
           <CustomSolidButton sizing="small" onClick={update}>
             登録
           </CustomSolidButton>

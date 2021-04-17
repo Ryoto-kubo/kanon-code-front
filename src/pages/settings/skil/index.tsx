@@ -21,7 +21,7 @@ const StyledPairSkilSvg = styled(SkilSvg)`
 export const getServerSideProps = async () => ({
   props: {
     layout: 'SettingLayout',
-    title: 'スキル設定',
+    title: 'スキル',
   },
 })
 

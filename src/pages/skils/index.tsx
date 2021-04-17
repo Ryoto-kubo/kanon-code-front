@@ -110,7 +110,7 @@ const IndexPage: React.FC<Props> = (props) => {
   }
 
   return (
-    <SettingLayout title="Kanon Code | スキル" authUser={props.authUser}>
+    <SettingLayout title="Kanon Code | スキル設定" authUser={props.authUser}>
       <SettingForm
         linkText="スキル"
         href="/settings/skil"
