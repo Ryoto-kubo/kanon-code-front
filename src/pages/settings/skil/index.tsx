@@ -1,5 +1,3 @@
-// import { CustomSolidButton } from "@/components/atoms/SolidButton";
-// import TextField from "@material-ui/core/TextField";
 import { ContentHeader } from '@/components/molecules/ContentHeader'
 import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
 import { ContentWrapper } from '@/components/organisms/ContentWrapper'

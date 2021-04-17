@@ -39,9 +39,10 @@ const StyledBoxWrapperLabel = styled(Box)`
   font-size: 12px;
   flex-basis: 100%;
   margin-right: 24px;
-  max-width: 196px;
-  min-width: 196px;
+  max-width: 210px;
+  min-width: 60px;
   ${(props) => props.theme.breakpoints.up('sm')} {
+    min-width: 210px;
     width: 100%;
   }
 `
