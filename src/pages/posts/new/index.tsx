@@ -1,43 +1,48 @@
-import { ValidMessage } from '@/components/molecules/ValidMessage'
-import { InputTagWrapper } from '@/components/organisms/InputTagWrapper'
-import LayoutPosts from '@/layouts/posts'
-import Box from '@material-ui/core/Box'
-import Container from '@material-ui/core/Container'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import React, { useState } from 'react'
+import { ValidMessage } from "@/components/molecules/ValidMessage";
+import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
+import { Editor } from "@/components/parts/Editor";
+import LayoutPosts from "@/layouts/posts";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import React, { useState } from "react";
+import styled from "styled-components";
 
 type Params = {
-  title: string
-  tag: string
-  tagList: string[]
-  description: string
-  sourceCode: string
-}
-
+  title: string;
+  tag: string;
+  tagList: string[];
+  description: string;
+  sourceCode: string;
+};
+const StyledBoxEditorWrapper = styled(Box)`
+  box-shadow: 0 3px 10px #c4c4c4;
+  border-radius: 4px;
+`;
 const IndexPage: React.FC = () => {
   const [params, setParams] = useState<Params>({
-    title: '',
-    tag: '',
+    title: "",
+    tag: "",
     tagList: [],
-    description: '',
-    sourceCode: '',
-  })
+    description: "",
+    sourceCode: "",
+  });
   const [stateValid, setStateValid] = useState({
     isValidTitle: false,
     isValidTagList: false,
     isValidDescription: false,
     isValidSourceCode: false,
-  })
+  });
 
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value
-    setStateValid({ ...stateValid, isValidTitle: title.length > 32 })
-    setParams({ ...params, title: title })
-  }
+    const title = e.target.value;
+    setStateValid({ ...stateValid, isValidTitle: title.length > 32 });
+    setParams({ ...params, title: title });
+  };
   const changeTagList = (value: any) => {
-    setParams({ ...params, tagList: value })
-  }
+    setParams({ ...params, tagList: value });
+  };
 
   return (
     <LayoutPosts title="Kanon Code | レビュー依頼">
@@ -49,7 +54,7 @@ const IndexPage: React.FC = () => {
                 id="title"
                 type="text"
                 fullWidth
-                inputProps={{ style: { fontSize: 24, fontWeight: 'bold' } }}
+                inputProps={{ style: { fontSize: 24, fontWeight: "bold" } }}
                 value={params.title}
                 onChange={changeTitle}
                 placeholder="タイトル"
@@ -63,11 +68,16 @@ const IndexPage: React.FC = () => {
             <InputTagWrapper changeTagList={changeTagList} />
           </Box>
           <Box mb={3} className="description-wrapper">
-            <Typography>詳細</Typography>
+            <Box mb={1}>
+              <Typography>詳細</Typography>
+            </Box>
+            <StyledBoxEditorWrapper>
+              <Editor />
+            </StyledBoxEditorWrapper>
           </Box>
         </Box>
       </Container>
     </LayoutPosts>
-  )
-}
-export default IndexPage
+  );
+};
+export default IndexPage;
