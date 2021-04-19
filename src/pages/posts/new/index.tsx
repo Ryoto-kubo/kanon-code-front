@@ -72,7 +72,7 @@ const IndexPage: React.FC = () => {
               <Typography>詳細</Typography>
             </Box>
             <StyledBoxEditorWrapper>
-              <Editor />
+              <Editor value={params.description} />
             </StyledBoxEditorWrapper>
           </Box>
         </Box>
