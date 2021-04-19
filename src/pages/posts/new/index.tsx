@@ -5,9 +5,8 @@ import LayoutPosts from "@/layouts/posts";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
+import marked from "marked";
 import React, { useState } from "react";
-import styled from "styled-components";
 
 type Params = {
   title: string;
@@ -16,10 +15,7 @@ type Params = {
   description: string;
   sourceCode: string;
 };
-const StyledBoxEditorWrapper = styled(Box)`
-  box-shadow: 0 3px 10px #c4c4c4;
-  border-radius: 4px;
-`;
+
 const IndexPage: React.FC = () => {
   const [params, setParams] = useState<Params>({
     title: "",
@@ -43,10 +39,15 @@ const IndexPage: React.FC = () => {
   const changeTagList = (value: any) => {
     setParams({ ...params, tagList: value });
   };
+  const changeDescritption = (value: string) => {
+    console.log(value);
+
+    setParams({ ...params, description: value });
+  };
 
   return (
     <LayoutPosts title="Kanon Code | レビュー依頼">
-      <Container>
+      <Container maxWidth="md">
         <Box component="section">
           <Box mb={3} className="title-wrapper">
             <Box mb={0.5}>
@@ -68,12 +69,17 @@ const IndexPage: React.FC = () => {
             <InputTagWrapper changeTagList={changeTagList} />
           </Box>
           <Box mb={3} className="description-wrapper">
-            <Box mb={1}>
-              <Typography>詳細</Typography>
+            {/* <Box mb={1}>
+              <Typography>コードの説明</Typography>
+            </Box> */}
+            <Box>
+              <Editor onChange={changeDescritption} />
             </Box>
-            <StyledBoxEditorWrapper>
-              <Editor value={params.description} />
-            </StyledBoxEditorWrapper>
+            <div id="body">
+              <span
+                dangerouslySetInnerHTML={{ __html: marked(params.description) }}
+              />
+            </div>
           </Box>
         </Box>
       </Container>
