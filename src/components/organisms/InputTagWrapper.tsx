@@ -163,8 +163,7 @@ export const InputTagWrapper: React.FC<Props> = (props) => {
           {value.map((option, index) => (
             <StyledTag label={option} {...getTagProps({ index })} />
           ))}
-          {/* <TextField {...getInputProps()} placeholder="タグを5つまで入力" /> */}
-          <input {...getInputProps()} placeholder="タグを5つまで入力" />
+          <input {...getInputProps()} placeholder="select up to 5 tags" />
         </StyledDivInputWrapper>
       </Box>
       {groupedOptions.length > 0 ? (

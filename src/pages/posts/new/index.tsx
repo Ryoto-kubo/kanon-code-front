@@ -16,6 +16,13 @@ type Params = {
   sourceCode: string;
 };
 
+// export const getServerSideProps = async () => ({
+//   props: {
+//     layout: "none",
+//     title: "none",
+//   },
+// });
+
 const IndexPage: React.FC = () => {
   const [params, setParams] = useState<Params>({
     title: "",
@@ -58,7 +65,7 @@ const IndexPage: React.FC = () => {
                 inputProps={{ style: { fontSize: 24, fontWeight: "bold" } }}
                 value={params.title}
                 onChange={changeTitle}
-                placeholder="タイトル"
+                placeholder="Title"
               />
             </Box>
             {stateValid.isValidTitle && (
@@ -69,9 +76,6 @@ const IndexPage: React.FC = () => {
             <InputTagWrapper changeTagList={changeTagList} />
           </Box>
           <Box mb={3} className="description-wrapper">
-            {/* <Box mb={1}>
-              <Typography>コードの説明</Typography>
-            </Box> */}
             <Box>
               <Editor onChange={changeDescritption} />
             </Box>
