@@ -1,6 +1,5 @@
 import { EditorButtons } from "@/components/organisms/EditorButtons";
 import Box from "@material-ui/core/Box";
-import EasyMDE from "easymde";
 import "easymde/dist/easymde.min.css";
 import marked from "marked";
 import React, { useState } from "react";
@@ -53,9 +52,9 @@ export const Editor: React.FC<Props> = (props) => {
   //     return import('react-codemirror')
   // }, {ssr: false})
 
-  const [instance, setInstance] = useState<EasyMDE>();
+  const [instance, setInstance] = useState<any>();
 
-  const getInstance = (instance: EasyMDE) => {
+  const getInstance = (instance: any) => {
     setInstance(instance);
   };
   const switchPreview = () => {
@@ -70,16 +69,16 @@ export const Editor: React.FC<Props> = (props) => {
   };
   const insertCodeMde = () => {
     if (!instance) return;
-    // ここでエラーが発生します
-    EasyMDE.toggleCodeBlock(instance);
-    // instance.toggleCodeBlock();
+    instance.toggleCodeBlock();
   };
   const insertLinkMde = () => {
     if (!instance) return;
     instance.drawLink();
   };
-  const insertImageMde = () => {
+  const insertImageMde = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!instance) return;
+    console.log(event.currentTarget.value); // 画像データ
+
     instance.drawImage();
   };
   return (

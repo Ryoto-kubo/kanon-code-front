@@ -1,5 +1,7 @@
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
+import InputLabel from "@material-ui/core/InputLabel";
+import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import CodeOutlinedIcon from "@material-ui/icons/CodeOutlined";
 import LinkIcon from "@material-ui/icons/Link";
@@ -12,7 +14,7 @@ type Props = {
   switchPreview: (event: React.MouseEvent<HTMLButtonElement>) => void;
   insertCodeMde: (event: React.MouseEvent<HTMLButtonElement>) => void;
   insertLinkMde: (event: React.MouseEvent<HTMLButtonElement>) => void;
-  insertImageMde: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  insertImageMde: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 type TooltipProps = {
   title: string;
@@ -110,8 +112,8 @@ export const EditorButtons: React.FC<Props> = (props) => {
           </StyledBoxCircle>
         </StyledIconButton>
       </TooltipWrapper>
-      <TooltipWrapper title="Link" >
-      <StyledIconButton
+      <TooltipWrapper title="Link">
+        <StyledIconButton
           disableFocusRipple
           disableRipple
           onClick={insertLinkMde}
@@ -123,18 +125,27 @@ export const EditorButtons: React.FC<Props> = (props) => {
           </StyledBoxCircle>
         </StyledIconButton>
       </TooltipWrapper>
-      <TooltipWrapper title="Image" >
-      <StyledIconButton
+      <TooltipWrapper title="Image">
+        {/* <StyledIconButton
           disableFocusRipple
           disableRipple
           onClick={insertImageMde}
-        >
+        > */}
+        <InputLabel htmlFor="insert-img-mde">
+          <TextField
+            id="insert-img-mde"
+            type="file"
+            style={{ display: "none" }}
+            onChange={insertImageMde}
+          />
           <StyledBoxCircle>
             <StyledBoxCenter>
               <PanoramaOutlinedIcon />
             </StyledBoxCenter>
           </StyledBoxCircle>
-        </StyledIconButton>
+        </InputLabel>
+
+        {/* </StyledIconButton> */}
       </TooltipWrapper>
     </StyledBox>
   );
