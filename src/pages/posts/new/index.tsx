@@ -5,7 +5,6 @@ import LayoutPosts from "@/layouts/posts";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
-import marked from "marked";
 import React, { useState } from "react";
 
 type Params = {
@@ -16,14 +15,8 @@ type Params = {
   sourceCode: string;
 };
 
-// export const getServerSideProps = async () => ({
-//   props: {
-//     layout: "none",
-//     title: "none",
-//   },
-// });
-
 const IndexPage: React.FC = () => {
+  const [activeStep, setActiveStep] = React.useState(0);
   const [params, setParams] = useState<Params>({
     title: "",
     tag: "",
@@ -37,7 +30,6 @@ const IndexPage: React.FC = () => {
     isValidDescription: false,
     isValidSourceCode: false,
   });
-
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const title = e.target.value;
     setStateValid({ ...stateValid, isValidTitle: title.length > 32 });
@@ -47,8 +39,6 @@ const IndexPage: React.FC = () => {
     setParams({ ...params, tagList: value });
   };
   const changeDescritption = (value: string) => {
-    console.log(value);
-
     setParams({ ...params, description: value });
   };
 
@@ -76,14 +66,12 @@ const IndexPage: React.FC = () => {
             <InputTagWrapper changeTagList={changeTagList} />
           </Box>
           <Box mb={3} className="description-wrapper">
-            <Box>
-              <Editor onChange={changeDescritption} />
-            </Box>
-            <div id="body">
-              <span
-                dangerouslySetInnerHTML={{ __html: marked(params.description) }}
-              />
-            </div>
+            <Editor
+              onChange={changeDescritption}
+              setActiveStep={setActiveStep}
+              description={params.description}
+              activeStep={activeStep}
+            />
           </Box>
         </Box>
       </Container>
