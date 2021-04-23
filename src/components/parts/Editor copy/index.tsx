@@ -1,20 +1,14 @@
-import { EditorButtons } from "@/components/organisms/EditorButtons";
 import Box from "@material-ui/core/Box";
-import EasyMDE from "easymde";
-import "easymde/dist/easymde.min.css";
 import marked from "marked";
-import dynamic from "next/dynamic";
 import React, { useState } from "react";
+import SimpleMDE from "react-simplemde-editor";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import "./editor.scss";
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
+import { EditorButtons } from "./node_modules/@/components/organisms/EditorButtons";
+import "./node_modules/easymde/dist/easymde.min.css";
 
 type Props = {
-  id: string;
-  headerText: string;
   setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   onChange: (value: string) => void | any;
   description: string;
@@ -58,9 +52,9 @@ export const Editor: React.FC<Props> = (props) => {
   //     return import('react-codemirror')
   // }, {ssr: false})
 
-  const [instance, setInstance] = useState<EasyMDE>();
+  const [instance, setInstance] = useState<any>();
 
-  const getInstance = (instance: EasyMDE) => {
+  const getInstance = (instance: any) => {
     setInstance(instance);
   };
   const switchPreview = () => {
@@ -75,19 +69,17 @@ export const Editor: React.FC<Props> = (props) => {
   };
   const insertCodeMde = () => {
     if (!instance) return;
-    EasyMDE.toggleCodeBlock(instance);
-    console.log(EasyMDE);
-    // instance.toggleCodeBlock();
+    instance.toggleCodeBlock();
   };
   const insertLinkMde = () => {
     if (!instance) return;
-    EasyMDE.drawLink(instance);
+    instance.drawLink();
   };
   const insertImageMde = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!instance) return;
     console.log(event.currentTarget.value); // 画像データ
 
-    EasyMDE.drawImage(instance);
+    instance.drawImage();
   };
   return (
     <>
@@ -104,9 +96,9 @@ export const Editor: React.FC<Props> = (props) => {
           slideClassName="slide-childlen"
         >
           <StyledBoxEditorWrapper>
-            <div className="editor-header">{props.headerText}</div>
+            <div className="editor-header">Description</div>
             <SimpleMDE
-              id={props.id}
+              id="editor"
               className="editor"
               getMdeInstance={getInstance}
               options={{
