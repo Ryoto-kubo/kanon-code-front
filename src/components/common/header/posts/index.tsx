@@ -24,7 +24,7 @@ const StyledUseMr = styled(Box)`
   font-weight: bold;
 `;
 
-export const ThePostsHeader: React.FC = () => {
+export const ThePostsHeader: React.FC = React.memo(() => {
   const mainTextColor = theme.palette.text.primary;
   const disabledColor = "#707070";
   const [value, setValue] = useState("下書き保存");
@@ -68,4 +68,4 @@ export const ThePostsHeader: React.FC = () => {
       </StyledBox>
     </CustomStickyAppBar>
   );
-};
+});

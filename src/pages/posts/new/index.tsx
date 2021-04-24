@@ -1,29 +1,68 @@
-import { ValidMessage } from "@/components/molecules/ValidMessage";
+import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
+import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
+import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
-import { Editor } from "@/components/parts/Editor";
 import LayoutPosts from "@/layouts/posts";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import TextField from "@material-ui/core/TextField";
-import marked from "marked";
-import React, { useState } from "react";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
+import dynamic from "next/dynamic";
+import React, { useCallback, useState } from "react";
+import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
+import "./style.scss";
 
-type Params = {
-  title: string;
-  tag: string;
-  tagList: string[];
-  description: string;
-  sourceCode: string;
-};
+const Editor = dynamic(
+  () => {
+    const promise = import("@/components/parts/Editor").then((r) => r.Editor);
+    return promise;
+  },
+  { ssr: false }
+);
 
+const StyledContainer = styled(Container)`
+  max-width: 1200px;
+`;
+const StyledBoxFlex = styled(Box)`
+  display: block;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+const StyledBoxInputGroupWrapper = styled(Box)`
+  margin-bottom: 16px;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    margin-bottom: 0px;
+    margin-right: 24px;
+    width: 30%;
+  }
+`;
+const StyledBoxInputWrapper = styled(Box)`
+  display: flex;
+  align-items: center;
+`;
+const StyledBoxCordEditorWrapper = styled(Box)`
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    width: 70%;
+  }
+`;
 const IndexPage: React.FC = () => {
-  const [params, setParams] = useState<Params>({
-    title: "",
-    tag: "",
-    tagList: [],
-    description: "",
-    sourceCode: "",
-  });
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [sourceCode, setSourceCode] = React.useState("");
+  const [tagList, setTagList] = useState<any[]>([]);
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [inputFileNameLists, setInputFileNameLists] = React.useState([
+    {
+      key: uuidv4(),
+      isChecked: false,
+      value: "",
+      sourceCode: "",
+    },
+  ]);
   const [stateValid, setStateValid] = useState({
     isValidTitle: false,
     isValidTagList: false,
@@ -31,58 +70,188 @@ const IndexPage: React.FC = () => {
     isValidSourceCode: false,
   });
 
-  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value;
-    setStateValid({ ...stateValid, isValidTitle: title.length > 32 });
-    setParams({ ...params, title: title });
+  const changeTitle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      const value = e.target.value;
+      setStateValid({ ...stateValid, isValidTitle: value.length > 32 });
+      setTitle(value);
+    },
+    [title]
+  );
+  const changeTagList = useCallback(
+    (values: string[]): void => {
+      setTagList(values);
+    },
+    [tagList]
+  );
+  const changeDescritption = useCallback(
+    (value: string): void => {
+      setDescription(value);
+    },
+    [description]
+  );
+  const changeSourceCode = useCallback(
+    (sourceCode: string): void => {
+      const updateSourceCode = sourceCode;
+      setSourceCode(updateSourceCode);
+      updateInputFileNameLists("sourceCode", updateSourceCode, currentIndex);
+    },
+    [sourceCode]
+  );
+  const changeActiveStep = useCallback(
+    (value: number): void => {
+      setActiveStep(value);
+    },
+    [activeStep]
+  );
+  const addListsItem = (): void => {
+    setInputFileNameLists([
+      ...inputFileNameLists,
+      {
+        key: uuidv4(),
+        isChecked: false,
+        value: "",
+        sourceCode: "",
+      },
+    ]);
   };
-  const changeTagList = (value: any) => {
-    setParams({ ...params, tagList: value });
+  const deleteListsItem = (key: string, index: number): void => {
+    const newLists = inputFileNameLists.filter((el) => el.key !== key);
+    setCurrentIndex(index);
+    setInputFileNameLists(newLists);
   };
-  const changeDescritption = (value: string) => {
-    console.log(value);
+  const cnangeFileName = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const value = event.target.value;
+    setCurrentIndex(index);
+    updateInputFileNameLists("value", value, index);
+  };
+  const changeIsChecked = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const isChecked = event.target.checked;
+    updateInputFileNameLists("isChecked", isChecked, index);
+  };
+  const updateInputFileNameLists = (key: string, value: any, index: number) => {
+    console.log(index, "index");
+    const currentItem = inputFileNameLists[index];
+    const newFileItem = { ...currentItem, [key]: value };
+    const newInputFileNameLists = inputFileNameLists.slice();
+    newInputFileNameLists[index] = newFileItem;
+    setInputFileNameLists(newInputFileNameLists);
+  };
+  const onFocusGetIndex = (index: number) => {
+    const currentItem = inputFileNameLists[index];
+    const sourceCode = currentItem.sourceCode;
+    const updateSourceCode = sourceCode;
 
-    setParams({ ...params, description: value });
+    setCurrentIndex(index);
+    setSourceCode(updateSourceCode);
+    updateInputFileNameLists("sourceCode", updateSourceCode, index);
+  };
+  const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
+    console.log(event);
+
+    setCurrentIndex(index);
+    onFocusGetIndex(index);
+  };
+
+  const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(event);
   };
 
   return (
     <LayoutPosts title="Kanon Code | レビュー依頼">
-      <Container maxWidth="md">
+      <StyledContainer>
         <Box component="section">
           <Box mb={3} className="title-wrapper">
-            <Box mb={0.5}>
-              <TextField
-                id="title"
-                type="text"
-                fullWidth
-                inputProps={{ style: { fontSize: 24, fontWeight: "bold" } }}
-                value={params.title}
-                onChange={changeTitle}
-                placeholder="タイトル"
-              />
-            </Box>
-            {stateValid.isValidTitle && (
-              <ValidMessage validText="32文字以下で入力してください" />
-            )}
+            <InputPostTitleWrapper
+              title={title}
+              onChange={changeTitle}
+              placeholder="Title"
+              isValidTitle={stateValid.isValidTitle}
+            />
           </Box>
           <Box mb={3} className="tag-list-wrapper">
             <InputTagWrapper changeTagList={changeTagList} />
           </Box>
           <Box mb={3} className="description-wrapper">
-            {/* <Box mb={1}>
-              <Typography>コードの説明</Typography>
-            </Box> */}
-            <Box>
-              <Editor onChange={changeDescritption} />
-            </Box>
-            <div id="body">
-              <span
-                dangerouslySetInnerHTML={{ __html: marked(params.description) }}
-              />
-            </div>
+            <Editor
+              id="editor"
+              headerText="Description"
+              onChange={changeDescritption}
+              changeActiveStep={changeActiveStep}
+              description={description}
+              activeStep={activeStep}
+            />
+          </Box>
+          <Box mb={3} className="source-code-wrapper">
+            <StyledBoxFlex>
+              <StyledBoxInputGroupWrapper>
+                <Box className="github-wrapper" mb={1}>
+                  <Box mb={1}>
+                    <LinkGithubButton onClick={linkOnGithub} />
+                  </Box>
+                  <p className="notification">
+                    ※
+                    Githubに連携するとディレクトリ構成の中からファイルを選択できるようになります。
+                  </p>
+                </Box>
+                <Box className="input-wrapper">
+                  {inputFileNameLists.map((el, index) => (
+                    <StyledBoxInputWrapper mb={1.5} key={el.key}>
+                      <TextFieldWithCheckBox
+                        index={index}
+                        listLength={inputFileNameLists.length}
+                        isChecked={el.isChecked}
+                        value={el.value}
+                        variant="outlined"
+                        size="small"
+                        onClick={() => addListsItem()}
+                        onDelete={() => deleteListsItem(el.key, index)}
+                        onCnangeFileName={(event) =>
+                          cnangeFileName(event, index)
+                        }
+                        onChangeIsChecked={(event) =>
+                          changeIsChecked(event, index)
+                        }
+                        onFocusGetIndex={() => onFocusGetIndex(index)}
+                      />
+                    </StyledBoxInputWrapper>
+                  ))}
+                </Box>
+              </StyledBoxInputGroupWrapper>
+              <StyledBoxCordEditorWrapper>
+                {inputFileNameLists.length > 0 && (
+                  <Tabs
+                    value={currentIndex}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="scrollable"
+                    scrollButtons={"off"}
+                  >
+                    {inputFileNameLists.map((el) => (
+                      <Tab label={el.value} key={el.key} />
+                    ))}
+                  </Tabs>
+                )}
+                <Editor
+                  id="cord-editor"
+                  headerText="Source Code"
+                  onChange={changeSourceCode}
+                  changeActiveStep={changeActiveStep}
+                  description={sourceCode}
+                  activeStep={activeStep}
+                />
+              </StyledBoxCordEditorWrapper>
+            </StyledBoxFlex>
           </Box>
         </Box>
-      </Container>
+      </StyledContainer>
     </LayoutPosts>
   );
 };

@@ -8,10 +8,8 @@ interface Props {
 
 export const LinkGithubButton: React.FC<Props> = (props) => {
   return (
-    <>
-      <SocialSignInButton text="Githubと連携する" onClick={props.onClick}>
-        <IconGithub fontSize="small" />
-      </SocialSignInButton>
-    </>
+    <SocialSignInButton text="Githubと連携する" onClick={props.onClick}>
+      <IconGithub fontSize="small" />
+    </SocialSignInButton>
   );
 };

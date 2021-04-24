@@ -1,21 +1,15 @@
 import { EditorButtons } from "@/components/organisms/EditorButtons";
 import Box from "@material-ui/core/Box";
-import EasyMDE from "easymde";
-import "easymde/dist/easymde.min.css";
 import marked from "marked";
-import dynamic from "next/dynamic";
 import React, { useState } from "react";
+import SimpleMDE from "react-simplemde-editor";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import "./editor.scss";
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
+import "./node_modules/easymde/dist/easymde.min.css";
 
 type Props = {
-  id: string;
-  headerText: string;
-  changeActiveStep: (value: number) => void;
+  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
   onChange: (value: string) => void | any;
   description: string;
   activeStep: number;
@@ -48,11 +42,19 @@ const StyledBoxEditorWrapper = styled(Box)`
 `;
 
 export const Editor: React.FC<Props> = (props) => {
-  // export const Editor: React.FC<Props> = React.memo((props) => {
-  const [instance, setInstance] = useState<EasyMDE>();
-  console.log(props.description);
+  //   const CodeMirror = dynamic(() => {
+  //     import('codemirror/mode/css/css')
+  //     import('../../../../node_modules/codemirror/mode/xml/xml.js')
+  //     import('codemirror/mode/javascript/javascript')
+  //     import('codemirror/mode/css/css')
+  //     import('codemirror/mode/markdown/markdown')
+  //     import('codemirror/theme/material-ocean.css')
+  //     return import('react-codemirror')
+  // }, {ssr: false})
 
-  const getInstance = (instance: EasyMDE) => {
+  const [instance, setInstance] = useState<any>();
+
+  const getInstance = (instance: any) => {
     setInstance(instance);
   };
   const switchPreview = () => {
@@ -60,24 +62,24 @@ export const Editor: React.FC<Props> = (props) => {
     const SHOW_EDITOR = 0;
     const SHOW_PREVIEW = 1;
     if (props.activeStep === SHOW_PREVIEW) {
-      props.changeActiveStep(SHOW_EDITOR);
+      props.setActiveStep(SHOW_EDITOR);
     } else if (props.activeStep === SHOW_EDITOR) {
-      props.changeActiveStep(SHOW_PREVIEW);
+      props.setActiveStep(SHOW_PREVIEW);
     }
   };
   const insertCodeMde = () => {
     if (!instance) return;
-    EasyMDE.toggleCodeBlock(instance);
+    instance.toggleCodeBlock();
   };
   const insertLinkMde = () => {
     if (!instance) return;
-    EasyMDE.drawLink(instance);
+    instance.drawLink();
   };
   const insertImageMde = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!instance) return;
     console.log(event.currentTarget.value); // 画像データ
 
-    EasyMDE.drawImage(instance);
+    instance.drawImage();
   };
   return (
     <>
@@ -94,9 +96,9 @@ export const Editor: React.FC<Props> = (props) => {
           slideClassName="slide-childlen"
         >
           <StyledBoxEditorWrapper>
-            <div className="editor-header">{props.headerText}</div>
+            <div className="editor-header">Description</div>
             <SimpleMDE
-              id={props.id}
+              id="editor"
               className="editor"
               getMdeInstance={getInstance}
               options={{
@@ -109,7 +111,6 @@ export const Editor: React.FC<Props> = (props) => {
                 lineWrapping: false,
               }}
               onChange={props.onChange}
-              value={props.description}
             />
           </StyledBoxEditorWrapper>
           <StyledBoxEditorWrapper>

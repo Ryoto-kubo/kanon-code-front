@@ -130,7 +130,7 @@ const StyledListbox = styled(List)(
 `
 );
 
-export const InputTagWrapper: React.FC<Props> = (props) => {
+export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
   const {
     getRootProps,
     getInputProps,
@@ -147,7 +147,7 @@ export const InputTagWrapper: React.FC<Props> = (props) => {
     options: suggestionWords,
     freeSolo: true,
     getOptionLabel: (option) => option,
-    onChange: (event: React.ChangeEvent<{}>, value: any) => {
+    onChange: (event: React.ChangeEvent<{}>, value: string[]) => {
       console.log(event);
       props.changeTagList(value);
     },
@@ -163,8 +163,7 @@ export const InputTagWrapper: React.FC<Props> = (props) => {
           {value.map((option, index) => (
             <StyledTag label={option} {...getTagProps({ index })} />
           ))}
-          {/* <TextField {...getInputProps()} placeholder="タグを5つまで入力" /> */}
-          <input {...getInputProps()} placeholder="タグを5つまで入力" />
+          <input {...getInputProps()} placeholder="select up to 5 tags" />
         </StyledDivInputWrapper>
       </Box>
       {groupedOptions.length > 0 ? (
@@ -180,4 +179,4 @@ export const InputTagWrapper: React.FC<Props> = (props) => {
     </>
     // </Box>
   );
-};
+});
