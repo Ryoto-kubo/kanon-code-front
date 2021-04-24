@@ -1,3 +1,4 @@
+import { EditorButtons } from "@/components/organisms/EditorButtons";
 import Box from "@material-ui/core/Box";
 import marked from "marked";
 import React, { useState } from "react";
@@ -5,7 +6,6 @@ import SimpleMDE from "react-simplemde-editor";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import "./editor.scss";
-import { EditorButtons } from "./node_modules/@/components/organisms/EditorButtons";
 import "./node_modules/easymde/dist/easymde.min.css";
 
 type Props = {
