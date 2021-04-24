@@ -126,11 +126,6 @@ export const EditorButtons: React.FC<Props> = (props) => {
         </StyledIconButton>
       </TooltipWrapper>
       <TooltipWrapper title="Image">
-        {/* <StyledIconButton
-          disableFocusRipple
-          disableRipple
-          onClick={insertImageMde}
-        > */}
         <InputLabel htmlFor="insert-img-mde">
           <TextField
             id="insert-img-mde"
@@ -144,8 +139,6 @@ export const EditorButtons: React.FC<Props> = (props) => {
             </StyledBoxCenter>
           </StyledBoxCircle>
         </InputLabel>
-
-        {/* </StyledIconButton> */}
       </TooltipWrapper>
     </StyledBox>
   );

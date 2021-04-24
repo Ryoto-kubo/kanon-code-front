@@ -15,7 +15,7 @@ const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
 type Props = {
   id: string;
   headerText: string;
-  setActiveStep: React.Dispatch<React.SetStateAction<number>>;
+  changeActiveStep: (value: number) => void;
   onChange: (value: string) => void | any;
   description: string;
   activeStep: number;
@@ -48,17 +48,9 @@ const StyledBoxEditorWrapper = styled(Box)`
 `;
 
 export const Editor: React.FC<Props> = (props) => {
-  //   const CodeMirror = dynamic(() => {
-  //     import('codemirror/mode/css/css')
-  //     import('../../../../node_modules/codemirror/mode/xml/xml.js')
-  //     import('codemirror/mode/javascript/javascript')
-  //     import('codemirror/mode/css/css')
-  //     import('codemirror/mode/markdown/markdown')
-  //     import('codemirror/theme/material-ocean.css')
-  //     return import('react-codemirror')
-  // }, {ssr: false})
-
+  // export const Editor: React.FC<Props> = React.memo((props) => {
   const [instance, setInstance] = useState<EasyMDE>();
+  console.log(props.description);
 
   const getInstance = (instance: EasyMDE) => {
     setInstance(instance);
@@ -68,16 +60,14 @@ export const Editor: React.FC<Props> = (props) => {
     const SHOW_EDITOR = 0;
     const SHOW_PREVIEW = 1;
     if (props.activeStep === SHOW_PREVIEW) {
-      props.setActiveStep(SHOW_EDITOR);
+      props.changeActiveStep(SHOW_EDITOR);
     } else if (props.activeStep === SHOW_EDITOR) {
-      props.setActiveStep(SHOW_PREVIEW);
+      props.changeActiveStep(SHOW_PREVIEW);
     }
   };
   const insertCodeMde = () => {
     if (!instance) return;
     EasyMDE.toggleCodeBlock(instance);
-    console.log(EasyMDE);
-    // instance.toggleCodeBlock();
   };
   const insertLinkMde = () => {
     if (!instance) return;
@@ -119,6 +109,7 @@ export const Editor: React.FC<Props> = (props) => {
                 lineWrapping: false,
               }}
               onChange={props.onChange}
+              value={props.description}
             />
           </StyledBoxEditorWrapper>
           <StyledBoxEditorWrapper>

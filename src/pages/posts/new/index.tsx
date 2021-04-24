@@ -1,29 +1,26 @@
 import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
+import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
+import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
-// import { Editor } from "@/components/parts/Editor";
 import LayoutPosts from "@/layouts/posts";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-import IconButton from "@material-ui/core/IconButton";
-import TextField from "@material-ui/core/TextField";
-import AddOutlinedIcon from "@material-ui/icons/AddOutlined";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
+import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
+
 const Editor = dynamic(
-  () => import("@/components/parts/Editor").then((module) => module.Editor),
+  () => {
+    const promise = import("@/components/parts/Editor").then((r) => r.Editor);
+    return promise;
+  },
   { ssr: false }
 );
 
-type Params = {
-  title: string;
-  tag: string;
-  tagList: string[];
-  description: string;
-  sourceCode: string;
-};
 const StyledContainer = styled(Container)`
   max-width: 1200px;
 `;
@@ -46,41 +43,122 @@ const StyledBoxInputWrapper = styled(Box)`
   display: flex;
   align-items: center;
 `;
-const StyledIconButton = styled(IconButton)`
-  width: 30px;
-  height: 30px;
-`;
 const StyledBoxCordEditorWrapper = styled(Box)`
   ${(props) => props.theme.breakpoints.up("sm")} {
     width: 70%;
   }
 `;
 const IndexPage: React.FC = () => {
+  const [title, setTitle] = React.useState("");
+  const [description, setDescription] = React.useState("");
+  const [sourceCode, setSourceCode] = React.useState("");
+  const [tagList, setTagList] = useState<any[]>([]);
   const [activeStep, setActiveStep] = React.useState(0);
-  const [params, setParams] = useState<Params>({
-    title: "",
-    tag: "",
-    tagList: [],
-    description: "",
-    sourceCode: "",
-  });
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [inputFileNameLists, setInputFileNameLists] = React.useState([
+    {
+      key: uuidv4(),
+      isChecked: false,
+      value: "",
+      sourceCode: "",
+    },
+  ]);
   const [stateValid, setStateValid] = useState({
     isValidTitle: false,
     isValidTagList: false,
     isValidDescription: false,
     isValidSourceCode: false,
   });
-  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const title = e.target.value;
-    setStateValid({ ...stateValid, isValidTitle: title.length > 32 });
-    setParams({ ...params, title: title });
+
+  const changeTitle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      const value = e.target.value;
+      setStateValid({ ...stateValid, isValidTitle: value.length > 32 });
+      setTitle(value);
+    },
+    [title]
+  );
+  const changeTagList = useCallback(
+    (values: string[]): void => {
+      setTagList(values);
+    },
+    [tagList]
+  );
+  const changeDescritption = useCallback(
+    (value: string): void => {
+      setDescription(value);
+    },
+    [description]
+  );
+  const changeSourceCode = useCallback(
+    (sourceCode: string): void => {
+      const updateSourceCode = sourceCode;
+      setSourceCode(updateSourceCode);
+      updateInputFileNameLists("sourceCode", updateSourceCode, currentIndex);
+    },
+    [sourceCode]
+  );
+  const changeActiveStep = useCallback(
+    (value: number): void => {
+      setActiveStep(value);
+    },
+    [activeStep]
+  );
+  const addListsItem = (): void => {
+    setInputFileNameLists([
+      ...inputFileNameLists,
+      {
+        key: uuidv4(),
+        isChecked: false,
+        value: "",
+        sourceCode: "",
+      },
+    ]);
   };
-  const changeTagList = (value: any) => {
-    setParams({ ...params, tagList: value });
+  const deleteListsItem = (key: string, index: number): void => {
+    const newLists = inputFileNameLists.filter((el) => el.key !== key);
+    setCurrentIndex(index);
+    setInputFileNameLists(newLists);
   };
-  const changeDescritption = (value: string) => {
-    setParams({ ...params, description: value });
+  const cnangeFileName = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const value = event.target.value;
+    setCurrentIndex(index);
+    updateInputFileNameLists("value", value, index);
   };
+  const changeIsChecked = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const isChecked = event.target.checked;
+    updateInputFileNameLists("isChecked", isChecked, index);
+  };
+  const updateInputFileNameLists = (key: string, value: any, index: number) => {
+    console.log(index, "index");
+    const currentItem = inputFileNameLists[index];
+    const newFileItem = { ...currentItem, [key]: value };
+    const newInputFileNameLists = inputFileNameLists.slice();
+    newInputFileNameLists[index] = newFileItem;
+    setInputFileNameLists(newInputFileNameLists);
+  };
+  const onFocusGetIndex = (index: number) => {
+    const currentItem = inputFileNameLists[index];
+    const sourceCode = currentItem.sourceCode;
+    const updateSourceCode = sourceCode;
+
+    setCurrentIndex(index);
+    setSourceCode(updateSourceCode);
+    updateInputFileNameLists("sourceCode", updateSourceCode, index);
+  };
+  const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
+    console.log(event);
+
+    setCurrentIndex(index);
+    onFocusGetIndex(index);
+  };
+
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);
   };
@@ -90,20 +168,12 @@ const IndexPage: React.FC = () => {
       <StyledContainer>
         <Box component="section">
           <Box mb={3} className="title-wrapper">
-            <Box mb={0.5}>
-              <TextField
-                id="title"
-                type="text"
-                fullWidth
-                inputProps={{ style: { fontSize: 24, fontWeight: "bold" } }}
-                value={params.title}
-                onChange={changeTitle}
-                placeholder="Title"
-              />
-            </Box>
-            {stateValid.isValidTitle && (
-              <ValidMessage validText="32文字以下で入力してください" />
-            )}
+            <InputPostTitleWrapper
+              title={title}
+              onChange={changeTitle}
+              placeholder="Title"
+              isValidTitle={stateValid.isValidTitle}
+            />
           </Box>
           <Box mb={3} className="tag-list-wrapper">
             <InputTagWrapper changeTagList={changeTagList} />
@@ -113,8 +183,8 @@ const IndexPage: React.FC = () => {
               id="editor"
               headerText="Description"
               onChange={changeDescritption}
-              setActiveStep={setActiveStep}
-              description={params.description}
+              changeActiveStep={changeActiveStep}
+              description={description}
               activeStep={activeStep}
             />
           </Box>
@@ -131,39 +201,50 @@ const IndexPage: React.FC = () => {
                   </p>
                 </Box>
                 <Box className="input-wrapper">
-                  <StyledBoxInputWrapper mb={1.5}>
-                    <Box mr={1} width="100%">
-                      <TextField variant="outlined" size="small" fullWidth />
-                    </Box>
-                    <StyledIconButton color="primary">
-                      <AddOutlinedIcon />
-                    </StyledIconButton>
-                  </StyledBoxInputWrapper>
-                  <StyledBoxInputWrapper mb={1.5}>
-                    <Box mr={1} width="100%">
-                      <TextField variant="outlined" size="small" fullWidth />
-                    </Box>
-                    <StyledIconButton color="primary">
-                      <AddOutlinedIcon />
-                    </StyledIconButton>
-                  </StyledBoxInputWrapper>
-                  <StyledBoxInputWrapper mb={1.5}>
-                    <Box mr={1} width="100%">
-                      <TextField variant="outlined" size="small" fullWidth />
-                    </Box>
-                    <StyledIconButton color="primary">
-                      <AddOutlinedIcon />
-                    </StyledIconButton>
-                  </StyledBoxInputWrapper>
+                  {inputFileNameLists.map((el, index) => (
+                    <StyledBoxInputWrapper mb={1.5} key={el.key}>
+                      <TextFieldWithCheckBox
+                        index={index}
+                        listLength={inputFileNameLists.length}
+                        isChecked={el.isChecked}
+                        value={el.value}
+                        variant="outlined"
+                        size="small"
+                        onClick={() => addListsItem()}
+                        onDelete={() => deleteListsItem(el.key, index)}
+                        onCnangeFileName={(event) =>
+                          cnangeFileName(event, index)
+                        }
+                        onChangeIsChecked={(event) =>
+                          changeIsChecked(event, index)
+                        }
+                        onFocusGetIndex={() => onFocusGetIndex(index)}
+                      />
+                    </StyledBoxInputWrapper>
+                  ))}
                 </Box>
               </StyledBoxInputGroupWrapper>
               <StyledBoxCordEditorWrapper>
+                {inputFileNameLists.length > 0 && (
+                  <Tabs
+                    value={currentIndex}
+                    onChange={handleChange}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="scrollable"
+                    scrollButtons={"off"}
+                  >
+                    {inputFileNameLists.map((el) => (
+                      <Tab label={el.value} key={el.key} />
+                    ))}
+                  </Tabs>
+                )}
                 <Editor
                   id="cord-editor"
                   headerText="Source Code"
-                  onChange={changeDescritption}
-                  setActiveStep={setActiveStep}
-                  description={params.description}
+                  onChange={changeSourceCode}
+                  changeActiveStep={changeActiveStep}
+                  description={sourceCode}
                   activeStep={activeStep}
                 />
               </StyledBoxCordEditorWrapper>

@@ -130,7 +130,7 @@ const StyledListbox = styled(List)(
 `
 );
 
-export const InputTagWrapper: React.FC<Props> = (props) => {
+export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
   const {
     getRootProps,
     getInputProps,
@@ -147,7 +147,7 @@ export const InputTagWrapper: React.FC<Props> = (props) => {
     options: suggestionWords,
     freeSolo: true,
     getOptionLabel: (option) => option,
-    onChange: (event: React.ChangeEvent<{}>, value: any) => {
+    onChange: (event: React.ChangeEvent<{}>, value: string[]) => {
       console.log(event);
       props.changeTagList(value);
     },
@@ -179,4 +179,4 @@ export const InputTagWrapper: React.FC<Props> = (props) => {
     </>
     // </Box>
   );
-};
+});
