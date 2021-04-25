@@ -5,8 +5,6 @@ import { InputTagWrapper } from '@/components/organisms/InputTagWrapper'
 import LayoutPosts from '@/layouts/posts'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
-import Tab from '@material-ui/core/Tab'
-import Tabs from '@material-ui/core/Tabs'
 import dynamic from 'next/dynamic'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
@@ -23,6 +21,7 @@ const Editor = dynamic(
 
 const StyledContainer = styled(Container)`
   max-width: 1200px;
+  margin-bottom: 40px;
 `
 const StyledBoxFlex = styled(Box)`
   display: block;
@@ -46,6 +45,7 @@ const StyledBoxInputWrapper = styled(Box)`
 const StyledBoxCordEditorWrapper = styled(Box)`
   ${(props) => props.theme.breakpoints.up('sm')} {
     width: 70%;
+    max-width: 70%;
   }
 `
 const IndexPage: React.FC = () => {
@@ -95,14 +95,6 @@ const IndexPage: React.FC = () => {
     setSourceCode(sourceCode)
     updateInputFileNameLists('sourceCode', sourceCode, currentIndex)
   }
-  // const changeSourceCode = useCallback(
-  //   (sourceCode: string): void => {
-  //     const updateSourceCode = sourceCode
-  //     setSourceCode(updateSourceCode)
-  //     updateInputFileNameLists('sourceCode', updateSourceCode, currentIndex)
-  //   },
-  //   [sourceCode],
-  // )
   const changeActiveStep = useCallback(
     (value: number): void => {
       setActiveStep(value)
@@ -227,6 +219,7 @@ const IndexPage: React.FC = () => {
                         value={el.value}
                         variant="outlined"
                         size="small"
+                        placeholder="some/path/file.ext"
                         onClick={() => addListsItem()}
                         onDelete={() => deleteListsItem(el.key, index)}
                         onCnangeFileName={(event) =>
@@ -242,21 +235,6 @@ const IndexPage: React.FC = () => {
                 </Box>
               </StyledBoxInputGroupWrapper>
               <StyledBoxCordEditorWrapper>
-                {inputFileNameLists.length > 0 && (
-                  <Tabs
-                    value={currentIndex}
-                    onChange={handleChange}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    variant="scrollable"
-                    scrollButtons={'off'}
-                  >
-                    {inputFileNameLists.map((el) => (
-                      <Tab label={el.value} key={el.key} />
-                    ))}
-                  </Tabs>
-                )}
-                {/* {EditorSourceCode} */}
                 <Editor
                   id="cord-editor"
                   headerText="Source Code"
@@ -264,6 +242,9 @@ const IndexPage: React.FC = () => {
                   changeActiveStep={changeActiveStep}
                   description={sourceCode}
                   activeStep={activeStep}
+                  currentIndex={currentIndex}
+                  handleChange={handleChange}
+                  inputFileNameLists={inputFileNameLists}
                 />
               </StyledBoxCordEditorWrapper>
             </StyledBoxFlex>
