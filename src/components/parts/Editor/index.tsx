@@ -52,6 +52,7 @@ const StyledBoxPreviewWrapper = styled(Box)`
 const StyledBoxEditorWrapper = styled(Box)`
   width: 100%;
   height: 100%;
+  border-radius: 8px;
   ${(props) => props.theme.breakpoints.up('sm')} {
     width: 100%;
   }
@@ -114,6 +115,9 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           )}
           <SwipeableViews
             index={props.activeStep}
+            style={{
+              borderRadius: '8px',
+            }}
             slideStyle={{ overflow: 'unset' }}
             slideClassName="slide-childlen"
           >
@@ -143,7 +147,13 @@ export const Editor: React.FC<Props> = React.memo((props) => {
               />
             </StyledBoxEditorWrapper>
             <StyledBoxEditorWrapper>
-              <div className="preview-header">Preview</div>
+              <div
+                className={`preview-header ${
+                  props.headerText === 'Source Code' ? '' : 'border_radius'
+                }`}
+              >
+                Preview
+              </div>
               <StyledBoxPreviewWrapper id="body">
                 <span
                   dangerouslySetInnerHTML={{
