@@ -116,7 +116,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           <SwipeableViews
             index={props.activeStep}
             style={{
-              borderRadius: '8px',
+              borderRadius: props.headerText === 'Source Code' ? '0px' : '8px',
             }}
             slideStyle={{ overflow: 'unset' }}
             slideClassName="slide-childlen"
