@@ -8,7 +8,7 @@ import Container from '@material-ui/core/Container'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
 import dynamic from 'next/dynamic'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import styled from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 import './style.scss'
@@ -160,14 +160,25 @@ const IndexPage: React.FC = () => {
   }
   const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
     console.log(event)
-
     setCurrentIndex(index)
     onFocusGetIndex(index)
   }
-
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event)
   }
+  const EditorSourceCode = useMemo(
+    () => (
+      <Editor
+        id="cord-editor"
+        headerText="Source Code"
+        onChange={changeSourceCode}
+        changeActiveStep={changeActiveStep}
+        description={sourceCode}
+        activeStep={activeStep}
+      />
+    ),
+    [inputFileNameLists],
+  )
 
   return (
     <LayoutPosts title="Kanon Code | レビュー依頼">
@@ -245,14 +256,15 @@ const IndexPage: React.FC = () => {
                     ))}
                   </Tabs>
                 )}
-                <Editor
+                {EditorSourceCode}
+                {/* <Editor
                   id="cord-editor"
                   headerText="Source Code"
                   onChange={changeSourceCode}
                   changeActiveStep={changeActiveStep}
                   description={sourceCode}
                   activeStep={activeStep}
-                />
+                /> */}
               </StyledBoxCordEditorWrapper>
             </StyledBoxFlex>
           </Box>
