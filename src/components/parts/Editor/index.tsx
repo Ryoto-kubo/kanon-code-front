@@ -16,6 +16,8 @@ const SimpleMDE = dynamic(() => import('react-simplemde-editor'), {
   ssr: false,
 })
 
+const SOURCE_CODE = 'Source Code'
+
 type Props = {
   id: string
   headerText: string
@@ -116,7 +118,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           <SwipeableViews
             index={props.activeStep}
             style={{
-              borderRadius: props.headerText === 'Source Code' ? '0px' : '8px',
+              borderRadius: props.headerText === SOURCE_CODE ? '0px' : '8px',
             }}
             slideStyle={{ overflow: 'unset' }}
             slideClassName="slide-childlen"
@@ -124,7 +126,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
             <StyledBoxEditorWrapper>
               <div
                 className={`editor-header ${
-                  props.headerText === 'Source Code' ? '' : 'border_radius'
+                  props.headerText === SOURCE_CODE ? '' : 'border_radius'
                 }`}
               >
                 {props.headerText}
@@ -149,7 +151,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
             <StyledBoxEditorWrapper>
               <div
                 className={`preview-header ${
-                  props.headerText === 'Source Code' ? '' : 'border_radius'
+                  props.headerText === SOURCE_CODE ? '' : 'border_radius'
                 }`}
               >
                 Preview
