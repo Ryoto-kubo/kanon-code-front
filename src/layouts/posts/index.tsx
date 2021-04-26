@@ -4,7 +4,6 @@ import { ThePostsHeader } from "@/components/common/header/posts";
 import { Toolbar } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import React, { ReactNode } from "react";
-// import { RecoilRoot } from "recoil";
 import styled from "styled-components";
 
 type Props = {

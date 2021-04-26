@@ -2,13 +2,12 @@ import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
 import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
+import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
 import LayoutPosts from "@/layouts/posts";
-import { postPublishState } from "@/recoil/atoms/postPublish";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
-import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
@@ -51,9 +50,6 @@ const StyledBoxCordEditorWrapper = styled(Box)`
   }
 `;
 const IndexPage: React.FC = () => {
-  const postPublish = useRecoilValue(postPublishState);
-  console.log(postPublish);
-
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [sourceCode, setSourceCode] = React.useState("");
@@ -69,12 +65,6 @@ const IndexPage: React.FC = () => {
     },
   ]);
   const [isValidTitle, setIsValidTitle] = useState(false);
-  // const [stateValid, setStateValid] = useState({
-  //   isValidTitle: false,
-  //   isValidTagList: false,
-  //   isValidDescription: false,
-  //   isValidSourceCode: false,
-  // })
 
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -243,6 +233,7 @@ const IndexPage: React.FC = () => {
           </Box>
         </Box>
       </StyledContainer>
+      <PostSettingDialog title="PostSetting" />
     </LayoutPosts>
   );
 };
