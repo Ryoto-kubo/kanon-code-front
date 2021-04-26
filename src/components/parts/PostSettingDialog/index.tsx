@@ -56,7 +56,7 @@ const Transition = React.forwardRef(function Transition(
 const StyledBoxWrapper = styled(Box)`
   padding: 20px 24px 0 24px;
 `;
-const StyledBoxButtonWrapper = styled(Box)`
+const StyledBoxButtonsWrapper = styled(Box)`
   padding: 24px 24px 16px 24px;
   text-align: right;
 `;
@@ -173,10 +173,12 @@ export const PostSettingDialog: React.FC<Props> = (props) => {
           </StyledBoxFlex>
         </DialogContent>
       </Box>
-      <StyledBoxButtonWrapper>
-        <Button onClick={handleClose} color="primary">
-          キャンセル
-        </Button>
+      <StyledBoxButtonsWrapper>
+        <Box mr={1} display="inline-block">
+          <Button onClick={handleClose} color="primary">
+            キャンセル
+          </Button>
+        </Box>
         <Button
           onClick={handleClose}
           variant="contained"
@@ -185,7 +187,7 @@ export const PostSettingDialog: React.FC<Props> = (props) => {
         >
           投稿
         </Button>
-      </StyledBoxButtonWrapper>
+      </StyledBoxButtonsWrapper>
     </Dialog>
   );
 };
