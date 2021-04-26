@@ -77,6 +77,7 @@ const IndexPage: React.FC = () => {
     id: "",
     text: "",
     iconComponent: <></>,
+    listIconComponent: <></>,
   });
 
   const changeTitle = useCallback(
