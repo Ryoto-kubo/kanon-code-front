@@ -14,9 +14,11 @@ import "modern-css-reset/dist/reset.min.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
 import React, { useEffect, useState } from "react";
+import { RecoilRoot } from "recoil";
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from "styled-components";
+
 const StyledWrapper = styled.div`
   background: #ffffff;
   position: relative;
@@ -78,24 +80,26 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
 
   if (!isFetch) return <></>;
   return (
-    <StylesProvider injectFirst>
-      <MaterialUIThemeProvider theme={theme}>
-        <StyledComponentsThemeProvider theme={theme}>
-          <Head>
-            <meta
-              name="viewport"
-              content="width=device-width,height=device-height"
-              key="viewport"
-            />
-          </Head>
-          <CssBaseline />
-          <StyledWrapper>
-            {/* <Component {...pageProps} authUser={user} /> */}
-            {getLayout()}
-          </StyledWrapper>
-        </StyledComponentsThemeProvider>
-      </MaterialUIThemeProvider>
-    </StylesProvider>
+    <RecoilRoot>
+      <StylesProvider injectFirst>
+        <MaterialUIThemeProvider theme={theme}>
+          <StyledComponentsThemeProvider theme={theme}>
+            <Head>
+              <meta
+                name="viewport"
+                content="width=device-width,height=device-height"
+                key="viewport"
+              />
+            </Head>
+            <CssBaseline />
+            <StyledWrapper>
+              {/* <Component {...pageProps} authUser={user} /> */}
+              {getLayout()}
+            </StyledWrapper>
+          </StyledComponentsThemeProvider>
+        </MaterialUIThemeProvider>
+      </StylesProvider>
+    </RecoilRoot>
   );
 };
 

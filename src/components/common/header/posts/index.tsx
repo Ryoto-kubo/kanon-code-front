@@ -2,11 +2,14 @@ import { CustomSwitch } from "@/components/atoms/CustomSwitch";
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
 import { ArrowButton } from "@/components/molecules/ArrowButton";
+import { postPublishState } from "@/recoil/atoms/postPublish";
 import theme from "@/styles/theme";
 import { Box } from "@material-ui/core/";
 import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 
+type ButtonText = Readonly<"投稿設定" | "下書き保存">;
 const StyledBox = styled(Box)`
   padding: 0 16px;
   max-width: 1280px;
@@ -27,15 +30,18 @@ const StyledUseMr = styled(Box)`
 export const ThePostsHeader: React.FC = React.memo(() => {
   const mainTextColor = theme.palette.text.primary;
   const disabledColor = "#707070";
-  const [value, setValue] = useState("下書き保存");
+  const [isPublish, setIsPublish] = useState(false);
+  const [value, setValue] = useState<ButtonText>("下書き保存");
   const [color, setColor] = useState(disabledColor);
-  function draft() {
-    console.log("下書き");
+  const setPostPublishState = useSetRecoilState(postPublishState);
+  function onPostOrDraft() {
+    setPostPublishState(isPublish);
   }
   function switchPublish(event: React.ChangeEvent<HTMLInputElement>) {
     const isChecked = event.currentTarget.checked;
-    const value = isChecked ? "公開する" : "下書き保存";
+    const value: ButtonText = isChecked ? "投稿設定" : "下書き保存";
     const color = isChecked ? mainTextColor : disabledColor;
+    setIsPublish(isChecked);
     setValue(value);
     setColor(color);
   }
@@ -61,7 +67,7 @@ export const ThePostsHeader: React.FC = React.memo(() => {
             <CustomSwitch onChange={switchPublish} />
             公開する
           </StyledUseMr>
-          <CustomSolidButton sizing="small" onClick={draft}>
+          <CustomSolidButton sizing="small" onClick={onPostOrDraft}>
             {value}
           </CustomSolidButton>
         </Box>
