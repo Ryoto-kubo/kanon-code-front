@@ -3,6 +3,7 @@ import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheck
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
 import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
+import { targetLanguages } from "@/consts/target-languages";
 import LayoutPosts from "@/layouts/posts";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -12,6 +13,12 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
 
+type ProgrammingIcon = {
+  id: string;
+  text: string;
+  listIconComponent: JSX.Element;
+  iconComponent: JSX.Element;
+};
 const Editor = dynamic(
   () => {
     const promise = import("@/components/parts/Editor").then((r) => r.Editor);
@@ -65,6 +72,12 @@ const IndexPage: React.FC = () => {
     },
   ]);
   const [isValidTitle, setIsValidTitle] = useState(false);
+  const [targetLanguageValue, setTargetLanguageValue] = useState(0);
+  const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
+    id: "",
+    text: "",
+    iconComponent: <></>,
+  });
 
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -153,6 +166,25 @@ const IndexPage: React.FC = () => {
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);
   };
+  const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = Number(event.target.value);
+    setTargetLanguageValue(value);
+  };
+  const selectProgrammingIcon = (
+    event: React.ChangeEvent<{}>,
+    selectObject: string | ProgrammingIcon | null
+  ) => {
+    console.log(event, "event");
+    console.log(selectObject, "selectObject");
+    if (selectObject === null) return;
+    if (typeof selectObject === "string") return;
+    setProgrammingIcon({
+      ...programmingIcon,
+      id: selectObject.id,
+      text: selectObject.text,
+      iconComponent: selectObject.iconComponent,
+    });
+  };
 
   return (
     <LayoutPosts title="Kanon Code | レビュー依頼">
@@ -233,7 +265,14 @@ const IndexPage: React.FC = () => {
           </Box>
         </Box>
       </StyledContainer>
-      <PostSettingDialog title="PostSetting" />
+      <PostSettingDialog
+        title="PostSetting"
+        targetLanguages={targetLanguages}
+        targetLanguageValue={targetLanguageValue}
+        programmingIcon={programmingIcon}
+        selectTargetLanguage={selectTargetLanguage}
+        selectProgrammingIcon={selectProgrammingIcon}
+      />
     </LayoutPosts>
   );
 };
