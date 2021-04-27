@@ -31,8 +31,12 @@ export const SettingLayout = ({
   title = "This is the default title",
   authUser,
 }: Props) => {
+  console.log("settinglayout.tsx");
+
   const router = useRouter();
   if (authUser === null) {
+    console.log("ifのなか");
+
     router.push("/");
     return null;
   }

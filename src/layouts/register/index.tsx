@@ -17,8 +17,8 @@ const StyleBoxMain = styled(Box)`
 const LayoutRegister = ({
   children,
   title = "This is the default title",
-  authUser,
-}: Props) => {
+}: // authUser,
+Props) => {
   return (
     <>
       <CommonHead title={title} />
