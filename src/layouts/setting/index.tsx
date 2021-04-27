@@ -31,8 +31,15 @@ export const SettingLayout = ({
   title = "This is the default title",
   authUser,
 }: Props) => {
+  console.log("settinglayout.tsx");
+
   const router = useRouter();
-  // const [value] = useState(router.pathname);
+  if (authUser === null) {
+    console.log("ifのなか");
+
+    router.push("/");
+    return null;
+  }
   const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     event.preventDefault();
     router.push(newValue);

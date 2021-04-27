@@ -14,8 +14,9 @@ interface Props {
 }
 
 export const TypoHeading1: React.FC<Props> = (props) => {
+  const color = props.color ? props.color : "primary";
   return (
-    <Typography variant="h1" component="h1" color="primary">
+    <Typography variant="h1" component="h1" color={color}>
       {props.children}
     </Typography>
   );

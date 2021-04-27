@@ -37,6 +37,8 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
   const [user, setUser] = useState<CognitoUser | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
+  console.log("_app.tsx");
+
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
