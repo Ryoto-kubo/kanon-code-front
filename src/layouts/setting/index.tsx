@@ -32,7 +32,10 @@ export const SettingLayout = ({
   authUser,
 }: Props) => {
   const router = useRouter();
-  // const [value] = useState(router.pathname);
+  if (authUser === null) {
+    router.push("/");
+    return null;
+  }
   const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     event.preventDefault();
     router.push(newValue);
