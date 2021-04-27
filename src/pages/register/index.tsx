@@ -1,28 +1,31 @@
-import { SignInContent } from "@/components/organisms/SignInContent";
-import { LayoutNoFooter } from "@/layouts/no-footer";
-import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
+import { TypoHeading1 } from "@/components/atoms/TypoHeading1";
+import LayoutRegister from "@/layouts/register";
 import { Container } from "@material-ui/core/";
-import { Auth } from "aws-amplify";
 import React from "react";
 import styled from "styled-components";
+import WelcomSvg from "../../assets/illustration/welcome.svg";
 
 const StyledContainer = styled(Container)`
   width: 100%;
   text-align: center;
   margin-top: 70px;
 `;
-
-const signin = () => {
-  Auth.federatedSignIn({
-    provider: CognitoHostedUIIdentityProvider.Google,
-  });
-};
+const StyledWelcomSvg = styled(WelcomSvg)`
+  width: 100%;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    width: 60%;
+  }
+  ${(props) => props.theme.breakpoints.up("md")} {
+    width: 450px;
+  }
+`;
 
 const IndexPage: React.FC = () => (
-  <LayoutNoFooter title="Kanon Code | サインイン">
+  <LayoutRegister title="Kanon Code | ユーザーネーム登録">
     <StyledContainer>
-      <SignInContent onClick={signin} />
+      <TypoHeading1 color="textPrimary">Welcome!!</TypoHeading1>
+      <StyledWelcomSvg />
     </StyledContainer>
-  </LayoutNoFooter>
+  </LayoutRegister>
 );
 export default IndexPage;
