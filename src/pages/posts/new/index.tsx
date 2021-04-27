@@ -13,6 +13,10 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import "./style.scss";
 
+type Props = {
+  title: string;
+  authUser: any;
+};
 type ProgrammingIcon = {
   id: string;
   text: string;
@@ -56,7 +60,7 @@ const StyledBoxCordEditorWrapper = styled(Box)`
     max-width: 70%;
   }
 `;
-const IndexPage: React.FC = () => {
+const IndexPage: React.FC<Props> = (props) => {
   const [title, setTitle] = React.useState("");
   const [description, setDescription] = React.useState("");
   const [sourceCode, setSourceCode] = React.useState("");
@@ -188,7 +192,7 @@ const IndexPage: React.FC = () => {
   };
 
   return (
-    <LayoutPosts title="Kanon Code | レビュー依頼">
+    <LayoutPosts title="Kanon Code | レビュー依頼" authUser={props.authUser}>
       <StyledContainer>
         <Box component="section">
           <Box mb={3} className="title-wrapper">

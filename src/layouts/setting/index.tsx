@@ -26,17 +26,9 @@ const StyledContainer = styled(Container)`
   margin-top: 70px;
   max-width: 1000px;
 `;
-export const SettingLayout = ({
-  children,
-  title = "This is the default title",
-  authUser,
-}: Props) => {
-  console.log("settinglayout.tsx");
-
+export const SettingLayout = ({ children, title, authUser }: Props) => {
   const router = useRouter();
   if (authUser === null) {
-    console.log("ifのなか");
-
     router.push("/");
     return null;
   }
