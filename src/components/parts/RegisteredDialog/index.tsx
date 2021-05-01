@@ -7,13 +7,14 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import Typography from "@material-ui/core/Typography";
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import CelebrationSvg from "../../../assets/illustration/celebration.svg";
 
 type Props = {
   showModal: boolean;
-  url: string;
+  name: string;
 };
 
 const Transition = React.forwardRef(function Transition(
@@ -53,15 +54,21 @@ const StyledBoxContentsWrapper = styled(Box)`
     font-size: 18px;
   }
 `;
+const StyledAnchor = styled("a")`
+  text-decoration: none;
+  &:hover {
+    text-decoration-color: ${theme.palette.primary.main};
+    text-decoration-line: underline;
+  }
+`;
 export const RegisteredDialog: React.FC<Props> = (props) => {
-  // const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
+  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
 
   return (
     <Dialog
       open={props.showModal}
       TransitionComponent={Transition}
       keepMounted
-      // onClose={handleClose}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
@@ -75,10 +82,14 @@ export const RegisteredDialog: React.FC<Props> = (props) => {
         <StyledTypographyWrapper variant="subtitle1" gutterBottom>
           おめでとうございます！
           <br />
-          名前が決まりました！
+          Kanon Codeを利用し、エンジニアとして成長していきましょう！
         </StyledTypographyWrapper>
         <DialogContent>
-          <StyledBoxContentsWrapper>{props.url}</StyledBoxContentsWrapper>
+          <Link href={`${domain}`} passHref>
+            <StyledAnchor>
+              <StyledBoxContentsWrapper>トップへ</StyledBoxContentsWrapper>
+            </StyledAnchor>
+          </Link>
         </DialogContent>
       </Box>
     </Dialog>
