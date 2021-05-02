@@ -5,8 +5,8 @@ module.exports = withCss(
     async rewrites() {
       return [
         {
-          source: "/hello",
-          destination: "http://127.0.0.1:3000/hello", // Proxy to Backend
+          source: "/api/:slug*",
+          destination: `http://127.0.0.1:3000/api/:slug*`, // Proxy to Backend
         },
       ];
     },
