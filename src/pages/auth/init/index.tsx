@@ -1,18 +1,23 @@
-import { CognitoUser } from "@aws-amplify/auth";
+import { apis } from "@/consts/api/";
+import { axios } from "@/utils/axios";
 import React from "react";
 
 type Props = {
   title: string;
-  authUser: CognitoUser;
+  authUser: any;
 };
 
-const IndexPage: React.FC<Props> = () => {
-  return (
-    <></>
-    // <Layout title="Kanon Code | サインイン" authUser={props.authUser}>
-    //   <h1>Welcome</h1>
-    // </Layout>
-  );
+const IndexPage: React.FC<Props> = (props) => {
+  const userPayload = props.authUser.signInUserSession.idToken.payload;
+  axios
+    .post(apis.REGISTER, userPayload)
+    .then((res) => {
+      console.log(res, "res");
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  return <></>;
 };
 
 export default IndexPage;

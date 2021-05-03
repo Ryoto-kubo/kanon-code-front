@@ -1,23 +1,34 @@
-import { TypoHeading2 } from '@/components/atoms/TypoHeading2'
-import { FirstView } from '@/components/organisms/FirstView'
-import { Post } from '@/components/organisms/Post'
-import { CognitoUser } from '@aws-amplify/auth'
-import { Box, Container, Grid, Paper } from '@material-ui/core/'
-import React from 'react'
+import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
+import { FirstView } from "@/components/organisms/FirstView";
+import { Post } from "@/components/organisms/Post";
+// import { CognitoUser } from "@aws-amplify/auth";
+import { Box, Container, Grid, Paper } from "@material-ui/core/";
+import axios from "axios";
+import React from "react";
 
 type Props = {
-  title: string
-  authUser: CognitoUser
-}
+  title: string;
+  authUser: any;
+};
+const getUsers = async () => {
+  return await axios.get("http://localhost:3000/api/users");
+};
+// サーバーサイドで実行される
+export const getServerSideProps = async () => {
+  const users = await getUsers();
+  console.log(users.data, "users");
 
-export const getServerSideProps = async () => ({
-  props: {
-    layout: 'Layout',
-    title: 'コードレビュを全てのエンジニアへ',
-  },
-})
+  return {
+    props: {
+      layout: "Layout",
+      title: "コードレビュを全てのエンジニアへ",
+      data: users.data,
+    },
+  };
+};
 
 const IndexPage: React.FC<Props> = (props) => {
+  console.log(props);
   return (
     <Container>
       {!props.authUser && <FirstView />}
@@ -34,11 +45,11 @@ const IndexPage: React.FC<Props> = (props) => {
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -50,11 +61,11 @@ const IndexPage: React.FC<Props> = (props) => {
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -66,11 +77,11 @@ const IndexPage: React.FC<Props> = (props) => {
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -82,11 +93,11 @@ const IndexPage: React.FC<Props> = (props) => {
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -98,11 +109,11 @@ const IndexPage: React.FC<Props> = (props) => {
                   name="ryoto"
                   date="あと3日"
                   tagArray={[
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
-                    'atomicDesi',
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
+                    "atomicDesi",
                   ]}
                 />
               </Paper>
@@ -111,6 +122,13 @@ const IndexPage: React.FC<Props> = (props) => {
         </Box>
       </Box>
     </Container>
-  )
-}
-export default IndexPage
+  );
+};
+
+// export const getServerSideProps = async () => ({
+//   props: {
+//     layout: "Layout",
+//     title: "コードレビュを全てのエンジニアへ",
+//   },
+// });
+export default IndexPage;
