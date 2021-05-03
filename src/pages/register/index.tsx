@@ -83,8 +83,6 @@ const StyledPUrlWrapper = styled("div")`
 // };
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props.authUser);
-
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isReservedWord, setIsReservedWords] = useState<boolean>(false);
