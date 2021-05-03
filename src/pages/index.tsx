@@ -1,33 +1,34 @@
 import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
 import { FirstView } from "@/components/organisms/FirstView";
 import { Post } from "@/components/organisms/Post";
-import { CognitoUser } from "@aws-amplify/auth";
+// import { CognitoUser } from "@aws-amplify/auth";
 import { Box, Container, Grid, Paper } from "@material-ui/core/";
 import axios from "axios";
 import React from "react";
 
 type Props = {
   title: string;
-  authUser: CognitoUser;
+  authUser: any;
 };
 const getUsers = async () => {
-  return await axios.get("/api/users");
+  return await axios.get("http://localhost:3000/api/users");
 };
 // サーバーサイドで実行される
 export const getServerSideProps = async () => {
-  const { data } = await getUsers();
+  const users = await getUsers();
+  console.log(users.data, "users");
+
   return {
     props: {
       layout: "Layout",
       title: "コードレビュを全てのエンジニアへ",
-      response: data,
+      data: users.data,
     },
   };
 };
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props, "props");
-
+  console.log(props);
   return (
     <Container>
       {!props.authUser && <FirstView />}
