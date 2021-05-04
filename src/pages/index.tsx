@@ -33,13 +33,6 @@ const IndexPage: React.FC<Props> = (props) => {
   axios.get(apis.HELLO).then((res) => {
     console.log(res);
   });
-  // axios
-  //   .get(
-  //     "https://2r1qyl48qd.execute-api.ap-northeast-1.amazonaws.com/Prod/api/hello"
-  //   )
-  //   .then((res) => {
-  //     console.log(res);
-  //   });
   return (
     <Container>
       {!props.authUser && <FirstView />}
