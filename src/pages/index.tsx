@@ -1,6 +1,8 @@
 import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
 import { FirstView } from "@/components/organisms/FirstView";
 import { Post } from "@/components/organisms/Post";
+import { apis } from "@/consts/api";
+import { axios } from "@/utils/axios";
 // import { CognitoUser } from "@aws-amplify/auth";
 import { Box, Container, Grid, Paper } from "@material-ui/core/";
 // import axios from "axios";
@@ -28,7 +30,16 @@ export const getServerSideProps = async () => {
 };
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
+  axios.get(apis.HELLO).then((res) => {
+    console.log(res);
+  });
+  // axios
+  //   .get(
+  //     "https://2r1qyl48qd.execute-api.ap-northeast-1.amazonaws.com/Prod/api/hello"
+  //   )
+  //   .then((res) => {
+  //     console.log(res);
+  //   });
   return (
     <Container>
       {!props.authUser && <FirstView />}
