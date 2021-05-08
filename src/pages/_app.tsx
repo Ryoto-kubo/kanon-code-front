@@ -13,6 +13,8 @@ import { Auth } from "aws-amplify";
 import "modern-css-reset/dist/reset.min.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import nprogress from "nprogress"; // NProgressインポート
+import "nprogress/nprogress.css"; // バーのデフォルトスタイルのインポート
 import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
 import styled, {
@@ -30,6 +32,8 @@ const StyledWrapper = styled.div`
   }
 `;
 
+nprogress.configure({ showSpinner: false, speed: 400, minimum: 0.25 });
+
 const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const layout = pageProps.layout;
   const title = pageProps.title;
@@ -38,12 +42,16 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const [user, setUser] = useState<CognitoUser | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
   console.log("_app.tsx");
+  if (process.browser) {
+    nprogress.start();
+  }
 
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
     }
+    nprogress.done();
     (async () => {
       try {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
