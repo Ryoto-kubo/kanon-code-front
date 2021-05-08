@@ -1,23 +1,23 @@
-import { apis } from "@/consts/api/";
-import { axios } from "@/utils/axios";
-import React from "react";
+import { apis } from '@/consts/api/'
+import { axios } from '@/utils/axios'
+import React from 'react'
 
 type Props = {
-  title: string;
-  authUser: any;
-};
+  title: string
+  authUser: any
+}
 
 const IndexPage: React.FC<Props> = (props) => {
-  const userPayload = props.authUser.signInUserSession.idToken.payload;
+  const userPayload = props.authUser.signInUserSession.idToken.payload
   axios
     .post(apis.REGISTER, userPayload)
     .then((res) => {
-      console.log(res, "res");
+      console.log(res, 'res')
     })
     .catch((err) => {
-      console.log(err);
-    });
-  return <></>;
-};
+      console.log(err)
+    })
+  return <></>
+}
 
-export default IndexPage;
+export default IndexPage
