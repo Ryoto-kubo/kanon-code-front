@@ -46,7 +46,7 @@ const IndexPage: React.FC<Props> = (props) => {
     name: 'ryoto kubo',
     introduction: `フロントエンドエンジニアです。主にNuxtやNextを触っています。
     個人開発大好きエンジニアです。よろしくお願いします！`,
-    amount: '',
+    price: '',
     position: '',
     githubName: '',
     twitterName: '',
@@ -74,8 +74,8 @@ const IndexPage: React.FC<Props> = (props) => {
   // const changePosition = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setSettingParams({ ...settingParams, position: Number(e.target.value) });
   // };
-  // const changeAmount = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, amount: Number(e.target.value) });
+  // const changeprice = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setSettingParams({ ...settingParams, price: Number(e.target.value) });
   // };
   // const changeGithubName = (e: React.ChangeEvent<HTMLInputElement>) => {
   //   setSettingParams({ ...settingParams, githubName: e.target.value });
@@ -144,7 +144,7 @@ const IndexPage: React.FC<Props> = (props) => {
 
         <ProfileContentLink
           label="100文字あたりの設定金額"
-          value={settingParams.amount}
+          value={settingParams.price}
           isDivider={true}
           href="/"
         >
@@ -187,7 +187,7 @@ const IndexPage: React.FC<Props> = (props) => {
             onChangeName={changeName}
             onChangeIntroduction={changeIntroduction}
             onChangePosition={changePosition}
-            onChangeAmount={changeAmount}
+            onChangeprice={changeprice}
             onChangeGithubName={changeGithubName}
             onChangeTwitterName={changeTwitterName}
             onChangeWebSite={changeWebSite}
