@@ -80,9 +80,7 @@ export const RegisteredDialog: React.FC<Props> = (props) => {
       </StyledBoxTitleWrapper>
       <Box textAlign="center" mb={2} paddingX={3}>
         <StyledTypographyWrapper variant="subtitle1" gutterBottom>
-          おめでとうございます！
-          <br />
-          Kanon Codeを利用し、エンジニアとして成長していきましょう！
+          Kanon Codeへようこそ！
         </StyledTypographyWrapper>
         <DialogContent>
           <Link href={`${domain}`} passHref>

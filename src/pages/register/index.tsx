@@ -4,6 +4,7 @@ import { CustomLoader } from "@/components/common/loader";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { RegisteredDialog } from "@/components/parts/RegisteredDialog";
 import { apis } from "@/consts/api/";
+import { errorMessages } from "@/consts/error-messages";
 import { reservedWords } from "@/consts/reserved-words";
 import LayoutRegister from "@/layouts/register";
 import theme from "@/styles/theme";
@@ -86,11 +87,17 @@ const IndexPage: React.FC<Props> = (props) => {
   const [name, setUserName] = useState<string>("");
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const payload = props.authUser.signInUserSession.idToken.payload;
+  const userId = payload["cognito:username"];
   const params = {
-    userId: payload["cognito:username"],
+    userId: userId,
   };
-  const err = new Error();
 
+  const createParams = () => {
+    return {
+      userId: userId,
+      displayName: name,
+    };
+  };
   const findReservedWords = (value: string) => {
     const isFind = reservedWords.includes(value);
     setIsReservedWords(isFind);
@@ -100,33 +107,46 @@ const IndexPage: React.FC<Props> = (props) => {
     findReservedWords(value);
     setUserName(value);
   };
-  const openShowModal = () => {
+  const openShowModal = async () => {
+    const err = new Error();
     if (isReservedWord) return;
-    setShowModal(true);
+    const params = createParams();
+    try {
+      const result = await axios.post(apis.USER_UPDATE, params);
+      if (result.status !== 200) throw err;
+      setShowModal(true);
+    } catch (error) {
+      console.error(error);
+      alert(errorMessages.SYSTEM_ERROR);
+    }
   };
 
   useEffect(() => {
+    const err = new Error();
     (async () => {
       try {
-        const response = await getUser(params);
-        if (response.status !== 200) throw err;
-        const item = response.data.Item;
+        const result = await getUser(params);
+        console.log(result, "result");
+
+        if (result.status !== 200) throw err;
+        const item = result.data.Item;
         const userProfile = item.user_profile;
         if (userProfile.display_name !== "") {
           router.push("/");
         } else {
           setIsLoading(false);
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error(error);
+        alert(errorMessages.SYSTEM_ERROR);
+      }
     })();
   }, []);
 
   return (
     <>
       {isLoading ? (
-        <StyledBoxAbsolute>
-          <CustomLoader />
-        </StyledBoxAbsolute>
+        <CustomLoader />
       ) : (
         <LayoutRegister
           title="Kanon Code | ユーザーネーム登録"

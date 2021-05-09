@@ -50,9 +50,9 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         setUser(authenticatedUser);
         setisFetch(true);
-        if (router.pathname === "/auth/init") {
-          router.push("/register");
-        }
+        // if (router.pathname === "/auth/init") {
+        //   router.push("/register");
+        // }
       } catch {
         setUser(null);
         setisFetch(true);
