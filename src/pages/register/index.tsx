@@ -120,8 +120,6 @@ const IndexPage: React.FC<Props> = (props) => {
     (async () => {
       try {
         const result = await getUser(params);
-        console.log(result, "result");
-
         if (result.status !== 200) throw err;
         const item = result.data.Item;
         const userProfile = item.user_profile;
