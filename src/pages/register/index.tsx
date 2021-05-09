@@ -112,9 +112,10 @@ const IndexPage: React.FC<Props> = (props) => {
         if (response.status !== 200) throw err;
         const item = response.data.Item;
         const userProfile = item.user_profile;
-        setIsLoading(false);
         if (userProfile.display_name !== "") {
           router.push("/");
+        } else {
+          setIsLoading(false);
         }
       } catch (error) {}
     })();
