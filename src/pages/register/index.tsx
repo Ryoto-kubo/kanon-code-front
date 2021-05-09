@@ -106,7 +106,7 @@ const IndexPage: React.FC<Props> = (props) => {
     if (isReservedWord) return;
     const params = createParams();
     try {
-      const result = await axios.post(apis.USER_UPDATE, params);
+      const result = await axios.post(apis.UPDATE_DISPLAY_NAME, params);
       if (result.status !== 200) throw err;
       setShowModal(true);
     } catch (error) {
