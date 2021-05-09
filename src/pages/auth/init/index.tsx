@@ -1,5 +1,6 @@
 import { CustomLoader } from "@/components/common/loader";
 import { apis } from "@/consts/api/";
+import { errorMessages } from "@/consts/error-messages";
 import { axios } from "@/utils/axios";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -54,9 +55,7 @@ const IndexPage: React.FC<Props> = (props) => {
         }
       } catch (error) {
         console.log(error);
-        alert(
-          "システムエラーが発生しました。しばらく時間をおいてやり直してください"
-        );
+        alert(errorMessages.SYSTEM_ERROR);
         moveToTop();
       }
     })();
