@@ -69,12 +69,6 @@ const StyledPUrlWrapper = styled("div")`
     width: 70%;
   }
 `;
-const StyledBoxAbsolute = styled(Box)`
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-`;
 
 const getUser = async (params: ParamsType) => {
   return await axios.get(apis.GET_USER, { params });
