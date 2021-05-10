@@ -61,7 +61,11 @@ const IndexPage: React.FC<Props> = (props) => {
     })();
   }, []);
 
-  return <CustomLoader />;
+  return (
+    <>
+      <CustomLoader />
+    </>
+  );
 };
 
 export default IndexPage;
