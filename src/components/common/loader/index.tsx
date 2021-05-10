@@ -13,7 +13,7 @@ const StyledBoxAbsolute = styled(Box)`
 export const CustomLoader: React.FC = () => {
   return (
     <StyledBoxAbsolute>
-      <Loader type="TailSpin" color="#5C6BC0" height={60} width={60} />;
+      <Loader type="TailSpin" color="#5C6BC0" height={60} width={60} />
     </StyledBoxAbsolute>
   );
 };

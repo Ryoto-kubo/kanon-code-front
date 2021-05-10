@@ -1,11 +1,9 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { TypoHeading1 } from "@/components/atoms/TypoHeading1";
 import { CustomLoader } from "@/components/common/loader";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { RegisteredDialog } from "@/components/parts/RegisteredDialog";
 import { apis } from "@/consts/api/";
 import { errorMessages } from "@/consts/error-messages";
-import { reservedWords } from "@/consts/reserved-words";
 import LayoutRegister from "@/layouts/register";
 import theme from "@/styles/theme";
 import { axios } from "@/utils/axios";
@@ -77,7 +75,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [isReservedWord, setIsReservedWords] = useState<boolean>(false);
+  const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [name, setUserName] = useState<string>("");
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const payload = props.authUser.signInUserSession.idToken.payload;
@@ -92,23 +90,22 @@ const IndexPage: React.FC<Props> = (props) => {
       displayName: name,
     };
   };
-  const findReservedWords = (value: string) => {
-    const isFind = reservedWords.includes(value);
-    setIsReservedWords(isFind);
-  };
+
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    findReservedWords(value);
+    setIsDidabled(value === "");
     setUserName(value);
   };
   const openShowModal = async () => {
     const err = new Error();
-    if (isReservedWord) return;
+    if (isDisabled) return;
     const params = createParams();
     try {
       const result = await axios.post(apis.UPDATE_DISPLAY_NAME, params);
       if (result.status !== 200) throw err;
-      setShowModal(true);
+      if (result.data.isSuccess) {
+        setShowModal(true);
+      } else [alert("既に使用されている名前です。")];
     } catch (error) {
       console.error(error);
       alert(errorMessages.SYSTEM_ERROR);
@@ -176,15 +173,15 @@ const IndexPage: React.FC<Props> = (props) => {
                 {name}
               </Typography>
             </StyledPUrlWrapper>
-            <StyledBoxWrapper>
-              {isReservedWord && (
+            {/* <StyledBoxWrapper>
+              {isDisabled && (
                 <ValidMessage validText="既に使用されている名前です。" />
               )}
-            </StyledBoxWrapper>
+            </StyledBoxWrapper> */}
             <CustomSolidButton
               sizing="small"
               onClick={openShowModal}
-              disabled={isReservedWord}
+              disabled={isDisabled}
             >
               名前を決定する
             </CustomSolidButton>
