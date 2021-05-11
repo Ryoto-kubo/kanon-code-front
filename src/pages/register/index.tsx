@@ -105,7 +105,7 @@ const IndexPage: React.FC<Props> = (props) => {
       if (result.status !== 200) throw err;
       if (result.data.isSuccess) {
         setShowModal(true);
-      } else [alert("既に使用されている名前です。")];
+      } else [alert(errorMessages.EXISTED_NAME)];
     } catch (error) {
       console.error(error);
       alert(errorMessages.SYSTEM_ERROR);

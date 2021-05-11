@@ -1,9 +1,11 @@
 import "@/aws/cognito/config";
 import { CustomNprogress } from "@/components/common/nextNprogress";
+import { apis } from "@/consts/api/";
 // import { useRequireLogin } from "@/hooks/useRequireLogin";
 import { SettingLayout } from "@/layouts/setting";
 import Layout from "@/layouts/standard";
 import theme from "@/styles/theme";
+import { axios } from "@/utils/axios";
 import { CognitoUser } from "@aws-amplify/auth";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import {
@@ -21,6 +23,10 @@ import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from "styled-components";
 
+type ParamsType = {
+  userId: string;
+};
+
 const StyledWrapper = styled.div`
   background: #ffffff;
   position: relative;
@@ -31,6 +37,10 @@ const StyledWrapper = styled.div`
     padding-bottom: 223px;
   }
 `;
+
+const getUser = async (params: ParamsType) => {
+  return await axios.get(apis.GET_USER, { params });
+};
 
 const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const layout = pageProps.layout;
@@ -48,11 +58,14 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
     (async () => {
       try {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
+        const payload = authenticatedUser.signInUserSession.idToken.payload;
+        const params = {
+          userId: payload["cognito:username"],
+        };
+        const user = await getUser(params);
+        console.log(user, "user");
         setUser(authenticatedUser);
         setisFetch(true);
-        // if (router.pathname === "/auth/init") {
-        //   router.push("/register");
-        // }
       } catch {
         setUser(null);
         setisFetch(true);
