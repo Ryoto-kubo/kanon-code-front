@@ -1,7 +1,7 @@
-import { UserType } from "@/@types/index.ts";
 import "@/aws/cognito/config";
 import { CustomNprogress } from "@/components/common/nextNprogress";
 import { apis } from "@/consts/api/";
+import { UserType } from "@/consts/type";
 // import { useRequireLogin } from "@/hooks/useRequireLogin";
 import { SettingLayout } from "@/layouts/setting";
 import Layout from "@/layouts/standard";
@@ -9,10 +9,7 @@ import theme from "@/styles/theme";
 import { axios } from "@/utils/axios";
 import { CognitoUser } from "@aws-amplify/auth";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import {
-  StylesProvider,
-  ThemeProvider as MaterialUIThemeProvider,
-} from "@material-ui/styles";
+import { StylesProvider, ThemeProvider as MaterialUIThemeProvider } from "@material-ui/styles";
 import { Auth } from "aws-amplify";
 import "modern-css-reset/dist/reset.min.css";
 import { AppProps } from "next/app";
@@ -20,9 +17,7 @@ import Head from "next/head";
 import "nprogress/nprogress.css"; // バーのデフォルトスタイルのインポート
 import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
-import styled, {
-  ThemeProvider as StyledComponentsThemeProvider,
-} from "styled-components";
+import styled, { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
 
 type ParamsType = {
   userId: string;

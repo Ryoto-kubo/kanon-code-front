@@ -1,10 +1,10 @@
-import { UserType } from "@/@types/index.ts";
 import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
 import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
 import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
 import { targetLanguages } from "@/consts/target-languages";
+import { UserType } from "@/consts/type";
 import LayoutPost from "@/layouts/post";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";

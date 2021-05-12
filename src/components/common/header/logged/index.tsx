@@ -1,8 +1,8 @@
-import { UserType } from "@/@types/index.ts";
 import { LinkWrapper } from "@/components/atoms/Link";
 import { KanonCodeLogo } from "@/components/atoms/Logo";
 import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
 import { LoggedHeaderParts } from "@/components/organisms/LoggedHeaderParts";
+import { UserType } from "@/consts/type";
 import { Box } from "@material-ui/core/";
 import React from "react";
 import styled from "styled-components";

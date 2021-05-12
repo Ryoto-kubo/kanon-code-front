@@ -1,7 +1,7 @@
-import { UserType } from "@/@types/index.ts";
 import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
 import { FirstView } from "@/components/organisms/FirstView";
 import { Post } from "@/components/organisms/Post";
+import { UserType } from "@/consts/type";
 import { Box, Container, Grid, Paper } from "@material-ui/core/";
 import React from "react";
 
