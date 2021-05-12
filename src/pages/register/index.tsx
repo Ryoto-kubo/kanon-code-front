@@ -29,6 +29,7 @@ const StyledContainer = styled(Container)`
   width: 100%;
   text-align: center;
   margin-bottom: 40px;
+  max-width: 620px;
 `;
 const StyledWelcomSvg = styled(WelcomSvg)`
   width: 100%;
@@ -182,7 +183,7 @@ const IndexPage: React.FC<Props> = (props) => {
           title="Kanon Code | ユーザーネーム登録"
           authUser={props.authUser}
         >
-          <StyledContainer maxWidth="sm">
+          <StyledContainer>
             <Box mb={2}>
               <TypoHeading1 color="primary">
                 Welcome!!
