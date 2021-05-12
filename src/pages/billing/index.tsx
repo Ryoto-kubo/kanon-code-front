@@ -1,5 +1,6 @@
 import { CustomSolidButton } from '@/components/atoms/SolidButton'
 import { SettingForm } from '@/components/organisms/SettingForm'
+import { UserType } from '@/consts/type'
 import { SettingLayout } from '@/layouts/setting-form'
 import Box from '@material-ui/core/Box'
 import List from '@material-ui/core/List'
@@ -12,7 +13,7 @@ import styled from 'styled-components'
 
 type Props = {
   title: string
-  authUser: any
+  currentUser: null | UserType
 }
 
 // const StyledBoxBgPrimary = styled(Box)(
@@ -48,7 +49,7 @@ const IndexPage: React.FC<Props> = (props) => {
   return (
     <SettingLayout
       title="Kanon Code | カード情報設定"
-      authUser={props.authUser}
+      currentUser={props.currentUser}
     >
       <SettingForm
         linkText="クレジット"

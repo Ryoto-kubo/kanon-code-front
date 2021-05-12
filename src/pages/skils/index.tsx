@@ -1,6 +1,7 @@
 import { CustomSolidButton } from '@/components/atoms/SolidButton'
 import { SettingForm } from '@/components/organisms/SettingForm'
 import { yearsExperiences } from '@/consts/select-options'
+import { UserType } from '@/consts/type'
 import { SettingLayout } from '@/layouts/setting-form'
 import Box from '@material-ui/core/Box'
 import MenuItem from '@material-ui/core/MenuItem'
@@ -10,7 +11,7 @@ import styled from 'styled-components'
 
 type Props = {
   title: string
-  authUser: any
+  currentUser: null | UserType
 }
 type TypeParams = {
   language: string
@@ -110,7 +111,10 @@ const IndexPage: React.FC<Props> = (props) => {
   }
 
   return (
-    <SettingLayout title="Kanon Code | スキル設定" authUser={props.authUser}>
+    <SettingLayout
+      title="Kanon Code | スキル設定"
+      currentUser={props.currentUser}
+    >
       <SettingForm
         linkText="スキル"
         href="/settings/skil"
