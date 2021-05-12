@@ -1,10 +1,11 @@
+import { UserType } from "@/@types/index.ts";
 import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
 import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
 import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
 import { targetLanguages } from "@/consts/target-languages";
-import LayoutPosts from "@/layouts/posts";
+import LayoutPost from "@/layouts/post";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import dynamic from "next/dynamic";
@@ -15,7 +16,7 @@ import "./style.scss";
 
 type Props = {
   title: string;
-  authUser: any;
+  currentUser: null | UserType;
 };
 type ProgrammingIcon = {
   id: string;
@@ -23,6 +24,7 @@ type ProgrammingIcon = {
   listIconComponent: JSX.Element;
   iconComponent: JSX.Element;
 };
+
 const Editor = dynamic(
   () => {
     const promise = import("@/components/parts/Editor").then((r) => r.Editor);
@@ -192,7 +194,10 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   return (
-    <LayoutPosts title="Kanon Code | レビュー依頼" authUser={props.authUser}>
+    <LayoutPost
+      title="Kanon Code | レビュー依頼"
+      currentUser={props.currentUser}
+    >
       <StyledContainer>
         <Box component="section">
           <Box mb={3} className="title-wrapper">
@@ -278,7 +283,7 @@ const IndexPage: React.FC<Props> = (props) => {
         selectTargetLanguage={selectTargetLanguage}
         selectProgrammingIcon={selectProgrammingIcon}
       />
-    </LayoutPosts>
+    </LayoutPost>
   );
 };
 export default IndexPage;

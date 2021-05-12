@@ -1,3 +1,4 @@
+import { UserType } from "@/@types/index.ts";
 import { TheFooter } from "@/components/common/footer/index";
 import { CommonHead } from "@/components/common/head/index";
 import { ThePostsHeader } from "@/components/common/header/posts";
@@ -10,16 +11,16 @@ import styled from "styled-components";
 type Props = {
   children: ReactNode;
   title: string;
-  authUser: any;
+  currentUser: null | UserType;
 };
 
 const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 
-const LayoutPosts = ({ children, title, authUser }: Props) => {
+const LayoutPost = ({ children, title, currentUser }: Props) => {
   const router = useRouter();
-  if (authUser === null) {
+  if (currentUser === null) {
     router.push("/");
     return null;
   }
@@ -37,4 +38,4 @@ const LayoutPosts = ({ children, title, authUser }: Props) => {
   );
 };
 
-export default LayoutPosts;
+export default LayoutPost;
