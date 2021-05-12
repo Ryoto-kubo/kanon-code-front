@@ -103,7 +103,11 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         return (
           <>
             <CustomNprogress />
-            <Component {...pageProps} currentUser={currentUser} />
+            <Component
+              {...pageProps}
+              authUser={authUser}
+              currentUser={currentUser}
+            />
           </>
         )
     }
