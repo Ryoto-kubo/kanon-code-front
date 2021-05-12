@@ -1,7 +1,7 @@
 import { UserType } from "@/@types/index.ts";
 import { TheFooter } from "@/components/common/footer/index";
 import { CommonHead } from "@/components/common/head/index";
-import { ThePostsHeader } from "@/components/common/header/posts";
+import { ThePostHeader } from "@/components/common/header/post";
 import { Toolbar } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import { useRouter } from "next/router";
@@ -28,7 +28,7 @@ const LayoutPost = ({ children, title, currentUser }: Props) => {
   return (
     <>
       <CommonHead title={title} />
-      <ThePostsHeader />
+      <ThePostHeader />
       <Toolbar />
       <StyleBoxMain mt={4} component="main">
         {children}

@@ -27,7 +27,7 @@ const StyledUseMr = styled(Box)`
   font-weight: bold;
 `;
 
-export const ThePostsHeader: React.FC = React.memo(() => {
+export const ThePostHeader: React.FC = React.memo(() => {
   const mainTextColor = theme.palette.text.primary;
   const disabledColor = "#707070";
   const [isPublish, setIsPublish] = useState(false);
