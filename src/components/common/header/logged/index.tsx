@@ -1,15 +1,15 @@
+import { UserType } from "@/@types/index.ts";
 import { LinkWrapper } from "@/components/atoms/Link";
 import { KanonCodeLogo } from "@/components/atoms/Logo";
 import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
 import { LoggedHeaderParts } from "@/components/organisms/LoggedHeaderParts";
-import { mypageData } from "@/mock/mypage";
 import { Box } from "@material-ui/core/";
 import React from "react";
 import styled from "styled-components";
 
-interface Props {
-  authUser: any;
-}
+type Props = {
+  currentUser: null | UserType;
+};
 
 const StyledBox = styled(Box)`
   padding: 0 16px;
@@ -22,8 +22,9 @@ const StyledBox = styled(Box)`
 `;
 
 export const TheLoggedHeader: React.FC<Props> = (props) => {
-  const userInfo = props.authUser.signInUserSession.idToken.payload;
-  const displayName = mypageData.contents.display_name;
+  const user = props.currentUser!;
+  const displayName = user.display_name;
+  const iconSrc = user.user_profile.icon_src;
   const formFunc = (e: React.FormEvent) => {
     console.log("enterを押した検索");
     e.preventDefault();
@@ -44,7 +45,7 @@ export const TheLoggedHeader: React.FC<Props> = (props) => {
         </LinkWrapper>
         <Box display="flex" alignItems="center">
           <LoggedHeaderParts
-            picture={userInfo.picture}
+            picture={iconSrc}
             displayName={displayName}
             func={func}
             formFunc={formFunc}

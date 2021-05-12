@@ -1,3 +1,4 @@
+import { UserType } from "@/@types/index.ts";
 import "@/aws/cognito/config";
 import { CustomNprogress } from "@/components/common/nextNprogress";
 import { apis } from "@/consts/api/";
@@ -43,12 +44,13 @@ const getUser = async (params: ParamsType) => {
 };
 
 const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
+  // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
+  const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [isFetch, setisFetch] = useState<boolean>(false);
   const layout = pageProps.layout;
   const title = pageProps.title;
-
-  // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
-  const [user, setUser] = useState<CognitoUser | null>(null);
-  const [isFetch, setisFetch] = useState<boolean>(false);
+  const err = new Error();
   console.log("_app.tsx");
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
@@ -62,12 +64,15 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         const params = {
           userId: payload["cognito:username"],
         };
-        const user = await getUser(params);
-        console.log(user, "user");
-        setUser(authenticatedUser);
+        const response = await getUser(params);
+        if (response.status !== 200) throw err;
+        const user = response.data.Item;
+        setAuthUser(authenticatedUser);
+        setCurrentUser(user);
         setisFetch(true);
       } catch {
-        setUser(null);
+        setAuthUser(null);
+        setCurrentUser(null);
         setisFetch(true);
         if (router.pathname === "/" || router.pathname === "/signin") return;
         router.push("/");
@@ -79,23 +84,23 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
     switch (layout) {
       case "SettingLayout":
         return (
-          <SettingLayout title={`Kanon Code | ${title}`} authUser={user}>
+          <SettingLayout title={`Kanon Code | ${title}`} authUser={authUser}>
             <CustomNprogress />
-            <Component {...pageProps} authUser={user} />
+            <Component {...pageProps} authUser={authUser} />
           </SettingLayout>
         );
       case "Layout":
         return (
-          <Layout title={`Kanon Code | ${title}`} authUser={user}>
+          <Layout title={`Kanon Code | ${title}`} currentUser={currentUser}>
             <CustomNprogress />
-            <Component {...pageProps} authUser={user} />
+            <Component {...pageProps} currentUser={currentUser} />
           </Layout>
         );
       default:
         return (
           <>
             <CustomNprogress />
-            <Component {...pageProps} authUser={user} />
+            <Component {...pageProps} authUser={authUser} />
           </>
         );
     }
@@ -116,7 +121,7 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             </Head>
             <CssBaseline />
             <StyledWrapper>
-              {/* <Component {...pageProps} authUser={user} /> */}
+              {/* <Component {...pageProps} authUser={authUser} /> */}
               {getLayout()}
             </StyledWrapper>
           </StyledComponentsThemeProvider>

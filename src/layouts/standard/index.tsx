@@ -1,3 +1,4 @@
+import { UserType } from "@/@types/index.ts";
 import { TheFooter } from "@/components/common/footer/index";
 import { CommonHead } from "@/components/common/head/index";
 import { TheLoggedHeader } from "@/components/common/header/logged";
@@ -10,23 +11,19 @@ import styled from "styled-components";
 type Props = {
   children: ReactNode;
   title: string;
-  authUser?: any;
+  currentUser: null | UserType;
 };
 
 const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 
-const Layout = ({
-  children,
-  title = "This is the default title",
-  authUser,
-}: Props) => {
+const Layout = ({ children, title, currentUser }: Props) => {
   return (
     <>
       <CommonHead title={title} />
-      {authUser && <TheLoggedHeader authUser={authUser} />}
-      {!authUser && <TheStndardHeader />}
+      {currentUser && <TheLoggedHeader currentUser={currentUser} />}
+      {!currentUser && <TheStndardHeader />}
       <Toolbar />
       <StyleBoxMain mt={4} component="main">
         {children}
