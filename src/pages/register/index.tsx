@@ -1,9 +1,10 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { TypoHeading1 } from "@/components/atoms/TypoHeading1";
 import { CustomLoader } from "@/components/common/loader";
+import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { RegisteredDialog } from "@/components/parts/RegisteredDialog";
 import { apis } from "@/consts/api/";
-import { errorMessages } from "@/consts/error-messages";
+import { errorMessages, validMessages } from "@/consts/error-messages";
 import LayoutRegister from "@/layouts/register";
 import theme from "@/styles/theme";
 import { axios } from "@/utils/axios";
@@ -28,6 +29,7 @@ const StyledContainer = styled(Container)`
   width: 100%;
   text-align: center;
   margin-bottom: 40px;
+  max-width: 620px;
 `;
 const StyledWelcomSvg = styled(WelcomSvg)`
   width: 100%;
@@ -58,7 +60,7 @@ const StyledBoxInputWrapper = styled(Box)`
 `;
 const StyledPUrlWrapper = styled("div")`
   margin: auto;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   text-align: left;
   width: 100%;
   padding: 2px;
@@ -76,6 +78,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
+  const [isValidName, setIsValidName] = useState<boolean>(true);
+  const [validText, setIsValidText] = useState<string>("");
   const [name, setUserName] = useState<string>("");
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const payload = props.authUser.signInUserSession.idToken.payload;
@@ -90,22 +94,60 @@ const IndexPage: React.FC<Props> = (props) => {
       displayName: name,
     };
   };
-
+  const resetValid = () => {
+    setIsValidName(true);
+    setIsValidText("");
+  };
+  const validSingleByte = (value: string): boolean => {
+    const reg = new RegExp(/^[a-zA-Z0-9_]+$/);
+    return reg.test(value);
+  };
+  const validFirstAndLastChara = (value: string): boolean => {
+    const reg = new RegExp(/_/);
+    const firstChara = value.slice(0, 1);
+    const lastChara = value.slice(-1);
+    // 文字列の最初と最後どちらかに(_)を含んでいたらfalseを返す
+    return !reg.test(firstChara) && !reg.test(lastChara);
+  };
+  const validName = (value: string): boolean => {
+    const isValidFirstAndLastChara = validFirstAndLastChara(value);
+    const isValidSingleByte = validSingleByte(value);
+    if (!isValidFirstAndLastChara) {
+      setIsValidName(false);
+      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA);
+      return isValidFirstAndLastChara;
+    }
+    if (!isValidSingleByte) {
+      setIsValidName(false);
+      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE);
+      return isValidSingleByte;
+    }
+    return isValidFirstAndLastChara && isValidSingleByte;
+  };
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setIsDidabled(value === "");
+    const isValid = validName(value);
+    if (isValid) {
+      setIsDidabled(false);
+      resetValid();
+    } else {
+      if (value === "") resetValid();
+      setIsDidabled(true);
+    }
     setUserName(value);
   };
-  const openShowModal = async () => {
+  const registerDisplayName = async () => {
     const err = new Error();
-    if (isDisabled) return;
+    if (isDisabled || !isValidName) return;
     const params = createParams();
     try {
       const result = await axios.post(apis.UPDATE_DISPLAY_NAME, params);
       if (result.status !== 200) throw err;
       if (result.data.isSuccess) {
         setShowModal(true);
-      } else [alert(errorMessages.EXISTED_NAME)];
+      } else {
+        alert(errorMessages.EXISTED_NAME);
+      }
     } catch (error) {
       console.error(error);
       alert(errorMessages.SYSTEM_ERROR);
@@ -141,7 +183,7 @@ const IndexPage: React.FC<Props> = (props) => {
           title="Kanon Code | ユーザーネーム登録"
           authUser={props.authUser}
         >
-          <StyledContainer maxWidth="sm">
+          <StyledContainer>
             <Box mb={2}>
               <TypoHeading1 color="primary">
                 Welcome!!
@@ -173,14 +215,12 @@ const IndexPage: React.FC<Props> = (props) => {
                 {name}
               </Typography>
             </StyledPUrlWrapper>
-            {/* <StyledBoxWrapper>
-              {isDisabled && (
-                <ValidMessage validText="既に使用されている名前です。" />
-              )}
-            </StyledBoxWrapper> */}
+            <StyledBoxWrapper>
+              {!isValidName && <ValidMessage validText={validText} />}
+            </StyledBoxWrapper>
             <CustomSolidButton
               sizing="small"
-              onClick={openShowModal}
+              onClick={registerDisplayName}
               disabled={isDisabled}
             >
               名前を決定する
