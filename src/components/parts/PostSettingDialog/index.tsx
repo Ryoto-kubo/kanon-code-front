@@ -44,6 +44,7 @@ type Props = {
     event: React.ChangeEvent<{}>,
     value: string | ProgrammingIcon | null
   ) => void;
+  registerContents: () => void;
 };
 
 const Transition = React.forwardRef(function Transition(
@@ -180,7 +181,7 @@ export const PostSettingDialog: React.FC<Props> = (props) => {
           </Button>
         </Box>
         <Button
-          onClick={handleClose}
+          onClick={() => props.registerContents()}
           variant="contained"
           color="primary"
           disableElevation

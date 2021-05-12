@@ -64,11 +64,9 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `;
 const IndexPage: React.FC<Props> = (props) => {
   const [title, setTitle] = React.useState("");
+  const [tagList, setTagList] = useState<any[]>([]);
   const [description, setDescription] = React.useState("");
   const [sourceCode, setSourceCode] = React.useState("");
-  const [tagList, setTagList] = useState<any[]>([]);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
   const [inputFileNameLists, setInputFileNameLists] = React.useState([
     {
       key: uuidv4(),
@@ -77,7 +75,6 @@ const IndexPage: React.FC<Props> = (props) => {
       sourceCode: "",
     },
   ]);
-  const [isValidTitle, setIsValidTitle] = useState(false);
   const [targetLanguageValue, setTargetLanguageValue] = useState(0);
   const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
     id: "",
@@ -85,7 +82,18 @@ const IndexPage: React.FC<Props> = (props) => {
     iconComponent: <></>,
     listIconComponent: <></>,
   });
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [isValidTitle, setIsValidTitle] = useState(false);
 
+  const registerContents = () => {
+    console.log(title, "title");
+    console.log(tagList, "tagList");
+    console.log(description, "description");
+    console.log(inputFileNameLists, "inputFileNameLists");
+    console.log(targetLanguageValue, "targetLanguageValue");
+    console.log(programmingIcon, "programmingIcon");
+  };
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
@@ -166,7 +174,6 @@ const IndexPage: React.FC<Props> = (props) => {
     updateInputFileNameLists("sourceCode", sourceCode, index);
   };
   const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
-    console.log(event);
     setCurrentIndex(index);
     onFocusGetIndex(index);
   };
@@ -181,8 +188,6 @@ const IndexPage: React.FC<Props> = (props) => {
     event: React.ChangeEvent<{}>,
     selectObject: string | ProgrammingIcon | null
   ) => {
-    console.log(event, "event");
-    console.log(selectObject, "selectObject");
     if (selectObject === null) return;
     if (typeof selectObject === "string") return;
     setProgrammingIcon({
@@ -192,7 +197,6 @@ const IndexPage: React.FC<Props> = (props) => {
       iconComponent: selectObject.iconComponent,
     });
   };
-
   return (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
@@ -282,8 +286,16 @@ const IndexPage: React.FC<Props> = (props) => {
         programmingIcon={programmingIcon}
         selectTargetLanguage={selectTargetLanguage}
         selectProgrammingIcon={selectProgrammingIcon}
+        registerContents={registerContents}
       />
     </LayoutPost>
   );
 };
 export default IndexPage;
+
+// # registerContents
+// - test
+// - test
+// - test
+
+// src/test/index.tsx
