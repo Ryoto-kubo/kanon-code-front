@@ -101,7 +101,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
             </StyledListItemIcon>
             <ListItemText secondary="マイページ" />
           </MenuItem>
-          <MenuItem onClick={() => toPage("/posts/new")}>
+          <MenuItem onClick={() => toPage("/post/new")}>
             <StyledListItemIcon>
               <CodeOutlinedIcon fontSize="small" />
             </StyledListItemIcon>

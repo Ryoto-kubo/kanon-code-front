@@ -4,7 +4,8 @@ import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrap
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
 import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
 import { targetLanguages } from "@/consts/target-languages";
-import LayoutPosts from "@/layouts/posts";
+import { UserType } from "@/consts/type";
+import LayoutPost from "@/layouts/post";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import dynamic from "next/dynamic";
@@ -15,7 +16,7 @@ import "./style.scss";
 
 type Props = {
   title: string;
-  authUser: any;
+  currentUser: null | UserType;
 };
 type ProgrammingIcon = {
   id: string;
@@ -23,6 +24,7 @@ type ProgrammingIcon = {
   listIconComponent: JSX.Element;
   iconComponent: JSX.Element;
 };
+
 const Editor = dynamic(
   () => {
     const promise = import("@/components/parts/Editor").then((r) => r.Editor);
@@ -62,11 +64,9 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `;
 const IndexPage: React.FC<Props> = (props) => {
   const [title, setTitle] = React.useState("");
+  const [tagList, setTagList] = useState<any[]>([]);
   const [description, setDescription] = React.useState("");
   const [sourceCode, setSourceCode] = React.useState("");
-  const [tagList, setTagList] = useState<any[]>([]);
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
   const [inputFileNameLists, setInputFileNameLists] = React.useState([
     {
       key: uuidv4(),
@@ -75,7 +75,6 @@ const IndexPage: React.FC<Props> = (props) => {
       sourceCode: "",
     },
   ]);
-  const [isValidTitle, setIsValidTitle] = useState(false);
   const [targetLanguageValue, setTargetLanguageValue] = useState(0);
   const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
     id: "",
@@ -83,7 +82,18 @@ const IndexPage: React.FC<Props> = (props) => {
     iconComponent: <></>,
     listIconComponent: <></>,
   });
+  const [activeStep, setActiveStep] = React.useState(0);
+  const [currentIndex, setCurrentIndex] = React.useState(0);
+  const [isValidTitle, setIsValidTitle] = useState(false);
 
+  const registerContents = () => {
+    console.log(title, "title");
+    console.log(tagList, "tagList");
+    console.log(description, "description");
+    console.log(inputFileNameLists, "inputFileNameLists");
+    console.log(targetLanguageValue, "targetLanguageValue");
+    console.log(programmingIcon, "programmingIcon");
+  };
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
@@ -179,10 +189,9 @@ const IndexPage: React.FC<Props> = (props) => {
     event: React.ChangeEvent<{}>,
     selectObject: string | ProgrammingIcon | null
   ) => {
-    console.log(event, "event");
-    console.log(selectObject, "selectObject");
     if (selectObject === null) return;
     if (typeof selectObject === "string") return;
+    console.log(event);
     setProgrammingIcon({
       ...programmingIcon,
       id: selectObject.id,
@@ -190,9 +199,11 @@ const IndexPage: React.FC<Props> = (props) => {
       iconComponent: selectObject.iconComponent,
     });
   };
-
   return (
-    <LayoutPosts title="Kanon Code | レビュー依頼" authUser={props.authUser}>
+    <LayoutPost
+      title="Kanon Code | レビュー依頼"
+      currentUser={props.currentUser}
+    >
       <StyledContainer>
         <Box component="section">
           <Box mb={3} className="title-wrapper">
@@ -277,8 +288,16 @@ const IndexPage: React.FC<Props> = (props) => {
         programmingIcon={programmingIcon}
         selectTargetLanguage={selectTargetLanguage}
         selectProgrammingIcon={selectProgrammingIcon}
+        registerContents={registerContents}
       />
-    </LayoutPosts>
+    </LayoutPost>
   );
 };
 export default IndexPage;
+
+// # registerContents
+// - test
+// - test
+// - test
+
+// src/test/index.tsx

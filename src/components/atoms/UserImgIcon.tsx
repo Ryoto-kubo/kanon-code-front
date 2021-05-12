@@ -4,7 +4,6 @@ import React from "react";
 interface Props {
   picture: string;
   className?: string;
-  // ref: React.Ref<HTMLDivElement>;
 }
 
 export const UserImgIcon: React.FC<Props> = (props) => {
@@ -13,7 +12,6 @@ export const UserImgIcon: React.FC<Props> = (props) => {
       src={props.picture}
       className={props.className}
       alt="ユーザーアイコン"
-      // ref={props.ref}
     />
   );
 };
