@@ -174,6 +174,7 @@ const IndexPage: React.FC<Props> = (props) => {
     updateInputFileNameLists("sourceCode", sourceCode, index);
   };
   const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
+    console.log(event);
     setCurrentIndex(index);
     onFocusGetIndex(index);
   };
@@ -190,6 +191,7 @@ const IndexPage: React.FC<Props> = (props) => {
   ) => {
     if (selectObject === null) return;
     if (typeof selectObject === "string") return;
+    console.log(event);
     setProgrammingIcon({
       ...programmingIcon,
       id: selectObject.id,
