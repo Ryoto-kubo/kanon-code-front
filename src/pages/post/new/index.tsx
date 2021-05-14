@@ -84,6 +84,8 @@ const IndexPage: React.FC<Props> = (props) => {
   })
   const [activeStep, setActiveStep] = React.useState(0)
   const [currentIndex, setCurrentIndex] = React.useState(0)
+  const DESCRIPION_MAX_LENGTH = 1500
+  const SOURCE_CODE_MAX_LENGTH = 10000
 
   const registerContents = () => {
     console.log(title, 'title')
@@ -112,6 +114,9 @@ const IndexPage: React.FC<Props> = (props) => {
   )
   const changeDescritption = useCallback(
     (value: string): void => {
+      // if (value.length > DESCRIPION_MAX_LENGTH) {
+      //   return
+      // }
       setDescription(value)
     },
     [description],
@@ -217,8 +222,9 @@ const IndexPage: React.FC<Props> = (props) => {
               headerText="Description"
               onChange={changeDescritption}
               changeActiveStep={changeActiveStep}
-              description={description}
+              value={description}
               activeStep={activeStep}
+              MAX_LENGTH={DESCRIPION_MAX_LENGTH}
             />
           </Box>
           <Box mb={3} className="source-code-wrapper">
@@ -261,11 +267,12 @@ const IndexPage: React.FC<Props> = (props) => {
                   headerText="Source Code"
                   onChange={changeSourceCode}
                   changeActiveStep={changeActiveStep}
-                  description={sourceCode}
+                  value={sourceCode}
                   activeStep={activeStep}
                   currentIndex={currentIndex}
                   handleChange={handleChange}
                   inputFileNameLists={inputFileNameLists}
+                  MAX_LENGTH={SOURCE_CODE_MAX_LENGTH}
                 />
               </StyledBoxCordEditorWrapper>
             </StyledBoxFlex>
