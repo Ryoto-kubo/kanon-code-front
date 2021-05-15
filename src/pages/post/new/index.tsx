@@ -6,8 +6,10 @@ import { PostSettingDialog } from '@/components/parts/PostSettingDialog'
 import { targetLanguages } from '@/consts/target-languages'
 import { UserType } from '@/consts/type'
 import LayoutPost from '@/layouts/post'
+import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
+import Snackbar from '@material-ui/core/Snackbar'
 import dynamic from 'next/dynamic'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
@@ -82,8 +84,10 @@ const IndexPage: React.FC<Props> = (props) => {
     iconComponent: <></>,
     listIconComponent: <></>,
   })
-  const [activeStep, setActiveStep] = React.useState(0)
-  const [currentIndex, setCurrentIndex] = React.useState(0)
+  const [activeStep, setActiveStep] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isValidDescription, setIsValidDescription] = useState(false)
+  const TITLE_MAX_LENGTH = 32
   const DESCRIPION_MAX_LENGTH = 1500
   const SOURCE_CODE_MAX_LENGTH = 10000
 
@@ -95,10 +99,16 @@ const IndexPage: React.FC<Props> = (props) => {
     console.log(targetLanguageValue, 'targetLanguageValue')
     console.log(programmingIcon, 'programmingIcon')
   }
+  const draftContents = (): void => {
+    console.log('draft')
+    const isResult = validLength(description, DESCRIPION_MAX_LENGTH)
+    setIsValidDescription(isResult)
+    // console.log(isValidDescription)
+  }
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value
-      if (value.length > 32) {
+      if (value.length > TITLE_MAX_LENGTH) {
         return
       }
       setTitle(value)
@@ -114,9 +124,8 @@ const IndexPage: React.FC<Props> = (props) => {
   )
   const changeDescritption = useCallback(
     (value: string): void => {
-      // if (value.length > DESCRIPION_MAX_LENGTH) {
-      //   return
-      // }
+      const isValid = validLength(description, DESCRIPION_MAX_LENGTH)
+      setIsValidDescription(isValid)
       setDescription(value)
     },
     [description],
@@ -173,8 +182,7 @@ const IndexPage: React.FC<Props> = (props) => {
     setSourceCode(sourceCode)
     updateInputFileNameLists('sourceCode', sourceCode, index)
   }
-  const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
-    console.log(event)
+  const handleChange = (_: React.ChangeEvent<{}>, index: number) => {
     setCurrentIndex(index)
     onFocusGetIndex(index)
   }
@@ -186,12 +194,11 @@ const IndexPage: React.FC<Props> = (props) => {
     setTargetLanguageValue(value)
   }
   const selectProgrammingIcon = (
-    event: React.ChangeEvent<{}>,
+    _: React.ChangeEvent<{}>,
     selectObject: string | ProgrammingIcon | null,
   ) => {
     if (selectObject === null) return
     if (typeof selectObject === 'string') return
-    console.log(event)
     setProgrammingIcon({
       ...programmingIcon,
       id: selectObject.id,
@@ -199,10 +206,14 @@ const IndexPage: React.FC<Props> = (props) => {
       iconComponent: selectObject.iconComponent,
     })
   }
+  const handleClose = () => () => {
+    setIsValidDescription(false)
+  }
   return (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
+      draftContents={draftContents}
     >
       <StyledContainer>
         <Box component="section">
@@ -216,7 +227,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <Box mb={3} className="tag-list-wrapper">
             <InputTagWrapper changeTagList={changeTagList} />
           </Box>
-          <Box mb={3} className="description-wrapper">
+          <Box mb={5} className="description-wrapper">
             <Editor
               id="editor"
               headerText="Description"
@@ -224,6 +235,7 @@ const IndexPage: React.FC<Props> = (props) => {
               changeActiveStep={changeActiveStep}
               value={description}
               activeStep={activeStep}
+              maxWidth="1096px"
               MAX_LENGTH={DESCRIPION_MAX_LENGTH}
             />
           </Box>
@@ -269,6 +281,7 @@ const IndexPage: React.FC<Props> = (props) => {
                   changeActiveStep={changeActiveStep}
                   value={sourceCode}
                   activeStep={activeStep}
+                  maxWidth="733.59px"
                   currentIndex={currentIndex}
                   handleChange={handleChange}
                   inputFileNameLists={inputFileNameLists}
@@ -288,14 +301,16 @@ const IndexPage: React.FC<Props> = (props) => {
         selectProgrammingIcon={selectProgrammingIcon}
         registerContents={registerContents}
       />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={isValidDescription}
+        autoHideDuration={6000}
+        message="Descriptionは1500文字以下で入力してください"
+      />
     </LayoutPost>
   )
 }
 export default IndexPage
-
-// # registerContents
-// - test
-// - test
-// - test
-
-// src/test/index.tsx

@@ -26,6 +26,7 @@ type Props = {
   value: string
   activeStep: number
   MAX_LENGTH: number
+  maxWidth?: string
   currentIndex?: number
   handleChange?: (event: React.ChangeEvent<{}>, value: any) => void
   inputFileNameLists?: {
@@ -44,10 +45,13 @@ const StyledBoxFlex = styled(Box)`
   }
 `
 const StyledBoxMaxWidth = styled(Box)`
-  width: 100%;
   box-shadow: 0px 8px 16px -2px rgba(92, 107, 192, 0.2),
     0px 0px 0px 1px rgba(92, 107, 192, 0.02);
   border-radius: 8px;
+  width: 100%;
+  // ${(props) => props.theme.breakpoints.up('sm')} {
+  //   width: 94%;
+  // }
 `
 const StyledBoxPreviewWrapper = styled(Box)`
   padding: 16px;
@@ -64,6 +68,7 @@ const StyledTabs = styled(Tabs)`
   background: #ffffff;
   width: 100%;
   max-width: 733.59px;
+  border-radius: 8px 8px 0 0;
 `
 export const Editor: React.FC<Props> = React.memo((props) => {
   const [instance, setInstance] = useState<EasyMDE>()
@@ -73,8 +78,6 @@ export const Editor: React.FC<Props> = React.memo((props) => {
   }
   const switchPreview = () => {
     if (!instance) return
-    console.log(instance.codemirror.getInputField().value)
-
     const SHOW_EDITOR = 0
     const SHOW_PREVIEW = 1
     if (props.activeStep === SHOW_PREVIEW) {
@@ -144,7 +147,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
                   nativeSpellcheck: false,
                   spellChecker: false,
                   styleSelectedText: false,
-                  lineWrapping: false,
+                  lineWrapping: true,
                 }}
               />
               <Box textAlign="right" p={1} paddingRight={'10px'}>

@@ -79,7 +79,7 @@ const StyledInputLabel = styled(InputLabel)`
   }
 `
 
-export const EditorButtons: React.FC<Props> = (props) => {
+export const EditorButtons: React.FC<Props> = React.memo((props) => {
   const { switchPreview, insertCodeMde, insertLinkMde, insertImageMde } = props
 
   const TooltipWrapper = (props: TooltipProps) => {
@@ -148,4 +148,4 @@ export const EditorButtons: React.FC<Props> = (props) => {
       </TooltipWrapper>
     </StyledBox>
   )
-}
+})

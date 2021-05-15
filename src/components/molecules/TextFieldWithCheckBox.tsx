@@ -21,7 +21,7 @@ const StyledIconButton = styled(IconButton)`
   height: 30px;
 `
 
-export const TextFieldWithCheckBox: React.FC<Props> = (props) => {
+export const TextFieldWithCheckBox: React.FC<Props> = React.memo((props) => {
   const {
     index,
     listLength,
@@ -53,4 +53,4 @@ export const TextFieldWithCheckBox: React.FC<Props> = (props) => {
       )}
     </>
   )
-}
+})
