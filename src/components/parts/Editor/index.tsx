@@ -114,7 +114,11 @@ export const Editor: React.FC<Props> = React.memo((props) => {
               scrollButtons={"off"}
             >
               {props.inputFileNameLists.map((el) => (
-                <Tab label={el.value === "" ? "New!" : el.value} key={el.key} />
+                <Tab
+                  label={el.value === "" ? "New!" : el.value}
+                  key={el.key}
+                  className={!el.isValid ? "error" : ""}
+                />
               ))}
             </StyledTabs>
           )}
