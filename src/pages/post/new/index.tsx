@@ -1,3 +1,5 @@
+// import SnackbarContent from "@material-ui/core/SnackbarContent";
+import { CustomSnackbar } from "@/components/atoms/CustomSnackbar";
 import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
 import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
@@ -6,6 +8,7 @@ import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
 import { targetLanguages } from "@/consts/target-languages";
 import { UserType } from "@/consts/type";
 import LayoutPost from "@/layouts/post";
+import { validLength } from "@/utils/valid";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import dynamic from "next/dynamic";
@@ -62,17 +65,19 @@ const StyledBoxCordEditorWrapper = styled(Box)`
     max-width: 70%;
   }
 `;
+
 const IndexPage: React.FC<Props> = (props) => {
-  const [title, setTitle] = React.useState("");
+  const [title, setTitle] = useState("");
   const [tagList, setTagList] = useState<any[]>([]);
-  const [description, setDescription] = React.useState("");
-  const [sourceCode, setSourceCode] = React.useState("");
-  const [inputFileNameLists, setInputFileNameLists] = React.useState([
+  const [description, setDescription] = useState("");
+  const [sourceCode, setSourceCode] = useState("");
+  const [inputFileNameLists, setInputFileNameLists] = useState([
     {
       key: uuidv4(),
-      isChecked: false,
       value: "",
       sourceCode: "",
+      bodyHtml: "",
+      isValid: true,
     },
   ]);
   const [targetLanguageValue, setTargetLanguageValue] = useState(0);
@@ -82,9 +87,15 @@ const IndexPage: React.FC<Props> = (props) => {
     iconComponent: <></>,
     listIconComponent: <></>,
   });
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [currentIndex, setCurrentIndex] = React.useState(0);
-  const [isValidTitle, setIsValidTitle] = useState(false);
+  const [activeStep, setActiveStep] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isValidDescription, setIsValidDescription] = useState(true);
+  const [isValidSourceCode, setIsValidSourceCode] = useState(true);
+  // const { enqueueSnackbar } = useSnackbar();
+  const TITLE_MAX_LENGTH = 32;
+  const TAGS_MAX_LENGTH = 5;
+  const DESCRIPION_MAX_LENGTH = 2;
+  const SOURCE_CODE_MAX_LENGTH = 2;
 
   const registerContents = () => {
     console.log(title, "title");
@@ -94,29 +105,46 @@ const IndexPage: React.FC<Props> = (props) => {
     console.log(targetLanguageValue, "targetLanguageValue");
     console.log(programmingIcon, "programmingIcon");
   };
+  const draftContents = (): void => {
+    console.log("draft");
+  };
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
-      setIsValidTitle(value.length > 32);
+      if (value.length > TITLE_MAX_LENGTH) {
+        return;
+      }
       setTitle(value);
     },
     [title]
   );
   const changeTagList = useCallback(
     (values: string[]): void => {
+      if (values.length > TAGS_MAX_LENGTH) return;
       setTagList(values);
     },
     [tagList]
   );
   const changeDescritption = useCallback(
     (value: string): void => {
+      const isValid = validLength(description, DESCRIPION_MAX_LENGTH);
+      setIsValidDescription(isValid);
       setDescription(value);
     },
     [description]
   );
   const changeSourceCode = (sourceCode: string): void => {
+    const isValid = validLength(sourceCode, SOURCE_CODE_MAX_LENGTH);
+    console.log(isValid);
+    console.log(inputFileNameLists);
+
     setSourceCode(sourceCode);
+    setIsValidSourceCode(isValid);
+    updateIsValidSourceCode(isValid);
     updateInputFileNameLists("sourceCode", sourceCode, currentIndex);
+  };
+  const updateIsValidSourceCode = (isValid: boolean): void => {
+    inputFileNameLists[currentIndex].isValid = isValid;
   };
   const changeActiveStep = useCallback(
     (value: number): void => {
@@ -129,9 +157,10 @@ const IndexPage: React.FC<Props> = (props) => {
       ...inputFileNameLists,
       {
         key: uuidv4(),
-        isChecked: false,
         value: "",
         sourceCode: "",
+        bodyHtml: "",
+        isValid: true,
       },
     ]);
   };
@@ -152,13 +181,6 @@ const IndexPage: React.FC<Props> = (props) => {
     setCurrentIndex(index);
     updateInputFileNameLists("value", value, index);
   };
-  const changeIsChecked = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const isChecked = event.target.checked;
-    updateInputFileNameLists("isChecked", isChecked, index);
-  };
   const updateInputFileNameLists = (key: string, value: any, index: number) => {
     const currentItem = inputFileNameLists[index];
     const newFileItem = { ...currentItem, [key]: value };
@@ -173,8 +195,7 @@ const IndexPage: React.FC<Props> = (props) => {
     setSourceCode(sourceCode);
     updateInputFileNameLists("sourceCode", sourceCode, index);
   };
-  const handleChange = (event: React.ChangeEvent<{}>, index: number) => {
-    console.log(event);
+  const handleChange = (_: React.ChangeEvent<{}>, index: number) => {
     setCurrentIndex(index);
     onFocusGetIndex(index);
   };
@@ -186,12 +207,11 @@ const IndexPage: React.FC<Props> = (props) => {
     setTargetLanguageValue(value);
   };
   const selectProgrammingIcon = (
-    event: React.ChangeEvent<{}>,
+    _: React.ChangeEvent<{}>,
     selectObject: string | ProgrammingIcon | null
   ) => {
     if (selectObject === null) return;
     if (typeof selectObject === "string") return;
-    console.log(event);
     setProgrammingIcon({
       ...programmingIcon,
       id: selectObject.id,
@@ -199,10 +219,14 @@ const IndexPage: React.FC<Props> = (props) => {
       iconComponent: selectObject.iconComponent,
     });
   };
+  // const handleClose = () => () => {
+  //   setIsValidDescription(false)
+  // }
   return (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
+      draftContents={draftContents}
     >
       <StyledContainer>
         <Box component="section">
@@ -211,20 +235,22 @@ const IndexPage: React.FC<Props> = (props) => {
               title={title}
               onChange={changeTitle}
               placeholder="Title"
-              isValidTitle={isValidTitle}
             />
           </Box>
           <Box mb={3} className="tag-list-wrapper">
             <InputTagWrapper changeTagList={changeTagList} />
           </Box>
-          <Box mb={3} className="description-wrapper">
+          <Box mb={5} className="description-wrapper">
             <Editor
               id="editor"
               headerText="Description"
               onChange={changeDescritption}
               changeActiveStep={changeActiveStep}
-              description={description}
+              value={description}
               activeStep={activeStep}
+              maxWidth="1096px"
+              isValid={isValidDescription}
+              MAX_LENGTH={DESCRIPION_MAX_LENGTH}
             />
           </Box>
           <Box mb={3} className="source-code-wrapper">
@@ -245,7 +271,6 @@ const IndexPage: React.FC<Props> = (props) => {
                       <TextFieldWithCheckBox
                         index={index}
                         listLength={inputFileNameLists.length}
-                        isChecked={el.isChecked}
                         value={el.value}
                         variant="outlined"
                         size="small"
@@ -254,9 +279,6 @@ const IndexPage: React.FC<Props> = (props) => {
                         onDelete={() => deleteListsItem(el.key, index)}
                         onCnangeFileName={(event) =>
                           cnangeFileName(event, index)
-                        }
-                        onChangeIsChecked={(event) =>
-                          changeIsChecked(event, index)
                         }
                         onFocusGetIndex={() => onFocusGetIndex(index)}
                       />
@@ -270,11 +292,14 @@ const IndexPage: React.FC<Props> = (props) => {
                   headerText="Source Code"
                   onChange={changeSourceCode}
                   changeActiveStep={changeActiveStep}
-                  description={sourceCode}
+                  value={sourceCode}
                   activeStep={activeStep}
+                  maxWidth="733.59px"
+                  isValid={isValidSourceCode}
                   currentIndex={currentIndex}
                   handleChange={handleChange}
                   inputFileNameLists={inputFileNameLists}
+                  MAX_LENGTH={SOURCE_CODE_MAX_LENGTH}
                 />
               </StyledBoxCordEditorWrapper>
             </StyledBoxFlex>
@@ -290,14 +315,20 @@ const IndexPage: React.FC<Props> = (props) => {
         selectProgrammingIcon={selectProgrammingIcon}
         registerContents={registerContents}
       />
+      <CustomSnackbar
+        isOpen={!isValidDescription}
+        message={`Descriptionは${DESCRIPION_MAX_LENGTH}文字以下で入力してください`}
+      />
+      {inputFileNameLists.map((el) => (
+        <Box position="relative" key={el.key}>
+          <CustomSnackbar
+            key={el.key}
+            isOpen={!el.isValid}
+            message={`SourceCodeは${SOURCE_CODE_MAX_LENGTH}文字以下で入力してください`}
+          />
+        </Box>
+      ))}
     </LayoutPost>
   );
 };
 export default IndexPage;
-
-// # registerContents
-// - test
-// - test
-// - test
-
-// src/test/index.tsx

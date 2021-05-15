@@ -23,15 +23,19 @@ type Props = {
   headerText: string;
   changeActiveStep: (value: number) => void;
   onChange: (value: string) => void | any;
-  description: string;
+  value: string;
   activeStep: number;
+  isValid: boolean;
+  MAX_LENGTH: number;
+  maxWidth?: string;
   currentIndex?: number;
   handleChange?: (event: React.ChangeEvent<{}>, value: any) => void;
   inputFileNameLists?: {
     key: string;
-    isChecked: boolean;
     value: string;
     sourceCode: string;
+    bodyHtml: string;
+    isValid: boolean;
   }[];
 };
 
@@ -43,10 +47,9 @@ const StyledBoxFlex = styled(Box)`
   }
 `;
 const StyledBoxMaxWidth = styled(Box)`
-  width: 100%;
-  box-shadow: 0px 8px 16px -2px rgba(92, 107, 192, 0.2),
-    0px 0px 0px 1px rgba(92, 107, 192, 0.02);
   border-radius: 8px;
+  width: 100%;
+  transition: all 0.3s;
 `;
 const StyledBoxPreviewWrapper = styled(Box)`
   padding: 16px;
@@ -63,6 +66,7 @@ const StyledTabs = styled(Tabs)`
   background: #ffffff;
   width: 100%;
   max-width: 733.59px;
+  border-radius: 8px 8px 0 0;
 `;
 export const Editor: React.FC<Props> = React.memo((props) => {
   const [instance, setInstance] = useState<EasyMDE>();
@@ -97,7 +101,9 @@ export const Editor: React.FC<Props> = React.memo((props) => {
   return (
     <>
       <StyledBoxFlex>
-        <StyledBoxMaxWidth>
+        <StyledBoxMaxWidth
+          className={!props.isValid ? "error-shadow" : "default-shadow"}
+        >
           {props.inputFileNameLists && (
             <StyledTabs
               value={props.currentIndex}
@@ -108,7 +114,11 @@ export const Editor: React.FC<Props> = React.memo((props) => {
               scrollButtons={"off"}
             >
               {props.inputFileNameLists.map((el) => (
-                <Tab label={el.value === "" ? "New!" : el.value} key={el.key} />
+                <Tab
+                  label={el.value === "" ? "New!" : el.value}
+                  key={el.key}
+                  className={!el.isValid ? "error" : ""}
+                />
               ))}
             </StyledTabs>
           )}
@@ -132,6 +142,8 @@ export const Editor: React.FC<Props> = React.memo((props) => {
                 id={props.id}
                 className="editor"
                 getMdeInstance={getInstance}
+                onChange={props.onChange}
+                value={props.value}
                 options={{
                   toolbar: false,
                   status: false,
@@ -139,11 +151,19 @@ export const Editor: React.FC<Props> = React.memo((props) => {
                   nativeSpellcheck: false,
                   spellChecker: false,
                   styleSelectedText: false,
-                  lineWrapping: false,
+                  lineWrapping: true,
                 }}
-                onChange={props.onChange}
-                value={props.description}
               />
+              <Box textAlign="right" p={1} paddingRight={"10px"}>
+                {props.value.length} /&nbsp;
+                <Box
+                  component="span"
+                  fontWeight="bold"
+                  className={!props.isValid ? "error" : ""}
+                >
+                  {props.MAX_LENGTH}
+                </Box>
+              </Box>
             </StyledBoxEditorWrapper>
             <StyledBoxEditorWrapper>
               <div
@@ -156,7 +176,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
               <StyledBoxPreviewWrapper id="body">
                 <span
                   dangerouslySetInnerHTML={{
-                    __html: marked(props.description),
+                    __html: marked(props.value),
                   }}
                 />
               </StyledBoxPreviewWrapper>
