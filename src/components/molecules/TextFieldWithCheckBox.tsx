@@ -9,7 +9,6 @@ import styled from 'styled-components'
 type Props = TextFieldProps & {
   index: number
   listLength: number
-  isChecked: boolean
   onClick: VoidFunction
   onDelete: VoidFunction
   onCnangeFileName: (event: React.ChangeEvent<HTMLInputElement>) => void
@@ -25,7 +24,6 @@ export const TextFieldWithCheckBox: React.FC<Props> = React.memo((props) => {
   const {
     index,
     listLength,
-    isChecked,
     onClick,
     onDelete,
     onCnangeFileName,
