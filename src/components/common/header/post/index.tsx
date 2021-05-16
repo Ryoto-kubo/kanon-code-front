@@ -12,6 +12,7 @@ import styled from "styled-components";
 type ButtonText = Readonly<"投稿設定" | "下書き保存">;
 type Props = {
   draftContent: () => void;
+  previousPage: () => void;
 };
 const StyledBox = styled(Box)`
   padding: 0 16px;
@@ -51,10 +52,6 @@ export const ThePostHeader: React.FC<Props> = React.memo((props) => {
     setValue(value);
     setColor(color);
   }
-  function previousPage() {
-    history.back();
-  }
-
   return (
     <CustomStickyAppBar>
       <StyledBox
@@ -64,7 +61,7 @@ export const ThePostHeader: React.FC<Props> = React.memo((props) => {
       >
         <ArrowButton
           disableRipple={true}
-          func={previousPage}
+          func={props.previousPage}
           fontSize="default"
           color="primary"
         />

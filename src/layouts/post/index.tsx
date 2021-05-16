@@ -13,13 +13,20 @@ type Props = {
   title: string;
   currentUser: null | UserType;
   draftContent: () => void;
+  previousPage: () => void;
 };
 
 const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 
-const LayoutPost = ({ children, title, currentUser, draftContent }: Props) => {
+const LayoutPost = ({
+  children,
+  title,
+  currentUser,
+  draftContent,
+  previousPage,
+}: Props) => {
   const router = useRouter();
   if (currentUser === null) {
     router.push("/");
@@ -29,7 +36,7 @@ const LayoutPost = ({ children, title, currentUser, draftContent }: Props) => {
   return (
     <>
       <CommonHead title={title} />
-      <ThePostHeader draftContent={draftContent} />
+      <ThePostHeader draftContent={draftContent} previousPage={previousPage} />
       <Toolbar />
       <StyleBoxMain mt={4} component="main">
         {children}

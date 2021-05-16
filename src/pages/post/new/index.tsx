@@ -71,7 +71,6 @@ const IndexPage: React.FC<Props> = (props) => {
   console.log(props.currentUser);
   const userId = props.currentUser!.user_id;
   const userProfile = props.currentUser!.user_profile;
-  const [uuid] = useState(uuidv4());
   const [title, setTitle] = useState("");
   const [tagList, setTagList] = useState<any[]>([]);
   const [description, setDescription] = useState("");
@@ -96,18 +95,52 @@ const IndexPage: React.FC<Props> = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isValidDescription, setIsValidDescription] = useState(true);
   const [isValidSourceCode, setIsValidSourceCode] = useState(true);
+  const [isPosted, setIsPosted] = useState(false);
+  const [uuid] = useState(uuidv4());
   const TITLE_MAX_LENGTH = 32;
   const TAGS_MAX_LENGTH = 5;
   const DESCRIPION_MAX_LENGTH = 2;
   const SOURCE_CODE_MAX_LENGTH = 2;
-
+  window.onbeforeunload = (e: any) => {
+    e.returnValue = "このページを離れてもよろしいですか？";
+    const isValidExistData = validExistData();
+    execPreviousPageIfneeded(isValidExistData);
+  };
+  const execPreviousPageIfneeded = (isValidExistData: boolean) => {
+    if (isValidExistData && !isPosted) {
+      if (confirm("データが入力されています。保存せずに終了しますか？")) {
+        history.back();
+      }
+    } else if (isValidExistData && isPosted) {
+      history.back();
+    } else if (!isValidExistData) {
+      history.back();
+    }
+  };
+  const validExistData = () => {
+    const isEmptyTitle = title === "";
+    const isEmptyTagList = tagList.length === 0;
+    const isEmptyDescription = description === "";
+    const isEmptyFileName = inputFileNameLists[0].value === "";
+    const isEmptySoureCode = inputFileNameLists[0].sourceCode === "";
+    return (
+      !isEmptyTitle ||
+      !isEmptyTagList ||
+      !isEmptyDescription ||
+      !isEmptyFileName ||
+      !isEmptySoureCode
+    );
+  };
+  const previousPage = () => {
+    const isValidExistData = validExistData();
+    // データが存在していて下書き保存されていなければ表示させる
+    execPreviousPageIfneeded(isValidExistData);
+  };
   const validFalseIncluded = () => {
     const validList = inputFileNameLists.map((el) => el.isValid);
     return validList.includes(false);
   };
   const createParams = (key: string) => {
-    console.log(uuid);
-
     return {
       uuid: uuid,
       userId: userId,
@@ -135,12 +168,17 @@ const IndexPage: React.FC<Props> = (props) => {
     postContnt("register");
   };
   const draftContent = async () => {
-    console.log("draft");
+    const err = new Error();
     const isValidIncluded = validFalseIncluded();
     if (!isValidDescription) return;
     if (isValidIncluded) return;
-    const result = await postContnt("draft");
-    console.log(result);
+    try {
+      const result = await postContnt("draft");
+      if (result.status !== 200) throw err;
+      setIsPosted(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -255,6 +293,7 @@ const IndexPage: React.FC<Props> = (props) => {
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
       draftContent={draftContent}
+      previousPage={previousPage}
     >
       <StyledContainer>
         <Box component="section">
