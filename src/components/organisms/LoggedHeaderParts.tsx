@@ -31,9 +31,6 @@ const StyledUseMr = styled.span`
     margin-right: 24px;
   }
 `;
-const StyledAnchor = styled.a`
-  text-decoration: unset;
-`;
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
 `;
