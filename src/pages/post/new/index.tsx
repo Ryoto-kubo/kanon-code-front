@@ -12,6 +12,7 @@ import { axios } from "@/utils/axios";
 import { validLength } from "@/utils/valid";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+// import baseAxios from "axios";
 import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
@@ -115,6 +116,17 @@ const IndexPage: React.FC<Props> = (props) => {
     } else if (!isValidExistData) {
       history.back();
     }
+  };
+  // const getPreSignedUrl = async () => {
+  //   return await axios.get(apis.CREATE_PRESIGNED_URL);
+  // };
+  const uploadImageToS3 = async (presignedUrl: string, file: any) => {
+    const options = {
+      headers: {
+        "Content-Type": file.type,
+      },
+    };
+    await axios.put(presignedUrl, file, options);
   };
   const validExistData = () => {
     const isEmptyTitle = title === "";
@@ -316,6 +328,7 @@ const IndexPage: React.FC<Props> = (props) => {
               activeStep={activeStep}
               maxWidth="1096px"
               isValid={isValidDescription}
+              uploadImageToS3={uploadImageToS3}
               MAX_LENGTH={DESCRIPION_MAX_LENGTH}
             />
           </Box>
@@ -362,6 +375,7 @@ const IndexPage: React.FC<Props> = (props) => {
                   activeStep={activeStep}
                   maxWidth="733.59px"
                   isValid={isValidSourceCode}
+                  uploadImageToS3={uploadImageToS3}
                   currentIndex={currentIndex}
                   handleChange={handleChange}
                   inputFileNameLists={inputFileNameLists}

@@ -1,4 +1,6 @@
 import { EditorButtons } from "@/components/organisms/EditorButtons";
+import { apis } from "@/consts/api/";
+import { axios } from "@/utils/axios";
 // import theme from '@/styles/theme'
 import Box from "@material-ui/core/Box";
 import Tab from "@material-ui/core/Tab";
@@ -26,6 +28,7 @@ type Props = {
   value: string;
   activeStep: number;
   isValid: boolean;
+  uploadImageToS3: (presignedUrl: string, image: any) => void;
   MAX_LENGTH: number;
   maxWidth?: string;
   currentIndex?: number;
@@ -74,6 +77,9 @@ export const Editor: React.FC<Props> = React.memo((props) => {
   const getInstance = (instance: EasyMDE) => {
     setInstance(instance);
   };
+  const getPreSignedUrl = async () => {
+    return await axios.get(apis.CREATE_PRESIGNED_URL);
+  };
   const switchPreview = () => {
     if (!instance) return;
     const SHOW_EDITOR = 0;
@@ -92,9 +98,22 @@ export const Editor: React.FC<Props> = React.memo((props) => {
     if (!instance) return;
     EasyMDE.drawLink(instance);
   };
-  const insertImageMde = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const insertImageMde = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!instance) return;
-    console.log(event.currentTarget.value); // 画像データ
+    const err = new Error();
+    const file = event.target.files![0];
+    console.log(file, "file");
+    try {
+      // const params = new FormData();
+      const response = await getPreSignedUrl();
+      if (response.status !== 200) err;
+      const presignedUrl = response.data.presignedUrl;
+      // params.append("file", file);
+      const result = await props.uploadImageToS3(presignedUrl, file);
+      console.log(result, "result");
+    } catch (error) {
+      console.error(error, "error");
+    }
 
     EasyMDE.drawImage(instance);
   };
