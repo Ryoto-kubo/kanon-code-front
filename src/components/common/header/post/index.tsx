@@ -1,58 +1,58 @@
-import { CustomSwitch } from '@/components/atoms/CustomSwitch'
-import { CustomSolidButton } from '@/components/atoms/SolidButton'
-import { CustomStickyAppBar } from '@/components/atoms/StickyAppBar'
-import { ArrowButton } from '@/components/molecules/ArrowButton'
-import { postPublishState } from '@/recoil/atoms/postPublish'
-import theme from '@/styles/theme'
-import { Box } from '@material-ui/core/'
-import React, { useState } from 'react'
-import { useSetRecoilState } from 'recoil'
-import styled from 'styled-components'
+import { CustomSwitch } from "@/components/atoms/CustomSwitch";
+import { CustomSolidButton } from "@/components/atoms/SolidButton";
+import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
+import { ArrowButton } from "@/components/molecules/ArrowButton";
+import { postPublishState } from "@/recoil/atoms/postPublish";
+import theme from "@/styles/theme";
+import { Box } from "@material-ui/core/";
+import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
 
-type ButtonText = Readonly<'投稿設定' | '下書き保存'>
+type ButtonText = Readonly<"投稿設定" | "下書き保存">;
 type Props = {
-  draftContents: () => void
-}
+  draftContent: () => void;
+};
 const StyledBox = styled(Box)`
   padding: 0 16px;
   max-width: 1280px;
   width: 100%;
   margin: auto;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     padding: 0 24px;
   }
-`
+`;
 const StyledUseMr = styled(Box)`
   margin-right: 24px;
   display: flex;
   align-items: center;
   font-size: 14px;
   font-weight: bold;
-`
+`;
 
 export const ThePostHeader: React.FC<Props> = React.memo((props) => {
-  const mainTextColor = theme.palette.text.primary
-  const disabledColor = '#707070'
-  const [isPublish, setIsPublish] = useState(false)
-  const [value, setValue] = useState<ButtonText>('下書き保存')
-  const [color, setColor] = useState(disabledColor)
-  const setPostPublishState = useSetRecoilState(postPublishState)
+  const mainTextColor = theme.palette.text.primary;
+  const disabledColor = "#707070";
+  const [isPublish, setIsPublish] = useState(false);
+  const [value, setValue] = useState<ButtonText>("下書き保存");
+  const [color, setColor] = useState(disabledColor);
+  const setPostPublishState = useSetRecoilState(postPublishState);
   function onPostOrDraft() {
     if (!isPublish) {
-      props.draftContents()
+      props.draftContent();
     }
-    setPostPublishState(isPublish)
+    setPostPublishState(isPublish);
   }
   function switchPublish(event: React.ChangeEvent<HTMLInputElement>) {
-    const isChecked = event.currentTarget.checked
-    const value: ButtonText = isChecked ? '投稿設定' : '下書き保存'
-    const color = isChecked ? mainTextColor : disabledColor
-    setIsPublish(isChecked)
-    setValue(value)
-    setColor(color)
+    const isChecked = event.currentTarget.checked;
+    const value: ButtonText = isChecked ? "投稿設定" : "下書き保存";
+    const color = isChecked ? mainTextColor : disabledColor;
+    setIsPublish(isChecked);
+    setValue(value);
+    setColor(color);
   }
   function previousPage() {
-    history.back()
+    history.back();
   }
 
   return (
@@ -79,5 +79,5 @@ export const ThePostHeader: React.FC<Props> = React.memo((props) => {
         </Box>
       </StyledBox>
     </CustomStickyAppBar>
-  )
-})
+  );
+});
