@@ -3,4 +3,5 @@ export const apis = {
   REGISTER: "/api/register",
   GET_USER: "/api/getUser",
   UPDATE_DISPLAY_NAME: "/api/updateDisplayName",
+  REGISTER_CONTENT: "/api/registerContent",
 };

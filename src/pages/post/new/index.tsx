@@ -1,13 +1,14 @@
-// import SnackbarContent from "@material-ui/core/SnackbarContent";
 import { CustomSnackbar } from "@/components/atoms/CustomSnackbar";
 import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
 import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
 import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
+import { apis } from "@/consts/api/";
 import { targetLanguages } from "@/consts/target-languages";
 import { UserType } from "@/consts/type";
 import LayoutPost from "@/layouts/post";
+import { axios } from "@/utils/axios";
 import { validLength } from "@/utils/valid";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
@@ -67,6 +68,9 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
+  console.log(props.currentUser);
+  const userId = props.currentUser!.user_id;
+  const userProfile = props.currentUser!.user_profile;
   const [title, setTitle] = useState("");
   const [tagList, setTagList] = useState<any[]>([]);
   const [description, setDescription] = useState("");
@@ -91,22 +95,90 @@ const IndexPage: React.FC<Props> = (props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isValidDescription, setIsValidDescription] = useState(true);
   const [isValidSourceCode, setIsValidSourceCode] = useState(true);
-  // const { enqueueSnackbar } = useSnackbar();
+  const [isPosted, setIsPosted] = useState(false);
+  const [uuid] = useState(uuidv4());
   const TITLE_MAX_LENGTH = 32;
   const TAGS_MAX_LENGTH = 5;
   const DESCRIPION_MAX_LENGTH = 2;
   const SOURCE_CODE_MAX_LENGTH = 2;
-
-  const registerContents = () => {
+  window.onbeforeunload = (e: any) => {
+    e.returnValue = "このページを離れてもよろしいですか？";
+    const isValidExistData = validExistData();
+    execPreviousPageIfneeded(isValidExistData);
+  };
+  const execPreviousPageIfneeded = (isValidExistData: boolean) => {
+    if (isValidExistData && !isPosted) {
+      if (confirm("データが入力されています。保存せずに終了しますか？")) {
+        history.back();
+      }
+    } else if (isValidExistData && isPosted) {
+      history.back();
+    } else if (!isValidExistData) {
+      history.back();
+    }
+  };
+  const validExistData = () => {
+    const isEmptyTitle = title === "";
+    const isEmptyTagList = tagList.length === 0;
+    const isEmptyDescription = description === "";
+    const isEmptyFileName = inputFileNameLists[0].value === "";
+    const isEmptySoureCode = inputFileNameLists[0].sourceCode === "";
+    return (
+      !isEmptyTitle ||
+      !isEmptyTagList ||
+      !isEmptyDescription ||
+      !isEmptyFileName ||
+      !isEmptySoureCode
+    );
+  };
+  const previousPage = () => {
+    const isValidExistData = validExistData();
+    // データが存在していて下書き保存されていなければ表示させる
+    execPreviousPageIfneeded(isValidExistData);
+  };
+  const validFalseIncluded = () => {
+    const validList = inputFileNameLists.map((el) => el.isValid);
+    return validList.includes(false);
+  };
+  const createParams = (key: string) => {
+    return {
+      uuid: uuid,
+      userId: userId,
+      userProfile: userProfile,
+      postType: key,
+      contents: {
+        title: title,
+        tagList: tagList,
+        description: description,
+        inputFileNameLists: inputFileNameLists,
+      },
+    };
+  };
+  const postContnt = async (key: string) => {
+    const params = createParams(key);
+    return await axios.post(apis.REGISTER_CONTENT, params);
+  };
+  const registerContent = () => {
     console.log(title, "title");
     console.log(tagList, "tagList");
     console.log(description, "description");
     console.log(inputFileNameLists, "inputFileNameLists");
     console.log(targetLanguageValue, "targetLanguageValue");
     console.log(programmingIcon, "programmingIcon");
+    postContnt("register");
   };
-  const draftContents = (): void => {
-    console.log("draft");
+  const draftContent = async () => {
+    const err = new Error();
+    const isValidIncluded = validFalseIncluded();
+    if (!isValidDescription) return;
+    if (isValidIncluded) return;
+    try {
+      const result = await postContnt("draft");
+      if (result.status !== 200) throw err;
+      setIsPosted(true);
+    } catch (error) {
+      console.error(error);
+    }
   };
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -135,9 +207,6 @@ const IndexPage: React.FC<Props> = (props) => {
   );
   const changeSourceCode = (sourceCode: string): void => {
     const isValid = validLength(sourceCode, SOURCE_CODE_MAX_LENGTH);
-    console.log(isValid);
-    console.log(inputFileNameLists);
-
     setSourceCode(sourceCode);
     setIsValidSourceCode(isValid);
     updateIsValidSourceCode(isValid);
@@ -219,14 +288,12 @@ const IndexPage: React.FC<Props> = (props) => {
       iconComponent: selectObject.iconComponent,
     });
   };
-  // const handleClose = () => () => {
-  //   setIsValidDescription(false)
-  // }
   return (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
-      draftContents={draftContents}
+      draftContent={draftContent}
+      previousPage={previousPage}
     >
       <StyledContainer>
         <Box component="section">
@@ -313,7 +380,7 @@ const IndexPage: React.FC<Props> = (props) => {
         programmingIcon={programmingIcon}
         selectTargetLanguage={selectTargetLanguage}
         selectProgrammingIcon={selectProgrammingIcon}
-        registerContents={registerContents}
+        registerContent={registerContent}
       />
       <CustomSnackbar
         isOpen={!isValidDescription}
