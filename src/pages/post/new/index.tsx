@@ -68,7 +68,6 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props.currentUser);
   const userId = props.currentUser!.user_id;
   const userProfile = props.currentUser!.user_profile;
   const [title, setTitle] = useState("");
