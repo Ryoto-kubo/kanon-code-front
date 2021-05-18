@@ -1,6 +1,6 @@
 import { EditorButtons } from "@/components/organisms/EditorButtons";
-import { apis } from "@/consts/api/";
-import { axios } from "@/utils/axios";
+import { getPreSignedUrl } from "@/utils/get-presigned-url";
+import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 // import theme from '@/styles/theme'
 import Box from "@material-ui/core/Box";
 import Tab from "@material-ui/core/Tab";
@@ -30,7 +30,6 @@ type Props = {
   isValid: boolean;
   uploadImageToS3: (presignedUrl: string, image: any) => void;
   MAX_LENGTH: number;
-  maxWidth?: string;
   currentIndex?: number;
   handleChange?: (event: React.ChangeEvent<{}>, value: any) => void;
   inputFileNameLists?: {
@@ -50,9 +49,12 @@ const StyledBoxFlex = styled(Box)`
   }
 `;
 const StyledBoxMaxWidth = styled(Box)`
-  border-radius: 8px;
   width: 100%;
+  border-radius: 8px;
   transition: all 0.3s;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    width: calc(100% - 60px);
+  }
 `;
 const StyledBoxPreviewWrapper = styled(Box)`
   padding: 16px;
@@ -77,9 +79,6 @@ export const Editor: React.FC<Props> = React.memo((props) => {
   const getInstance = (instance: EasyMDE) => {
     setInstance(instance);
   };
-  const getPreSignedUrl = async () => {
-    return await axios.get(apis.CREATE_PRESIGNED_URL);
-  };
   const switchPreview = () => {
     if (!instance) return;
     const SHOW_EDITOR = 0;
@@ -103,19 +102,34 @@ export const Editor: React.FC<Props> = React.memo((props) => {
     const err = new Error();
     const file = event.target.files![0];
     console.log(file, "file");
+
+    const prepareImageBeforePost = new PrepareImageBeforePost(file);
+    const isValidImageSize = prepareImageBeforePost.validImageSize();
+    const isValidFileExtention = prepareImageBeforePost.validImageExtention();
+    const newFileName = prepareImageBeforePost.createNewFileName();
+    const compressedFile = await prepareImageBeforePost.compressionImage();
+    console.log(compressedFile, "compressedFile");
+
+    if (!isValidImageSize || !isValidFileExtention) return;
+
     try {
-      // const params = new FormData();
-      const response = await getPreSignedUrl();
+      const response = await getPreSignedUrl(newFileName);
       if (response.status !== 200) err;
       const presignedUrl = response.data.presignedUrl;
-      // params.append("file", file);
-      const result = await props.uploadImageToS3(presignedUrl, file);
-      console.log(result, "result");
+      await props.uploadImageToS3(presignedUrl, compressedFile);
+      EasyMDE.drawImage(instance);
+      instance.codemirror.getCursor();
+      const currentCursorPositions = instance.codemirror.getCursor();
+      instance.codemirror.replaceRange(
+        `https://contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/${newFileName}`,
+        {
+          line: currentCursorPositions.line,
+          ch: currentCursorPositions.ch,
+        }
+      );
     } catch (error) {
-      console.error(error, "error");
+      console.error(error);
     }
-
-    EasyMDE.drawImage(instance);
   };
   return (
     <>

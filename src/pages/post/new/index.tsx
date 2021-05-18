@@ -99,8 +99,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const [uuid] = useState(uuidv4());
   const TITLE_MAX_LENGTH = 32;
   const TAGS_MAX_LENGTH = 5;
-  const DESCRIPION_MAX_LENGTH = 2;
-  const SOURCE_CODE_MAX_LENGTH = 2;
+  const DESCRIPION_MAX_LENGTH = 100;
+  const SOURCE_CODE_MAX_LENGTH = 100;
   window.onbeforeunload = (e: any) => {
     e.returnValue = "このページを離れてもよろしいですか？";
     const isValidExistData = validExistData();
@@ -121,12 +121,7 @@ const IndexPage: React.FC<Props> = (props) => {
   //   return await axios.get(apis.CREATE_PRESIGNED_URL);
   // };
   const uploadImageToS3 = async (presignedUrl: string, file: any) => {
-    const options = {
-      headers: {
-        "Content-Type": file.type,
-      },
-    };
-    await axios.put(presignedUrl, file, options);
+    await axios.put(presignedUrl, file);
   };
   const validExistData = () => {
     const isEmptyTitle = title === "";
@@ -326,7 +321,6 @@ const IndexPage: React.FC<Props> = (props) => {
               changeActiveStep={changeActiveStep}
               value={description}
               activeStep={activeStep}
-              maxWidth="1096px"
               isValid={isValidDescription}
               uploadImageToS3={uploadImageToS3}
               MAX_LENGTH={DESCRIPION_MAX_LENGTH}
@@ -373,7 +367,6 @@ const IndexPage: React.FC<Props> = (props) => {
                   changeActiveStep={changeActiveStep}
                   value={sourceCode}
                   activeStep={activeStep}
-                  maxWidth="733.59px"
                   isValid={isValidSourceCode}
                   uploadImageToS3={uploadImageToS3}
                   currentIndex={currentIndex}

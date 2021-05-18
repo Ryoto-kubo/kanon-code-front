@@ -38,6 +38,7 @@
     "aws-amplify": "^3.3.21",
     "aws-amplify-react": "^4.2.25",
     "babel-plugin-styled-components": "^1.12.0",
+    "browser-image-compression": "^1.0.14",
     "codemirror": "^5.61.0",
     "codemirror-node": "^0.1.0",
     "express": "^4.17.1",
