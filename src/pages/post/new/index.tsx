@@ -12,6 +12,7 @@ import { axios } from "@/utils/axios";
 import { validLength } from "@/utils/valid";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
+// import baseAxios from "axios";
 import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
@@ -68,7 +69,6 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props.currentUser);
   const userId = props.currentUser!.user_id;
   const userProfile = props.currentUser!.user_profile;
   const [title, setTitle] = useState("");
@@ -99,8 +99,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const [uuid] = useState(uuidv4());
   const TITLE_MAX_LENGTH = 32;
   const TAGS_MAX_LENGTH = 5;
-  const DESCRIPION_MAX_LENGTH = 2;
-  const SOURCE_CODE_MAX_LENGTH = 2;
+  const DESCRIPION_MAX_LENGTH = 500;
+  const SOURCE_CODE_MAX_LENGTH = 500;
   window.onbeforeunload = (e: any) => {
     e.returnValue = "このページを離れてもよろしいですか？";
     const isValidExistData = validExistData();
@@ -116,6 +116,12 @@ const IndexPage: React.FC<Props> = (props) => {
     } else if (!isValidExistData) {
       history.back();
     }
+  };
+  // const getPreSignedUrl = async () => {
+  //   return await axios.get(apis.CREATE_PRESIGNED_URL);
+  // };
+  const uploadImageToS3 = async (presignedUrl: string, file: any) => {
+    await axios.put(presignedUrl, file);
   };
   const validExistData = () => {
     const isEmptyTitle = title === "";
@@ -315,8 +321,8 @@ const IndexPage: React.FC<Props> = (props) => {
               changeActiveStep={changeActiveStep}
               value={description}
               activeStep={activeStep}
-              maxWidth="1096px"
               isValid={isValidDescription}
+              uploadImageToS3={uploadImageToS3}
               MAX_LENGTH={DESCRIPION_MAX_LENGTH}
             />
           </Box>
@@ -361,8 +367,8 @@ const IndexPage: React.FC<Props> = (props) => {
                   changeActiveStep={changeActiveStep}
                   value={sourceCode}
                   activeStep={activeStep}
-                  maxWidth="733.59px"
                   isValid={isValidSourceCode}
+                  uploadImageToS3={uploadImageToS3}
                   currentIndex={currentIndex}
                   handleChange={handleChange}
                   inputFileNameLists={inputFileNameLists}
