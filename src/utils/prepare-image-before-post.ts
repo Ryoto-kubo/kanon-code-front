@@ -1,3 +1,4 @@
+import { errorMessages } from "@/consts/error-messages.ts";
 import imageCompression from "browser-image-compression";
 import { v4 as uuidv4 } from "uuid";
 
@@ -12,7 +13,7 @@ export class PrepareImageBeforePost {
     return this.fileObject.name.split(".").pop()!;
   }
 
-  public async compressionImage(): Promise<File | undefined> {
+  public async compressionImage(): Promise<File | null> {
     const options = {
       maxSizeMB: 1,
       maxWidthOrHeight: 1000,
@@ -20,8 +21,9 @@ export class PrepareImageBeforePost {
     };
     try {
       return await imageCompression(this.fileObject, options);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      console.error(errorMessages.IMAGE_COMPRESSION_ERROR);
+      return null;
     }
   }
 
@@ -35,6 +37,8 @@ export class PrepareImageBeforePost {
     const ALLOW_FILE_EXTENTION_LIST = [
       "jpeg",
       "JPEG",
+      "jpg",
+      "JPG",
       "png",
       "PNG",
       "gif",

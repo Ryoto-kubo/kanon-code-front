@@ -99,8 +99,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const [uuid] = useState(uuidv4());
   const TITLE_MAX_LENGTH = 32;
   const TAGS_MAX_LENGTH = 5;
-  const DESCRIPION_MAX_LENGTH = 100;
-  const SOURCE_CODE_MAX_LENGTH = 100;
+  const DESCRIPION_MAX_LENGTH = 500;
+  const SOURCE_CODE_MAX_LENGTH = 500;
   window.onbeforeunload = (e: any) => {
     e.returnValue = "このページを離れてもよろしいですか？";
     const isValidExistData = validExistData();

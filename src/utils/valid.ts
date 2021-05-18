@@ -11,6 +11,8 @@ export const validImageExtention = (fileExtention: string) => {
   const ALLOW_FILE_EXTENTION_LIST = [
     "jpeg",
     "JPEG",
+    "jpg",
+    "JPG",
     "png",
     "PNG",
     "gif",

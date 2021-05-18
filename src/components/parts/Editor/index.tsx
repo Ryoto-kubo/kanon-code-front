@@ -1,4 +1,5 @@
 import { EditorButtons } from "@/components/organisms/EditorButtons";
+import { errorMessages } from "@/consts/error-messages.ts";
 import { getPreSignedUrl } from "@/utils/get-presigned-url";
 import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 // import theme from '@/styles/theme'
@@ -89,6 +90,34 @@ export const Editor: React.FC<Props> = React.memo((props) => {
       props.changeActiveStep(SHOW_PREVIEW);
     }
   };
+  const validImageSizeAndExtention = (instance: PrepareImageBeforePost) => {
+    const isValidImageSize = instance.validImageSize();
+    const isValidFileExtention = instance.validImageExtention();
+    return isValidImageSize && isValidFileExtention;
+  };
+  const executeInsertDrawImage = (
+    editorInstance: EasyMDE,
+    newFileName: string
+  ) => {
+    EasyMDE.drawImage(editorInstance);
+    const protocol = "https://";
+    const currentCursorPositions = editorInstance.codemirror.getCursor();
+    const line = currentCursorPositions.line;
+    const ch = currentCursorPositions.ch;
+    editorInstance.codemirror.setSelection(
+      {
+        line: line,
+        ch: ch,
+      },
+      {
+        line: line,
+        ch: ch + protocol.length,
+      }
+    );
+    editorInstance.codemirror.replaceSelection(
+      `https://contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/${newFileName}`
+    );
+  };
   const insertCodeMde = () => {
     if (!instance) return;
     EasyMDE.toggleCodeBlock(instance);
@@ -101,33 +130,20 @@ export const Editor: React.FC<Props> = React.memo((props) => {
     if (!instance) return;
     const err = new Error();
     const file = event.target.files![0];
-    console.log(file, "file");
-
     const prepareImageBeforePost = new PrepareImageBeforePost(file);
-    const isValidImageSize = prepareImageBeforePost.validImageSize();
-    const isValidFileExtention = prepareImageBeforePost.validImageExtention();
+    const isValid = validImageSizeAndExtention(prepareImageBeforePost);
+    if (!isValid) return;
     const newFileName = prepareImageBeforePost.createNewFileName();
-    const compressedFile = await prepareImageBeforePost.compressionImage();
-    console.log(compressedFile, "compressedFile");
-
-    if (!isValidImageSize || !isValidFileExtention) return;
-
     try {
+      const compressedFile = await prepareImageBeforePost.compressionImage();
+      if (!compressedFile) throw err;
       const response = await getPreSignedUrl(newFileName);
-      if (response.status !== 200) err;
+      if (response.status !== 200) throw err;
       const presignedUrl = response.data.presignedUrl;
       await props.uploadImageToS3(presignedUrl, compressedFile);
-      EasyMDE.drawImage(instance);
-      instance.codemirror.getCursor();
-      const currentCursorPositions = instance.codemirror.getCursor();
-      instance.codemirror.replaceRange(
-        `https://contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/${newFileName}`,
-        {
-          line: currentCursorPositions.line,
-          ch: currentCursorPositions.ch,
-        }
-      );
+      executeInsertDrawImage(instance, newFileName);
     } catch (error) {
+      alert(errorMessages.SYSTEM_ERROR);
       console.error(error);
     }
   };
