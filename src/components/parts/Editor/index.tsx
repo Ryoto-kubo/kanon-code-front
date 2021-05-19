@@ -1,4 +1,3 @@
-import { CustomLoader } from "@/components/common/loader";
 import { EditorButtons } from "@/components/organisms/EditorButtons";
 import { errorMessages } from "@/consts/error-messages.ts";
 import { getPreSignedUrl } from "@/utils/get-presigned-url";
@@ -12,7 +11,6 @@ import "easymde/dist/easymde.min.css";
 import marked from "marked";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
-// import Loader from "react-loader-spinner";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import "./editor.scss";
@@ -77,14 +75,6 @@ const StyledTabs = styled(Tabs)`
   border-radius: 8px 8px 0 0;
 `;
 
-const UploadingSnackBar = () => {
-  return (
-    <Box display="flex" alignItems="center" justifyContent="space-between">
-      <Box fontWeight="bold">Uploading...</Box>
-      <CustomLoader width={20} height={20} color="#8e99f3" />
-    </Box>
-  );
-};
 export const Editor: React.FC<Props> = React.memo((props) => {
   const [instance, setInstance] = useState<EasyMDE>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
@@ -270,15 +260,6 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           isUploading={isUploading}
         />
       </StyledBoxFlex>
-      {/* <Snackbar
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
-        }}
-        open={isUploading}
-        autoHideDuration={6000}
-        message={UploadingSnackBar()}
-      /> */}
     </>
   );
 });
