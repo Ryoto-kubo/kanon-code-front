@@ -223,11 +223,13 @@ export const Editor: React.FC<Props> = React.memo((props) => {
                 Preview
               </div>
               <StyledBoxPreviewWrapper id="body">
-                <span
-                  dangerouslySetInnerHTML={{
-                    __html: marked(props.value),
-                  }}
-                />
+                {props.activeStep === 1 && (
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: marked(props.value),
+                    }}
+                  />
+                )}
               </StyledBoxPreviewWrapper>
             </StyledBoxEditorWrapper>
           </SwipeableViews>
