@@ -117,9 +117,6 @@ const IndexPage: React.FC<Props> = (props) => {
       history.back();
     }
   };
-  // const getPreSignedUrl = async () => {
-  //   return await axios.get(apis.CREATE_PRESIGNED_URL);
-  // };
   const uploadImageToS3 = async (presignedUrl: string, file: any) => {
     await axios.put(presignedUrl, file);
   };

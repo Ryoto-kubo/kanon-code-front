@@ -1,3 +1,4 @@
+import { CustomLoader } from "@/components/common/loader";
 import Box from "@material-ui/core/Box";
 import IconButton from "@material-ui/core/IconButton";
 import InputLabel from "@material-ui/core/InputLabel";
@@ -15,6 +16,7 @@ type Props = {
   insertCodeMde: (event: React.MouseEvent<HTMLButtonElement>) => void;
   insertLinkMde: (event: React.MouseEvent<HTMLButtonElement>) => void;
   insertImageMde: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  isUploading: boolean;
 };
 type TooltipProps = {
   title: string;
@@ -136,18 +138,28 @@ export const EditorButtons: React.FC<Props> = React.memo((props) => {
       </TooltipWrapper>
       <TooltipWrapper title="Image">
         <StyledInputLabel htmlFor="insert-img-mde">
-          <TextField
-            id="insert-img-mde"
-            type="file"
-            style={{ display: "none" }}
-            inputProps={{ accept: "image/jpeg, image/png", multiple: true }}
-            onChange={insertImageMde}
-          />
-          <StyledBoxCircle>
-            <StyledBoxCenter>
-              <PanoramaOutlinedIcon />
-            </StyledBoxCenter>
-          </StyledBoxCircle>
+          {props.isUploading ? (
+            <StyledBoxCircle>
+              <StyledBoxCenter>
+                <CustomLoader width={23} height={23} />
+              </StyledBoxCenter>
+            </StyledBoxCircle>
+          ) : (
+            <>
+              <TextField
+                id="insert-img-mde"
+                type="file"
+                style={{ display: "none" }}
+                inputProps={{ accept: "image/jpeg, image/png", multiple: true }}
+                onChange={insertImageMde}
+              />
+              <StyledBoxCircle>
+                <StyledBoxCenter>
+                  <PanoramaOutlinedIcon />
+                </StyledBoxCenter>
+              </StyledBoxCircle>
+            </>
+          )}
         </StyledInputLabel>
       </TooltipWrapper>
     </StyledBox>

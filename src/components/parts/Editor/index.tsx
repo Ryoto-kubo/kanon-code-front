@@ -1,3 +1,4 @@
+import { CustomLoader } from "@/components/common/loader";
 import { EditorButtons } from "@/components/organisms/EditorButtons";
 import { errorMessages } from "@/consts/error-messages.ts";
 import { getPreSignedUrl } from "@/utils/get-presigned-url";
@@ -11,6 +12,7 @@ import "easymde/dist/easymde.min.css";
 import marked from "marked";
 import dynamic from "next/dynamic";
 import React, { useState } from "react";
+// import Loader from "react-loader-spinner";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import "./editor.scss";
@@ -74,8 +76,18 @@ const StyledTabs = styled(Tabs)`
   max-width: 733.59px;
   border-radius: 8px 8px 0 0;
 `;
+
+const UploadingSnackBar = () => {
+  return (
+    <Box display="flex" alignItems="center" justifyContent="space-between">
+      <Box fontWeight="bold">Uploading...</Box>
+      <CustomLoader width={20} height={20} color="#8e99f3" />
+    </Box>
+  );
+};
 export const Editor: React.FC<Props> = React.memo((props) => {
   const [instance, setInstance] = useState<EasyMDE>();
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
   const getInstance = (instance: EasyMDE) => {
     setInstance(instance);
@@ -95,15 +107,20 @@ export const Editor: React.FC<Props> = React.memo((props) => {
     const isValidFileExtention = instance.validImageExtention();
     return isValidImageSize && isValidFileExtention;
   };
+  const getCurrentCursorPosition = (editorInstance: EasyMDE) => {
+    const cursorPositions = editorInstance.codemirror.getCursor();
+    return ({
+      line: cursorPositions.line,
+      ch: cursorPositions.ch,
+    } = editorInstance.codemirror.getCursor());
+  };
   const executeInsertDrawImage = (
     editorInstance: EasyMDE,
     newFileName: string
   ) => {
     EasyMDE.drawImage(editorInstance);
     const protocol = "https://";
-    const currentCursorPositions = editorInstance.codemirror.getCursor();
-    const line = currentCursorPositions.line;
-    const ch = currentCursorPositions.ch;
+    const { line, ch } = getCurrentCursorPosition(editorInstance);
     editorInstance.codemirror.setSelection(
       {
         line: line,
@@ -115,8 +132,15 @@ export const Editor: React.FC<Props> = React.memo((props) => {
       }
     );
     editorInstance.codemirror.replaceSelection(
-      `https://contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/${newFileName}`
+      `${process.env.NEXT_PUBLIC_UPLOAD_BUCKET_URL}${newFileName}`
     );
+  };
+  const moveCursor = (editorInstance: EasyMDE, moveableNumber: number) => {
+    const { line, ch } = getCurrentCursorPosition(editorInstance);
+    editorInstance.codemirror.setCursor({
+      line: line,
+      ch: ch + moveableNumber,
+    });
   };
   const insertCodeMde = () => {
     if (!instance) return;
@@ -128,6 +152,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
   };
   const insertImageMde = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!instance) return;
+    setIsUploading(true);
     const err = new Error();
     const file = event.target.files![0];
     const prepareImageBeforePost = new PrepareImageBeforePost(file);
@@ -142,7 +167,10 @@ export const Editor: React.FC<Props> = React.memo((props) => {
       const presignedUrl = response.data.presignedUrl;
       await props.uploadImageToS3(presignedUrl, compressedFile);
       executeInsertDrawImage(instance, newFileName);
+      moveCursor(instance, 1);
+      setIsUploading(false);
     } catch (error) {
+      setIsUploading(false);
       alert(errorMessages.SYSTEM_ERROR);
       console.error(error);
     }
@@ -239,8 +267,18 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           insertCodeMde={insertCodeMde}
           insertLinkMde={insertLinkMde}
           insertImageMde={insertImageMde}
+          isUploading={isUploading}
         />
       </StyledBoxFlex>
+      {/* <Snackbar
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        open={isUploading}
+        autoHideDuration={6000}
+        message={UploadingSnackBar()}
+      /> */}
     </>
   );
 });
