@@ -7,7 +7,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import Slide from "@material-ui/core/Slide";
 import { TransitionProps } from "@material-ui/core/transitions";
 import Typography from "@material-ui/core/Typography";
-import Link from "next/link";
+// import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 import CelebrationSvg from "../../../assets/illustration/celebration.svg";
@@ -83,11 +83,11 @@ export const RegisteredDialog: React.FC<Props> = (props) => {
           Kanon Codeへようこそ！
         </StyledTypographyWrapper>
         <DialogContent>
-          <Link href={`${domain}`} passHref>
-            <StyledAnchor>
-              <StyledBoxContentsWrapper>トップへ</StyledBoxContentsWrapper>
-            </StyledAnchor>
-          </Link>
+          {/* <Link href={`${domain}`} passHref> */}
+          <StyledAnchor href={`${domain}`}>
+            <StyledBoxContentsWrapper>トップへ</StyledBoxContentsWrapper>
+          </StyledAnchor>
+          {/* </Link> */}
         </DialogContent>
       </Box>
     </Dialog>
