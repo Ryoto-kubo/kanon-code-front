@@ -10,7 +10,7 @@ import EasyMDE from "easymde";
 import "easymde/dist/easymde.min.css";
 import marked from "marked";
 import dynamic from "next/dynamic";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 import "./editor.scss";
@@ -132,38 +132,40 @@ export const Editor: React.FC<Props> = React.memo((props) => {
       ch: ch + moveableNumber,
     });
   };
-  const insertCodeMde = () => {
+  const insertCodeMde = useCallback(() => {
     if (!instance) return;
     EasyMDE.toggleCodeBlock(instance);
-  };
-  const insertLinkMde = () => {
+  }, []);
+  const insertLinkMde = useCallback(() => {
     if (!instance) return;
     EasyMDE.drawLink(instance);
-  };
+  }, []);
   const insertImageMde = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!instance) return;
     setIsUploading(true);
     const err = new Error();
-    const file = event.target.files![0];
-    const prepareImageBeforePost = new PrepareImageBeforePost(file);
-    const isValid = validImageSizeAndExtention(prepareImageBeforePost);
-    if (!isValid) return;
-    const newFileName = prepareImageBeforePost.createNewFileName();
-    try {
-      const compressedFile = await prepareImageBeforePost.compressionImage();
-      if (!compressedFile) throw err;
-      const response = await getPreSignedUrl(newFileName);
-      if (response.status !== 200) throw err;
-      const presignedUrl = response.data.presignedUrl;
-      await props.uploadImageToS3(presignedUrl, compressedFile);
-      executeInsertDrawImage(instance, newFileName);
-      moveCursor(instance, 1);
-      setIsUploading(false);
-    } catch (error) {
-      setIsUploading(false);
-      alert(errorMessages.SYSTEM_ERROR);
-      console.error(error);
+    const files = event.target.files!;
+    for (const file of Object.values(files)) {
+      const prepareImageBeforePost = new PrepareImageBeforePost(file);
+      const isValid = validImageSizeAndExtention(prepareImageBeforePost);
+      if (!isValid) continue;
+      const newFileName = prepareImageBeforePost.createNewFileName();
+      try {
+        const compressedFile = await prepareImageBeforePost.compressionImage();
+        if (!compressedFile) throw err;
+        const response = await getPreSignedUrl(newFileName);
+        if (response.status !== 200) throw err;
+        const presignedUrl = response.data.presignedUrl;
+        await props.uploadImageToS3(presignedUrl, compressedFile);
+        executeInsertDrawImage(instance, newFileName);
+        moveCursor(instance, 1);
+      } catch (error) {
+        setIsUploading(false);
+        alert(errorMessages.SYSTEM_ERROR);
+        console.error(error);
+      }
     }
+    setIsUploading(false);
   };
   return (
     <>

@@ -137,20 +137,22 @@ export const EditorButtons: React.FC<Props> = React.memo((props) => {
         </StyledIconButton>
       </TooltipWrapper>
       <TooltipWrapper title="Image">
-        <StyledInputLabel htmlFor="insert-img-mde">
           {props.isUploading ? (
             <StyledBoxCircle>
               <StyledBoxCenter>
-                <CustomLoader width={23} height={23} />
+                <CustomLoader width={25} height={25} />
               </StyledBoxCenter>
             </StyledBoxCircle>
           ) : (
-            <>
-              <TextField
+            <StyledInputLabel htmlFor="insert-img-mde">
+            <TextField
                 id="insert-img-mde"
                 type="file"
                 style={{ display: "none" }}
-                inputProps={{ accept: "image/jpeg, image/png", multiple: true }}
+                inputProps={{
+                  accept: "image/png, image/jpeg, image/gif",
+                  multiple: true,
+                }}
                 onChange={insertImageMde}
               />
               <StyledBoxCircle>
@@ -158,9 +160,9 @@ export const EditorButtons: React.FC<Props> = React.memo((props) => {
                   <PanoramaOutlinedIcon />
                 </StyledBoxCenter>
               </StyledBoxCircle>
-            </>
+              </StyledInputLabel>
+            // </>
           )}
-        </StyledInputLabel>
       </TooltipWrapper>
     </StyledBox>
   );

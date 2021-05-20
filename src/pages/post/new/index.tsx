@@ -12,7 +12,6 @@ import { axios } from "@/utils/axios";
 import { validLength } from "@/utils/valid";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-// import baseAxios from "axios";
 import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
 import styled from "styled-components";
@@ -117,9 +116,12 @@ const IndexPage: React.FC<Props> = (props) => {
       history.back();
     }
   };
-  const uploadImageToS3 = async (presignedUrl: string, file: any) => {
-    await axios.put(presignedUrl, file);
-  };
+  const uploadImageToS3 = useCallback(
+    async (presignedUrl: string, file: any) => {
+      await axios.put(presignedUrl, file);
+    },
+    []
+  );
   const validExistData = () => {
     const isEmptyTitle = title === "";
     const isEmptyTagList = tagList.length === 0;
@@ -170,7 +172,7 @@ const IndexPage: React.FC<Props> = (props) => {
     console.log(programmingIcon, "programmingIcon");
     postContnt("register");
   };
-  const draftContent = async () => {
+  const draftContent = useCallback(async () => {
     const err = new Error();
     const isValidIncluded = validFalseIncluded();
     if (!isValidDescription) return;
@@ -182,7 +184,7 @@ const IndexPage: React.FC<Props> = (props) => {
     } catch (error) {
       console.error(error);
     }
-  };
+  }, []);
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
