@@ -1,33 +1,33 @@
-import { CloseButton } from '@/components/molecules/CloseButton'
-import { suggestionWords } from '@/consts/suggestion-words'
-import Box from '@material-ui/core/Box'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemText from '@material-ui/core/ListItemText'
-import { fade } from '@material-ui/core/styles'
-import CheckIcon from '@material-ui/icons/Check'
-import useAutocomplete from '@material-ui/lab/useAutocomplete'
-import PropTypes from 'prop-types'
-import React from 'react'
-import styled from 'styled-components'
+import { CloseButton } from "@/components/molecules/CloseButton";
+import { suggestionWords } from "@/consts/suggestion-words";
+import Box from "@material-ui/core/Box";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemText from "@material-ui/core/ListItemText";
+import { fade } from "@material-ui/core/styles";
+import CheckIcon from "@material-ui/icons/Check";
+import useAutocomplete from "@material-ui/lab/useAutocomplete";
+import PropTypes from "prop-types";
+import React, { useState } from "react";
+import styled from "styled-components";
 
 type Props = {
-  changeTagList: any
-}
+  changeTagList: any;
+};
 const Tag = (props: any) => {
-  const { label, onDelete, ...other } = props
+  const { label, onDelete, ...other } = props;
   return (
     <Box {...other}>
       <span>{label}</span>
       <CloseButton fontSize="small" func={onDelete} color="action" />
     </Box>
-  )
-}
+  );
+};
 Tag.propTypes = {
   label: PropTypes.string.isRequired,
   onDelete: PropTypes.func.isRequired,
-}
-const StyledDivInputWrapper = styled('div')(
+};
+const StyledDivInputWrapper = styled("div")(
   ({ theme }) => `
   width: 100%;
   border: 1px solid #C4C4C4;
@@ -58,8 +58,8 @@ const StyledDivInputWrapper = styled('div')(
   & input::placeholder {
     color: #A4A4A4;
   }
-`,
-)
+`
+);
 const StyledTag = styled(Tag)(
   ({ theme }) => `
   display: flex;
@@ -87,8 +87,8 @@ const StyledTag = styled(Tag)(
     cursor: pointer;
     padding: 4px;
   }
-`,
-)
+`
+);
 const StyledListbox = styled(List)(
   ({ theme }) => `
   width: 100%;
@@ -127,10 +127,13 @@ const StyledListbox = styled(List)(
       color: currentColor;
     }
   }
-`,
-)
+`
+);
 
 export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
+  const [tagValue, setTagValue] = useState("");
+  const MAX_LENGTH = 10;
+  const MAX_TAGS_LENGTH = 5;
   const {
     getRootProps,
     getInputProps,
@@ -142,24 +145,30 @@ export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
     focused,
     setAnchorEl,
   } = useAutocomplete({
-    id: 'tags',
+    id: "tags",
     multiple: true,
     options: suggestionWords,
     freeSolo: true,
+    inputValue: tagValue,
     getOptionLabel: (option) => option,
     onChange: (_: React.ChangeEvent<{}>, values: string[]) => {
-      if (values.length > 5) {
-        values.pop()
+      if (values.length > MAX_TAGS_LENGTH) {
+        values.pop();
       }
-      props.changeTagList(values)
+      props.changeTagList(values);
     },
-  })
+    onInputChange: (_: React.ChangeEvent<{}>, value: string) => {
+      if (value.length < MAX_LENGTH) {
+        setTagValue(value);
+      }
+    },
+  });
   return (
     <>
       <Box {...getRootProps()}>
         <StyledDivInputWrapper
           ref={setAnchorEl}
-          className={focused ? 'focused' : ''}
+          className={focused ? "focused" : ""}
         >
           {value.map((option, index) => (
             <StyledTag label={option} {...getTagProps({ index })} />
@@ -178,5 +187,5 @@ export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
         </StyledListbox>
       ) : null}
     </>
-  )
-})
+  );
+});
