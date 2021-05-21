@@ -1,148 +1,150 @@
-import { CustomSnackbar } from "@/components/atoms/CustomSnackbar";
-import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
-import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
-import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
-import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
-import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
-import { apis } from "@/consts/api/";
-import { targetLanguages } from "@/consts/target-languages";
-import { UserType } from "@/consts/type";
-import LayoutPost from "@/layouts/post";
-import { axios } from "@/utils/axios";
-import { validLength } from "@/utils/valid";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-// import baseAxios from "axios";
-import dynamic from "next/dynamic";
-import React, { useCallback, useState } from "react";
-import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
-import "./style.scss";
+import { CustomSnackbar } from '@/components/atoms/CustomSnackbar'
+import { LinkGithubButton } from '@/components/molecules/LinkGithubButton'
+import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox'
+import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
+import { InputTagWrapper } from '@/components/organisms/InputTagWrapper'
+import { PostSettingDialog } from '@/components/parts/PostSettingDialog'
+import { apis } from '@/consts/api/'
+import { targetLanguages } from '@/consts/target-languages'
+import { UserType } from '@/consts/type'
+import LayoutPost from '@/layouts/post'
+import { axios } from '@/utils/axios'
+import { validLength } from '@/utils/valid'
+import Box from '@material-ui/core/Box'
+import Container from '@material-ui/core/Container'
+import dynamic from 'next/dynamic'
+import React, { useCallback, useState } from 'react'
+import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
+import './style.scss'
 
 type Props = {
-  title: string;
-  currentUser: null | UserType;
-};
+  title: string
+  currentUser: null | UserType
+}
 type ProgrammingIcon = {
-  id: string;
-  text: string;
-  listIconComponent: JSX.Element;
-  iconComponent: JSX.Element;
-};
+  id: string
+  text: string
+  listIconComponent: JSX.Element
+  iconComponent: JSX.Element
+}
 
 const Editor = dynamic(
   () => {
-    const promise = import("@/components/parts/Editor").then((r) => r.Editor);
-    return promise;
+    const promise = import('@/components/parts/Editor').then((r) => r.Editor)
+    return promise
   },
-  { ssr: false }
-);
+  { ssr: false },
+)
 
 const StyledContainer = styled(Container)`
   max-width: 1200px;
   margin-bottom: 40px;
-`;
+`
 const StyledBoxFlex = styled(Box)`
   display: block;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     display: flex;
     justify-content: space-between;
   }
-`;
+`
 const StyledBoxInputGroupWrapper = styled(Box)`
   margin-bottom: 16px;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     margin-bottom: 0px;
     margin-right: 24px;
     width: 30%;
   }
-`;
+`
 const StyledBoxInputWrapper = styled(Box)`
   display: flex;
   align-items: center;
-`;
+`
 const StyledBoxCordEditorWrapper = styled(Box)`
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     width: 70%;
     max-width: 70%;
   }
-`;
+`
 
 const IndexPage: React.FC<Props> = (props) => {
-  const userId = props.currentUser!.user_id;
-  const userProfile = props.currentUser!.user_profile;
-  const [title, setTitle] = useState("");
-  const [tagList, setTagList] = useState<any[]>([]);
-  const [description, setDescription] = useState("");
-  const [sourceCode, setSourceCode] = useState("");
+  const userId = props.currentUser!.user_id
+  const userProfile = props.currentUser!.user_profile
+  const [title, setTitle] = useState('')
+  const [tagList, setTagList] = useState<any[]>([])
+  const [description, setDescription] = useState('')
+  const [sourceCode, setSourceCode] = useState('')
   const [inputFileNameLists, setInputFileNameLists] = useState([
     {
       key: uuidv4(),
-      value: "",
-      sourceCode: "",
-      bodyHtml: "",
+      fileName: '',
+      sourceCode: '',
+      bodyHtml: '',
       isValid: true,
     },
-  ]);
-  const [targetLanguageValue, setTargetLanguageValue] = useState(0);
+  ])
+  const [targetLanguageValue, setTargetLanguageValue] = useState(0)
   const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
-    id: "",
-    text: "",
+    id: '',
+    text: '',
     iconComponent: <></>,
     listIconComponent: <></>,
-  });
-  const [activeStep, setActiveStep] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isValidDescription, setIsValidDescription] = useState(true);
-  const [isValidSourceCode, setIsValidSourceCode] = useState(true);
-  const [isPosted, setIsPosted] = useState(false);
-  const [uuid] = useState(uuidv4());
-  const TITLE_MAX_LENGTH = 32;
-  const TAGS_MAX_LENGTH = 5;
-  const DESCRIPION_MAX_LENGTH = 500;
-  const SOURCE_CODE_MAX_LENGTH = 500;
+  })
+  const [activeStep, setActiveStep] = useState(0)
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [isValidDescription, setIsValidDescription] = useState(true)
+  const [isValidSourceCode, setIsValidSourceCode] = useState(true)
+  const [isPosted, setIsPosted] = useState(false)
+  const [uuid] = useState(uuidv4())
+  const TITLE_MAX_LENGTH = 32
+  const TAGS_MAX_LENGTH = 5
+  const DESCRIPION_MAX_LENGTH = 500
+  const SOURCE_CODE_MAX_LENGTH = 500
   window.onbeforeunload = (e: any) => {
-    e.returnValue = "このページを離れてもよろしいですか？";
-    const isValidExistData = validExistData();
-    execPreviousPageIfneeded(isValidExistData);
-  };
+    e.returnValue = 'このページを離れてもよろしいですか？'
+    const isValidExistData = validExistData()
+    execPreviousPageIfneeded(isValidExistData)
+  }
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
     if (isValidExistData && !isPosted) {
-      if (confirm("データが入力されています。保存せずに終了しますか？")) {
-        history.back();
+      if (confirm('データが入力されています。保存せずに終了しますか？')) {
+        history.back()
       }
     } else if (isValidExistData && isPosted) {
-      history.back();
+      history.back()
     } else if (!isValidExistData) {
-      history.back();
+      history.back()
     }
-  };
-  const uploadImageToS3 = async (presignedUrl: string, file: any) => {
-    await axios.put(presignedUrl, file);
-  };
+  }
+  const uploadImageToS3 = useCallback(
+    async (presignedUrl: string, file: any) => {
+      await axios.put(presignedUrl, file)
+    },
+    [],
+  )
   const validExistData = () => {
-    const isEmptyTitle = title === "";
-    const isEmptyTagList = tagList.length === 0;
-    const isEmptyDescription = description === "";
-    const isEmptyFileName = inputFileNameLists[0].value === "";
-    const isEmptySoureCode = inputFileNameLists[0].sourceCode === "";
+    const isEmptyTitle = title === ''
+    const isEmptyTagList = tagList.length === 0
+    const isEmptyDescription = description === ''
+    const isEmptyFileName = inputFileNameLists[0].fileName === ''
+    const isEmptySoureCode = inputFileNameLists[0].sourceCode === ''
     return (
       !isEmptyTitle ||
       !isEmptyTagList ||
       !isEmptyDescription ||
       !isEmptyFileName ||
       !isEmptySoureCode
-    );
-  };
+    )
+  }
   const previousPage = () => {
-    const isValidExistData = validExistData();
+    const isValidExistData = validExistData()
     // データが存在していて下書き保存されていなければ表示させる
-    execPreviousPageIfneeded(isValidExistData);
-  };
+    execPreviousPageIfneeded(isValidExistData)
+  }
   const validFalseIncluded = () => {
-    const validList = inputFileNameLists.map((el) => el.isValid);
-    return validList.includes(false);
-  };
+    const validList = inputFileNameLists.map((el) => el.isValid)
+    return validList.includes(false)
+  }
   const createParams = (key: string) => {
     return {
       uuid: uuid,
@@ -155,142 +157,151 @@ const IndexPage: React.FC<Props> = (props) => {
         description: description,
         inputFileNameLists: inputFileNameLists,
       },
-    };
-  };
-  const postContnt = async (key: string) => {
-    const params = createParams(key);
-    return await axios.post(apis.REGISTER_CONTENT, params);
-  };
-  const registerContent = () => {
-    console.log(title, "title");
-    console.log(tagList, "tagList");
-    console.log(description, "description");
-    console.log(inputFileNameLists, "inputFileNameLists");
-    console.log(targetLanguageValue, "targetLanguageValue");
-    console.log(programmingIcon, "programmingIcon");
-    postContnt("register");
-  };
-  const draftContent = async () => {
-    const err = new Error();
-    const isValidIncluded = validFalseIncluded();
-    if (!isValidDescription) return;
-    if (isValidIncluded) return;
-    try {
-      const result = await postContnt("draft");
-      if (result.status !== 200) throw err;
-      setIsPosted(true);
-    } catch (error) {
-      console.error(error);
     }
-  };
+  }
+  const postContnt = async (key: string) => {
+    const params = createParams(key)
+    return await axios.post(apis.REGISTER_CONTENT, params)
+  }
+  const registerContent = () => {
+    console.log(title, 'title')
+    console.log(tagList, 'tagList')
+    console.log(description, 'description')
+    console.log(inputFileNameLists, 'inputFileNameLists')
+    console.log(targetLanguageValue, 'targetLanguageValue')
+    console.log(programmingIcon, 'programmingIcon')
+    postContnt('register')
+  }
+  const draftContent = useCallback(async () => {
+    const err = new Error()
+    const isValidIncluded = validFalseIncluded()
+    if (!isValidDescription) return
+    if (isValidIncluded) return
+    try {
+      const result = await postContnt('draft')
+      if (result.status !== 200) throw err
+      setIsPosted(true)
+    } catch (error) {
+      console.error(error)
+    }
+  }, [])
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
-      const value = e.target.value;
+      const value = e.target.value
       if (value.length > TITLE_MAX_LENGTH) {
-        return;
+        return
       }
-      setTitle(value);
+      setTitle(value)
     },
-    [title]
-  );
+    [title],
+  )
   const changeTagList = useCallback(
     (values: string[]): void => {
-      if (values.length > TAGS_MAX_LENGTH) return;
-      setTagList(values);
+      if (values.length > TAGS_MAX_LENGTH) return
+      setTagList(values)
     },
-    [tagList]
-  );
+    [tagList],
+  )
   const changeDescritption = useCallback(
     (value: string): void => {
-      const isValid = validLength(description, DESCRIPION_MAX_LENGTH);
-      setIsValidDescription(isValid);
-      setDescription(value);
+      const isValid = validLength(value, DESCRIPION_MAX_LENGTH)
+      setIsValidDescription(isValid)
+      setDescription(value)
     },
-    [description]
-  );
-  const changeSourceCode = (sourceCode: string): void => {
-    const isValid = validLength(sourceCode, SOURCE_CODE_MAX_LENGTH);
-    setSourceCode(sourceCode);
-    setIsValidSourceCode(isValid);
-    updateIsValidSourceCode(isValid);
-    updateInputFileNameLists("sourceCode", sourceCode, currentIndex);
-  };
+    [description, isValidDescription],
+  )
+  const changeSourceCode = useCallback(
+    (sourceCode: string): void => {
+      console.log(sourceCode, 'sourceCode')
+      const isValid = validLength(sourceCode, SOURCE_CODE_MAX_LENGTH)
+      setSourceCode(sourceCode)
+      setIsValidSourceCode(isValid)
+      updateIsValidSourceCode(isValid)
+      updateInputFileNameLists('sourceCode', sourceCode, currentIndex)
+    },
+    [sourceCode, inputFileNameLists],
+  )
   const updateIsValidSourceCode = (isValid: boolean): void => {
-    inputFileNameLists[currentIndex].isValid = isValid;
-  };
+    inputFileNameLists[currentIndex].isValid = isValid
+  }
   const changeActiveStep = useCallback(
     (value: number): void => {
-      setActiveStep(value);
+      setActiveStep(value)
     },
-    [activeStep]
-  );
+    [activeStep],
+  )
   const addListsItem = (): void => {
     setInputFileNameLists([
       ...inputFileNameLists,
       {
         key: uuidv4(),
-        value: "",
-        sourceCode: "",
-        bodyHtml: "",
+        fileName: '',
+        sourceCode: '',
+        bodyHtml: '',
         isValid: true,
       },
-    ]);
-  };
+    ])
+  }
   const deleteListsItem = (key: string, index: number): void => {
-    const newLists = inputFileNameLists.filter((el) => el.key !== key);
-    const currentItem = newLists[index];
-    const sourceCode = currentItem.sourceCode;
-    const newInputFileNameLists = newLists.slice();
-    setCurrentIndex(index);
-    setSourceCode(sourceCode);
-    setInputFileNameLists(newInputFileNameLists);
-  };
+    const newLists = inputFileNameLists.filter((el) => el.key !== key)
+    const currentItem = newLists[index]
+    const sourceCode = currentItem.sourceCode
+    const newInputFileNameLists = newLists.slice()
+    setCurrentIndex(index)
+    setSourceCode(sourceCode)
+    setInputFileNameLists(newInputFileNameLists)
+  }
   const cnangeFileName = (
     event: React.ChangeEvent<HTMLInputElement>,
-    index: number
+    index: number,
   ) => {
-    const value = event.target.value;
-    setCurrentIndex(index);
-    updateInputFileNameLists("value", value, index);
-  };
+    const value = event.target.value
+    setCurrentIndex(index)
+    updateInputFileNameLists('fileName', value, index)
+  }
   const updateInputFileNameLists = (key: string, value: any, index: number) => {
-    const currentItem = inputFileNameLists[index];
-    const newFileItem = { ...currentItem, [key]: value };
-    const newInputFileNameLists = inputFileNameLists.slice();
-    newInputFileNameLists[index] = newFileItem;
-    setInputFileNameLists(newInputFileNameLists);
-  };
+    console.log(key, 'key')
+    console.log(value, 'value')
+    console.log(index, 'index')
+
+    const currentItem = inputFileNameLists[index]
+    const newFileItem = { ...currentItem, [key]: value }
+    console.log(newFileItem, 'newFileItem')
+    const newInputFileNameLists = inputFileNameLists.slice()
+    newInputFileNameLists[index] = newFileItem
+    setInputFileNameLists(newInputFileNameLists)
+  }
   const onFocusGetIndex = (index: number) => {
-    const currentItem = inputFileNameLists[index];
-    const sourceCode = currentItem.sourceCode;
-    setCurrentIndex(index);
-    setSourceCode(sourceCode);
-    updateInputFileNameLists("sourceCode", sourceCode, index);
-  };
+    const currentItem = inputFileNameLists[index]
+    const sourceCode = currentItem.sourceCode
+    setCurrentIndex(index)
+    setSourceCode(sourceCode)
+    // updateInputFileNameLists('sourceCode', sourceCode, index)
+  }
   const handleChange = (_: React.ChangeEvent<{}>, index: number) => {
-    setCurrentIndex(index);
-    onFocusGetIndex(index);
-  };
+    setCurrentIndex(index)
+    onFocusGetIndex(index)
+  }
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event);
-  };
+    console.log(event)
+  }
   const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value);
-    setTargetLanguageValue(value);
-  };
+    const value = Number(event.target.value)
+    setTargetLanguageValue(value)
+  }
   const selectProgrammingIcon = (
     _: React.ChangeEvent<{}>,
-    selectObject: string | ProgrammingIcon | null
+    selectObject: string | ProgrammingIcon | null,
   ) => {
-    if (selectObject === null) return;
-    if (typeof selectObject === "string") return;
+    if (selectObject === null) return
+    if (typeof selectObject === 'string') return
     setProgrammingIcon({
       ...programmingIcon,
       id: selectObject.id,
       text: selectObject.text,
       iconComponent: selectObject.iconComponent,
-    });
-  };
+    })
+  }
   return (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
@@ -341,7 +352,7 @@ const IndexPage: React.FC<Props> = (props) => {
                       <TextFieldWithCheckBox
                         index={index}
                         listLength={inputFileNameLists.length}
-                        value={el.value}
+                        value={el.fileName}
                         variant="outlined"
                         size="small"
                         placeholder="some/path/file.ext"
@@ -399,6 +410,6 @@ const IndexPage: React.FC<Props> = (props) => {
         </Box>
       ))}
     </LayoutPost>
-  );
-};
-export default IndexPage;
+  )
+}
+export default IndexPage
