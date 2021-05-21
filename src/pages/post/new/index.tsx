@@ -4,12 +4,13 @@ import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheck
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
 import { InputTagWrapper } from '@/components/organisms/InputTagWrapper'
 import { PostSettingDialog } from '@/components/parts/PostSettingDialog'
-import { apis } from '@/consts/api/'
+import * as CONSTS from '@/consts/const'
 import { targetLanguages } from '@/consts/target-languages'
 import { UserType } from '@/consts/type'
 import LayoutPost from '@/layouts/post'
-import { axios } from '@/utils/axios'
-import { validLength } from '@/utils/valid'
+import { postContent } from '@/utils/api/post-content'
+import { uploadImageToS3 } from '@/utils/api/upload-image-to-s3'
+import { validEmpty, validLength, validZeroLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
 import dynamic from 'next/dynamic'
@@ -71,7 +72,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const userId = props.currentUser!.user_id
   const userProfile = props.currentUser!.user_profile
   const [title, setTitle] = useState('')
-  const [tagList, setTagList] = useState<any[]>([])
+  const [tagList, setTagList] = useState<string[]>([])
   const [description, setDescription] = useState('')
   const [sourceCode, setSourceCode] = useState('')
   const [inputFileNameLists, setInputFileNameLists] = useState([
@@ -96,15 +97,11 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isValidSourceCode, setIsValidSourceCode] = useState(true)
   const [isPosted, setIsPosted] = useState(false)
   const [uuid] = useState(uuidv4())
-  const TITLE_MAX_LENGTH = 32
-  const TAGS_MAX_LENGTH = 5
-  const DESCRIPION_MAX_LENGTH = 500
-  const SOURCE_CODE_MAX_LENGTH = 500
-  window.onbeforeunload = (e: any) => {
-    e.returnValue = 'このページを離れてもよろしいですか？'
-    const isValidExistData = validExistData()
-    execPreviousPageIfneeded(isValidExistData)
-  }
+  // window.onbeforeunload = (e: any) => {
+  //   e.returnValue = 'このページを離れてもよろしいですか？'
+  //   const isValidExistData = validExistData()
+  //   execPreviousPageIfneeded(isValidExistData)
+  // }
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
     if (isValidExistData && !isPosted) {
       if (confirm('データが入力されています。保存せずに終了しますか？')) {
@@ -116,18 +113,12 @@ const IndexPage: React.FC<Props> = (props) => {
       history.back()
     }
   }
-  const uploadImageToS3 = useCallback(
-    async (presignedUrl: string, file: any) => {
-      await axios.put(presignedUrl, file)
-    },
-    [],
-  )
   const validExistData = () => {
-    const isEmptyTitle = title === ''
-    const isEmptyTagList = tagList.length === 0
-    const isEmptyDescription = description === ''
-    const isEmptyFileName = inputFileNameLists[0].fileName === ''
-    const isEmptySoureCode = inputFileNameLists[0].sourceCode === ''
+    const isEmptyTitle = validEmpty(title)
+    const isEmptyTagList = validZeroLength(tagList)
+    const isEmptyDescription = validEmpty(description)
+    const isEmptyFileName = validEmpty(inputFileNameLists[0].fileName)
+    const isEmptySoureCode = validEmpty(inputFileNameLists[0].sourceCode)
     return (
       !isEmptyTitle ||
       !isEmptyTagList ||
@@ -159,18 +150,50 @@ const IndexPage: React.FC<Props> = (props) => {
       },
     }
   }
-  const postContnt = async (key: string) => {
-    const params = createParams(key)
-    return await axios.post(apis.REGISTER_CONTENT, params)
-  }
   const registerContent = () => {
-    console.log(title, 'title')
-    console.log(tagList, 'tagList')
-    console.log(description, 'description')
-    console.log(inputFileNameLists, 'inputFileNameLists')
-    console.log(targetLanguageValue, 'targetLanguageValue')
-    console.log(programmingIcon, 'programmingIcon')
-    postContnt('register')
+    const params = createParams('register')
+    postContent(params)
+  }
+  const validContent = () => {
+    const isEmptyTitle = validEmpty(title)
+    if (isEmptyTitle) {
+      return {
+        isValid: isEmptyTitle,
+        message: '投稿設定するにはTitleを入力してください',
+      }
+    }
+    const isEmptyTagList = validZeroLength(tagList)
+    if (isEmptyTagList) {
+      return {
+        isValid: isEmptyTagList,
+        message: '投稿設定するにはTagsを一つ以上入力してください',
+      }
+    }
+    const isEmptyDescription = validEmpty(description)
+    if (isEmptyDescription) {
+      return {
+        isValid: isEmptyDescription,
+        message: '投稿設定するにはディスクリプションを入力してください',
+      }
+    }
+    const isEmptyFileName = validEmpty(inputFileNameLists[0].fileName)
+    if (isEmptyFileName) {
+      return {
+        isValid: isEmptyFileName,
+        message: '投稿設定するにはファイル名を入力してください',
+      }
+    }
+    const isEmptySoureCode = validEmpty(inputFileNameLists[0].sourceCode)
+    if (isEmptySoureCode) {
+      return {
+        isValid: isEmptySoureCode,
+        message: '投稿設定するにはソースコードを入力してください',
+      }
+    }
+    return {
+      isValid: false,
+      message: '',
+    }
   }
   const draftContent = useCallback(async () => {
     const err = new Error()
@@ -178,7 +201,8 @@ const IndexPage: React.FC<Props> = (props) => {
     if (!isValidDescription) return
     if (isValidIncluded) return
     try {
-      const result = await postContnt('draft')
+      const params = createParams('draft')
+      const result = await postContent(params)
       if (result.status !== 200) throw err
       setIsPosted(true)
     } catch (error) {
@@ -188,7 +212,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value
-      if (value.length > TITLE_MAX_LENGTH) {
+      if (value.length > CONSTS.TITLE_MAX_LENGTH) {
         return
       }
       setTitle(value)
@@ -197,14 +221,14 @@ const IndexPage: React.FC<Props> = (props) => {
   )
   const changeTagList = useCallback(
     (values: string[]): void => {
-      if (values.length > TAGS_MAX_LENGTH) return
+      if (values.length > CONSTS.TAGS_MAX_LENGTH) return
       setTagList(values)
     },
     [tagList],
   )
   const changeDescritption = useCallback(
     (value: string): void => {
-      const isValid = validLength(value, DESCRIPION_MAX_LENGTH)
+      const isValid = validLength(value, CONSTS.DESCRIPION_MAX_LENGTH)
       setIsValidDescription(isValid)
       setDescription(value)
     },
@@ -212,8 +236,7 @@ const IndexPage: React.FC<Props> = (props) => {
   )
   const changeSourceCode = useCallback(
     (sourceCode: string): void => {
-      console.log(sourceCode, 'sourceCode')
-      const isValid = validLength(sourceCode, SOURCE_CODE_MAX_LENGTH)
+      const isValid = validLength(sourceCode, CONSTS.SOURCE_CODE_MAX_LENGTH)
       setSourceCode(sourceCode)
       setIsValidSourceCode(isValid)
       updateIsValidSourceCode(isValid)
@@ -260,13 +283,8 @@ const IndexPage: React.FC<Props> = (props) => {
     updateInputFileNameLists('fileName', value, index)
   }
   const updateInputFileNameLists = (key: string, value: any, index: number) => {
-    console.log(key, 'key')
-    console.log(value, 'value')
-    console.log(index, 'index')
-
     const currentItem = inputFileNameLists[index]
     const newFileItem = { ...currentItem, [key]: value }
-    console.log(newFileItem, 'newFileItem')
     const newInputFileNameLists = inputFileNameLists.slice()
     newInputFileNameLists[index] = newFileItem
     setInputFileNameLists(newInputFileNameLists)
@@ -331,7 +349,7 @@ const IndexPage: React.FC<Props> = (props) => {
               activeStep={activeStep}
               isValid={isValidDescription}
               uploadImageToS3={uploadImageToS3}
-              MAX_LENGTH={DESCRIPION_MAX_LENGTH}
+              MAX_LENGTH={CONSTS.DESCRIPION_MAX_LENGTH}
             />
           </Box>
           <Box mb={3} className="source-code-wrapper">
@@ -380,7 +398,7 @@ const IndexPage: React.FC<Props> = (props) => {
                   currentIndex={currentIndex}
                   handleChange={handleChange}
                   inputFileNameLists={inputFileNameLists}
-                  MAX_LENGTH={SOURCE_CODE_MAX_LENGTH}
+                  MAX_LENGTH={CONSTS.SOURCE_CODE_MAX_LENGTH}
                 />
               </StyledBoxCordEditorWrapper>
             </StyledBoxFlex>
@@ -398,14 +416,18 @@ const IndexPage: React.FC<Props> = (props) => {
       />
       <CustomSnackbar
         isOpen={!isValidDescription}
-        message={`Descriptionは${DESCRIPION_MAX_LENGTH}文字以下で入力してください`}
+        message={`Descriptionは${CONSTS.DESCRIPION_MAX_LENGTH}文字以下で入力してください`}
+      />
+      <CustomSnackbar
+        isOpen={validContent().isValid}
+        message={validContent().message}
       />
       {inputFileNameLists.map((el) => (
         <Box position="relative" key={el.key}>
           <CustomSnackbar
             key={el.key}
             isOpen={!el.isValid}
-            message={`SourceCodeは${SOURCE_CODE_MAX_LENGTH}文字以下で入力してください`}
+            message={`SourceCodeは${CONSTS.SOURCE_CODE_MAX_LENGTH}文字以下で入力してください`}
           />
         </Box>
       ))}
