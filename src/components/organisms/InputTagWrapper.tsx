@@ -150,6 +150,7 @@ export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
     options: suggestionWords,
     freeSolo: true,
     inputValue: tagValue,
+    // defaultValue: ["hoge", "foo"],
     getOptionLabel: (option) => option,
     onChange: (_: React.ChangeEvent<{}>, values: string[]) => {
       if (values.length > MAX_TAGS_LENGTH) {
