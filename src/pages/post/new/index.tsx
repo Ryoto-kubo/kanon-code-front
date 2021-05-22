@@ -4,11 +4,14 @@ import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheck
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
 import { InputTagWrapper } from '@/components/organisms/InputTagWrapper'
 import { PostSettingDialog } from '@/components/parts/PostSettingDialog'
-import { apis } from '@/consts/api/'
+import * as CONSTS from '@/consts/const'
+import { validMessages } from '@/consts/error-messages'
 import { targetLanguages } from '@/consts/target-languages'
 import { UserType } from '@/consts/type'
 import LayoutPost from '@/layouts/post'
-import { axios } from '@/utils/axios'
+import { postContent } from '@/utils/api/post-content'
+import * as S3 from '@/utils/api/s3'
+import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
@@ -28,7 +31,13 @@ type ProgrammingIcon = {
   listIconComponent: JSX.Element
   iconComponent: JSX.Element
 }
-
+type ButtonText = Readonly<
+  '投稿設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
+>
+type ValidObject = {
+  isValid: boolean
+  message: string
+}
 const Editor = dynamic(
   () => {
     const promise = import('@/components/parts/Editor').then((r) => r.Editor)
@@ -70,8 +79,14 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 const IndexPage: React.FC<Props> = (props) => {
   const userId = props.currentUser!.user_id
   const userProfile = props.currentUser!.user_profile
+  const createValidObject = useCallback((defaultValue, defaultMessage) => {
+    return {
+      isValid: defaultValue,
+      message: defaultMessage,
+    }
+  }, [])
   const [title, setTitle] = useState('')
-  const [tagList, setTagList] = useState<any[]>([])
+  const [tagList, setTagList] = useState<string[]>([])
   const [description, setDescription] = useState('')
   const [sourceCode, setSourceCode] = useState('')
   const [inputFileNameLists, setInputFileNameLists] = useState([
@@ -92,19 +107,34 @@ const IndexPage: React.FC<Props> = (props) => {
   })
   const [activeStep, setActiveStep] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
-  const [isValidDescription, setIsValidDescription] = useState(true)
-  const [isValidSourceCode, setIsValidSourceCode] = useState(true)
   const [isPosted, setIsPosted] = useState(false)
+  const [isOpenDialog, setIsOpenDialog] = useState(false)
+  const [buttonText, setButtonText] = useState<ButtonText>('下書き保存')
+  const [canPublish, setCanPUblish] = useState<ValidObject>(
+    createValidObject(true, ''),
+  )
+  const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_TITLE),
+  )
+  const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_TAGS),
+  )
+  const [isValidDescriptionObject, setIsValidDescriptionObject] = useState<
+    ValidObject
+  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION))
+  const [isValidFileNameObject, setIsValidFileNameObject] = useState<
+    ValidObject
+  >(createValidObject(false, validMessages.REQUIRED_FILE_NAME))
+  const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
+    ValidObject
+  >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE))
   const [uuid] = useState(uuidv4())
-  const TITLE_MAX_LENGTH = 32
-  const TAGS_MAX_LENGTH = 5
-  const DESCRIPION_MAX_LENGTH = 500
-  const SOURCE_CODE_MAX_LENGTH = 500
-  window.onbeforeunload = (e: any) => {
-    e.returnValue = 'このページを離れてもよろしいですか？'
-    const isValidExistData = validExistData()
-    execPreviousPageIfneeded(isValidExistData)
-  }
+  // window.onbeforeunload = (e: any) => {
+  //   e.returnValue = 'このページを離れてもよろしいですか？'
+  //   const isValidExistData = validExistData()
+  //   execPreviousPageIfneeded(isValidExistData)
+  // }
+
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
     if (isValidExistData && !isPosted) {
       if (confirm('データが入力されています。保存せずに終了しますか？')) {
@@ -116,34 +146,19 @@ const IndexPage: React.FC<Props> = (props) => {
       history.back()
     }
   }
-  const uploadImageToS3 = useCallback(
-    async (presignedUrl: string, file: any) => {
-      await axios.put(presignedUrl, file)
-    },
-    [],
-  )
-  const validExistData = () => {
-    const isEmptyTitle = title === ''
-    const isEmptyTagList = tagList.length === 0
-    const isEmptyDescription = description === ''
-    const isEmptyFileName = inputFileNameLists[0].fileName === ''
-    const isEmptySoureCode = inputFileNameLists[0].sourceCode === ''
-    return (
-      !isEmptyTitle ||
-      !isEmptyTagList ||
-      !isEmptyDescription ||
-      !isEmptyFileName ||
-      !isEmptySoureCode
-    )
-  }
-  const previousPage = () => {
-    const isValidExistData = validExistData()
+  const previousPage = useCallback(() => {
     // データが存在していて下書き保存されていなければ表示させる
+    const isValidExistData = validExistData()
     execPreviousPageIfneeded(isValidExistData)
+  }, [title, tagList, description, inputFileNameLists])
+  const closeSnackBar = () => {
+    setCanPUblish({
+      ...canPublish,
+      isValid: true,
+    })
   }
-  const validFalseIncluded = () => {
-    const validList = inputFileNameLists.map((el) => el.isValid)
-    return validList.includes(false)
+  const closeDialog = () => {
+    setIsOpenDialog(false)
   }
   const createParams = (key: string) => {
     return {
@@ -159,77 +174,12 @@ const IndexPage: React.FC<Props> = (props) => {
       },
     }
   }
-  const postContnt = async (key: string) => {
-    const params = createParams(key)
-    return await axios.post(apis.REGISTER_CONTENT, params)
+  const initCanPublish = () => {
+    setCanPUblish({
+      ...canPublish,
+      isValid: true,
+    })
   }
-  const registerContent = () => {
-    console.log(title, 'title')
-    console.log(tagList, 'tagList')
-    console.log(description, 'description')
-    console.log(inputFileNameLists, 'inputFileNameLists')
-    console.log(targetLanguageValue, 'targetLanguageValue')
-    console.log(programmingIcon, 'programmingIcon')
-    postContnt('register')
-  }
-  const draftContent = useCallback(async () => {
-    const err = new Error()
-    const isValidIncluded = validFalseIncluded()
-    if (!isValidDescription) return
-    if (isValidIncluded) return
-    try {
-      const result = await postContnt('draft')
-      if (result.status !== 200) throw err
-      setIsPosted(true)
-    } catch (error) {
-      console.error(error)
-    }
-  }, [])
-  const changeTitle = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>): void => {
-      const value = e.target.value
-      if (value.length > TITLE_MAX_LENGTH) {
-        return
-      }
-      setTitle(value)
-    },
-    [title],
-  )
-  const changeTagList = useCallback(
-    (values: string[]): void => {
-      if (values.length > TAGS_MAX_LENGTH) return
-      setTagList(values)
-    },
-    [tagList],
-  )
-  const changeDescritption = useCallback(
-    (value: string): void => {
-      const isValid = validLength(value, DESCRIPION_MAX_LENGTH)
-      setIsValidDescription(isValid)
-      setDescription(value)
-    },
-    [description, isValidDescription],
-  )
-  const changeSourceCode = useCallback(
-    (sourceCode: string): void => {
-      console.log(sourceCode, 'sourceCode')
-      const isValid = validLength(sourceCode, SOURCE_CODE_MAX_LENGTH)
-      setSourceCode(sourceCode)
-      setIsValidSourceCode(isValid)
-      updateIsValidSourceCode(isValid)
-      updateInputFileNameLists('sourceCode', sourceCode, currentIndex)
-    },
-    [sourceCode, inputFileNameLists],
-  )
-  const updateIsValidSourceCode = (isValid: boolean): void => {
-    inputFileNameLists[currentIndex].isValid = isValid
-  }
-  const changeActiveStep = useCallback(
-    (value: number): void => {
-      setActiveStep(value)
-    },
-    [activeStep],
-  )
   const addListsItem = (): void => {
     setInputFileNameLists([
       ...inputFileNameLists,
@@ -241,43 +191,238 @@ const IndexPage: React.FC<Props> = (props) => {
         isValid: true,
       },
     ])
+    setIsValidFileNameObject(
+      createValidObject(false, validMessages.REQUIRED_FILE_NAME),
+    )
   }
-  const deleteListsItem = (key: string, index: number): void => {
-    const newLists = inputFileNameLists.filter((el) => el.key !== key)
-    const currentItem = newLists[index]
-    const sourceCode = currentItem.sourceCode
-    const newInputFileNameLists = newLists.slice()
-    setCurrentIndex(index)
-    setSourceCode(sourceCode)
-    setInputFileNameLists(newInputFileNameLists)
+  const validExistData = () => {
+    const isExistTitle = isValidTitleObject.isValid
+    const isExistTagList = isValidTagsObject.isValid
+    const isExistDescription = isValidDescriptionObject.isValid
+    const isExistFileName = isValidFileNameObject.isValid
+    const isExistSoureCode = isValidSourceCodeObject.isValid
+    return (
+      isExistTitle ||
+      isExistTagList ||
+      isExistDescription ||
+      isExistFileName ||
+      isExistSoureCode
+    )
   }
-  const cnangeFileName = (
-    event: React.ChangeEvent<HTMLInputElement>,
-    index: number,
-  ) => {
-    const value = event.target.value
-    setCurrentIndex(index)
-    updateInputFileNameLists('fileName', value, index)
+  const validFalseIncluded = useCallback(() => {
+    const validList = inputFileNameLists.map((el) => el.isValid)
+    return validList.includes(false)
+  }, [inputFileNameLists])
+  const updateButtonText = useCallback((value: ButtonText) => {
+    setButtonText(value)
+  }, [])
+  const updateCanPublish = (isValid: boolean, message = '') => {
+    setCanPUblish({
+      ...canPublish,
+      isValid: isValid,
+      message: message,
+    })
   }
+  const updateIsValidSourceCode = useCallback(
+    (isValid: boolean): void => {
+      inputFileNameLists[currentIndex].isValid = isValid
+    },
+    [sourceCode, inputFileNameLists],
+  )
+  const registerContent = useCallback(() => {
+    if (!isValidTitleObject.isValid) {
+      updateCanPublish(false, isValidTitleObject.message)
+      return
+    }
+    if (!isValidTagsObject.isValid) {
+      updateCanPublish(false, isValidTagsObject.message)
+      return
+    }
+    if (!isValidDescriptionObject.isValid) {
+      updateCanPublish(false, isValidDescriptionObject.message)
+      return
+    }
+    if (!isValidFileNameObject.isValid) {
+      updateCanPublish(false, isValidFileNameObject.message)
+      return
+    }
+    if (!isValidSourceCodeObject.isValid) {
+      updateCanPublish(false, isValidSourceCodeObject.message)
+      return
+    }
+    initCanPublish()
+    setIsOpenDialog(true)
+  }, [title, tagList, description, inputFileNameLists])
+  const draftContent = useCallback(async () => {
+    if (!isValidTitleObject.isValid) {
+      updateCanPublish(false, isValidTitleObject.message)
+      return
+    }
+    if (!(description.length <= CONSTS.DESCRIPTION_MAX_LENGTH)) {
+      updateCanPublish(false, validMessages.OVER_LENGTH_DESCRIPION)
+      return
+    }
+    if (!(sourceCode.length <= CONSTS.SOURCE_CODE_MAX_LENGTH)) {
+      updateCanPublish(false, validMessages.OVER_LENGTH_SOURCE_CODE)
+      return
+    }
+    const isValidFalseIncluded = validFalseIncluded()
+    if (isValidFalseIncluded) return
+    const err = new Error()
+    updateButtonText('保存中...')
+    try {
+      const params = createParams('draft')
+      const result = await postContent(params)
+      if (result.status !== 200) throw err
+      setIsPosted(true)
+      updateButtonText('保存済み ✔︎')
+    } catch (error) {
+      console.error(error)
+    }
+  }, [title, description, inputFileNameLists])
+  const changeTitle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      const value = e.target.value
+      const prepareContentBeforePost = new PrepareContentBeforePost(
+        value,
+        setIsValidTitleObject,
+        isValidTitleObject,
+      )
+      const isValidMaxLength = prepareContentBeforePost.validLength(
+        CONSTS.TITLE_MAX_LENGTH,
+        validMessages.OVER_LENGTH_TITLE,
+      )
+      if (!isValidMaxLength) return
+      const isExist = prepareContentBeforePost.validEmpty(
+        validMessages.REQUIRED_TITLE,
+      )
+      if (isValidMaxLength && isExist) {
+        prepareContentBeforePost.successed()
+      }
+      setTitle(value)
+    },
+    [title],
+  )
+  const changeTagList = useCallback(
+    (values: string[]): void => {
+      if (values.length > CONSTS.TAGS_MAX_LENGTH) return
+      const prepareContentBeforePost = new PrepareContentBeforePost(
+        values,
+        setIsValidTagsObject,
+        isValidTagsObject,
+      )
+      const isNotValidZeroLength = prepareContentBeforePost.validZeroLength(
+        validMessages.REQUIRED_TAGS,
+      )
+      if (isNotValidZeroLength) {
+        prepareContentBeforePost.successed()
+      }
+      setTagList(values)
+    },
+    [tagList],
+  )
+  const changeDescritption = useCallback(
+    (value: string): void => {
+      const prepareContentBeforePost = new PrepareContentBeforePost(
+        value,
+        setIsValidDescriptionObject,
+        isValidDescriptionObject,
+      )
+      const isValidMaxLength = prepareContentBeforePost.validLength(
+        CONSTS.DESCRIPTION_MAX_LENGTH,
+        validMessages.OVER_LENGTH_DESCRIPION,
+      )
+      const isExist = prepareContentBeforePost.validEmpty(
+        validMessages.REQUIRED_DESCRIPTION,
+      )
+      if (isValidMaxLength && isExist) {
+        prepareContentBeforePost.successed()
+      }
+      setDescription(value)
+    },
+    [description],
+  )
+  const cnangeFileName = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
+      const value = event.target.value
+      const prepareContentBeforePost = new PrepareContentBeforePost(
+        value,
+        setIsValidFileNameObject,
+        isValidFileNameObject,
+      )
+      const isValidMaxLength = prepareContentBeforePost.validLength(
+        CONSTS.FILE_NAME_MAX_LENGTH,
+        validMessages.OVER_LENGTH_FILE_NAME,
+      )
+      if (!isValidMaxLength) return
+      const isExist = prepareContentBeforePost.validEmpty(
+        validMessages.REQUIRED_FILE_NAME,
+      )
+      if (isValidMaxLength && isExist) {
+        prepareContentBeforePost.successed()
+      }
+      setCurrentIndex(index)
+      updateInputFileNameLists('fileName', value, index)
+    },
+    [sourceCode, inputFileNameLists],
+  )
+  const changeSourceCode = useCallback(
+    (value: string): void => {
+      const prepareContentBeforePost = new PrepareContentBeforePost(
+        value,
+        setIsValidSourceCodeObject,
+        isValidSourceCodeObject,
+      )
+      const isValidMaxLength = prepareContentBeforePost.validLength(
+        CONSTS.SOURCE_CODE_MAX_LENGTH,
+        validMessages.OVER_LENGTH_SOURCE_CODE,
+      )
+      const isExist = prepareContentBeforePost.validEmpty(
+        validMessages.REQUIRED_SOURCE_CODE,
+      )
+      if (isValidMaxLength && isExist) {
+        prepareContentBeforePost.successed()
+      }
+      setSourceCode(value)
+      updateIsValidSourceCode(isValidMaxLength)
+      updateInputFileNameLists('sourceCode', value, currentIndex)
+    },
+    [sourceCode, inputFileNameLists],
+  )
+  const changeActiveStep = useCallback(
+    (value: number): void => {
+      setActiveStep(value)
+    },
+    [activeStep],
+  )
+  const deleteListsItem = useCallback(
+    (key: string, index: number): void => {
+      const newLists = inputFileNameLists.filter((el) => el.key !== key)
+      const currentItem = newLists[index]
+      const sourceCode = currentItem.sourceCode
+      const newInputFileNameLists = newLists.slice()
+      setCurrentIndex(index)
+      setSourceCode(sourceCode)
+      setInputFileNameLists(newInputFileNameLists)
+    },
+    [sourceCode, inputFileNameLists],
+  )
   const updateInputFileNameLists = (key: string, value: any, index: number) => {
-    console.log(key, 'key')
-    console.log(value, 'value')
-    console.log(index, 'index')
-
     const currentItem = inputFileNameLists[index]
     const newFileItem = { ...currentItem, [key]: value }
-    console.log(newFileItem, 'newFileItem')
     const newInputFileNameLists = inputFileNameLists.slice()
     newInputFileNameLists[index] = newFileItem
     setInputFileNameLists(newInputFileNameLists)
   }
-  const onFocusGetIndex = (index: number) => {
-    const currentItem = inputFileNameLists[index]
-    const sourceCode = currentItem.sourceCode
-    setCurrentIndex(index)
-    setSourceCode(sourceCode)
-    // updateInputFileNameLists('sourceCode', sourceCode, index)
-  }
+  const onFocusGetIndex = useCallback(
+    (index: number) => {
+      const currentItem = inputFileNameLists[index]
+      const sourceCode = currentItem.sourceCode
+      setCurrentIndex(index)
+      setSourceCode(sourceCode)
+    },
+    [sourceCode, inputFileNameLists],
+  )
   const handleChange = (_: React.ChangeEvent<{}>, index: number) => {
     setCurrentIndex(index)
     onFocusGetIndex(index)
@@ -306,8 +451,11 @@ const IndexPage: React.FC<Props> = (props) => {
     <LayoutPost
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
+      registerContent={registerContent}
       draftContent={draftContent}
       previousPage={previousPage}
+      updateButtonText={updateButtonText}
+      buttonText={buttonText}
     >
       <StyledContainer>
         <Box component="section">
@@ -329,9 +477,9 @@ const IndexPage: React.FC<Props> = (props) => {
               changeActiveStep={changeActiveStep}
               value={description}
               activeStep={activeStep}
-              isValid={isValidDescription}
-              uploadImageToS3={uploadImageToS3}
-              MAX_LENGTH={DESCRIPION_MAX_LENGTH}
+              isValid={validLength(description, CONSTS.DESCRIPTION_MAX_LENGTH)}
+              uploadImageToS3={S3.uploadImageToS3}
+              MAX_LENGTH={CONSTS.DESCRIPTION_MAX_LENGTH}
             />
           </Box>
           <Box mb={3} className="source-code-wrapper">
@@ -375,12 +523,15 @@ const IndexPage: React.FC<Props> = (props) => {
                   changeActiveStep={changeActiveStep}
                   value={sourceCode}
                   activeStep={activeStep}
-                  isValid={isValidSourceCode}
-                  uploadImageToS3={uploadImageToS3}
+                  isValid={validLength(
+                    sourceCode,
+                    CONSTS.DESCRIPTION_MAX_LENGTH,
+                  )}
+                  uploadImageToS3={S3.uploadImageToS3}
                   currentIndex={currentIndex}
                   handleChange={handleChange}
                   inputFileNameLists={inputFileNameLists}
-                  MAX_LENGTH={SOURCE_CODE_MAX_LENGTH}
+                  MAX_LENGTH={CONSTS.SOURCE_CODE_MAX_LENGTH}
                 />
               </StyledBoxCordEditorWrapper>
             </StyledBoxFlex>
@@ -389,6 +540,8 @@ const IndexPage: React.FC<Props> = (props) => {
       </StyledContainer>
       <PostSettingDialog
         title="PostSetting"
+        isOpenDialog={isOpenDialog}
+        closeDialog={closeDialog}
         targetLanguages={targetLanguages}
         targetLanguageValue={targetLanguageValue}
         programmingIcon={programmingIcon}
@@ -397,18 +550,11 @@ const IndexPage: React.FC<Props> = (props) => {
         registerContent={registerContent}
       />
       <CustomSnackbar
-        isOpen={!isValidDescription}
-        message={`Descriptionは${DESCRIPION_MAX_LENGTH}文字以下で入力してください`}
-      />
-      {inputFileNameLists.map((el) => (
-        <Box position="relative" key={el.key}>
-          <CustomSnackbar
-            key={el.key}
-            isOpen={!el.isValid}
-            message={`SourceCodeは${SOURCE_CODE_MAX_LENGTH}文字以下で入力してください`}
-          />
-        </Box>
-      ))}
+        isOpen={!canPublish.isValid}
+        closeSnackBar={closeSnackBar}
+      >
+        <Box fontWeight="bold">{canPublish.message}</Box>
+      </CustomSnackbar>
     </LayoutPost>
   )
 }
