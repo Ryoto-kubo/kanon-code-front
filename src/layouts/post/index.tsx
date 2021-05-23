@@ -16,7 +16,7 @@ type Props = {
   children: ReactNode
   title: string
   currentUser: null | UserType
-  registerContent: () => void
+  prepareValidRegister: () => void
   draftContent: () => void
   previousPage: () => void
   updateButtonText: (value: ButtonText) => void
@@ -31,7 +31,7 @@ const LayoutPost = ({
   children,
   title,
   currentUser,
-  registerContent,
+  prepareValidRegister,
   draftContent,
   previousPage,
   updateButtonText,
@@ -47,7 +47,7 @@ const LayoutPost = ({
     <>
       <CommonHead title={title} />
       <ThePostHeader
-        registerContent={registerContent}
+        prepareValidRegister={prepareValidRegister}
         draftContent={draftContent}
         previousPage={previousPage}
         updateButtonText={updateButtonText}

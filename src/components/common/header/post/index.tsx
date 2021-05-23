@@ -11,7 +11,7 @@ type ButtonText = Readonly<
   '投稿設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
 >
 type Props = {
-  registerContent: () => void
+  prepareValidRegister: () => void
   draftContent: () => void
   previousPage: () => void
   updateButtonText: (value: ButtonText) => void
@@ -43,7 +43,7 @@ export const ThePostHeader: React.FC<Props> = React.memo((props) => {
     if (!isPublish) {
       await props.draftContent()
     } else {
-      props.registerContent()
+      props.prepareValidRegister()
     }
   }
   const switchPublish = (event: React.ChangeEvent<HTMLInputElement>) => {

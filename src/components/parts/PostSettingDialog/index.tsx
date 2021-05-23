@@ -1,5 +1,5 @@
 import { CustomHeading2 } from '@/components/atoms/CustomHeading2'
-import { programmingIcons } from '@/consts/programming-icons'
+import { PROGRAMMING_ICONS } from '@/consts/programming-icons'
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -17,16 +17,14 @@ import React from 'react'
 import styled from 'styled-components'
 
 type ProgrammingIcon = {
-  id: string
-  text: string
-  listIconComponent: JSX.Element
-  iconComponent: JSX.Element
+  id: number
+  value: string
+  iconPath: string
 }
 type ProgrammingIcons = {
-  id: string
-  text: string
-  listIconComponent: JSX.Element
-  iconComponent: JSX.Element
+  id: number
+  value: string
+  iconPath: string
 }[]
 type Props = {
   title: string
@@ -134,27 +132,37 @@ export const PostSettingDialog: React.FC<Props> = (props) => {
           <StyledTitle>Icon</StyledTitle>
           <StyledBoxFlex>
             <StyledBoxIconWrapper>
-              {props.programmingIcon.iconComponent}
+              {props.programmingIcon.id !== 0 && (
+                <img
+                  width={50}
+                  height={50}
+                  src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.programmingIcon.iconPath}`}
+                />
+              )}
             </StyledBoxIconWrapper>
             <StyledBoxInputWrapper>
               <Autocomplete
                 id="icon"
-                freeSolo
+                // freeSolo
                 onChange={(event, value) =>
                   props.selectProgrammingIcon(event, value)
                 }
-                options={programmingIcons as ProgrammingIcons}
+                options={PROGRAMMING_ICONS as ProgrammingIcons}
                 renderOption={(option) => (
                   <React.Fragment>
                     <Box display="flex" alignItems="center">
                       <Box mr={1.5} height={25}>
-                        {option.listIconComponent}
+                        <img
+                          width={25}
+                          height={25}
+                          src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${option.iconPath}`}
+                        />
                       </Box>
-                      <span>{option.text}</span>
+                      <span>{option.value}</span>
                     </Box>
                   </React.Fragment>
                 )}
-                getOptionLabel={(option) => option.text}
+                getOptionLabel={(option) => option.value}
                 renderInput={(params) => (
                   <TextField
                     {...params}
