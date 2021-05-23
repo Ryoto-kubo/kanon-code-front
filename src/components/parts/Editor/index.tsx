@@ -2,7 +2,6 @@ import { EditorButtons } from '@/components/organisms/EditorButtons'
 import { errorMessages } from '@/consts/error-messages.ts'
 import { getPreSignedUrl } from '@/utils/api/get-presigned-url'
 import { PrepareImageBeforePost } from '@/utils/prepare-image-before-post'
-// import theme from '@/styles/theme'
 import Box from '@material-ui/core/Box'
 import Tab from '@material-ui/core/Tab'
 import Tabs from '@material-ui/core/Tabs'
@@ -78,7 +77,6 @@ const StyledTabs = styled(Tabs)`
 export const Editor: React.FC<Props> = React.memo((props) => {
   const [instance, setInstance] = useState<EasyMDE>()
   const [isUploading, setIsUploading] = useState<boolean>(false)
-
   const getInstance = (instance: EasyMDE) => {
     setInstance(instance)
   }
@@ -122,7 +120,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
       },
     )
     editorInstance.codemirror.replaceSelection(
-      `${process.env.NEXT_PUBLIC_UPLOAD_BUCKET_URL}${newFileName}`,
+      `${process.env.NEXT_PUBLIC_BUCKET_URL}upload/${newFileName}`,
     )
   }
   const moveCursor = (editorInstance: EasyMDE, moveableNumber: number) => {
