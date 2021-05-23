@@ -1,6 +1,6 @@
 import { EditorButtons } from '@/components/organisms/EditorButtons'
 import { errorMessages } from '@/consts/error-messages.ts'
-import { getPreSignedUrl } from '@/utils/get-presigned-url'
+import { getPreSignedUrl } from '@/utils/api/get-presigned-url'
 import { PrepareImageBeforePost } from '@/utils/prepare-image-before-post'
 // import theme from '@/styles/theme'
 import Box from '@material-ui/core/Box'
@@ -32,7 +32,7 @@ type Props = {
   uploadImageToS3: (presignedUrl: string, image: any) => void
   MAX_LENGTH: number
   currentIndex?: number
-  handleChange?: (event: React.ChangeEvent<{}>, value: any) => void
+  handleTabChange?: (event: React.ChangeEvent<{}>, value: any) => void
   inputFileNameLists?: {
     key: string
     fileName: string
@@ -176,7 +176,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           {props.inputFileNameLists && (
             <StyledTabs
               value={props.currentIndex}
-              onChange={props.handleChange}
+              onChange={props.handleTabChange}
               indicatorColor="primary"
               textColor="primary"
               variant="scrollable"

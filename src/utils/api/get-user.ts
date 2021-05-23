@@ -6,5 +6,5 @@ type ParamsType = {
 }
 
 export const getUser = async (params: ParamsType) => {
-  return await axios.get(apis.GET_USER, { params })
+  return await axios.get(apis.USER, { params })
 }

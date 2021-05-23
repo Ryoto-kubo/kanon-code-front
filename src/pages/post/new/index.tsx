@@ -195,7 +195,7 @@ const IndexPage: React.FC<Props> = (props) => {
       createValidObject(false, validMessages.REQUIRED_FILE_NAME),
     )
   }
-  const validExistData = () => {
+  const validExistData = useCallback(() => {
     const isExistTitle = isValidTitleObject.isValid
     const isExistTagList = isValidTagsObject.isValid
     const isExistDescription = isValidDescriptionObject.isValid
@@ -208,7 +208,13 @@ const IndexPage: React.FC<Props> = (props) => {
       isExistFileName ||
       isExistSoureCode
     )
-  }
+  }, [
+    isValidTitleObject,
+    isValidTagsObject,
+    isValidDescriptionObject,
+    isValidFileNameObject,
+    isValidSourceCodeObject,
+  ])
   const validFalseIncluded = useCallback(() => {
     const validList = inputFileNameLists.map((el) => el.isValid)
     return validList.includes(false)
@@ -216,13 +222,13 @@ const IndexPage: React.FC<Props> = (props) => {
   const updateButtonText = useCallback((value: ButtonText) => {
     setButtonText(value)
   }, [])
-  const updateCanPublish = (isValid: boolean, message = '') => {
+  const updateCanPublish = useCallback((isValid: boolean, message = '') => {
     setCanPUblish({
       ...canPublish,
       isValid: isValid,
       message: message,
     })
-  }
+  }, [])
   const updateIsValidSourceCode = useCallback(
     (isValid: boolean): void => {
       inputFileNameLists[currentIndex].isValid = isValid
@@ -423,13 +429,19 @@ const IndexPage: React.FC<Props> = (props) => {
     },
     [sourceCode, inputFileNameLists],
   )
-  const handleChange = (_: React.ChangeEvent<{}>, index: number) => {
-    setCurrentIndex(index)
-    onFocusGetIndex(index)
-  }
-  const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-  }
+  const handleTabChange = useCallback(
+    (_: React.ChangeEvent<{}>, index: number) => {
+      setCurrentIndex(index)
+      onFocusGetIndex(index)
+    },
+    [sourceCode, inputFileNameLists],
+  )
+  const linkOnGithub = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      console.log(event)
+    },
+    [],
+  )
   const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value)
     setTargetLanguageValue(value)
@@ -529,7 +541,7 @@ const IndexPage: React.FC<Props> = (props) => {
                   )}
                   uploadImageToS3={S3.uploadImageToS3}
                   currentIndex={currentIndex}
-                  handleChange={handleChange}
+                  handleTabChange={handleTabChange}
                   inputFileNameLists={inputFileNameLists}
                   MAX_LENGTH={CONSTS.SOURCE_CODE_MAX_LENGTH}
                 />
