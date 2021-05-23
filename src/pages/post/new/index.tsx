@@ -1,22 +1,24 @@
 import { CustomSnackbar } from '@/components/atoms/CustomSnackbar'
+import { CustomLoader } from '@/components/common/loader/'
 import { LinkGithubButton } from '@/components/molecules/LinkGithubButton'
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox'
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
 import { InputTagWrapper } from '@/components/organisms/InputTagWrapper'
 import { PostSettingDialog } from '@/components/parts/PostSettingDialog'
 import * as CONSTS from '@/consts/const'
-import { validMessages } from '@/consts/error-messages'
+import { errorMessages, validMessages } from '@/consts/error-messages'
 import { targetLanguages } from '@/consts/target-languages'
 import { UserType } from '@/consts/type'
 import LayoutPost from '@/layouts/post'
 import { postContent } from '@/utils/api/post-content'
 import * as S3 from '@/utils/api/s3'
+import { getSuggestProgrammingLanguages } from '@/utils/api/suggest-programming-languages'
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
 import dynamic from 'next/dynamic'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 import './style.scss'
@@ -38,6 +40,12 @@ type ValidObject = {
   isValid: boolean
   message: string
 }
+type Suggest = {
+  id: number
+  value: string
+  is_deleted: number
+}
+
 const Editor = dynamic(
   () => {
     const promise = import('@/components/parts/Editor').then((r) => r.Editor)
@@ -77,6 +85,7 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `
 
 const IndexPage: React.FC<Props> = (props) => {
+  const err = new Error()
   const userId = props.currentUser!.user_id
   const userProfile = props.currentUser!.user_profile
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
@@ -128,7 +137,22 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
     ValidObject
   >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE))
+  const [suggestList, setSuggestList] = useState<Suggest[]>()
+  const [isFetch, setIsFetch] = useState(true)
   const [uuid] = useState(uuidv4())
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const response = await getSuggestProgrammingLanguages()
+        if (response.status !== 200) throw err
+        setSuggestList(response.data.Items)
+        setIsFetch(false)
+      } catch {
+        console.error(err)
+        alert(errorMessages.SYSTEM_ERROR)
+      }
+    })()
+  }, [])
   // window.onbeforeunload = (e: any) => {
   //   e.returnValue = 'このページを離れてもよろしいですか？'
   //   const isValidExistData = validExistData()
@@ -195,7 +219,7 @@ const IndexPage: React.FC<Props> = (props) => {
       createValidObject(false, validMessages.REQUIRED_FILE_NAME),
     )
   }
-  const validExistData = () => {
+  const validExistData = useCallback(() => {
     const isExistTitle = isValidTitleObject.isValid
     const isExistTagList = isValidTagsObject.isValid
     const isExistDescription = isValidDescriptionObject.isValid
@@ -208,7 +232,13 @@ const IndexPage: React.FC<Props> = (props) => {
       isExistFileName ||
       isExistSoureCode
     )
-  }
+  }, [
+    isValidTitleObject,
+    isValidTagsObject,
+    isValidDescriptionObject,
+    isValidFileNameObject,
+    isValidSourceCodeObject,
+  ])
   const validFalseIncluded = useCallback(() => {
     const validList = inputFileNameLists.map((el) => el.isValid)
     return validList.includes(false)
@@ -216,13 +246,13 @@ const IndexPage: React.FC<Props> = (props) => {
   const updateButtonText = useCallback((value: ButtonText) => {
     setButtonText(value)
   }, [])
-  const updateCanPublish = (isValid: boolean, message = '') => {
+  const updateCanPublish = useCallback((isValid: boolean, message = '') => {
     setCanPUblish({
       ...canPublish,
       isValid: isValid,
       message: message,
     })
-  }
+  }, [])
   const updateIsValidSourceCode = useCallback(
     (isValid: boolean): void => {
       inputFileNameLists[currentIndex].isValid = isValid
@@ -423,13 +453,19 @@ const IndexPage: React.FC<Props> = (props) => {
     },
     [sourceCode, inputFileNameLists],
   )
-  const handleChange = (_: React.ChangeEvent<{}>, index: number) => {
-    setCurrentIndex(index)
-    onFocusGetIndex(index)
-  }
-  const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event)
-  }
+  const handleTabChange = useCallback(
+    (_: React.ChangeEvent<{}>, index: number) => {
+      setCurrentIndex(index)
+      onFocusGetIndex(index)
+    },
+    [sourceCode, inputFileNameLists],
+  )
+  const linkOnGithub = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      console.log(event)
+    },
+    [],
+  )
   const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value)
     setTargetLanguageValue(value)
@@ -447,7 +483,9 @@ const IndexPage: React.FC<Props> = (props) => {
       iconComponent: selectObject.iconComponent,
     })
   }
-  return (
+  return isFetch ? (
+    <CustomLoader />
+  ) : (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
@@ -467,7 +505,10 @@ const IndexPage: React.FC<Props> = (props) => {
             />
           </Box>
           <Box mb={3} className="tag-list-wrapper">
-            <InputTagWrapper changeTagList={changeTagList} />
+            <InputTagWrapper
+              changeTagList={changeTagList}
+              suggestList={suggestList!}
+            />
           </Box>
           <Box mb={5} className="description-wrapper">
             <Editor
@@ -529,7 +570,7 @@ const IndexPage: React.FC<Props> = (props) => {
                   )}
                   uploadImageToS3={S3.uploadImageToS3}
                   currentIndex={currentIndex}
-                  handleChange={handleChange}
+                  handleTabChange={handleTabChange}
                   inputFileNameLists={inputFileNameLists}
                   MAX_LENGTH={CONSTS.SOURCE_CODE_MAX_LENGTH}
                 />
