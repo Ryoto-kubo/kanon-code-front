@@ -1,126 +1,69 @@
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { yearsExperience } from "@/consts/select-options";
-import { SettingLayout } from "@/layouts/setting";
-import Box from "@material-ui/core/Box";
-import MenuItem from "@material-ui/core/MenuItem";
-import TextField from "@material-ui/core/TextField";
-// import { CognitoUser } from '@aws-amplify/auth'
-import React, { useState } from "react";
-import styled from "styled-components";
+import { ContentHeader } from '@/components/molecules/ContentHeader'
+import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
+import { ContentWrapper } from '@/components/organisms/ContentWrapper'
+import { NoSettingDataWrapper } from '@/components/organisms/NoSettingDataWrapper'
+import { skils } from '@/mock/skils'
+import React from 'react'
+import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
+import SkilSvg from '../../../assets/illustration/skil.svg'
 
-type Props = {
-  title: string;
-  authUser: any;
-};
-
-type TypeParams = {
-  language: string;
-  yearsExperience: number;
-}[];
-
-const StyledBoxCalcWidth = styled(Box)`
-  ${(props) => props.theme.breakpoints.up("sm")} {
-    // width: calc(100% - 150px);
+const StyledPairSkilSvg = styled(SkilSvg)`
+  width: 100%;
+  ${(props) => props.theme.breakpoints.up('sm')} {
+    width: 60%;
   }
-`;
-const StyledTextFieldService = styled(TextField)`
-  margin-bottom: 32px;
-  width: 47%;
-`;
+  ${(props) => props.theme.breakpoints.up('md')} {
+    width: 450px;
+  }
+`
 
-const IndexPage: React.FC<Props> = (props) => {
-  const [skilParams, setSkilParams] = useState<TypeParams>([
-    {
-      language: "",
-      yearsExperience: 0,
-    },
-    {
-      language: "",
-      yearsExperience: 0,
-    },
-    {
-      language: "",
-      yearsExperience: 0,
-    },
-    {
-      language: "",
-      yearsExperience: 0,
-    },
-    {
-      language: "",
-      yearsExperience: 0,
-    },
-  ]);
-  console.log(setSkilParams);
+export const getServerSideProps = async () => ({
+  props: {
+    layout: 'SettingLayout',
+    title: 'スキル',
+  },
+})
 
-  const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault();
-    console.log(...skilParams);
-  };
-  const renderOptions = (): JSX.Element[] => {
-    return yearsExperience.map((option) => (
-      <MenuItem key={option.value} value={option.value}>
-        {option.label}
-      </MenuItem>
-    ));
-  };
-  const renderTextFields = () => {
-    return skilParams.map((elemet, index) => (
-      <Box display="flex" justifyContent="space-between" key={index}>
-        <StyledTextFieldService
-          id="language"
-          type="text"
-          style={{ display: "block" }}
-          defaultValue={elemet.language}
-          placeholder="例：php"
-          label="プログラミング言語"
-          fullWidth={true}
-          variant="outlined"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            elemet.language = e.target.value;
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        />
-        <StyledTextFieldService
-          select
-          id="twitterName"
-          type="text"
-          style={{ display: "block" }}
-          defaultValue={elemet.yearsExperience}
-          label="経験年数"
-          fullWidth={true}
-          variant="outlined"
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-            elemet.yearsExperience = Number(e.target.value);
-          }}
-          InputLabelProps={{
-            shrink: true,
-          }}
-        >
-          {renderOptions()}
-        </StyledTextFieldService>
-      </Box>
-    ));
-  };
+const IndexPage: React.FC = () => {
+  const skilsLength = 0
+  // const skilsLength = skils.length
 
   return (
-    <SettingLayout title="Kanon Code | スキル設定" authUser={props.authUser}>
-      <section>
-        <Box>
-          <StyledBoxCalcWidth mb={5}>
-            <div>{renderTextFields()}</div>
-            <Box textAlign="center">
-              <CustomSolidButton sizing="medium" onClick={update}>
-                更新する
-              </CustomSolidButton>
-            </Box>
-          </StyledBoxCalcWidth>
-        </Box>
-      </section>
-    </SettingLayout>
-  );
-};
+    <section>
+      {skilsLength > 0 ? (
+        <ContentWrapper>
+          <ContentHeader
+            title="スキル"
+            description="マイページにスキル一覧として表示されます。"
+            fontSize={20}
+            marginBottom={1}
+          />
+          {skils.map((el, index) => (
+            <ProfileContentLink
+              key={uuidv4()}
+              label={el.language}
+              value={el.yearsExperiences}
+              isDivider={index === 0 ? false : true}
+              href=""
+            >
+              {''}
+            </ProfileContentLink>
+          ))}
+        </ContentWrapper>
+      ) : (
+        <NoSettingDataWrapper
+          text="スキルを登録する"
+          description="スキルはまだ登録されていません。"
+          href="/skils"
+          borderRadius={4}
+          mb={6}
+        >
+          <StyledPairSkilSvg />
+        </NoSettingDataWrapper>
+      )}
+    </section>
+  )
+}
 
-export default IndexPage;
+export default IndexPage

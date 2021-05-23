@@ -1,9 +1,9 @@
-import Avatar from '@material-ui/core/Avatar'
-import React from 'react'
+import Avatar from "@material-ui/core/Avatar";
+import React from "react";
 
 interface Props {
-  picture: string
-  className?: string
+  picture: string;
+  className?: string;
 }
 
 export const UserImgIcon: React.FC<Props> = (props) => {
@@ -13,5 +13,5 @@ export const UserImgIcon: React.FC<Props> = (props) => {
       className={props.className}
       alt="ユーザーアイコン"
     />
-  )
-}
+  );
+};

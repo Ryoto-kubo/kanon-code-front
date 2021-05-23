@@ -1,4 +1,4 @@
-import { IconErrorRounded } from "@/components/atoms/IconErrorRounded";
+import { IconErrorRounded } from "@/components/svg/materialIcons/IconErrorRounded";
 import theme from "@/styles/theme";
 import Box from "@material-ui/core/Box";
 import React from "react";

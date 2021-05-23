@@ -3,7 +3,7 @@ import { FirstViewText } from '@/components/molecules/FirstViewText'
 import { Box } from '@material-ui/core/'
 import React from 'react'
 import styled from 'styled-components'
-import PairProramingSvg from '../../assets/top/Pair-programming.svg'
+import PairProramingSvg from '../../assets/illustration/Pair-programming.svg'
 
 const StyledPairProramingSvg = styled(PairProramingSvg)`
   width: 100%;

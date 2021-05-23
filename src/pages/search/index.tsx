@@ -1,22 +1,29 @@
-import { icons } from '@/components/atoms/Icons'
 import { CircleGrid } from '@/components/molecules/CircleGrid'
 import { SearchField } from '@/components/molecules/SearchField'
 import { CircleGrids } from '@/components/organisms/CircleGrids'
+import { icons } from '@/components/svg/programing/Icons'
+import { UserType } from '@/consts/type'
 import Layout from '@/layouts/standard'
-import { CognitoUser } from '@aws-amplify/auth'
 import { Container } from '@material-ui/core/'
 import { useRouter } from 'next/router'
 import React, { MouseEvent, useState } from 'react'
 
 type Props = {
   title: string
-  authUser: CognitoUser
+  currentUser: null | UserType
 }
 
 const formFunc = (e: React.FormEvent) => {
   console.log('enterを押した検索')
   e.preventDefault()
 }
+
+// export const getServerSideProps = async () => ({
+//   props: {
+//     layout: "Layout",
+//     title: "検索",
+//   },
+// });
 
 const IndexPage: React.FC<Props> = (props) => {
   const router = useRouter()
@@ -56,7 +63,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const [renderIcons, setRenderIcons] = useState(initIconComponents)
 
   return (
-    <Layout title="Kanon Code | 検索" authUser={props.authUser}>
+    <Layout title="Kanon Code | 検索" currentUser={props.currentUser}>
       <Container maxWidth="md">
         <SearchField
           formFunc={formFunc}
