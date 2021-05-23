@@ -3,7 +3,6 @@ export type ErrorMessages =
   | '  SYSTEM_ERROR'
   | '  EXISTED_NAME'
   | '  IMAGE_COMPRESSION_ERROR'
-
 export type ValidMessages =
   | 'REQUIRED_TITLE'
   | 'REQUIRED_TAGS'

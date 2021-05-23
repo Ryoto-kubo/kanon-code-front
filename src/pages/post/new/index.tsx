@@ -1,22 +1,24 @@
 import { CustomSnackbar } from '@/components/atoms/CustomSnackbar'
+import { CustomLoader } from '@/components/common/loader/'
 import { LinkGithubButton } from '@/components/molecules/LinkGithubButton'
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox'
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
 import { InputTagWrapper } from '@/components/organisms/InputTagWrapper'
 import { PostSettingDialog } from '@/components/parts/PostSettingDialog'
 import * as CONSTS from '@/consts/const'
-import { validMessages } from '@/consts/error-messages'
+import { errorMessages, validMessages } from '@/consts/error-messages'
 import { targetLanguages } from '@/consts/target-languages'
 import { UserType } from '@/consts/type'
 import LayoutPost from '@/layouts/post'
 import { postContent } from '@/utils/api/post-content'
 import * as S3 from '@/utils/api/s3'
+import { getSuggestProgrammingLanguages } from '@/utils/api/suggest-programming-languages'
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
 import dynamic from 'next/dynamic'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import styled from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 import './style.scss'
@@ -38,6 +40,12 @@ type ValidObject = {
   isValid: boolean
   message: string
 }
+type Suggest = {
+  id: number
+  value: string
+  is_deleted: number
+}
+
 const Editor = dynamic(
   () => {
     const promise = import('@/components/parts/Editor').then((r) => r.Editor)
@@ -77,6 +85,7 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `
 
 const IndexPage: React.FC<Props> = (props) => {
+  const err = new Error()
   const userId = props.currentUser!.user_id
   const userProfile = props.currentUser!.user_profile
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
@@ -128,7 +137,22 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
     ValidObject
   >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE))
+  const [suggestList, setSuggestList] = useState<Suggest[]>()
+  const [isFetch, setIsFetch] = useState(true)
   const [uuid] = useState(uuidv4())
+  useEffect(() => {
+    ;(async () => {
+      try {
+        const response = await getSuggestProgrammingLanguages()
+        if (response.status !== 200) throw err
+        setSuggestList(response.data.Items)
+        setIsFetch(false)
+      } catch {
+        console.error(err)
+        alert(errorMessages.SYSTEM_ERROR)
+      }
+    })()
+  }, [])
   // window.onbeforeunload = (e: any) => {
   //   e.returnValue = 'このページを離れてもよろしいですか？'
   //   const isValidExistData = validExistData()
@@ -459,7 +483,9 @@ const IndexPage: React.FC<Props> = (props) => {
       iconComponent: selectObject.iconComponent,
     })
   }
-  return (
+  return isFetch ? (
+    <CustomLoader />
+  ) : (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
@@ -479,7 +505,10 @@ const IndexPage: React.FC<Props> = (props) => {
             />
           </Box>
           <Box mb={3} className="tag-list-wrapper">
-            <InputTagWrapper changeTagList={changeTagList} />
+            <InputTagWrapper
+              changeTagList={changeTagList}
+              suggestList={suggestList!}
+            />
           </Box>
           <Box mb={5} className="description-wrapper">
             <Editor
