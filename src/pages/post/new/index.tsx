@@ -15,7 +15,6 @@ import { PrepareContentBeforePost } from "@/utils/prepare-content-before-post";
 import { validLength } from "@/utils/valid";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
-// import "highlight.js/scss/foundation.scss";
 import "highlight.js/scss/vs2015.scss";
 // import "highlight.js/scss/monokai-sublime.scss";
 import marked from "marked";
