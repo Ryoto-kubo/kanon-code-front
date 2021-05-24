@@ -7,7 +7,6 @@ export const CircleElement: React.FC = (props) => {
       width={50}
       height={50}
       borderRadius={100}
-      border="3px solid #707070"
       display="flex"
       alignItems="center"
       justifyContent="center"
