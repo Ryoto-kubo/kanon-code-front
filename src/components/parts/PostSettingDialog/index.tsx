@@ -143,7 +143,6 @@ export const PostSettingDialog: React.FC<Props> = (props) => {
             <StyledBoxInputWrapper>
               <Autocomplete
                 id="icon"
-                // freeSolo
                 onChange={(event, value) =>
                   props.selectProgrammingIcon(event, value)
                 }

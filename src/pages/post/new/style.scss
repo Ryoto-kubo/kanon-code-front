@@ -7,3 +7,19 @@
     color: #ff604f;
   }
 }
+
+pre {
+  margin: 1.3rem 0;
+  background: #292a33;
+  border-radius: 3px;
+  padding: 16px;
+  code {
+    color: #ffffff;
+    .hljs-function {
+      color: #569cd6;
+      .hljs-params {
+        color: #8e99f3;
+      }
+    }
+  }
+}
