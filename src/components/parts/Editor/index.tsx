@@ -22,6 +22,7 @@ const SOURCE_CODE = 'Source Code'
 
 type Props = {
   id: string
+  name: string
   headerText: string
   changeActiveStep: (value: number) => void
   onChange: (value: string) => void | any
@@ -253,6 +254,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           </SwipeableViews>
         </StyledBoxMaxWidth>
         <EditorButtons
+          name={props.name}
           switchPreview={switchPreview}
           insertCodeMde={insertCodeMde}
           insertLinkMde={insertLinkMde}

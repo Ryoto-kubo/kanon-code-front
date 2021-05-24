@@ -89,12 +89,12 @@ const IndexPage: React.FC<Props> = (props) => {
   const [title, setTitle] = useState('')
   const [tagList, setTagList] = useState<string[]>([])
   const [description, setDescription] = useState('')
-  const [sourceCode, setSourceCode] = useState('')
+  const [sourceCode, setSourceCode] = useState('```\n\n```')
   const [inputFileNameLists, setInputFileNameLists] = useState([
     {
       key: uuidv4(),
       fileName: '',
-      sourceCode: '',
+      sourceCode: '```\n\n```',
       bodyHtml: '',
       isValid: true,
     },
@@ -186,7 +186,7 @@ const IndexPage: React.FC<Props> = (props) => {
       {
         key: uuidv4(),
         fileName: '',
-        sourceCode: '',
+        sourceCode: '```\n\n```',
         bodyHtml: '',
         isValid: true,
       },
@@ -504,6 +504,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <Box mb={5} className="description-wrapper">
             <Editor
               id="editor"
+              name="Description"
               headerText="Description"
               onChange={changeDescritption}
               changeActiveStep={changeActiveStep}
@@ -550,6 +551,7 @@ const IndexPage: React.FC<Props> = (props) => {
               <StyledBoxCordEditorWrapper>
                 <Editor
                   id="cord-editor"
+                  name="SourceCode"
                   headerText="Source Code"
                   onChange={changeSourceCode}
                   changeActiveStep={changeActiveStep}
