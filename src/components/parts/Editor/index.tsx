@@ -79,7 +79,6 @@ const StyledTabs = styled(Tabs)`
 export const Editor: React.FC<Props> = React.memo((props) => {
   const [instance, setInstance] = useState<EasyMDE>();
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  // useEffect(() => {
   marked.setOptions({
     highlight: function (code, lang) {
       return highlightjs.highlightAuto(code, [lang]).value;
@@ -87,10 +86,9 @@ export const Editor: React.FC<Props> = React.memo((props) => {
     pedantic: false, // trueの場合はmarkdown.plに準拠する gfmを使用する場合はfalseで大丈夫
     gfm: true, // GitHub Flavored Markdownを使用
     breaks: true, // falseにすると改行入力は末尾の半角スペース2つになる
-    sanitize: true, // trueにすると特殊文字をエスケープする
+    sanitize: false, // trueにすると特殊文字をエスケープする
     silent: false, // trueにするとパースに失敗してもExceptionを投げなくなる
   });
-  // }, []);
 
   const getInstance = (instance: EasyMDE) => {
     setInstance(instance);
