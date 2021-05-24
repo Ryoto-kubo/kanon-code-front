@@ -15,6 +15,7 @@ import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
+import marked from 'marked'
 import dynamic from 'next/dynamic'
 import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
@@ -163,7 +164,10 @@ const IndexPage: React.FC<Props> = (props) => {
       contents: {
         title: title,
         tagList: tagList,
-        description: description,
+        description: {
+          value: description,
+          bodyHtml: marked(description),
+        },
         inputFileNameLists: inputFileNameLists,
         targetLanguage: 0,
         targetIcon: programmingIcon,
@@ -293,6 +297,7 @@ const IndexPage: React.FC<Props> = (props) => {
       if (result.status !== 200) throw err
       setIsPosted(true)
       updateButtonText('保存済み ✔︎')
+      console.log(inputFileNameLists)
     } catch {
       console.error(err)
       alert(errorMessages.SYSTEM_ERROR)
@@ -401,9 +406,9 @@ const IndexPage: React.FC<Props> = (props) => {
       if (isValidMaxLength && isExist) {
         prepareContentBeforePost.successed()
       }
-      setSourceCode(value)
       updateIsValidSourceCode(isValidMaxLength)
       updateInputFileNameLists('sourceCode', value, currentIndex)
+      updateInputFileNameLists('bodyHtml', marked(value), currentIndex)
     },
     [sourceCode, inputFileNameLists],
   )
