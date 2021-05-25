@@ -11,10 +11,10 @@ type Props = {
   authUser: any;
   currentUser: null | UserType;
   data: {
-    Count: number,
-    Items: any[]
-    ScannedCount: number
-  }
+    Count: number;
+    Items: any[];
+    ScannedCount: number;
+  };
 };
 
 const IndexPage: React.FC<Props> = (props) => {
