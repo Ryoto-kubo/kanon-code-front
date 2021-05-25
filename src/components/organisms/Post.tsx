@@ -21,10 +21,10 @@ const StyledMaxWidthdiv = styled(Box)`
 export const Post: React.FC<Props> = (props) => {
   return (
     <StyledMaxWidthdiv display="flex" alignItems="center">
-      <Box mr={2}>
+      <Box mr={2} flexShrink={0}>
         <img
-          width={50}
-          height={50}
+          width={"50px"}
+          height={"50px"}
           src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.iconPath}`}
         />
       </Box>

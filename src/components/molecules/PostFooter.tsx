@@ -15,10 +15,10 @@ export const PostFooter: React.FC<Props> = (props) => {
         <img src={props.userIcon} style={{ borderRadius: "50px" }} />
       </CircleElement>
       <Box>
-        <ParagraphText variant="body2" component="p">
+        <Box fontWeight="bold" component="p">
           {props.name}
-        </ParagraphText>
-        <ParagraphText variant="body2" component="p">
+        </Box>
+        <ParagraphText variant="body2" component="p" color="textSecondary">
           {props.date}
         </ParagraphText>
       </Box>
