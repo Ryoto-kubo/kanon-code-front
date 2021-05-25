@@ -5,40 +5,20 @@ import { UserType } from "@/consts/type";
 import Layout from "@/layouts/standard";
 import { getContents } from "@/utils/api/get-contents";
 import { Box, Container, Grid, Paper } from "@material-ui/core/";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 type Props = {
   authUser: any;
   currentUser: null | UserType;
+  data: {
+    Count: number,
+    Items: any[]
+    ScannedCount: number
+  }
 };
-// サーバーサイドで実行される
-// export const getServerSideProps = async () => {
-//   const data = await getContents();
-//   return {
-//     props: {
-//       layout: "Layout",
-//       title: "コードレビュを全てのエンジニアへ",
-//       data: data,
-//     },
-//   };
-// };
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
-  const [contents, setContents] = useState<any[]>([]);
-
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      try {
-        const result = await getContents();
-        if (result.status !== 200) throw err;
-        setContents(result.data.Items);
-      } catch (error) {
-        console.error(error);
-      }
-    })();
-  }, []);
+  const [contents] = useState<any[]>(props.data.Items);
 
   return (
     <Layout
@@ -73,6 +53,25 @@ const IndexPage: React.FC<Props> = (props) => {
       </Container>
     </Layout>
   );
+};
+
+// サーバーサイドで実行される
+export const getServerSideProps = async () => {
+  try {
+    const response = await getContents();
+    return {
+      props: {
+        data: response.data,
+      },
+    };
+  } catch (error) {
+    alert("システムエラーが発生しました");
+    return {
+      props: {
+        data: null,
+      },
+    };
+  }
 };
 
 export default IndexPage;
