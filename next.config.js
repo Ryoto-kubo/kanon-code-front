@@ -10,5 +10,6 @@ module.exports = withCss(
     //     },
     //   ];
     // },
+    builds: [{ src: "*.ts", use: "@vercel/node" }],
   })
 );
