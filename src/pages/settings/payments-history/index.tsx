@@ -56,6 +56,7 @@ const IndexPage: React.FC = () => {
                 <Box mr={2}>{getProgramingIcon(el.iconKey)}</Box>
                 <PostHeader
                   key={index}
+                  postUrl={""}
                   title={el.title}
                   tagArray={el.tagArray}
                 />
