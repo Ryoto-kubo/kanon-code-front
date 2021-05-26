@@ -6,6 +6,7 @@ import styled from "styled-components";
 
 interface Props {
   title: string;
+  postUrl: string;
   iconPath: string;
   name: string;
   date: string;
@@ -29,7 +30,11 @@ export const Post: React.FC<Props> = (props) => {
         />
       </Box>
       <Box>
-        <PostHeader title={props.title} tagArray={props.tagArray} />
+        <PostHeader
+          title={props.title}
+          postUrl={props.postUrl}
+          tagArray={props.tagArray}
+        />
         <PostFooter
           name={props.name}
           date={props.date}
