@@ -4,9 +4,10 @@ import { FirstView } from "@/components/organisms/FirstView";
 import { Post } from "@/components/organisms/Post";
 import { UserType } from "@/consts/type";
 import Layout from "@/layouts/standard";
+import { PostContentsProps } from "@/types/pages/top";
 import { getContents } from "@/utils/api/get-contents";
 import { Box, Container, Grid, Paper } from "@material-ui/core/";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 // import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
@@ -16,7 +17,7 @@ type Props = {
   currentUser: null | UserType;
   data: {
     Count: number;
-    Items: any[];
+    Items: PostContentsProps[];
     ScannedCount: number;
   };
 };
@@ -26,7 +27,20 @@ const StyledPaper = styled(Paper)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  const [contents] = useState<any[]>(props.data.Items);
+  const makePropertyForPostUrl = useCallback((list: PostContentsProps[]) => {
+    return list.map((el: PostContentsProps) => {
+      const postId = el.sort_key.split("_").pop();
+      const displayName = el.user_profile.display_name;
+      el.postUrl = `${displayName}/post/${postId}`;
+      return el;
+    });
+  }, []);
+  const items = makePropertyForPostUrl(props.data.Items);
+  const [contents] = useState<PostContentsProps[]>(items);
+  // getPagesUrl().then((res) => {
+  //   console.log(res.data);
+  // });
+
   // const [contents, setContents] = useState<any[]>(props.data.Items);
   // const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -66,10 +80,11 @@ const IndexPage: React.FC<Props> = (props) => {
                   <StyledPaper>
                     <Post
                       title={el.contents.title}
-                      iconPath={el.contents.targetIcon.iconPath}
+                      postUrl={el.postUrl}
+                      iconPath={el.contents.target_icon.icon_path}
                       name={el.user_profile.display_name}
                       date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                      tagArray={el.contents.tagList}
+                      tagArray={el.contents.tag_list}
                       userIcon={el.user_profile.icon_src}
                     />
                   </StyledPaper>
