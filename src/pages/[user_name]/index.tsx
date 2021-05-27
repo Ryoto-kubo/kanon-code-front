@@ -1,9 +1,11 @@
 // import { ProfileArea } from "@/components/organisms/ProfileArea";
 // import { Reviews } from "@/components/organisms/Reviews";
 // import { SkilsArea } from "@/components/organisms/SkilsArea";
+import Layout from "@/layouts/standard";
 import { UserType } from "@/types/global";
+import { getUserContents } from "@/utils/api/get-user-contents";
+import { getUsers } from "@/utils/api/get-users";
 import { Container } from "@material-ui/core/";
-import { GetServerSideProps } from "next";
 import React from "react";
 
 type Props = {
@@ -11,27 +13,21 @@ type Props = {
   currentUser: null | UserType;
 };
 
-export const getServerSideProps: GetServerSideProps = async (context) => ({
-  props: {
-    layout: "Layout",
-    title: context.resolvedUrl,
-  },
-});
-
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props);
-
-  console.log(props.currentUser);
-
   // const userIcon = props.authUser.signInUserSession.idToken.payload.picture;
   // const userId = props.authUser.username;
   // const cognitoId = mypageData.cognitoId;
   // const isMe = cognitoId === userId;
 
   return (
-    <Container>
-      hoge
-      {/* <Box mt={4}>
+    <Layout
+      title="Kanon Code | コードレビュを全てのエンジニアへ"
+      currentUser={props.currentUser}
+    >
+      <Container>
+        hoge
+        {/* <Box mt={4}>
         <Box mb={3}>
           <ProfileArea
             picture={userIcon}
@@ -50,7 +46,32 @@ const IndexPage: React.FC<Props> = (props) => {
           <Reviews user={props.authUser} mypageData={mypageData} isMe={isMe} />
         </Box>
       </Box> */}
-    </Container>
+      </Container>
+    </Layout>
   );
 };
+
+export const getStaticPaths = async () => {
+  const result = await getUsers();
+  const paths = result.data.map((el: { displayName: string }) => ({
+    params: {
+      user_name: el.displayName,
+    },
+  }));
+  return {
+    paths: paths,
+    fallback: true,
+  };
+};
+
+export const getStaticProps = async (props: any) => {
+  const userName = props.params.user_name;
+  const result = await getUserContents({ userName: userName });
+  return {
+    props: {
+      data: result.data,
+    },
+  };
+};
+
 export default IndexPage;

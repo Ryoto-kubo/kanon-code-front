@@ -44,7 +44,7 @@ export const getStaticPaths = async () => {
   };
 };
 
-// // paramsには上記pathsで指定した値が入る（1postずつ）
+// paramsには上記pathsで指定した値が入る（1postずつ）
 export const getStaticProps = async (props: any) => {
   const postId = props.params.post_id;
   const result = await getContent({ postId: postId });

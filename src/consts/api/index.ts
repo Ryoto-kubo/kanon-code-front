@@ -2,6 +2,7 @@ export const apis = {
   REGISTER: "/api/register",
   USER: "/api/user",
   USERS: "/api/users",
+  USERS_CONTENTS: "/api/userContents",
   CONTENTS: "/api/contents",
   CONTENT: "/api/content",
   PAGES_URL: "/api/pagesUrl",
