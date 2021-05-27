@@ -1,14 +1,14 @@
-import { ProfileArea } from "@/components/organisms/ProfileArea";
-import { Reviews } from "@/components/organisms/Reviews";
-import { SkilsArea } from "@/components/organisms/SkilsArea";
-import { mypageData } from "@/mock/mypage";
-import { Box, Container } from "@material-ui/core/";
+// import { ProfileArea } from "@/components/organisms/ProfileArea";
+// import { Reviews } from "@/components/organisms/Reviews";
+// import { SkilsArea } from "@/components/organisms/SkilsArea";
+import { UserType } from "@/types/global";
+import { Container } from "@material-ui/core/";
 import { GetServerSideProps } from "next";
 import React from "react";
 
 type Props = {
   title: string;
-  authUser: any;
+  currentUser: null | UserType;
 };
 
 export const getServerSideProps: GetServerSideProps = async (context) => ({
@@ -19,14 +19,19 @@ export const getServerSideProps: GetServerSideProps = async (context) => ({
 });
 
 const IndexPage: React.FC<Props> = (props) => {
-  const userIcon = props.authUser.signInUserSession.idToken.payload.picture;
-  const userId = props.authUser.username;
-  const cognitoId = mypageData.cognitoId;
-  const isMe = cognitoId === userId;
+  console.log(props);
+
+  console.log(props.currentUser);
+
+  // const userIcon = props.authUser.signInUserSession.idToken.payload.picture;
+  // const userId = props.authUser.username;
+  // const cognitoId = mypageData.cognitoId;
+  // const isMe = cognitoId === userId;
 
   return (
     <Container>
-      <Box mt={4}>
+      hoge
+      {/* <Box mt={4}>
         <Box mb={3}>
           <ProfileArea
             picture={userIcon}
@@ -44,7 +49,7 @@ const IndexPage: React.FC<Props> = (props) => {
         <Box mb={3} component="section">
           <Reviews user={props.authUser} mypageData={mypageData} isMe={isMe} />
         </Box>
-      </Box>
+      </Box> */}
     </Container>
   );
 };

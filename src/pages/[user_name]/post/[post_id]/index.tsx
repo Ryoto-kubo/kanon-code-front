@@ -1,5 +1,5 @@
-import { UserType } from "@/consts/type";
 import Layout from "@/layouts/standard";
+import { UserType } from "@/types/global";
 import { PostContentsProps } from "@/types/pages/top";
 import { getContent } from "@/utils/api/get-content";
 import { getPagesUrl } from "@/utils/api/get-pages-url";
@@ -26,7 +26,8 @@ const IndexPage: React.FC<Props> = (props) => {
     </Layout>
   );
 };
-// // サーバーサイドで実行される
+
+// サーバーサイドで実行される
 export const getStaticPaths = async () => {
   const result = await getPagesUrl();
   const paths = result.data.map(
@@ -45,19 +46,8 @@ export const getStaticPaths = async () => {
 
 // // paramsには上記pathsで指定した値が入る（1postずつ）
 export const getStaticProps = async (props: any) => {
-  // 外部APIエンドポイントを呼び出しデータ取得
-  console.log(props.params);
   const postId = props.params.post_id;
-
   const result = await getContent({ postId: postId });
-  console.log(result);
-
-  // const res = await fetch(
-  //   `http://localhost:3001/${params.user_name}/post/${params.post_id}`
-  // );
-  // const post = await res.json();
-
-  // ページコンポーネントにpropsとしてに渡す
   return {
     props: {
       data: result.data.Items[0],

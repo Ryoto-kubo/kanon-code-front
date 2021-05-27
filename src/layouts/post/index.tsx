@@ -1,7 +1,7 @@
 import { TheFooter } from '@/components/common/footer/index'
 import { CommonHead } from '@/components/common/head/index'
 import { ThePostHeader } from '@/components/common/header/post'
-import { UserType } from '@/consts/type'
+import { UserType } from '@/types/global'
 import { Toolbar } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { useRouter } from 'next/router'
