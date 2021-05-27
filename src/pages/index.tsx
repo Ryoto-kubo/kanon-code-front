@@ -111,7 +111,6 @@ export const getStaticProps = async () => {
       revalidate: 60,
     };
   } catch (error) {
-    alert("システムエラーが発生しました");
     return {
       props: {
         data: null,
