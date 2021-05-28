@@ -2,7 +2,7 @@ import Layout from "@/layouts/standard";
 import { UserType } from "@/types/global";
 import { PostContentsProps } from "@/types/pages/top";
 import { getContent } from "@/utils/api/get-content";
-import { getPagesUrl } from "@/utils/api/get-pages-url";
+// import { getPagesUrl } from "@/utils/api/get-pages-url";
 import { Container } from "@material-ui/core/";
 import React from "react";
 // import React, { useEffect, useState } from "react";
@@ -29,17 +29,17 @@ const IndexPage: React.FC<Props> = (props) => {
 
 // サーバーサイドで実行される
 export const getStaticPaths = async () => {
-  const result = await getPagesUrl();
-  const paths = result.data.map(
-    (el: { postId: string; displayName: string }) => ({
-      params: {
-        post_id: el.postId,
-        user_name: el.displayName,
-      },
-    })
-  );
+  // const result = await getPagesUrl();
+  // const paths = result.data.map(
+  //   (el: { postId: string; displayName: string }) => ({
+  //     params: {
+  //       post_id: el.postId,
+  //       user_name: el.displayName,
+  //     },
+  //   })
+  // );
   return {
-    paths: paths,
+    paths: [],
     fallback: true,
   };
 };
