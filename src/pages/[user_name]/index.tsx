@@ -4,7 +4,6 @@
 import Layout from "@/layouts/standard";
 import { UserType } from "@/types/global";
 import { getUserContents } from "@/utils/api/get-user-contents";
-import { getUsers } from "@/utils/api/get-users";
 import { Container } from "@material-ui/core/";
 import React from "react";
 
@@ -52,20 +51,22 @@ const IndexPage: React.FC<Props> = (props) => {
 };
 
 export const getStaticPaths = async () => {
-  const result = await getUsers();
-  const paths = result.data.map((el: { displayName: string }) => ({
-    params: {
-      user_name: el.displayName,
-    },
-  }));
+  // const result = await getUsers();
+  // const paths = result.data.map((el: { displayName: string }) => ({
+  //   params: {
+  //     user_name: el.displayName,
+  //   },
+  // }));
   return {
-    paths: paths,
+    paths: [],
     fallback: true,
   };
 };
 
 export const getStaticProps = async (props: any) => {
   const userName = props.params.user_name;
+  console.log(userName);
+
   const result = await getUserContents({ userName: userName });
   return {
     props: {
