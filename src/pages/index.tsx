@@ -1,45 +1,37 @@
-import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
+import { TypoHeading2 } from '@/components/atoms/TypoHeading2'
 // import { CustomLoader } from "@/components/common/loader";
-import { FirstView } from "@/components/organisms/FirstView";
-import { Post } from "@/components/organisms/Post";
-import Layout from "@/layouts/standard";
-import { UserType } from "@/types/global";
-import { PostContentsProps } from "@/types/pages/top";
-import { getContents } from "@/utils/api/get-contents";
-import { Box, Container, Grid, Paper } from "@material-ui/core/";
-import React, { useCallback, useState } from "react";
+import { FirstView } from '@/components/organisms/FirstView'
+import { Post } from '@/components/organisms/Post'
+import Layout from '@/layouts/standard'
+import { UserType } from '@/types/global'
+import { PostContentsProps } from '@/types/global/'
+import { getContents } from '@/utils/api/get-contents'
+import { Box, Container, Grid } from '@material-ui/core/'
+import React, { useCallback, useState } from 'react'
 // import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
+import { v4 as uuidv4 } from 'uuid'
 
 type Props = {
-  authUser: any;
-  currentUser: null | UserType;
+  authUser: any
+  currentUser: null | UserType
   data: {
-    Count: number;
-    Items: PostContentsProps[];
-    ScannedCount: number;
-  };
-};
-
-const StyledPaper = styled(Paper)`
-  height: 100%;
-`;
+    Count: number
+    Items: PostContentsProps[]
+    ScannedCount: number
+  }
+}
 
 const IndexPage: React.FC<Props> = (props) => {
   const makePropertyForPostUrl = useCallback((list: PostContentsProps[]) => {
     return list.map((el: PostContentsProps) => {
-      const postId = el.sort_key.split("_").pop();
-      const displayName = el.user_profile.display_name;
-      el.postUrl = `${displayName}/post/${postId}`;
-      return el;
-    });
-  }, []);
-  const items = makePropertyForPostUrl(props.data.Items);
-  const [contents] = useState<PostContentsProps[]>(items);
-  // getPagesUrl().then((res) => {
-  //   console.log(res.data);
-  // });
+      const postId = el.sort_key.split('_').pop()
+      const displayName = el.user_profile.display_name
+      el.postUrl = `${displayName}/post/${postId}`
+      return el
+    })
+  }, [])
+  const items = makePropertyForPostUrl(props.data.Items)
+  const [contents] = useState<PostContentsProps[]>(items)
 
   // const [contents, setContents] = useState<any[]>(props.data.Items);
   // const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -77,17 +69,15 @@ const IndexPage: React.FC<Props> = (props) => {
             <Grid spacing={3} container>
               {contents.map((el) => (
                 <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                  <StyledPaper>
-                    <Post
-                      title={el.contents.title}
-                      postUrl={el.postUrl}
-                      iconPath={el.contents.target_icon.icon_path}
-                      name={el.user_profile.display_name}
-                      date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                      tagArray={el.contents.tag_list}
-                      userIcon={el.user_profile.icon_src}
-                    />
-                  </StyledPaper>
+                  <Post
+                    title={el.contents.title}
+                    postUrl={el.postUrl}
+                    iconPath={el.contents.target_icon.icon_path}
+                    name={el.user_profile.display_name}
+                    date={`${el.create_year}/${el.create_month}/${el.create_day}`}
+                    tagArray={el.contents.tag_list}
+                    userIcon={el.user_profile.icon_src}
+                  />
                 </Grid>
               ))}
             </Grid>
@@ -97,26 +87,26 @@ const IndexPage: React.FC<Props> = (props) => {
       {/* )} */}
     </Layout>
     // </>
-  );
-};
+  )
+}
 // サーバーサイドで実行される
 export const getStaticProps = async () => {
   // export const getServerSideProps = async () => {
   try {
-    const response = await getContents();
+    const response = await getContents()
     return {
       props: {
         data: response.data,
       },
       revalidate: 60,
-    };
+    }
   } catch (error) {
     return {
       props: {
         data: null,
       },
-    };
+    }
   }
-};
+}
 
-export default IndexPage;
+export default IndexPage
