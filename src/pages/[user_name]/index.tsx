@@ -1,23 +1,26 @@
-// import { ProfileArea } from "@/components/organisms/ProfileArea";
+import { ProfileArea } from "@/components/organisms/ProfileArea";
 // import { Reviews } from "@/components/organisms/Reviews";
-// import { SkilsArea } from "@/components/organisms/SkilsArea";
+import { SkilsArea } from "@/components/organisms/SkilsArea";
 import Layout from "@/layouts/standard";
 import { UserType } from "@/types/global";
 import { getUserContents } from "@/utils/api/get-user-contents";
 import { Container } from "@material-ui/core/";
+import Box from "@material-ui/core/Box";
 import React from "react";
 
 type Props = {
-  title: string;
+  // title: string;
+  authUser: any;
   currentUser: null | UserType;
+  data: any;
 };
 
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props);
-  // const userIcon = props.authUser.signInUserSession.idToken.payload.picture;
-  // const userId = props.authUser.username;
-  // const cognitoId = mypageData.cognitoId;
-  // const isMe = cognitoId === userId;
+  const userProfile = props.data.user.Items[0].user_profile;
+  const userId = props.data.user.Items[0].user_id;
+  const cognitoId = `user_${props.authUser.username}`;
+  const isMe = cognitoId === userId;
 
   return (
     <Layout
@@ -25,26 +28,25 @@ const IndexPage: React.FC<Props> = (props) => {
       currentUser={props.currentUser}
     >
       <Container>
-        hoge
-        {/* <Box mt={4}>
-        <Box mb={3}>
-          <ProfileArea
-            picture={userIcon}
-            position={mypageData.contents.position}
-            githubName={mypageData.contents.github_name}
-            twitterName={mypageData.contents.twitter_name}
-            webSite={mypageData.contents.web_site}
-            displayName={mypageData.contents.display_name}
-            isMe={isMe}
-          />
-        </Box>
-        <Box mb={3} component="section">
-          <SkilsArea skils={mypageData.contents.skils} />
-        </Box>
-        <Box mb={3} component="section">
+        <Box mt={4}>
+          <Box mb={3}>
+            <ProfileArea
+              picture={userProfile.icon_src}
+              position={userProfile.position_type}
+              githubName={userProfile.github_name}
+              twitterName={userProfile.twitter_name}
+              webSite={userProfile.web_site}
+              displayName={userProfile.display_name}
+              isMe={isMe}
+            />
+          </Box>
+          <Box mb={3} component="section">
+            <SkilsArea skils={[]} />
+          </Box>
+          {/* <Box mb={3} component="section">
           <Reviews user={props.authUser} mypageData={mypageData} isMe={isMe} />
+        </Box> */}
         </Box>
-      </Box> */}
       </Container>
     </Layout>
   );
@@ -65,8 +67,6 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (props: any) => {
   const userName = props.params.user_name;
-  console.log(userName);
-
   const result = await getUserContents({ userName: userName });
   return {
     props: {
