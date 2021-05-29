@@ -108,7 +108,7 @@ export const getServerSideProps = async () => {
       props: {
         data: response.data,
       },
-      revalidate: 60,
+      // revalidate: 60,
     };
   } catch (error) {
     return {
