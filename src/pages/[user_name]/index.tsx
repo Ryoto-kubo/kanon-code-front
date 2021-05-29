@@ -1,25 +1,25 @@
-import { ProfileArea } from "@/components/organisms/ProfileArea";
+import { ProfileArea } from '@/components/organisms/ProfileArea'
 // import { Reviews } from "@/components/organisms/Reviews";
-import { SkilsArea } from "@/components/organisms/SkilsArea";
-import Layout from "@/layouts/standard";
-import { UserType } from "@/types/global";
-import { getUserContents } from "@/utils/api/get-user-contents";
-import { Container } from "@material-ui/core/";
-import Box from "@material-ui/core/Box";
-import React from "react";
+import { SkilsArea } from '@/components/organisms/SkilsArea'
+import Layout from '@/layouts/standard'
+import { UserType } from '@/types/global'
+import { getUserContents } from '@/utils/api/get-user-contents'
+import { Container } from '@material-ui/core/'
+import Box from '@material-ui/core/Box'
+import React from 'react'
 
 type Props = {
-  authUser: any;
-  currentUser: null | UserType;
-  data: any;
-};
+  authUser: any
+  currentUser: null | UserType
+  data: any
+}
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
-  const userProfile = props.data.user.Items[0].user_profile;
-  const userId = props.data.user.Items[0].user_id;
-  const cognitoId = `user_${props.authUser.username}`;
-  const isMe = cognitoId === userId;
+  console.log(props)
+  const userProfile = props.data.user.user_profile
+  const userId = props.data.user.user_id
+  const cognitoId = props.authUser ? `user_${props.authUser.username}` : null
+  const isMe = cognitoId === userId
 
   return (
     <Layout
@@ -36,11 +36,12 @@ const IndexPage: React.FC<Props> = (props) => {
               twitterName={userProfile.twitter_name}
               webSite={userProfile.web_site}
               displayName={userProfile.display_name}
+              cognitoId={cognitoId}
               isMe={isMe}
             />
           </Box>
           <Box mb={3} component="section">
-            <SkilsArea skils={[]} />
+            <SkilsArea skils={userProfile.skils} />
           </Box>
           {/* <Box mb={3} component="section">
           <Reviews user={props.authUser} mypageData={mypageData} isMe={isMe} />
@@ -48,8 +49,8 @@ const IndexPage: React.FC<Props> = (props) => {
         </Box>
       </Container>
     </Layout>
-  );
-};
+  )
+}
 
 export const getStaticPaths = async () => {
   // const result = await getUsers();
@@ -61,41 +62,20 @@ export const getStaticPaths = async () => {
   return {
     paths: [],
     fallback: true,
-  };
-};
+  }
+}
 
 export const getStaticProps = async (props: any) => {
-  const userName = props.params.user_name;
-  const result = await getUserContents({ userName: userName });
+  const userName = props.params.user_name
+  console.log(userName)
+
+  const result = await getUserContents({ userName: userName })
   return {
     props: {
       data: result.data,
     },
     revalidate: 60,
-  };
-};
+  }
+}
 
-// export const getServerSideProps = async (context: any) => {
-//   const userName = context.params.user_name;
-//   const result = await getUserContents({ userName: userName });
-//   return {
-//     props: {
-//       data: result.data,
-//     },
-//   };
-// };
-// IndexPage.getInitialProps = async ({ query }) => {
-//   console.log(query);
-
-//   const userName = query.user_name;
-//   console.log(userName);
-
-//   const result = await getUserContents({ userName: userName });
-//   return {
-//     props: {
-//       data: result.data,
-//     },
-//   };
-// };
-
-export default IndexPage;
+export default IndexPage
