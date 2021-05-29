@@ -15,6 +15,7 @@ type Props = {
   twitterName: string;
   webSite: string;
   displayName: string;
+  cognitoId: null | string;
   isMe: boolean;
 };
 
@@ -105,16 +106,16 @@ export const ProfileArea: React.FC<Props> = (props) => {
             <StyledBoxUserName>{props.displayName}</StyledBoxUserName>
           </StyledBoxFlexDirection>
         </StyledBoxUserDescription>
-        {props.isMe && (
-          <SolidLink href="/settings/profile" borderRadius={50}>
-            プロフィールを編集
-          </SolidLink>
-        )}
-        {!props.isMe && (
-          <SolidLinkSecondary href="/settings/profile" borderRadius={50}>
-            レビューリクエスト
-          </SolidLinkSecondary>
-        )}
+        {props.cognitoId &&
+          (props.isMe ? (
+            <SolidLink href="/settings/profile" borderRadius={50}>
+              プロフィールを編集
+            </SolidLink>
+          ) : (
+            <SolidLinkSecondary href="/settings/profile" borderRadius={50}>
+              レビューリクエスト
+            </SolidLinkSecondary>
+          ))}
       </StyledBoxUserProfile>
     </StyledBoxProfileArea>
   );
