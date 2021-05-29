@@ -75,8 +75,19 @@ const IndexPage: React.FC<Props> = (props) => {
 //   };
 // };
 
-export const getServerSideProps = async (context: any) => {
+// export const getServerSideProps = async (context: any) => {
+//   const userName = context.params.user_name;
+//   const result = await getUserContents({ userName: userName });
+//   return {
+//     props: {
+//       data: result.data,
+//     },
+//   };
+// };
+export const getInitialProps = async (context: any) => {
   const userName = context.params.user_name;
+  console.log(context.params);
+
   const result = await getUserContents({ userName: userName });
   return {
     props: {
