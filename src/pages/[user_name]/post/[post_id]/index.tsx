@@ -29,19 +29,19 @@ const IndexPage: React.FC<Props> = (props) => {
 
 // サーバーサイドで実行される
 export const getStaticPaths = async () => {
-// const result = await getPagesUrl();
-// const paths = result.data.map(
-//   (el: { postId: string; displayName: string }) => ({
-//     params: {
-//       post_id: el.postId,
-//       user_name: el.displayName,
-//     },
-//   })
-// );
-return {
-  paths: [],
-  fallback: true,
-};
+  // const result = await getPagesUrl();
+  // const paths = result.data.map(
+  //   (el: { postId: string; displayName: string }) => ({
+  //     params: {
+  //       post_id: el.postId,
+  //       user_name: el.displayName,
+  //     },
+  //   })
+  // );
+  return {
+    paths: [],
+    fallback: true,
+  };
 };
 
 export const getStaticProps = async (props: any) => {
@@ -53,7 +53,6 @@ export const getStaticProps = async (props: any) => {
     },
   };
 };
-
 
 // paramsには上記pathsで指定した値が入る（1postずつ）
 // export const getInitialProps = async (context: any) => {
@@ -74,6 +73,5 @@ export const getStaticProps = async (props: any) => {
 //     },
 //   };
 // };
-
 
 export default IndexPage;
