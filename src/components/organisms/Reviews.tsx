@@ -14,6 +14,19 @@ type Props = {
   isMe: boolean
 }
 
+const StyledTabs = styled(Tabs)`
+  border-bottom: 1px solid #e8e8e8;
+  margin-top: 16px;
+`
+const StyledTab = styled(Tab)`
+  min-width: 100px;
+  font-size: 15px;
+  font-weight: bold;
+  &:hover {
+    color: #202020;
+  }
+`
+
 const TabPanel = (props: {
   value: number
   index: number
@@ -32,7 +45,14 @@ const TabPanel = (props: {
     </div>
   )
 }
-
+const makePropertyForPostUrl = (posts: PostContentsProps[]) => {
+  return posts.map((el: PostContentsProps) => {
+    const postId = el.sort_key.split('_').pop()
+    const displayName = el.user_profile.display_name
+    el.postUrl = `${displayName}/post/${postId}`
+    return el
+  })
+}
 const splitPostsByPostStatus = (posts: PostContentsProps[]) => {
   let acceptPosts = []
   let reviewedPosts = []
@@ -41,9 +61,6 @@ const splitPostsByPostStatus = (posts: PostContentsProps[]) => {
   const REVIEWED = 1
   const PAYMENTED = 2
   for (const item of posts) {
-    const postId = item.sort_key.split('_').pop()
-    const displayName = item.user_profile.display_name
-    item.postUrl = `${displayName}/post/${postId}`
     switch (item.post_status) {
       case ACCEPTING:
         acceptPosts.push(item)
@@ -62,18 +79,6 @@ const splitPostsByPostStatus = (posts: PostContentsProps[]) => {
     paymentedPosts,
   }
 }
-const StyledTabs = styled(Tabs)`
-  border-bottom: 1px solid #e8e8e8;
-  margin-top: 16px;
-`
-const StyledTab = styled(Tab)`
-  min-width: 100px;
-  font-size: 15px;
-  font-weight: bold;
-  &:hover {
-    color: #202020;
-  }
-`
 
 export const Reviews: React.FC<Props> = (props) => {
   const [value, setValue] = React.useState(0)
@@ -81,8 +86,9 @@ export const Reviews: React.FC<Props> = (props) => {
     event.preventDefault()
     setValue(newValue)
   }
+  const items = makePropertyForPostUrl(props.posts)
   const { acceptPosts, reviewedPosts, paymentedPosts } = splitPostsByPostStatus(
-    props.posts,
+    items,
   )
 
   return (
