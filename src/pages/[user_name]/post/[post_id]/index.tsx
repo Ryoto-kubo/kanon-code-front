@@ -45,16 +45,7 @@ const IndexPage: React.FC<Props> = (props) => {
 // };
 
 // paramsには上記pathsで指定した値が入る（1postずつ）
-export const getInitialProps = async (context: any) => {
-  const postId = context.params.post_id;
-  const result = await getContent({ postId: postId });
-  return {
-    props: {
-      data: result.data.Items[0],
-    },
-  };
-};
-// export const getServerSideProps = async (context: any) => {
+// export const getInitialProps = async (context: any) => {
 //   const postId = context.params.post_id;
 //   const result = await getContent({ postId: postId });
 //   return {
@@ -63,6 +54,15 @@ export const getInitialProps = async (context: any) => {
 //     },
 //   };
 // };
+export const getServerSideProps = async (context: any) => {
+  const postId = context.params.post_id;
+  const result = await getContent({ postId: postId });
+  return {
+    props: {
+      data: result.data.Items[0],
+    },
+  };
+};
 
 // export const getStaticProps = async (props: any) => {
 //   const postId = props.params.post_id;

@@ -7,7 +7,5 @@ type ParamsType = {
 };
 
 export const getUserContents = async (params: ParamsType) => {
-  console.log(params, "params");
-
   return await axios.get(apis.USERS_CONTENTS, { params });
 };
