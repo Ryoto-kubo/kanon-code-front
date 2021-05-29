@@ -28,7 +28,7 @@ const IndexPage: React.FC<Props> = (props) => {
 };
 
 // サーバーサイドで実行される
-// export const getStaticPaths = async () => {
+export const getStaticPaths = async () => {
 // const result = await getPagesUrl();
 // const paths = result.data.map(
 //   (el: { postId: string; displayName: string }) => ({
@@ -38,11 +38,22 @@ const IndexPage: React.FC<Props> = (props) => {
 //     },
 //   })
 // );
-// return {
-//   paths: [],
-//   fallback: true,
-// };
-// };
+return {
+  paths: [],
+  fallback: true,
+};
+};
+
+export const getStaticProps = async (props: any) => {
+  const postId = props.params.post_id;
+  const result = await getContent({ postId: postId });
+  return {
+    props: {
+      data: result.data.Items[0],
+    },
+  };
+};
+
 
 // paramsには上記pathsで指定した値が入る（1postずつ）
 // export const getInitialProps = async (context: any) => {
@@ -54,18 +65,8 @@ const IndexPage: React.FC<Props> = (props) => {
 //     },
 //   };
 // };
-export const getServerSideProps = async (context: any) => {
-  const postId = context.params.post_id;
-  const result = await getContent({ postId: postId });
-  return {
-    props: {
-      data: result.data.Items[0],
-    },
-  };
-};
-
-// export const getStaticProps = async (props: any) => {
-//   const postId = props.params.post_id;
+// export const getServerSideProps = async (context: any) => {
+//   const postId = context.params.post_id;
 //   const result = await getContent({ postId: postId });
 //   return {
 //     props: {
@@ -73,5 +74,6 @@ export const getServerSideProps = async (context: any) => {
 //     },
 //   };
 // };
+
 
 export default IndexPage;

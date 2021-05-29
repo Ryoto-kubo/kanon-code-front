@@ -51,39 +51,39 @@ const IndexPage: React.FC<Props> = (props) => {
   );
 };
 
-// export const getStaticPaths = async () => {
-//   // const result = await getUsers();
-//   // const paths = result.data.map((el: { displayName: string }) => ({
-//   //   params: {
-//   //     user_name: el.displayName,
-//   //   },
-//   // }));
-//   return {
-//     paths: [],
-//     fallback: true,
-//   };
-// };
+export const getStaticPaths = async () => {
+  // const result = await getUsers();
+  // const paths = result.data.map((el: { displayName: string }) => ({
+  //   params: {
+  //     user_name: el.displayName,
+  //   },
+  // }));
+  return {
+    paths: [],
+    fallback: true,
+  };
+};
 
-// export const getStaticProps = async (props: any) => {
-//   const userName = props.params.user_name;
-//   const result = await getUserContents({ userName: userName });
-//   return {
-//     props: {
-//       data: result.data,
-//     },
-//     revalidate: 60,
-//   };
-// };
-
-export const getServerSideProps = async (context: any) => {
-  const userName = context.params.user_name;
+export const getStaticProps = async (props: any) => {
+  const userName = props.params.user_name;
   const result = await getUserContents({ userName: userName });
   return {
     props: {
       data: result.data,
     },
+    revalidate: 60,
   };
 };
+
+// export const getServerSideProps = async (context: any) => {
+//   const userName = context.params.user_name;
+//   const result = await getUserContents({ userName: userName });
+//   return {
+//     props: {
+//       data: result.data,
+//     },
+//   };
+// };
 // IndexPage.getInitialProps = async ({ query }) => {
 //   console.log(query);
 
