@@ -55,7 +55,7 @@ export const SkilsArea: React.FC<Props> = (props) => {
   };
   return (
     <>
-      <CustomHeading2 fontSize={24} marginBottom={1}>
+      <CustomHeading2 fontSize={20} marginBottom={1}>
         スキル一覧
       </CustomHeading2>
       <StyledBoxSkilsArea>
