@@ -1,4 +1,5 @@
 import { CloseButton } from '@/components/molecules/CloseButton'
+import { SUGGEST_LIST } from '@/consts/suggest-list'
 import Box from '@material-ui/core/Box'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
@@ -10,14 +11,14 @@ import PropTypes from 'prop-types'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
-type Suggest = {
-  id: number
-  value: string
-  is_deleted: number
-}
+// type Suggest = {
+//   id: number
+//   value: string
+//   is_deleted: number
+// }
 type Props = {
   changeTagList: any
-  suggestList: Suggest[]
+  // suggestList?: any[]
 }
 const Tag = (props: any) => {
   const { label, onDelete, ...other } = props
@@ -137,7 +138,7 @@ const StyledListbox = styled(List)(
 
 export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
   const [tagValue, setTagValue] = useState('')
-  const suggestWordList = props.suggestList.map((el) => el.value)
+  const suggestWordList = SUGGEST_LIST.map((el) => el.value)
   const MAX_LENGTH = 10
   const MAX_TAGS_LENGTH = 5
   const {
@@ -153,7 +154,7 @@ export const InputTagWrapper: React.FC<Props> = React.memo((props) => {
   } = useAutocomplete({
     id: 'tags',
     multiple: true,
-    options: suggestWordList,
+    options: suggestWordList.sort(),
     freeSolo: true,
     inputValue: tagValue,
     // defaultValue: ["hoge", "foo"],

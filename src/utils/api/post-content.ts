@@ -18,7 +18,10 @@ type ParamsType = {
   contents: {
     title: string
     tagList: string[]
-    description: string
+    description: {
+      value: string
+      bodyHtml: string
+    }
     inputFileNameLists: {
       key: string
       fileName: string

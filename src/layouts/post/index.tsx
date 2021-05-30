@@ -1,7 +1,7 @@
 import { TheFooter } from '@/components/common/footer/index'
 import { CommonHead } from '@/components/common/head/index'
 import { ThePostHeader } from '@/components/common/header/post'
-import { UserType } from '@/consts/type'
+import { UserType } from '@/types/global'
 import { Toolbar } from '@material-ui/core'
 import Box from '@material-ui/core/Box'
 import { useRouter } from 'next/router'
@@ -16,7 +16,7 @@ type Props = {
   children: ReactNode
   title: string
   currentUser: null | UserType
-  registerContent: () => void
+  prepareValidRegister: () => void
   draftContent: () => void
   previousPage: () => void
   updateButtonText: (value: ButtonText) => void
@@ -31,7 +31,7 @@ const LayoutPost = ({
   children,
   title,
   currentUser,
-  registerContent,
+  prepareValidRegister,
   draftContent,
   previousPage,
   updateButtonText,
@@ -47,7 +47,7 @@ const LayoutPost = ({
     <>
       <CommonHead title={title} />
       <ThePostHeader
-        registerContent={registerContent}
+        prepareValidRegister={prepareValidRegister}
         draftContent={draftContent}
         previousPage={previousPage}
         updateButtonText={updateButtonText}

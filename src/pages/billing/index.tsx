@@ -1,20 +1,20 @@
-import { CustomSolidButton } from '@/components/atoms/SolidButton'
-import { SettingForm } from '@/components/organisms/SettingForm'
-import { UserType } from '@/consts/type'
-import { SettingLayout } from '@/layouts/setting-form'
-import Box from '@material-ui/core/Box'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import { fade } from '@material-ui/core/styles'
-import { CardElement, Elements } from '@stripe/react-stripe-js'
-import { loadStripe } from '@stripe/stripe-js'
-import React from 'react'
-import styled from 'styled-components'
+import { CustomSolidButton } from "@/components/atoms/SolidButton";
+import { SettingForm } from "@/components/organisms/SettingForm";
+import { SettingLayout } from "@/layouts/setting-form";
+import { UserType } from "@/types/global";
+import Box from "@material-ui/core/Box";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
+import { fade } from "@material-ui/core/styles";
+import { CardElement, Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
+import React from "react";
+import styled from "styled-components";
 
 type Props = {
-  title: string
-  currentUser: null | UserType
-}
+  title: string;
+  currentUser: null | UserType;
+};
 
 // const StyledBoxBgPrimary = styled(Box)(
 //   ({ theme }) => `
@@ -29,22 +29,22 @@ const StyledBox = styled(Box)(
     max-width: 600px;
     padding: 16px;
     background: ${fade(theme.palette.primary.main, 0.1)};
-  `,
-)
+  `
+);
 const StyledBoxBgColorWhite = styled(Box)`
   background: #ffffff;
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 16px;
-`
+`;
 
 const IndexPage: React.FC<Props> = (props) => {
-  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
-  const stripe = loadStripe(stripeKey)
+  const stripeKey = process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string;
+  const stripe = loadStripe(stripeKey);
   const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-    console.log(event)
-  }
+    event.preventDefault();
+    console.log(event);
+  };
 
   return (
     <SettingLayout
@@ -68,15 +68,15 @@ const IndexPage: React.FC<Props> = (props) => {
                   options={{
                     style: {
                       base: {
-                        fontSize: '16px',
-                        color: '#424770',
-                        '::placeholder': {
-                          color: '#aab7c4',
+                        fontSize: "16px",
+                        color: "#424770",
+                        "::placeholder": {
+                          color: "#aab7c4",
                         },
-                        backgroundColor: '#ffffff',
+                        backgroundColor: "#ffffff",
                       },
                       invalid: {
-                        color: '#EA4335',
+                        color: "#EA4335",
                       },
                     },
                   }}
@@ -103,7 +103,7 @@ const IndexPage: React.FC<Props> = (props) => {
         </Box>
       </SettingForm>
     </SettingLayout>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;

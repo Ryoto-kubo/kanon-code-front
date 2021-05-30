@@ -1,5 +1,4 @@
 import { CustomSnackbar } from '@/components/atoms/CustomSnackbar'
-import { CustomLoader } from '@/components/common/loader/'
 import { LinkGithubButton } from '@/components/molecules/LinkGithubButton'
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox'
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
@@ -8,17 +7,19 @@ import { PostSettingDialog } from '@/components/parts/PostSettingDialog'
 import * as CONSTS from '@/consts/const'
 import { errorMessages, validMessages } from '@/consts/error-messages'
 import { targetLanguages } from '@/consts/target-languages'
-import { UserType } from '@/consts/type'
 import LayoutPost from '@/layouts/post'
+import { UserType } from '@/types/global'
 import { postContent } from '@/utils/api/post-content'
 import * as S3 from '@/utils/api/s3'
-import { getSuggestProgrammingLanguages } from '@/utils/api/suggest-programming-languages'
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
 import Container from '@material-ui/core/Container'
+import 'highlight.js/scss/vs2015.scss'
+// import "highlight.js/scss/monokai-sublime.scss";
+import marked from 'marked'
 import dynamic from 'next/dynamic'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 import { v4 as uuidv4 } from 'uuid'
 import './style.scss'
@@ -28,10 +29,9 @@ type Props = {
   currentUser: null | UserType
 }
 type ProgrammingIcon = {
-  id: string
-  text: string
-  listIconComponent: JSX.Element
-  iconComponent: JSX.Element
+  id: number
+  value: string
+  iconPath: string
 }
 type ButtonText = Readonly<
   '投稿設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
@@ -39,11 +39,6 @@ type ButtonText = Readonly<
 type ValidObject = {
   isValid: boolean
   message: string
-}
-type Suggest = {
-  id: number
-  value: string
-  is_deleted: number
 }
 
 const Editor = dynamic(
@@ -85,7 +80,6 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `
 
 const IndexPage: React.FC<Props> = (props) => {
-  const err = new Error()
   const userId = props.currentUser!.user_id
   const userProfile = props.currentUser!.user_profile
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
@@ -97,22 +91,21 @@ const IndexPage: React.FC<Props> = (props) => {
   const [title, setTitle] = useState('')
   const [tagList, setTagList] = useState<string[]>([])
   const [description, setDescription] = useState('')
-  const [sourceCode, setSourceCode] = useState('')
+  const [sourceCode, setSourceCode] = useState('```\n\n```')
   const [inputFileNameLists, setInputFileNameLists] = useState([
     {
       key: uuidv4(),
       fileName: '',
-      sourceCode: '',
+      sourceCode: '```\n\n```',
       bodyHtml: '',
       isValid: true,
     },
   ])
   const [targetLanguageValue, setTargetLanguageValue] = useState(0)
   const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
-    id: '',
-    text: '',
-    iconComponent: <></>,
-    listIconComponent: <></>,
+    id: 0,
+    value: '',
+    iconPath: '',
   })
   const [activeStep, setActiveStep] = useState(0)
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -137,27 +130,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
     ValidObject
   >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE))
-  const [suggestList, setSuggestList] = useState<Suggest[]>()
-  const [isFetch, setIsFetch] = useState(true)
   const [uuid] = useState(uuidv4())
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await getSuggestProgrammingLanguages()
-        if (response.status !== 200) throw err
-        setSuggestList(response.data.Items)
-        setIsFetch(false)
-      } catch {
-        console.error(err)
-        alert(errorMessages.SYSTEM_ERROR)
-      }
-    })()
-  }, [])
-  // window.onbeforeunload = (e: any) => {
-  //   e.returnValue = 'このページを離れてもよろしいですか？'
-  //   const isValidExistData = validExistData()
-  //   execPreviousPageIfneeded(isValidExistData)
-  // }
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
     if (isValidExistData && !isPosted) {
@@ -193,8 +166,13 @@ const IndexPage: React.FC<Props> = (props) => {
       contents: {
         title: title,
         tagList: tagList,
-        description: description,
+        description: {
+          value: description,
+          bodyHtml: marked(description),
+        },
         inputFileNameLists: inputFileNameLists,
+        targetLanguage: targetLanguageValue,
+        targetIcon: programmingIcon,
       },
     }
   }
@@ -210,7 +188,7 @@ const IndexPage: React.FC<Props> = (props) => {
       {
         key: uuidv4(),
         fileName: '',
-        sourceCode: '',
+        sourceCode: '```\n\n```',
         bodyHtml: '',
         isValid: true,
       },
@@ -259,7 +237,7 @@ const IndexPage: React.FC<Props> = (props) => {
     },
     [sourceCode, inputFileNameLists],
   )
-  const registerContent = useCallback(() => {
+  const prepareValidRegister = useCallback(() => {
     if (!isValidTitleObject.isValid) {
       updateCanPublish(false, isValidTitleObject.message)
       return
@@ -283,6 +261,21 @@ const IndexPage: React.FC<Props> = (props) => {
     initCanPublish()
     setIsOpenDialog(true)
   }, [title, tagList, description, inputFileNameLists])
+  const registerContent = async () => {
+    if (programmingIcon.value === '') {
+      updateCanPublish(false, 'アイコンを選択してください')
+      return
+    }
+    const err = new Error()
+    const params = createParams('regist')
+    try {
+      const result = await postContent(params)
+      if (result.status !== 200) throw err
+    } catch {
+      console.error(err)
+      alert(errorMessages.SYSTEM_ERROR)
+    }
+  }
   const draftContent = useCallback(async () => {
     if (!isValidTitleObject.isValid) {
       updateCanPublish(false, isValidTitleObject.message)
@@ -299,15 +292,16 @@ const IndexPage: React.FC<Props> = (props) => {
     const isValidFalseIncluded = validFalseIncluded()
     if (isValidFalseIncluded) return
     const err = new Error()
+    const params = createParams('draft')
     updateButtonText('保存中...')
     try {
-      const params = createParams('draft')
       const result = await postContent(params)
       if (result.status !== 200) throw err
       setIsPosted(true)
       updateButtonText('保存済み ✔︎')
-    } catch (error) {
-      console.error(error)
+    } catch {
+      console.error(err)
+      alert(errorMessages.SYSTEM_ERROR)
     }
   }, [title, description, inputFileNameLists])
   const changeTitle = useCallback(
@@ -415,7 +409,12 @@ const IndexPage: React.FC<Props> = (props) => {
       }
       setSourceCode(value)
       updateIsValidSourceCode(isValidMaxLength)
-      updateInputFileNameLists('sourceCode', value, currentIndex)
+      // updateInputFileNameLists("sourceCode", value, currentIndex);
+      // console.log(marked(value));
+      // console.log('fin');
+      updateSourceCodeAndBodyHtml(value, currentIndex)
+
+      // await updateInputFileNameLists("bodyHtml", marked(value), currentIndex);
     },
     [sourceCode, inputFileNameLists],
   )
@@ -437,6 +436,17 @@ const IndexPage: React.FC<Props> = (props) => {
     },
     [sourceCode, inputFileNameLists],
   )
+  const updateSourceCodeAndBodyHtml = (value: any, index: number) => {
+    const currentItem = inputFileNameLists[index]
+    const newFileItem = {
+      ...currentItem,
+      sourceCode: value,
+      bodyHtml: marked(value),
+    }
+    const newInputFileNameLists = inputFileNameLists.slice()
+    newInputFileNameLists[index] = newFileItem
+    setInputFileNameLists(newInputFileNameLists)
+  }
   const updateInputFileNameLists = (key: string, value: any, index: number) => {
     const currentItem = inputFileNameLists[index]
     const newFileItem = { ...currentItem, [key]: value }
@@ -468,6 +478,8 @@ const IndexPage: React.FC<Props> = (props) => {
   )
   const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value)
+    console.log(value, 'selectTargetLanguage')
+
     setTargetLanguageValue(value)
   }
   const selectProgrammingIcon = (
@@ -479,17 +491,15 @@ const IndexPage: React.FC<Props> = (props) => {
     setProgrammingIcon({
       ...programmingIcon,
       id: selectObject.id,
-      text: selectObject.text,
-      iconComponent: selectObject.iconComponent,
+      value: selectObject.value,
+      iconPath: selectObject.iconPath,
     })
   }
-  return isFetch ? (
-    <CustomLoader />
-  ) : (
+  return (
     <LayoutPost
       title="Kanon Code | レビュー依頼"
       currentUser={props.currentUser}
-      registerContent={registerContent}
+      prepareValidRegister={prepareValidRegister}
       draftContent={draftContent}
       previousPage={previousPage}
       updateButtonText={updateButtonText}
@@ -507,12 +517,13 @@ const IndexPage: React.FC<Props> = (props) => {
           <Box mb={3} className="tag-list-wrapper">
             <InputTagWrapper
               changeTagList={changeTagList}
-              suggestList={suggestList!}
+              // suggestList={suggestList!}
             />
           </Box>
           <Box mb={5} className="description-wrapper">
             <Editor
               id="editor"
+              name="Description"
               headerText="Description"
               onChange={changeDescritption}
               changeActiveStep={changeActiveStep}
@@ -559,6 +570,7 @@ const IndexPage: React.FC<Props> = (props) => {
               <StyledBoxCordEditorWrapper>
                 <Editor
                   id="cord-editor"
+                  name="SourceCode"
                   headerText="Source Code"
                   onChange={changeSourceCode}
                   changeActiveStep={changeActiveStep}

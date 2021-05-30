@@ -1,36 +1,54 @@
-import { PostFooter } from "@/components/molecules/PostFooter";
-import { PostHeader } from "@/components/molecules/PostHeader";
-import { IconReact } from "@/components/svg/programing/IconReact";
-import { Box } from "@material-ui/core/";
-import React from "react";
-import styled from "styled-components";
+import { PostFooter } from '@/components/molecules/PostFooter'
+import { PostHeader } from '@/components/molecules/PostHeader'
+import { Box } from '@material-ui/core/'
+import Paper from '@material-ui/core/Paper'
+import React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  name: string;
-  date: string;
-  title: string;
-  tagArray: Array<string>;
+  title: string
+  postUrl: string
+  iconPath: string
+  name: string
+  date: string
+  tagArray: Array<string>
+  userIcon: string
 }
 
+const StyledPaper = styled(Paper)`
+  height: 100%;
+`
 const StyledMaxWidthdiv = styled(Box)`
   min-height: 175px;
-  padding: 8px;
-`;
+  padding: 16px;
+`
 
 export const Post: React.FC<Props> = (props) => {
+  console.log(props, 'post')
+
   return (
-    <StyledMaxWidthdiv
-      display="flex"
-      alignItems="center"
-      justifyContent="space-around"
-    >
-      <Box mr={2}>
-        <IconReact width={50} height={50} />
-      </Box>
-      <Box>
-        <PostHeader title={props.title} tagArray={props.tagArray} />
-        <PostFooter name={props.name} date={props.date} />
-      </Box>
-    </StyledMaxWidthdiv>
-  );
-};
+    <StyledPaper>
+      <StyledMaxWidthdiv display="flex" alignItems="center">
+        <Box mr={2} flexShrink={0}>
+          <img
+            width={'50px'}
+            height={'50px'}
+            src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.iconPath}`}
+          />
+        </Box>
+        <Box>
+          <PostHeader
+            title={props.title}
+            postUrl={props.postUrl}
+            tagArray={props.tagArray}
+          />
+          <PostFooter
+            name={props.name}
+            date={props.date}
+            userIcon={props.userIcon}
+          />
+        </Box>
+      </StyledMaxWidthdiv>
+    </StyledPaper>
+  )
+}

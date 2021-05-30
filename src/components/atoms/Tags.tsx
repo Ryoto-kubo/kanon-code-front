@@ -1,4 +1,5 @@
 import theme from "@/styles/theme";
+import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
@@ -18,17 +19,36 @@ const StyledSpan = styled.span<
   word-break: break-all;
 `;
 
+const StyledAnchor = styled(`a`)`
+  color: ${theme.palette.primary.main};
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
 export const Tags: React.FC<Props> = (props) => {
   let list = [];
   for (const index in props.tagArray) {
     list.push(
-      <StyledSpan
+      <Link
         key={index}
-        fontSize={props.fontSize}
-        marginRight={props.marginRight}
+        href={{
+          pathname: "/search",
+          query: { keyword: props.tagArray[index] },
+        }}
+        passHref
       >
-        #{props.tagArray[index]}
-      </StyledSpan>
+        <StyledAnchor>
+          <StyledSpan
+            key={index}
+            fontSize={props.fontSize}
+            marginRight={props.marginRight}
+          >
+            #{props.tagArray[index]}
+          </StyledSpan>
+        </StyledAnchor>
+      </Link>
     );
   }
   return <>{list}</>;

@@ -12,6 +12,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
+  name: string
   switchPreview: (event: React.MouseEvent<HTMLButtonElement>) => void
   insertCodeMde: (event: React.MouseEvent<HTMLButtonElement>) => void
   insertLinkMde: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -85,8 +86,13 @@ const StyledInputLabel = styled(InputLabel)`
 `
 
 export const EditorButtons: React.FC<Props> = React.memo((props) => {
-  const { switchPreview, insertCodeMde, insertLinkMde, insertImageMde } = props
-
+  const {
+    name,
+    switchPreview,
+    insertCodeMde,
+    insertLinkMde,
+    insertImageMde,
+  } = props
   const TooltipWrapper = (props: TooltipProps) => {
     return (
       <Tooltip title={props.title} arrow>
@@ -123,46 +129,50 @@ export const EditorButtons: React.FC<Props> = React.memo((props) => {
           </StyledBoxCircle>
         </StyledIconButton>
       </TooltipWrapper>
-      <TooltipWrapper title="Link">
-        <StyledIconButton
-          disableFocusRipple
-          disableRipple
-          onClick={insertLinkMde}
-        >
-          <StyledBoxCircle>
-            <StyledBoxCenter>
-              <LinkIcon />
-            </StyledBoxCenter>
-          </StyledBoxCircle>
-        </StyledIconButton>
-      </TooltipWrapper>
-      <TooltipWrapper title="Image">
-        {props.isUploading ? (
-          <StyledBoxCircle>
-            <StyledBoxCenter>
-              <CustomLoader width={25} height={25} />
-            </StyledBoxCenter>
-          </StyledBoxCircle>
-        ) : (
-          <StyledInputLabel htmlFor="insert-img-mde">
-            <TextField
-              id="insert-img-mde"
-              type="file"
-              style={{ display: 'none' }}
-              inputProps={{
-                accept: 'image/png, image/jpeg, image/gif',
-                multiple: true,
-              }}
-              onChange={insertImageMde}
-            />
+      {name === 'Description' && (
+        <TooltipWrapper title="Link">
+          <StyledIconButton
+            disableFocusRipple
+            disableRipple
+            onClick={insertLinkMde}
+          >
             <StyledBoxCircle>
               <StyledBoxCenter>
-                <PanoramaOutlinedIcon />
+                <LinkIcon />
               </StyledBoxCenter>
             </StyledBoxCircle>
-          </StyledInputLabel>
-        )}
-      </TooltipWrapper>
+          </StyledIconButton>
+        </TooltipWrapper>
+      )}
+      {name === 'Description' && (
+        <TooltipWrapper title="Image">
+          {props.isUploading ? (
+            <StyledBoxCircle>
+              <StyledBoxCenter>
+                <CustomLoader width={25} height={25} />
+              </StyledBoxCenter>
+            </StyledBoxCircle>
+          ) : (
+            <StyledInputLabel htmlFor="insert-img-mde">
+              <TextField
+                id="insert-img-mde"
+                type="file"
+                style={{ display: 'none' }}
+                inputProps={{
+                  accept: 'image/png, image/jpeg, image/gif',
+                  multiple: true,
+                }}
+                onChange={insertImageMde}
+              />
+              <StyledBoxCircle>
+                <StyledBoxCenter>
+                  <PanoramaOutlinedIcon />
+                </StyledBoxCenter>
+              </StyledBoxCircle>
+            </StyledInputLabel>
+          )}
+        </TooltipWrapper>
+      )}
     </StyledBox>
   )
 })
