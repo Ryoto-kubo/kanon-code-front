@@ -164,9 +164,10 @@ export const Editor: React.FC<Props> = React.memo((props) => {
       try {
         const compressedFile = await prepareImageBeforePost.compressionImage();
         if (!compressedFile) throw err;
-        const response = await getPreSignedUrl(newFileName);
-        if (response.status !== 200) throw err;
-        const presignedUrl = response.data.presignedUrl;
+        const response = await getPreSignedUrl(newFileName)
+        const result = response.data
+        if (!result.status) throw err
+        const presignedUrl = result.presignedUrl
         await props.uploadImageToS3(presignedUrl, compressedFile);
         executeInsertDrawImage(instance, newFileName);
         moveCursor(instance, 1);
