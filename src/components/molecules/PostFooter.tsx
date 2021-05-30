@@ -1,15 +1,15 @@
-import { CircleElement } from "@/components/atoms/Circle";
-import { ParagraphText } from "@/components/atoms/ParagraphText";
-import theme from "@/styles/theme";
-import { Box } from "@material-ui/core/";
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import { CircleElement } from '@/components/atoms/Circle'
+import { ParagraphText } from '@/components/atoms/ParagraphText'
+import theme from '@/styles/theme'
+import { Box } from '@material-ui/core/'
+import Link from 'next/link'
+import React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  name: string;
-  date: string;
-  userIcon: string;
+  name: string
+  date: string
+  userIcon: string
 }
 
 const StyledAnchor = styled(`a`)`
@@ -18,14 +18,17 @@ const StyledAnchor = styled(`a`)`
   &:hover {
     text-decoration: underline;
   }
-`;
+`
 export const PostFooter: React.FC<Props> = (props) => {
   return (
     <Box display="flex" alignItems="center">
       <CircleElement>
         <Link href={props.name} passHref>
           <a>
-            <img src={props.userIcon} style={{ borderRadius: "50px" }} />
+            <img
+              src={props.userIcon}
+              style={{ borderRadius: '50px', width: '50px', height: '50px' }}
+            />
           </a>
         </Link>
       </CircleElement>
@@ -42,5 +45,5 @@ export const PostFooter: React.FC<Props> = (props) => {
         </ParagraphText>
       </Box>
     </Box>
-  );
-};
+  )
+}

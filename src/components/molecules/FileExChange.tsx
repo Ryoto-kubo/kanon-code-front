@@ -10,6 +10,7 @@ import styled from 'styled-components'
 type Props = {
   htmlFor: string
   picture: string
+  changeIcon: (event: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 const useStyles = makeStyles(() => ({
@@ -44,6 +45,7 @@ export const FileExChange: React.FC<Props> = (props) => {
         name={props.htmlFor}
         type="file"
         style={{ display: 'none' }}
+        onChange={props.changeIcon}
       />
       <Box>
         <Box mb={1}>

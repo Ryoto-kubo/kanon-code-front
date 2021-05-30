@@ -81,7 +81,11 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             currentUser={currentUser}
           >
             <CustomNprogress />
-            <Component {...pageProps} authUser={authUser} />
+            <Component
+              {...pageProps}
+              authUser={authUser}
+              currentUser={currentUser}
+            />
           </SettingLayout>
         )
       case 'Layout':
