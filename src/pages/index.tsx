@@ -98,7 +98,7 @@ const IndexPage: React.FC<Props> = (props) => {
         <Box component="section" mb={5}>
           {frontPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>
-              <TypoHeading2 color="initial">フロント言語</TypoHeading2>
+              <TypoHeading2 color="initial">Front-end</TypoHeading2>
             </StyledBoxWidthBorder>
           )}
           <Box mb={4}>
@@ -122,7 +122,7 @@ const IndexPage: React.FC<Props> = (props) => {
         <Box component="section" mb={5}>
           {backPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>
-              <TypoHeading2 color="initial">バック言語</TypoHeading2>
+              <TypoHeading2 color="initial">Back-end</TypoHeading2>
             </StyledBoxWidthBorder>
           )}
           <Box mb={4}>
@@ -146,7 +146,7 @@ const IndexPage: React.FC<Props> = (props) => {
         <Box component="section" mb={5}>
           {otherPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>
-              <TypoHeading2 color="initial">その他の言語</TypoHeading2>
+              <TypoHeading2 color="initial">Other</TypoHeading2>
             </StyledBoxWidthBorder>
           )}
           <Box mb={4}>
