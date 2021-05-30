@@ -1,36 +1,18 @@
-// import { CustomSolidButton } from "@/components/atoms/SolidButton";
+import { CustomLoader } from '@/components/common/loader'
 import { ContentHeader } from '@/components/molecules/ContentHeader'
 import { FileExChange } from '@/components/molecules/FileExChange'
 import { ProfileContentFile } from '@/components/molecules/ProfileContentFile'
 import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
-// import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
 import { ContentWrapper } from '@/components/organisms/ContentWrapper'
 import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext'
-// import { positions } from "@/consts/select-options";
-// import { SettingLayout } from "@/layouts/setting";
-// import Box from "@material-ui/core/Box";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import { CognitoUser } from '@aws-amplify/auth'
-import React, { useState } from 'react'
-
-// import styled from "styled-components";
+import { UserProfileProps } from '@/types/pages/settings/profile'
+import { getUser } from '@/utils/api/get-user'
+import React, { useEffect, useState } from 'react'
 
 type Props = {
   title: string
   authUser: any
 }
-
-// const StyledBoxFlex = styled(Box)`
-//   ${(props) => props.theme.breakpoints.up("sm")} {
-//     display: flex;
-//     justify-content: space-between;
-//   }
-// `;
-// const StyledBoxCalcWidth = styled(Box)`
-//   ${(props) => props.theme.breakpoints.up("sm")} {
-//     width: calc(100% - 150px);
-//   }
-// `;
 
 export const getServerSideProps = async () => ({
   props: {
@@ -41,65 +23,29 @@ export const getServerSideProps = async () => ({
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [settingParams, setSettingParams] = useState({
-    name: 'ryoto kubo',
-    introduction: `フロントエンドエンジニアです。主にNuxtやNextを触っています。
-    個人開発大好きエンジニアです。よろしくお願いします！`,
-    price: '',
-    position: '',
-    githubName: '',
-    twitterName: '',
-    webSite: '',
-  })
-  console.log(setSettingParams)
+  const [isLoading, setIsLoading] = useState(true)
+  const [profile, setProfile] = useState<UserProfileProps>()
+  useEffect(() => {
+    const err = new Error()
+    ;(async () => {
+      const params = {
+        userId: props.authUser.username,
+      }
+      try {
+        const response = await getUser(params)
+        const result = response.data
+        if (!result.status) throw (err.message = result.status_message)
+        setProfile(result.Item.user_profile)
+        setIsLoading(false)
+      } catch (error) {
+        alert(error)
+      }
+    })()
+  }, [])
 
-  const userInfo =
-    props.authUser !== null
-      ? props.authUser.signInUserSession.idToken.payload
-      : 'null'
-  // const open = Boolean(anchorEl);
-  // const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-  // const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, name: e.target.value });
-  // };
-  // const changeIntroduction = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, introduction: e.target.value });
-  // };
-  // const changePosition = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, position: Number(e.target.value) });
-  // };
-  // const changeprice = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, price: Number(e.target.value) });
-  // };
-  // const changeGithubName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, githubName: e.target.value });
-  // };
-  // const changeTwitterName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, twitterName: e.target.value });
-  // };
-  // const changeWebSite = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, webSite: e.target.value });
-  // };
-  // const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  //   console.log(settingParams);
-  // };
-
-  // const renderOptions = (): JSX.Element[] => {
-  //   return positions.map((option) => (
-  //     <MenuItem key={option.value} value={option.value}>
-  //       {option.label}
-  //     </MenuItem>
-  //   ));
-  // };
-
-  return (
+  return isLoading ? (
+    <CustomLoader width={40} height={40} />
+  ) : (
     <section>
       <ContentWrapper>
         <ContentHeader
@@ -114,11 +60,11 @@ const IndexPage: React.FC<Props> = (props) => {
           isDivider={false}
           htmlFor="avatar"
         >
-          <FileExChange htmlFor="avatar" picture={userInfo.picture} />
+          <FileExChange htmlFor="avatar" picture={profile!.icon_src} />
         </ProfileContentFile>
         <ProfileContentLink
           label="名前"
-          value={settingParams.name}
+          value={profile!.display_name}
           isDivider={true}
           href="/"
         >
@@ -126,7 +72,7 @@ const IndexPage: React.FC<Props> = (props) => {
         </ProfileContentLink>
         <ProfileContentLink
           label="紹介文"
-          value={settingParams.introduction}
+          value={profile!.introduction}
           isDivider={true}
           href="/"
         >
@@ -135,7 +81,7 @@ const IndexPage: React.FC<Props> = (props) => {
 
         <ProfileContentLink
           label="ポジション"
-          value={settingParams.position}
+          value={profile!.position_type}
           isDivider={true}
           href="/"
         >
@@ -144,7 +90,7 @@ const IndexPage: React.FC<Props> = (props) => {
 
         <ProfileContentLink
           label="100文字あたりの設定金額"
-          value={settingParams.price}
+          value={profile!.price}
           isDivider={true}
           href="/"
         >
@@ -153,7 +99,7 @@ const IndexPage: React.FC<Props> = (props) => {
 
         <ProfileContentLink
           label="Githubユーザーネーム"
-          value={settingParams.githubName}
+          value={profile!.github_name}
           isDivider={true}
           href="/"
         >
@@ -162,7 +108,7 @@ const IndexPage: React.FC<Props> = (props) => {
 
         <ProfileContentLink
           label="Twitterユーザーネーム"
-          value={settingParams.twitterName}
+          value={profile!.twitter_name}
           isDivider={true}
           href="/"
         >
@@ -171,38 +117,13 @@ const IndexPage: React.FC<Props> = (props) => {
 
         <ProfileContentLink
           label="webサイト"
-          value={settingParams.webSite}
+          value={profile!.web_site}
           isDivider={true}
           href="/"
         >
           <IconArrowNext fontSize="large" color="action" />
         </ProfileContentLink>
       </ContentWrapper>
-      {/* <StyledBoxFlex>
-        <FileExChange htmlFor="avatar" picture={userInfo.picture} />
-        <StyledBoxCalcWidth mb={5}>
-          <SettingProfileFields
-            settingParams={settingParams}
-            renderOptions={renderOptions()}
-            onChangeName={changeName}
-            onChangeIntroduction={changeIntroduction}
-            onChangePosition={changePosition}
-            onChangeprice={changeprice}
-            onChangeGithubName={changeGithubName}
-            onChangeTwitterName={changeTwitterName}
-            onChangeWebSite={changeWebSite}
-            handleMenu={handleMenu}
-            handleClose={handleClose}
-            anchorEl={anchorEl}
-            open={open}
-          />
-          <Box textAlign="center">
-            <CustomSolidButton sizing="medium" onClick={update}>
-              更新する
-            </CustomSolidButton>
-          </Box>
-        </StyledBoxCalcWidth>
-      </StyledBoxFlex> */}
     </section>
   )
 }
