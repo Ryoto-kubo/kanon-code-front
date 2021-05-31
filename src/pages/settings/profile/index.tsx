@@ -107,7 +107,6 @@ const IndexPage: React.FC<Props> = (props) => {
       if (!result.status) throw (err.message = result.status_message)
       const userProfile = props.currentUser!.user_profile
       userProfile.icon_src = newIconSrc
-      console.log(newIconSrc, 'newIconSrc')
       setProfile({
         ...profile,
         icon_src: newIconSrc,
