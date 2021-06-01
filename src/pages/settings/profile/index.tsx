@@ -197,7 +197,7 @@ const IndexPage: React.FC<Props> = (props) => {
             label="名前"
             value={profile!.display_name}
             isDivider={true}
-            href="/"
+            href="/name"
           >
             <IconArrowNext fontSize="large" color="action" />
           </ProfileContentLink>
@@ -262,9 +262,6 @@ const IndexPage: React.FC<Props> = (props) => {
       >
         <Box fontWeight="bold">{canPublish.message}</Box>
       </CustomSnackbar>
-      {/* <Snackbar>
-
-        </Snackbar> */}
     </SettingLayout>
   );
 };
