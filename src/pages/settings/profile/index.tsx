@@ -35,7 +35,7 @@ const IndexPage: React.FC<Props> = (props) => {
   // const [isLoading, setIsLoading] = useState(true);
   const [userId] = useState(props.authUser.username);
   const [user, setUser] = useState<UserType | null>(props.currentUser);
-  const [_, setProfile] = useState<UserProfileProps>({
+  const [test, setProfile] = useState<UserProfileProps>({
     display_name: "",
     github_name: "",
     icon_src: "",
@@ -57,7 +57,7 @@ const IndexPage: React.FC<Props> = (props) => {
   // setProfile(data?.data.Item.user_profile);
   // setIsLoading(isValidating);
   const isLoading = isValidating;
-  console.log(data);
+  console.log(test);
 
   // useEffect(() => {
   //   const err = new Error()
