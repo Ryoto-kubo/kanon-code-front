@@ -1,5 +1,5 @@
 import { EditorButtons } from "@/components/organisms/EditorButtons";
-import { errorMessages } from "@/consts/error-messages.ts";
+import { errorMessages, validMessages } from "@/consts/error-messages.ts";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
 import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 import Box from "@material-ui/core/Box";
@@ -30,6 +30,7 @@ type Props = {
   value: string;
   activeStep: number;
   isValid: boolean;
+  updateCanPublish: (isValid: boolean, message?: any) => void;
   uploadImageToS3: (presignedUrl: string, image: any) => void;
   MAX_LENGTH: number;
   currentIndex?: number;
@@ -103,10 +104,19 @@ export const Editor: React.FC<Props> = React.memo((props) => {
       props.changeActiveStep(SHOW_PREVIEW);
     }
   };
-  const validImageSizeAndExtention = (instance: PrepareImageBeforePost) => {
-    const isValidImageSize = instance.validImageSize();
+  const validFileExtentionAndFileSize = (instance: PrepareImageBeforePost) => {
     const isValidFileExtention = instance.validImageExtention();
-    return isValidImageSize && isValidFileExtention;
+    if (!isValidFileExtention) {
+      props.updateCanPublish(false, validMessages.NOT_ACCEPT_FILE_EXTENTION);
+      return false;
+    }
+    const isValidImageSize = instance.validImageSize();
+    if (!isValidImageSize) {
+      props.updateCanPublish(false, validMessages.OVER_FILE_SIZE);
+      return false;
+    }
+
+    return isValidFileExtention && isValidFileExtention;
   };
   const getCurrentCursorPosition = (editorInstance: EasyMDE) => {
     const cursorPositions = editorInstance.codemirror.getCursor();
@@ -158,16 +168,16 @@ export const Editor: React.FC<Props> = React.memo((props) => {
     const files = event.target.files!;
     for (const file of Object.values(files)) {
       const prepareImageBeforePost = new PrepareImageBeforePost(file);
-      const isValid = validImageSizeAndExtention(prepareImageBeforePost);
+      const isValid = validFileExtentionAndFileSize(prepareImageBeforePost);
       if (!isValid) continue;
       const newFileName = prepareImageBeforePost.createNewFileName();
       try {
         const compressedFile = await prepareImageBeforePost.compressionImage();
         if (!compressedFile) throw err;
-        const response = await getPreSignedUrl(newFileName)
-        const result = response.data
-        if (!result.status) throw err
-        const presignedUrl = result.presignedUrl
+        const response = await getPreSignedUrl(newFileName);
+        const result = response.data;
+        if (!result.status) throw err;
+        const presignedUrl = result.presignedUrl;
         await props.uploadImageToS3(presignedUrl, compressedFile);
         executeInsertDrawImage(instance, newFileName);
         moveCursor(instance, 1);

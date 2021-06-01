@@ -14,3 +14,5 @@ console.log(process.env.NEXT_PUBLIC_API_URL);
 export const axios = baseAxios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
+
+// https://ryotarch.com/javascript/react/swr-axios-typescript/
