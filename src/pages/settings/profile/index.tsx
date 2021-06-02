@@ -10,11 +10,10 @@ import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting/";
-import { UserType } from "@/types/global";
-import { UserProfileProps } from "@/types/pages/settings/profile";
+import { UserProfileProps, UserType } from "@/types/global";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
 import { getUser } from "@/utils/api/get-user";
-import { postUserIcon } from "@/utils/api/post-user-icon";
+import { postUserProfile } from "@/utils/api/post-user-profile";
 import * as S3 from "@/utils/api/s3";
 import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 import Box from "@material-ui/core/Box";
@@ -130,27 +129,28 @@ const IndexPage: React.FC<Props> = (props) => {
         const presignedUrl = result.presignedUrl;
         await S3.uploadImageToS3(presignedUrl, compressedFile);
         const newIconSrc = `${process.env.NEXT_PUBLIC_BUCKET_URL}upload/${newFileName}`;
-        updateIcon(newIconSrc);
+        updateProfile(newIconSrc);
       } catch (error) {
         console.error(error);
         alert(errorMessages.SYSTEM_ERROR);
+        setIsUploading(false);
       }
     },
     []
   );
 
-  const updateIcon = async (newIconSrc: string) => {
+  const updateProfile = async (newIconSrc: string) => {
     const err = new Error();
+    const userProfile = props.currentUser!.user_profile;
+    userProfile.icon_src = newIconSrc;
     const params = {
       userId: userId,
-      iconSrc: newIconSrc,
+      userProfile: userProfile,
     };
     try {
-      const response = await postUserIcon(params);
+      const response = await postUserProfile(params);
       const result = response.data;
       if (!result.status) throw (err.message = result.status_message);
-      const userProfile = props.currentUser!.user_profile;
-      userProfile.icon_src = newIconSrc;
       setProfile({
         ...profile,
         icon_src: newIconSrc,
@@ -166,102 +166,104 @@ const IndexPage: React.FC<Props> = (props) => {
     }
   };
 
-  return isLoading ? (
+  return (
     <SettingLayout title={`Kanon Code | プロフィール`} currentUser={user}>
-      <CustomLoader width={40} height={40} />
-    </SettingLayout>
-  ) : (
-    <SettingLayout title={`Kanon Code | プロフィール`} currentUser={user}>
-      <section>
-        <ContentWrapper>
-          <ContentHeader
-            title="プロフィール"
-            description="Kanon Codeを利用する全てのユーザーに公開されます。"
-            fontSize={20}
-            marginBottom={1}
-          />
-          <ProfileContentFile
-            label="アイコン"
-            description="写真を追加することでアカウントをカスタマイズできます"
-            isDivider={false}
-            htmlFor="avatar"
-          >
-            <FileExChange
-              htmlFor="avatar"
-              picture={profile!.icon_src}
-              changeIcon={changeIcon}
-              isUploading={isUploading}
-            />
-          </ProfileContentFile>
-          <ProfileContentLink
-            label="名前"
-            value={profile!.display_name}
-            isDivider={true}
-            href="/name"
-          >
-            <IconArrowNext fontSize="large" color="action" />
-          </ProfileContentLink>
-          <ProfileContentLink
-            label="紹介文"
-            value={profile!.introduction}
-            isDivider={true}
-            href="/"
-          >
-            <IconArrowNext fontSize="large" color="action" />
-          </ProfileContentLink>
+      {isLoading ? (
+        <CustomLoader width={40} height={40} />
+      ) : (
+        <>
+          <section>
+            <ContentWrapper>
+              <ContentHeader
+                title="プロフィール"
+                description="Kanon Codeを利用する全てのユーザーに公開されます。"
+                fontSize={20}
+                marginBottom={1}
+              />
+              <ProfileContentFile
+                label="アイコン"
+                description="写真を追加することでアカウントをカスタマイズできます"
+                isDivider={false}
+                htmlFor="avatar"
+              >
+                <FileExChange
+                  htmlFor="avatar"
+                  picture={profile!.icon_src}
+                  changeIcon={changeIcon}
+                  isUploading={isUploading}
+                />
+              </ProfileContentFile>
+              <ProfileContentLink
+                label="名前"
+                value={profile!.display_name}
+                isDivider={true}
+                href="/name"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
+              <ProfileContentLink
+                label="紹介文"
+                value={profile!.introduction}
+                isDivider={true}
+                href="/"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-          <ProfileContentLink
-            label="ポジション"
-            value={profile!.position_type}
-            isDivider={true}
-            href="/"
-          >
-            <IconArrowNext fontSize="large" color="action" />
-          </ProfileContentLink>
+              <ProfileContentLink
+                label="ポジション"
+                value={profile!.position_type}
+                isDivider={true}
+                href="/"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-          <ProfileContentLink
-            label="100文字あたりの設定金額"
-            value={profile!.price}
-            isDivider={true}
-            href="/"
-          >
-            <IconArrowNext fontSize="large" color="action" />
-          </ProfileContentLink>
+              <ProfileContentLink
+                label="100文字あたりの設定金額"
+                value={profile!.price}
+                isDivider={true}
+                href="/"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-          <ProfileContentLink
-            label="Githubユーザーネーム"
-            value={profile!.github_name}
-            isDivider={true}
-            href="/"
-          >
-            <IconArrowNext fontSize="large" color="action" />
-          </ProfileContentLink>
+              <ProfileContentLink
+                label="Githubユーザーネーム"
+                value={profile!.github_name}
+                isDivider={true}
+                href="/"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-          <ProfileContentLink
-            label="Twitterユーザーネーム"
-            value={profile!.twitter_name}
-            isDivider={true}
-            href="/"
-          >
-            <IconArrowNext fontSize="large" color="action" />
-          </ProfileContentLink>
+              <ProfileContentLink
+                label="Twitterユーザーネーム"
+                value={profile!.twitter_name}
+                isDivider={true}
+                href="/"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-          <ProfileContentLink
-            label="webサイト"
-            value={profile!.web_site}
-            isDivider={true}
-            href="/"
+              <ProfileContentLink
+                label="webサイト"
+                value={profile!.web_site}
+                isDivider={true}
+                href="/"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
+            </ContentWrapper>
+          </section>
+          <CustomSnackbar
+            isOpen={!canPublish.isValid}
+            closeSnackBar={closeSnackBar}
           >
-            <IconArrowNext fontSize="large" color="action" />
-          </ProfileContentLink>
-        </ContentWrapper>
-      </section>
-      <CustomSnackbar
-        isOpen={!canPublish.isValid}
-        closeSnackBar={closeSnackBar}
-      >
-        <Box fontWeight="bold">{canPublish.message}</Box>
-      </CustomSnackbar>
+            <Box fontWeight="bold">{canPublish.message}</Box>
+          </CustomSnackbar>
+        </>
+      )}
     </SettingLayout>
   );
 };

@@ -10,6 +10,7 @@ import LayoutRegister from "@/layouts/register";
 import theme from "@/styles/theme";
 import { getUser } from "@/utils/api/get-user";
 import { axios } from "@/utils/axios";
+import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
@@ -115,24 +116,13 @@ const IndexPage: React.FC<Props> = (props) => {
     setIsValidName(true);
     setIsValidText("");
   };
-  const validMaxLength = (valueLength: number): boolean => {
-    return valueLength <= MAX_NAME_LENGTH;
-  };
-  const validSingleByte = (value: string): boolean => {
-    const reg = new RegExp(/^[a-zA-Z0-9_]+$/);
-    return reg.test(value);
-  };
-  const validFirstAndLastChara = (value: string): boolean => {
-    const reg = new RegExp(/_/);
-    const firstChara = value.slice(0, 1);
-    const lastChara = value.slice(-1);
-    // 文字列の最初と最後どちらかに(_)を含んでいたらfalseを返す
-    return !reg.test(firstChara) && !reg.test(lastChara);
-  };
   const validName = (value: string): boolean => {
-    const isValidMaxLength = validMaxLength(value.length);
-    const isValidFirstAndLastChara = validFirstAndLastChara(value);
-    const isValidSingleByte = validSingleByte(value);
+    const isValidMaxLength = UserProfile.validMaxLength(
+      value.length,
+      MAX_NAME_LENGTH
+    );
+    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value);
+    const isValidSingleByte = UserProfile.validSingleByte(value);
     if (!isValidMaxLength) {
       setIsValidName(false);
       setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`);
