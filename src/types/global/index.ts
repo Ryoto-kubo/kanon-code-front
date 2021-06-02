@@ -1,25 +1,15 @@
 export type UserType = {
-  create_day: number
-  create_month: number
-  create_year: number
-  display_name: string
-  is_payment: boolean
-  partition_key: string
-  sort_key: string
-  type: string
-  user_id: string
-  user_profile: {
-    display_name: string
-    github_name: string
-    icon_src: string
-    introduction: string
-    position_type: number
-    skils: []
-    price: number
-    twitter_name: string
-    web_site: string
-  }
-}
+  create_day: number;
+  create_month: number;
+  create_year: number;
+  display_name: string;
+  is_payment: boolean;
+  partition_key: string;
+  sort_key: string;
+  type: string;
+  user_id: string;
+  user_profile: UserProfileProps;
+};
 
 export type PostContentsProps = {
   update_day: number;
@@ -52,19 +42,22 @@ export type PostContentsProps = {
   post_type: string;
   post_status: number;
   update_year: number;
-  user_profile: {
-    twitter_name: string;
-    github_name: string;
-    price: number;
-    icon_src: string;
-    display_name: string;
-    position_type: number;
-    introduction: string;
-    web_site: string;
-  };
+  user_profile: UserProfileProps;
   create_year: number;
   create_day: number;
   create_month: number;
   type: string;
   [key: string]: any;
+};
+
+export type UserProfileProps = {
+  display_name: string;
+  github_name: string;
+  icon_src: string;
+  introduction: string;
+  position_type: number;
+  price: number;
+  skils: [];
+  twitter_name: string;
+  web_site: string;
 };
