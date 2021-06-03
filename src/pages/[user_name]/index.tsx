@@ -1,30 +1,30 @@
-import { ProfileArea } from '@/components/organisms/ProfileArea'
-import { Reviews } from '@/components/organisms/Reviews'
-import { SkilsArea } from '@/components/organisms/SkilsArea'
-import Layout from '@/layouts/standard'
-import { UserType } from '@/types/global'
-import { PostContentsProps } from '@/types/global/index'
-import { getUserContents } from '@/utils/api/get-user-contents'
-import { Container } from '@material-ui/core/'
-import Box from '@material-ui/core/Box'
-import { GetStaticPropsContext } from 'next'
-import React from 'react'
+import { ProfileArea } from "@/components/organisms/ProfileArea";
+import { Reviews } from "@/components/organisms/Reviews";
+import { SkilsArea } from "@/components/organisms/SkilsArea";
+import Layout from "@/layouts/standard";
+import { UserType } from "@/types/global";
+import { PostContentsProps } from "@/types/global/index";
+import { getUserContents } from "@/utils/api/get-user-contents";
+import { Container } from "@material-ui/core/";
+import Box from "@material-ui/core/Box";
+import { GetStaticPropsContext } from "next";
+import React from "react";
 
 type Props = {
-  authUser: any
-  currentUser: null | UserType
+  authUser: any;
+  currentUser: null | UserType;
   data: {
-    user: UserType
-    posts: PostContentsProps[]
-  }
-}
+    user: UserType;
+    posts: PostContentsProps[];
+  };
+};
 
 const IndexPage: React.FC<Props> = (props) => {
-  const userProfile = props.data.user.user_profile
-  const displayName = userProfile.display_name
-  const userId = props.data.user.user_id
-  const cognitoId = props.authUser ? `user_${props.authUser.username}` : null
-  const isMe = cognitoId === userId
+  const userProfile = props.data.user.user_profile;
+  const displayName = userProfile.display_name;
+  const userId = props.data.user.user_id;
+  const cognitoId = props.authUser ? `user_${props.authUser.username}` : null;
+  const isMe = cognitoId === userId;
 
   return (
     <Layout
@@ -58,8 +58,8 @@ const IndexPage: React.FC<Props> = (props) => {
         </Box>
       </Container>
     </Layout>
-  )
-}
+  );
+};
 
 export const getStaticPaths = async () => {
   // const result = await getUsers();
@@ -70,19 +70,19 @@ export const getStaticPaths = async () => {
   // }));
   return {
     paths: [],
-    fallback: true,
-  }
-}
+    fallback: false,
+  };
+};
 
 export const getStaticProps = async (context: GetStaticPropsContext) => {
-  const userName = context.params?.user_name as string
-  const result = await getUserContents({ userName: userName })
+  const userName = context.params?.user_name as string;
+  const result = await getUserContents({ userName: userName });
   return {
     props: {
       data: result.data,
     },
     revalidate: 60,
-  }
-}
+  };
+};
 
-export default IndexPage
+export default IndexPage;
