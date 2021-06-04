@@ -19,4 +19,9 @@ export class UserProfile {
   static validAllowNumber(value: number, ALLOW_LIST: number[]): boolean {
     return ALLOW_LIST.includes(value);
   }
+
+  static validOnlytSingleByteNumber(value: string): boolean {
+    const reg = new RegExp(/^[0-9]+$/);
+    return reg.test(value);
+  }
 }

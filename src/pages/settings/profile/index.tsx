@@ -229,7 +229,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="100文字あたりの設定金額"
                 value={profile!.price}
                 isDivider={true}
-                href="/"
+                href="/price"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>

@@ -1,5 +1,6 @@
 export const MAX_TITLE_LENGTH = 32;
 export const MAX_TAGS_LENGTH = 5;
+export const MAX_PRICE_LENGTH = 5;
 export const MAX_NAME_LENGTH = 15;
 export const MAX_INTRODUCTION_LENGTH = 300;
 export const MAX_DESCRIPTION_LENGTH = 1500;

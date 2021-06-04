@@ -30,6 +30,7 @@ export const validMessages = {
   REQUIRED_SOURCE_CODE: "ソースコードを入力してください",
   ONLY_SINGLEBYTE_AND_UNDERSCORE:
     "半角英数字とアンダースコア（_）のみ使用できます",
+  ONLY_SINGLEBYTE_NUMBER: "半角数字で入力してください",
   NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA:
     "最初と最後にアンダースコア（_）を使うことはできません",
   NOT_ACCEPT_FILE_EXTENTION: "JPEG、PNG、GIF画像のみをアップロードできます",
@@ -38,4 +39,5 @@ export const validMessages = {
   OVER_LENGTH_DESCRIPION: `デスクリプションは${CONSTS.MAX_DESCRIPTION_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.MAX_FILE_NAME_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.MAX_SOURCE_CODE_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_PRICE: `${CONSTS.MAX_PRICE_LENGTH}桁以下の数値を入力してください`,
 };
