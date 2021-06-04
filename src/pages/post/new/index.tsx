@@ -281,11 +281,11 @@ const IndexPage: React.FC<Props> = (props) => {
       updateCanPublish(false, isValidTitleObject.message);
       return;
     }
-    if (!(description.length <= CONSTS.DESCRIPTION_MAX_LENGTH)) {
+    if (!(description.length <= CONSTS.MAX_DESCRIPTION_LENGTH)) {
       updateCanPublish(false, validMessages.OVER_LENGTH_DESCRIPION);
       return;
     }
-    if (!(sourceCode.length <= CONSTS.SOURCE_CODE_MAX_LENGTH)) {
+    if (!(sourceCode.length <= CONSTS.MAX_SOURCE_CODE_LENGTH)) {
       updateCanPublish(false, validMessages.OVER_LENGTH_SOURCE_CODE);
       return;
     }
@@ -313,7 +313,7 @@ const IndexPage: React.FC<Props> = (props) => {
         isValidTitleObject
       );
       const isValidMaxLength = prepareContentBeforePost.validLength(
-        CONSTS.TITLE_MAX_LENGTH,
+        CONSTS.MAX_TITLE_LENGTH,
         validMessages.OVER_LENGTH_TITLE
       );
       if (!isValidMaxLength) return;
@@ -329,7 +329,7 @@ const IndexPage: React.FC<Props> = (props) => {
   );
   const changeTagList = useCallback(
     (values: string[]): void => {
-      if (values.length > CONSTS.TAGS_MAX_LENGTH) return;
+      if (values.length > CONSTS.MAX_TAGS_LENGTH) return;
       const prepareContentBeforePost = new PrepareContentBeforePost(
         values,
         setIsValidTagsObject,
@@ -353,7 +353,7 @@ const IndexPage: React.FC<Props> = (props) => {
         isValidDescriptionObject
       );
       const isValidMaxLength = prepareContentBeforePost.validLength(
-        CONSTS.DESCRIPTION_MAX_LENGTH,
+        CONSTS.MAX_DESCRIPTION_LENGTH,
         validMessages.OVER_LENGTH_DESCRIPION
       );
       const isExist = prepareContentBeforePost.validEmpty(
@@ -375,7 +375,7 @@ const IndexPage: React.FC<Props> = (props) => {
         isValidFileNameObject
       );
       const isValidMaxLength = prepareContentBeforePost.validLength(
-        CONSTS.FILE_NAME_MAX_LENGTH,
+        CONSTS.MAX_FILE_NAME_LENGTH,
         validMessages.OVER_LENGTH_FILE_NAME
       );
       if (!isValidMaxLength) return;
@@ -398,7 +398,7 @@ const IndexPage: React.FC<Props> = (props) => {
         isValidSourceCodeObject
       );
       const isValidMaxLength = prepareContentBeforePost.validLength(
-        CONSTS.SOURCE_CODE_MAX_LENGTH,
+        CONSTS.MAX_SOURCE_CODE_LENGTH,
         validMessages.OVER_LENGTH_SOURCE_CODE
       );
       const isExist = prepareContentBeforePost.validEmpty(
@@ -529,10 +529,10 @@ const IndexPage: React.FC<Props> = (props) => {
               changeActiveStep={changeActiveStep}
               value={description}
               activeStep={activeStep}
-              isValid={validLength(description, CONSTS.DESCRIPTION_MAX_LENGTH)}
+              isValid={validLength(description, CONSTS.MAX_DESCRIPTION_LENGTH)}
               updateCanPublish={updateCanPublish}
               uploadImageToS3={S3.uploadImageToS3}
-              MAX_LENGTH={CONSTS.DESCRIPTION_MAX_LENGTH}
+              MAX_LENGTH={CONSTS.MAX_DESCRIPTION_LENGTH}
             />
           </Box>
           <Box mb={3} className="source-code-wrapper">
@@ -579,14 +579,14 @@ const IndexPage: React.FC<Props> = (props) => {
                   activeStep={activeStep}
                   isValid={validLength(
                     sourceCode,
-                    CONSTS.DESCRIPTION_MAX_LENGTH
+                    CONSTS.MAX_DESCRIPTION_LENGTH
                   )}
                   updateCanPublish={updateCanPublish}
                   uploadImageToS3={S3.uploadImageToS3}
                   currentIndex={currentIndex}
                   handleTabChange={handleTabChange}
                   inputFileNameLists={inputFileNameLists}
-                  MAX_LENGTH={CONSTS.SOURCE_CODE_MAX_LENGTH}
+                  MAX_LENGTH={CONSTS.MAX_SOURCE_CODE_LENGTH}
                 />
               </StyledBoxCordEditorWrapper>
             </StyledBoxFlex>

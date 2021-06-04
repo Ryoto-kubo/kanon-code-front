@@ -20,6 +20,7 @@ export const errorMessages = {
     "システムエラーが発生しました。しばらく時間をおいてやり直してください。",
   EXISTED_NAME: "既に使用されている名前です。",
   IMAGE_COMPRESSION_ERROR: "画像の圧縮に失敗しました",
+  INVAILD_VALUE: "不正な値です",
 };
 export const validMessages = {
   REQUIRED_TITLE: "タイトルを入力してください",
@@ -33,8 +34,8 @@ export const validMessages = {
     "最初と最後にアンダースコア（_）を使うことはできません",
   NOT_ACCEPT_FILE_EXTENTION: "JPEG、PNG、GIF画像のみをアップロードできます",
   OVER_FILE_SIZE: "10MB以下の画像を選択してください",
-  OVER_LENGTH_TITLE: `タイトルは${CONSTS.TITLE_MAX_LENGTH}文字以下で入力してください`,
-  OVER_LENGTH_DESCRIPION: `デスクリプションは${CONSTS.DESCRIPTION_MAX_LENGTH}文字以下で入力してください`,
-  OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.FILE_NAME_MAX_LENGTH}文字以下で入力してください`,
-  OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.SOURCE_CODE_MAX_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_TITLE: `タイトルは${CONSTS.MAX_TITLE_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_DESCRIPION: `デスクリプションは${CONSTS.MAX_DESCRIPTION_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.MAX_FILE_NAME_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.MAX_SOURCE_CODE_LENGTH}文字以下で入力してください`,
 };

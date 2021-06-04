@@ -4,16 +4,15 @@ import { CustomLoader } from "@/components/common/loader";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
-import { errorMessages, validMessages } from "@/consts/error-messages";
+import { errorMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting-form";
-import theme from "@/styles/theme";
+// import theme from "@/styles/theme";
 import { UserProfileProps, UserType } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
-import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -34,14 +33,6 @@ const StyledBoxTextFieldWrapper = styled(Box)`
     width: 70%;
   }
 `;
-const StyledPUrlWrapper = styled("div")`
-  margin: auto;
-  margin-bottom: 8px;
-  text-align: left;
-  width: 100%;
-  padding: 2px;
-  border-bottom: 2px solid ${theme.palette.primary.main};
-`;
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
@@ -51,7 +42,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [userId] = useState(props.authUser.username);
-  const [isValidName, setIsValidName] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState<boolean>(true);
   const [profile, setProfile] = useState<UserProfileProps>({
     display_name: "",
     github_name: "",
@@ -63,8 +54,7 @@ const IndexPage: React.FC<Props> = (props) => {
     twitter_name: "",
     web_site: "",
   });
-  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
-  const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
+  const MAX_INTRODUCTION_LENGTH = CONSTS.MAX_INTRODUCTION_LENGTH;
 
   useEffect(() => {
     const err = new Error();
@@ -86,12 +76,12 @@ const IndexPage: React.FC<Props> = (props) => {
   }, []);
 
   const resetValid = () => {
-    setIsValidName(true);
+    setIsValid(true);
     setIsValidText("");
   };
 
   const updateProfile = async () => {
-    const isValid = validName(profile.display_name);
+    const isValid = validIntroduction(profile.introduction);
     if (!isValid) return;
     setIsOpen(true);
     setIsDidabled(true);
@@ -126,9 +116,9 @@ const IndexPage: React.FC<Props> = (props) => {
   //   setIsOpen(false);
   // };
 
-  const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changeIntroduction = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    const isValid = validName(value);
+    const isValid = validIntroduction(value);
     if (isValid) {
       setIsDidabled(false);
       resetValid();
@@ -136,41 +126,29 @@ const IndexPage: React.FC<Props> = (props) => {
       if (value === "") resetValid();
       setIsDidabled(true);
     }
-    setProfile({ ...profile, display_name: value });
+    setProfile({ ...profile, introduction: value });
   };
 
-  const validName = (value: string): boolean => {
+  const validIntroduction = (value: string): boolean => {
     const isValidMaxLength = UserProfile.validMaxLength(
       value.length,
-      MAX_NAME_LENGTH
+      MAX_INTRODUCTION_LENGTH
     );
-    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value);
-    const isValidSingleByte = UserProfile.validSingleByte(value);
     if (!isValidMaxLength) {
-      setIsValidName(false);
-      setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`);
-      return isValidMaxLength;
+      setIsValid(false);
+      setIsValidText(`${MAX_INTRODUCTION_LENGTH}文字以下で入力してください`);
+      return false;
     }
-    if (!isValidFirstAndLastChara) {
-      setIsValidName(false);
-      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA);
-      return isValidFirstAndLastChara;
-    }
-    if (!isValidSingleByte) {
-      setIsValidName(false);
-      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE);
-      return isValidSingleByte;
-    }
-    return isValidMaxLength && isValidFirstAndLastChara && isValidSingleByte;
+    return true;
   };
 
   return (
     <SettingLayout
-      title="Kanon Code | 名前設定"
+      title="Kanon Code | 自己紹介設定"
       currentUser={props.currentUser}
     >
       <SettingForm
-        linkText="Name"
+        linkText="Introduction"
         href="/settings/profile"
         fontSize="default"
         color="inherit"
@@ -184,22 +162,17 @@ const IndexPage: React.FC<Props> = (props) => {
             <StyledBoxTextFieldWrapper mb={4}>
               <Box mb={2}>
                 <BaseTextField
-                  id="name"
+                  id="introduction"
                   type="text"
-                  value={profile.display_name}
-                  label="名前"
-                  placeholder="kanon code"
-                  rows={0}
-                  onChange={changeName}
+                  value={profile.introduction}
+                  label="自己紹介"
+                  placeholder="よろしくお願いします。"
+                  multiline
+                  rows={4}
+                  onChange={changeIntroduction}
                 />
               </Box>
-              <StyledPUrlWrapper>
-                <Typography>
-                  {domain}
-                  {profile.display_name}
-                </Typography>
-              </StyledPUrlWrapper>
-              {!isValidName && <ValidMessage validText={validText} />}
+              {!isValid && <ValidMessage validText={validText} />}
             </StyledBoxTextFieldWrapper>
             <StyledButtonWrapper>
               <CustomSolidButton

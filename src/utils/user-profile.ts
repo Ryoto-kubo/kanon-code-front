@@ -15,4 +15,8 @@ export class UserProfile {
     // 文字列の最初と最後どちらかに(_)を含んでいたらfalseを返す
     return !reg.test(firstChara) && !reg.test(lastChara);
   }
+
+  static validAllowNumber(value: number, ALLOW_LIST: number[]): boolean {
+    return ALLOW_LIST.includes(value);
+  }
 }

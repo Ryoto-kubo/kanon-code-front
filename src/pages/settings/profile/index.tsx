@@ -8,17 +8,18 @@ import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
+// import useSWR from "swr";
+import { POSITIONS } from "@/consts/positions";
 import { SettingLayout } from "@/layouts/setting/";
-import { UserType } from "@/types/global";
-// import { UserProfileProps, UserType } from "@/types/global";
+// import { UserType } from "@/types/global";
+import { UserProfileProps, UserType } from "@/types/global";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import * as S3 from "@/utils/api/s3";
 import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 import Box from "@material-ui/core/Box";
-import React, { useCallback, useState } from "react";
-import useSWR from "swr";
+import React, { useCallback, useEffect, useState } from "react";
 
 type Props = {
   title: string;
@@ -45,43 +46,43 @@ const IndexPage: React.FC<Props> = (props) => {
       message: defaultMessage,
     };
   }, []);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [userId] = useState(props.authUser.username);
   const [user, setUser] = useState<UserType | null>(props.currentUser);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, "")
   );
-  // const [profile, setProfile] = useState<UserProfileProps>(
-  //   props.currentUser!.user_profile
-  // );
+  const [profile, setProfile] = useState<UserProfileProps>(
+    props.currentUser!.user_profile
+  );
   const params = {
     userId: userId,
   };
-  const fetcher = async () => {
-    return await getUser(params);
-  };
-  const { data, isValidating } = useSWR("/api/user", fetcher);
-  const profile = data?.data.Item.user_profile;
-  const isLoading = isValidating;
-  console.log(data, "data");
-  console.log(isValidating, "isValidating");
+  // const fetcher = async () => {
+  //   return await getUser(params);
+  // };
+  // const { data, isValidating } = useSWR("/api/user", fetcher);
+  // const profile = data?.data.Item.user_profile;
+  // const isLoading = isValidating;
+  // console.log(data, "data");
+  // console.log(isValidating, "isValidating");
 
-  // useEffect(() => {
-  //   const err = new Error();
-  //   (async () => {
-  //     try {
-  //       const response = await getUser(params);
-  //       const result = response.data;
-  //       if (!result.status) throw (err.message = result.status_message);
-  //       setProfile(result.Item.user_profile);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.log(error);
-  //       alert(error);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    const err = new Error();
+    (async () => {
+      try {
+        const response = await getUser(params);
+        const result = response.data;
+        if (!result.status) throw (err.message = result.status_message);
+        setProfile(result.Item.user_profile);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        alert(error);
+      }
+    })();
+  }, []);
 
   const updateCanPublish = useCallback((isValid: boolean, message = "") => {
     setCanPUblish({
@@ -154,10 +155,10 @@ const IndexPage: React.FC<Props> = (props) => {
         const response = await postUserProfile(params);
         const result = response.data;
         if (!result.status) throw (err.message = result.status_message);
-        // setProfile({
-        //   ...profile,
-        //   icon_src: newIconSrc,
-        // });
+        setProfile({
+          ...profile,
+          icon_src: newIconSrc,
+        });
         setUser({
           ...user!,
           user_profile: userProfile,
@@ -180,7 +181,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <section>
             <ContentWrapper>
               <ContentHeader
-                title="プロフィール"
+                title="Profile"
                 description="Kanon Codeを利用する全てのユーザーに公開されます。"
                 fontSize={20}
                 marginBottom={1}
@@ -210,16 +211,16 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="紹介文"
                 value={profile!.introduction}
                 isDivider={true}
-                href="/"
+                href="/introduction"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
 
               <ProfileContentLink
                 label="ポジション"
-                value={profile!.position_type}
+                value={POSITIONS[profile!.position_type].label}
                 isDivider={true}
-                href="/"
+                href="/position"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
