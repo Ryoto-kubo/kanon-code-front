@@ -3,8 +3,13 @@ export class UserProfile {
     return valueLength <= MAX_LENGTH;
   }
 
-  static validSingleByte(value: string): boolean {
+  static validOnlySingleByteAndUnderScore(value: string): boolean {
     const reg = new RegExp(/^[a-zA-Z0-9_]+$/);
+    return reg.test(value);
+  }
+
+  static validSingleByte(value: string) {
+    const reg = new RegExp(/^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/);
     return reg.test(value);
   }
 

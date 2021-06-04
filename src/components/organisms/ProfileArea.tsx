@@ -3,7 +3,8 @@ import { SolidLinkSecondary } from "@/components/atoms/SolidLinkSecondary";
 import { UserImgIcon } from "@/components/atoms/UserImgIcon";
 import { WhiteOutLink } from "@/components/atoms/WhiteOutLink";
 import { UserLinks } from "@/components/organisms/UserLinks";
-import { positions } from "@/consts/positions";
+import { POSITIONS } from "@/consts/positions";
+import theme from "@/styles/theme";
 import { Box } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "next/link";
@@ -78,6 +79,15 @@ const StyledBoxFlexDirection = styled(Box)`
   ${(props) => props.theme.breakpoints.up("sm")} {
     flex-direction: unset;
     display: block;
+    margin-bottom: 5px;
+  }
+`;
+const StyledBoxIntroduction = styled(Box)`
+  width: 100%;
+  padding-left: 5px;
+  border-left: 5px solid ${theme.palette.primary.main};
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    width: 50%;
   }
 `;
 
@@ -102,7 +112,7 @@ export const ProfileArea: React.FC<Props> = (props) => {
             <StyledBoxFlexDirection>
               <StyledBoxUserAbout>
                 <StyledBoxSwitchMargin>
-                  <p>{positions[props.position].label}</p>
+                  <p>{POSITIONS[props.position].label}</p>
                 </StyledBoxSwitchMargin>
                 <UserLinks
                   githubName={props.githubName}
@@ -124,7 +134,7 @@ export const ProfileArea: React.FC<Props> = (props) => {
             ))}
         </StyledBoxUserProfile>
       </StyledBoxProfileArea>
-      <Box>{props.introduction}</Box>
+      <StyledBoxIntroduction>{props.introduction}</StyledBoxIntroduction>
     </Box>
   );
 };

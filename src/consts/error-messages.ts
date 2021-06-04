@@ -30,6 +30,7 @@ export const validMessages = {
   REQUIRED_SOURCE_CODE: "ソースコードを入力してください",
   ONLY_SINGLEBYTE_AND_UNDERSCORE:
     "半角英数字とアンダースコア（_）のみ使用できます",
+  ONLY_SINGLEBYTE: "半角英数字のみ使用できます",
   ONLY_SINGLEBYTE_NUMBER: "半角数字で入力してください",
   NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA:
     "最初と最後にアンダースコア（_）を使うことはできません",

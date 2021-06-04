@@ -6,14 +6,12 @@ import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting-form";
-import theme from "@/styles/theme";
 import { UserProfileProps, UserType } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
-import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -33,14 +31,6 @@ const StyledBoxTextFieldWrapper = styled(Box)`
   ${(props) => props.theme.breakpoints.up("sm")} {
     width: 70%;
   }
-`;
-const StyledPUrlWrapper = styled("div")`
-  margin: auto;
-  margin-bottom: 8px;
-  text-align: left;
-  width: 100%;
-  padding: 2px;
-  border-bottom: 2px solid ${theme.palette.primary.main};
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
@@ -63,8 +53,7 @@ const IndexPage: React.FC<Props> = (props) => {
     twitter_name: "",
     web_site: "",
   });
-  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
-  const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
+  const MAX_OTHERE_SERVICE_NAME_LENGTH = CONSTS.MAX_OTHERE_SERVICE_NAME_LENGTH;
 
   useEffect(() => {
     const err = new Error();
@@ -91,7 +80,7 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   const updateProfile = async () => {
-    const isValid = validName(profile.display_name);
+    const isValid = validName(profile.web_site);
     if (!isValid) return;
     setIsOpen(true);
     setIsDidabled(true);
@@ -103,7 +92,6 @@ const IndexPage: React.FC<Props> = (props) => {
     try {
       const response = await postUserProfile(params);
       const result = response.data;
-      console.log(result, "result");
       if (!result.status) {
         if (result.status_code === 1001) {
           alert(errorMessages.EXISTED_NAME);
@@ -113,18 +101,12 @@ const IndexPage: React.FC<Props> = (props) => {
       }
       setUpdatingMessage("変更の反映には時間がかかることがあります。");
       setIsDidabled(false);
-
-      // setIsOpen(false)
     } catch (error) {
       alert(errorMessages.SYSTEM_ERROR);
       setIsOpen(false);
       setIsDidabled(false);
     }
   };
-
-  // const close = () => {
-  //   setIsOpen(false);
-  // };
 
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -136,47 +118,37 @@ const IndexPage: React.FC<Props> = (props) => {
       if (value === "") resetValid();
       setIsDidabled(true);
     }
-    setProfile({ ...profile, display_name: value });
+    setProfile({ ...profile, web_site: value });
   };
 
   const validName = (value: string): boolean => {
     const isValidMaxLength = UserProfile.validMaxLength(
       value.length,
-      MAX_NAME_LENGTH
+      MAX_OTHERE_SERVICE_NAME_LENGTH
     );
-    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value);
-    const isValidOnlySingleByteAndUnderScore = UserProfile.validOnlySingleByteAndUnderScore(
-      value
-    );
+    const isValidSingleByte = UserProfile.validSingleByte(value);
     if (!isValidMaxLength) {
       setIsValidName(false);
-      setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`);
+      setIsValidText(
+        `${MAX_OTHERE_SERVICE_NAME_LENGTH}文字以下で入力してください`
+      );
       return isValidMaxLength;
     }
-    if (!isValidFirstAndLastChara) {
+    if (!isValidSingleByte) {
       setIsValidName(false);
-      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA);
-      return isValidFirstAndLastChara;
+      setIsValidText(validMessages.ONLY_SINGLEBYTE);
+      return isValidSingleByte;
     }
-    if (!isValidOnlySingleByteAndUnderScore) {
-      setIsValidName(false);
-      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE);
-      return isValidOnlySingleByteAndUnderScore;
-    }
-    return (
-      isValidMaxLength &&
-      isValidFirstAndLastChara &&
-      isValidOnlySingleByteAndUnderScore
-    );
+    return isValidMaxLength && isValidSingleByte;
   };
 
   return (
     <SettingLayout
-      title="Kanon Code | 名前設定"
+      title="Kanon Code | Web site設定"
       currentUser={props.currentUser}
     >
       <SettingForm
-        linkText="Name"
+        linkText="Web site"
         href="/settings/profile"
         fontSize="default"
         color="inherit"
@@ -192,19 +164,13 @@ const IndexPage: React.FC<Props> = (props) => {
                 <BaseTextField
                   id="name"
                   type="text"
-                  value={profile.display_name}
-                  label="名前"
-                  placeholder="kanon code"
+                  value={profile.web_site}
+                  label="website"
+                  placeholder="https://kanon-code.com"
                   rows={0}
                   onChange={changeName}
                 />
               </Box>
-              <StyledPUrlWrapper>
-                <Typography>
-                  {domain}
-                  {profile.display_name}
-                </Typography>
-              </StyledPUrlWrapper>
               {!isValidName && <ValidMessage validText={validText} />}
             </StyledBoxTextFieldWrapper>
             <StyledButtonWrapper>

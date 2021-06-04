@@ -122,7 +122,9 @@ const IndexPage: React.FC<Props> = (props) => {
       MAX_NAME_LENGTH
     );
     const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value);
-    const isValidSingleByte = UserProfile.validSingleByte(value);
+    const isValidOnlySingleByteAndUnderScore = UserProfile.validOnlySingleByteAndUnderScore(
+      value
+    );
     if (!isValidMaxLength) {
       setIsValidName(false);
       setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`);
@@ -133,12 +135,16 @@ const IndexPage: React.FC<Props> = (props) => {
       setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA);
       return isValidFirstAndLastChara;
     }
-    if (!isValidSingleByte) {
+    if (!isValidOnlySingleByteAndUnderScore) {
       setIsValidName(false);
       setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE);
-      return isValidSingleByte;
+      return isValidOnlySingleByteAndUnderScore;
     }
-    return isValidMaxLength && isValidFirstAndLastChara && isValidSingleByte;
+    return (
+      isValidMaxLength &&
+      isValidFirstAndLastChara &&
+      isValidOnlySingleByteAndUnderScore
+    );
   };
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

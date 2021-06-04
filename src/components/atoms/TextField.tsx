@@ -22,6 +22,7 @@ type Props = {
   multiline?: boolean;
   style?: object;
   error?: boolean;
+  helperText?: string;
 };
 export const BaseTextField: React.FC<Props> = (props) => {
   return (
@@ -44,6 +45,7 @@ export const BaseTextField: React.FC<Props> = (props) => {
       multiline={props.multiline}
       rows={props.rows}
       error={props.error}
+      helperText={props.helperText}
     />
   );
 };

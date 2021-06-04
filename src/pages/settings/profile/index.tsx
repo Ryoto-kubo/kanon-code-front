@@ -238,7 +238,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="Githubユーザーネーム"
                 value={profile!.github_name}
                 isDivider={true}
-                href="/"
+                href="/github_name"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
@@ -247,7 +247,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="Twitterユーザーネーム"
                 value={profile!.twitter_name}
                 isDivider={true}
-                href="/"
+                href="/twitter_name"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
@@ -256,7 +256,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="webサイト"
                 value={profile!.web_site}
                 isDivider={true}
-                href="/"
+                href="/web_site"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
