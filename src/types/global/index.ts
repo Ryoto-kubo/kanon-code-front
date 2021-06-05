@@ -9,6 +9,8 @@ export type UserType = {
   type: string;
   user_id: string;
   user_profile: UserProfileProps;
+  email_notices: EmailNoticesProps;
+  is_github_connect: boolean;
 };
 
 export type PostContentsProps = {
@@ -63,4 +65,9 @@ export type UserProfileProps = {
   }[];
   twitter_name: string;
   web_site: string;
+};
+
+export type EmailNoticesProps = {
+  is_opened_review: boolean;
+  is_requested_review: boolean;
 };
