@@ -31,12 +31,12 @@ type ValidObject = {
   message: string;
 };
 
-export const getServerSideProps = async () => ({
-  // props: {
-  //   layout: 'SettingLayout',
-  //   title: 'プロフィール',
-  // },
-});
+// export const getServerSideProps = async () => ({
+// props: {
+//   layout: 'SettingLayout',
+//   title: 'プロフィール',
+// },
+// });
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
@@ -59,19 +59,16 @@ const IndexPage: React.FC<Props> = (props) => {
   const params = {
     userId: userId,
   };
-  const fetcher = async () => {
+  const fetcher = async (url: string) => {
+    console.log(url, "url");
+
     return await getUser(params);
     // return await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`);
   };
-  const { data, isValidating } = useSWR(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/user?userId=${userId}`,
-    fetcher,
-    {
-      revalidateOnFocus: false,
-    }
-  );
-  console.log(data);
-
+  const { data, isValidating } = useSWR(`/api/user?userId=${userId}`, fetcher, {
+    dedupingInterval: 3000000,
+    revalidateOnFocus: false,
+  });
   // {
   //   // 初期データ
   //   // initialData: props.currentUser!.user_profile,
