@@ -64,7 +64,7 @@ const IndexPage: React.FC<Props> = (props) => {
   };
   const { data, isValidating } = useSWR("/api/user", fetcher, {
     revalidateOnFocus: false,
-    revalidateOnMount: false,
+    // revalidateOnMount: false,
     dedupingInterval: 2000,
   });
   // {
