@@ -7,8 +7,8 @@ import { PostContentsProps } from "@/types/global/index";
 import { getUserContents } from "@/utils/api/get-user-contents";
 import { Container } from "@material-ui/core/";
 import Box from "@material-ui/core/Box";
-import { GetServerSidePropsContext } from "next";
-// import { GetStaticPropsContext } from "next";
+// import { GetServerSidePropsContext } from "next";
+import { GetStaticPropsContext } from "next";
 import React from "react";
 
 type Props = {
@@ -78,17 +78,17 @@ const IndexPage: React.FC<Props> = (props) => {
 //   };
 // };
 
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  // export const getStaticProps = async (context: GetStaticPropsContext) => {
+// export const getServerSideProps = async (
+//   context: GetServerSidePropsContext
+// ) => {
+export const getStaticProps = async (context: GetStaticPropsContext) => {
   const userName = context.params?.user_name as string;
   const result = await getUserContents({ userName: userName });
   return {
     props: {
       data: result.data,
     },
-    // revalidate: 30,
+    revalidate: 30,
   };
 };
 
