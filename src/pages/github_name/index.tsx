@@ -6,7 +6,6 @@ import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting-form";
-import theme from "@/styles/theme";
 import { UserProfileProps, UserType } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
@@ -33,14 +32,6 @@ const StyledBoxTextFieldWrapper = styled(Box)`
     width: 70%;
   }
 `;
-const StyledPUrlWrapper = styled("div")`
-  margin: auto;
-  margin-bottom: 8px;
-  text-align: left;
-  width: 100%;
-  padding: 2px;
-  border-bottom: 2px solid ${theme.palette.primary.main};
-`;
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
@@ -51,17 +42,9 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [userId] = useState(props.authUser.username);
   const [isValidName, setIsValidName] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileProps>({
-    display_name: "",
-    github_name: "",
-    icon_src: "",
-    introduction: "",
-    position_type: 0,
-    price: 0,
-    skils: [],
-    twitter_name: "",
-    web_site: "",
-  });
+  const [profile, setProfile] = useState<UserProfileProps>(
+    CONSTS.INITIAL_USER_PROFILE
+  );
   const MAX_OTHERE_SERVICE_NAME_LENGTH = CONSTS.MAX_OTHERE_SERVICE_NAME_LENGTH;
 
   useEffect(() => {
@@ -101,7 +84,6 @@ const IndexPage: React.FC<Props> = (props) => {
     try {
       const response = await postUserProfile(params);
       const result = response.data;
-      console.log(result, "result");
       if (!result.status) {
         if (result.status_code === 1001) {
           alert(errorMessages.EXISTED_NAME);
@@ -111,18 +93,12 @@ const IndexPage: React.FC<Props> = (props) => {
       }
       setUpdatingMessage("変更の反映には時間がかかることがあります。");
       setIsDidabled(false);
-
-      // setIsOpen(false)
     } catch (error) {
       alert(errorMessages.SYSTEM_ERROR);
       setIsOpen(false);
       setIsDidabled(false);
     }
   };
-
-  // const close = () => {
-  //   setIsOpen(false);
-  // };
 
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;

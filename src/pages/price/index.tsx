@@ -43,17 +43,9 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
   const [userId] = useState(props.authUser.username);
   // const [isValid, setIsValid] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileProps>({
-    display_name: "",
-    github_name: "",
-    icon_src: "",
-    introduction: "",
-    position_type: 0,
-    price: 0,
-    skils: [],
-    twitter_name: "",
-    web_site: "",
-  });
+  const [profile, setProfile] = useState<UserProfileProps>(
+    CONSTS.INITIAL_USER_PROFILE
+  );
   const MAX_PRICE_LENGTH = CONSTS.MAX_PRICE_LENGTH;
 
   useEffect(() => {

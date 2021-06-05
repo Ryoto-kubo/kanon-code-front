@@ -41,18 +41,10 @@ const IndexPage: React.FC<Props> = (props) => {
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [userId] = useState(props.authUser.username);
-  const [isValidName, setIsValidName] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileProps>({
-    display_name: "",
-    github_name: "",
-    icon_src: "",
-    introduction: "",
-    position_type: 0,
-    price: 0,
-    skils: [],
-    twitter_name: "",
-    web_site: "",
-  });
+  const [isValid, setIsValid] = useState<boolean>(true);
+  const [profile, setProfile] = useState<UserProfileProps>(
+    CONSTS.INITIAL_USER_PROFILE
+  );
   const MAX_OTHERE_SERVICE_NAME_LENGTH = CONSTS.MAX_OTHERE_SERVICE_NAME_LENGTH;
 
   useEffect(() => {
@@ -75,7 +67,7 @@ const IndexPage: React.FC<Props> = (props) => {
   }, []);
 
   const resetValid = () => {
-    setIsValidName(true);
+    setIsValid(true);
     setIsValidText("");
   };
 
@@ -128,14 +120,14 @@ const IndexPage: React.FC<Props> = (props) => {
     );
     const isValidSingleByte = UserProfile.validSingleByte(value);
     if (!isValidMaxLength) {
-      setIsValidName(false);
+      setIsValid(false);
       setIsValidText(
         `${MAX_OTHERE_SERVICE_NAME_LENGTH}文字以下で入力してください`
       );
       return isValidMaxLength;
     }
     if (!isValidSingleByte) {
-      setIsValidName(false);
+      setIsValid(false);
       setIsValidText(validMessages.ONLY_SINGLEBYTE);
       return isValidSingleByte;
     }
@@ -171,7 +163,7 @@ const IndexPage: React.FC<Props> = (props) => {
                   onChange={changeName}
                 />
               </Box>
-              {!isValidName && <ValidMessage validText={validText} />}
+              {!isValid && <ValidMessage validText={validText} />}
             </StyledBoxTextFieldWrapper>
             <StyledButtonWrapper>
               <CustomSolidButton

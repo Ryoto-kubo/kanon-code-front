@@ -50,19 +50,12 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
+  const [user, setUser] = useState<UserType | null>(props.currentUser);
   const [userId] = useState(props.authUser.username);
   const [isValidName, setIsValidName] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileProps>({
-    display_name: "",
-    github_name: "",
-    icon_src: "",
-    introduction: "",
-    position_type: 0,
-    price: 0,
-    skils: [],
-    twitter_name: "",
-    web_site: "",
-  });
+  const [profile, setProfile] = useState<UserProfileProps>(
+    CONSTS.INITIAL_USER_PROFILE
+  );
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
 
@@ -113,18 +106,17 @@ const IndexPage: React.FC<Props> = (props) => {
       }
       setUpdatingMessage("変更の反映には時間がかかることがあります。");
       setIsDidabled(false);
-
-      // setIsOpen(false)
+      console.log(profile, "profile");
+      setUser({
+        ...user!,
+        user_profile: profile,
+      });
     } catch (error) {
       alert(errorMessages.SYSTEM_ERROR);
       setIsOpen(false);
       setIsDidabled(false);
     }
   };
-
-  // const close = () => {
-  //   setIsOpen(false);
-  // };
 
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -171,10 +163,7 @@ const IndexPage: React.FC<Props> = (props) => {
   };
 
   return (
-    <SettingLayout
-      title="Kanon Code | 名前設定"
-      currentUser={props.currentUser}
-    >
+    <SettingLayout title="Kanon Code | 名前設定" currentUser={user}>
       <SettingForm
         linkText="Name"
         href="/settings/profile"

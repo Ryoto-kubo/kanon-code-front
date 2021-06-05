@@ -57,7 +57,10 @@ export type UserProfileProps = {
   introduction: string;
   position_type: number;
   price: number;
-  skils: [];
+  skils: {
+    language: string;
+    years_experiences: number;
+  }[];
   twitter_name: string;
   web_site: string;
 };

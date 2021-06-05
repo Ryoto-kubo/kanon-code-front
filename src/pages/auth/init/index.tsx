@@ -1,66 +1,68 @@
-import { CustomLoader } from '@/components/common/loader'
-import { apis } from '@/consts/api/'
-import { errorMessages } from '@/consts/error-messages'
-import { getUser } from '@/utils/api/get-user'
-import { axios } from '@/utils/axios'
-import { useRouter } from 'next/router'
-import React, { useEffect } from 'react'
+import { CustomLoader } from "@/components/common/loader";
+import { apis } from "@/consts/api/";
+import { errorMessages } from "@/consts/error-messages";
+import { getUser } from "@/utils/api/get-user";
+import { axios } from "@/utils/axios";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 
 type Props = {
-  title: string
-  authUser: any
-}
+  title: string;
+  authUser: any;
+};
 
 const registUser = async (payload: any) => {
-  return await axios.post(apis.REGISTER, payload)
-}
+  return await axios.post(apis.REGISTER, payload);
+};
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>
-  const router = useRouter()
-  const err = new Error()
-  const payload = props.authUser.signInUserSession.idToken.payload
+  if (!props.authUser) return <></>;
+  const router = useRouter();
+  const err = new Error();
+  const payload = props.authUser.signInUserSession.idToken.payload;
+  console.log(payload, "payload");
+
   const params = {
-    userId: payload['cognito:username'],
-  }
+    userId: payload["cognito:username"],
+  };
 
   const moveToRegister = () => {
-    router.push('/register')
-  }
+    router.push("/register");
+  };
   const moveToTop = () => {
-    router.push('/')
-  }
+    router.push("/");
+  };
   useEffect(() => {
-    ;(async () => {
+    (async () => {
       try {
-        const response = await getUser(params)
-        if (response.status !== 200) throw err
-        const item = response.data.Item
+        const response = await getUser(params);
+        if (response.status !== 200) throw err;
+        const item = response.data.Item;
         if (item === undefined) {
           // ユーザー未登録
-          const response = await registUser(payload)
-          if (response.status !== 200) throw err
-          moveToRegister()
+          const response = await registUser(payload);
+          if (response.status !== 200) throw err;
+          moveToRegister();
         } else {
           // ユーザーとして登録済み
-          if (item.user_profile.display_name === '') {
-            moveToRegister()
+          if (item.user_profile.display_name === "") {
+            moveToRegister();
           } else {
-            moveToTop()
+            moveToTop();
           }
         }
       } catch (error) {
-        console.log(error)
-        alert(errorMessages.SYSTEM_ERROR)
-        moveToTop()
+        console.log(error);
+        alert(errorMessages.SYSTEM_ERROR);
+        moveToTop();
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   return (
     <>
       <CustomLoader />
     </>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;

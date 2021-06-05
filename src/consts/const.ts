@@ -2,6 +2,7 @@ export const MAX_TITLE_LENGTH = 32;
 export const MAX_TAGS_LENGTH = 5;
 export const MAX_PRICE_LENGTH = 5;
 export const MAX_NAME_LENGTH = 15;
+export const MAX_LANG_LENGTH = 15;
 export const MAX_OTHERE_SERVICE_NAME_LENGTH = 100;
 export const MAX_INTRODUCTION_LENGTH = 300;
 export const MAX_DESCRIPTION_LENGTH = 1500;
@@ -19,3 +20,62 @@ export const ALLOW_FILE_EXTENTION_LIST = [
   "gif",
   "GIF",
 ];
+export const INITIAL_SKILS = [
+  {
+    language: "",
+    yearsExperience: "1年~2年",
+    value: 0,
+  },
+  {
+    language: "",
+    yearsExperience: "1年~2年",
+    value: 0,
+  },
+  {
+    language: "",
+    yearsExperience: "1年~2年",
+    value: 0,
+  },
+  {
+    language: "",
+    yearsExperience: "1年~2年",
+    value: 0,
+  },
+  {
+    language: "",
+    yearsExperience: "1年~2年",
+    value: 0,
+  },
+];
+export const INITIAL_USER_PROFILE = {
+  display_name: "",
+  github_name: "",
+  icon_src: "",
+  introduction: "",
+  position_type: 0,
+  price: 0,
+  skils: [
+    {
+      language: "",
+      years_experiences: 0,
+    },
+    {
+      language: "",
+      years_experiences: 0,
+    },
+    {
+      language: "",
+      years_experiences: 0,
+    },
+    {
+      language: "",
+      years_experiences: 0,
+    },
+    {
+      language: "",
+      years_experiences: 0,
+    },
+  ],
+  twitter_name: "",
+  web_site: "",
+};

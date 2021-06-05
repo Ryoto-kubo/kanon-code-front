@@ -8,18 +8,18 @@ import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
-// import useSWR from "swr";
 import { POSITIONS } from "@/consts/positions";
 import { SettingLayout } from "@/layouts/setting/";
-// import { UserType } from "@/types/global";
-import { UserProfileProps, UserType } from "@/types/global";
+import { UserType } from "@/types/global";
+// import { UserProfileProps, UserType } from "@/types/global";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import * as S3 from "@/utils/api/s3";
 import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 import Box from "@material-ui/core/Box";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
+import useSWR from "swr";
 
 type Props = {
   title: string;
@@ -46,43 +46,64 @@ const IndexPage: React.FC<Props> = (props) => {
       message: defaultMessage,
     };
   }, []);
-  const [isLoading, setIsLoading] = useState(true);
+  // const [isLoading, setIsLoading] = useState(true);
   const [userId] = useState(props.authUser.username);
   const [user, setUser] = useState<UserType | null>(props.currentUser);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, "")
   );
-  const [profile, setProfile] = useState<UserProfileProps>(
-    props.currentUser!.user_profile
-  );
+  // const [profile, setProfile] = useState<UserProfileProps>(
+  //   props.currentUser!.user_profile
+  // );
   const params = {
     userId: userId,
   };
-  // const fetcher = async () => {
-  //   return await getUser(params);
-  // };
-  // const { data, isValidating } = useSWR("/api/user", fetcher);
-  // const profile = data?.data.Item.user_profile;
-  // const isLoading = isValidating;
-  // console.log(data, "data");
-  // console.log(isValidating, "isValidating");
+  const fetcher = async () => {
+    return await getUser(params);
+  };
+  const { data, isValidating } = useSWR("/api/user", fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnMount: false,
+    dedupingInterval: 2000,
+  });
+  // {
+  //   // 初期データ
+  //   // initialData: props.currentUser!.user_profile,
+  //   // 指定期間中に同じキーの場合は重複リクエストを排除します(default: 2000)
+  // dedupingInterval: 0,
+  //   // pollingの期間 (デフォルトでは無効)
+  //   // refreshInterval: 0,
+  //   // コンポーネントのマウント時に自動で再検証します (デフォルトでは、initialDataが設定されていない場合、マウント時に再検証
+  //   // が行われます。)
+  //   revalidateOnMount: false,
+  //   //
+  //   // // revalidateOnMount: !cache.has(dataKey), //here we refer to the SWR cache
+  //   // windowのフォーカス時にRevalidateする(default: true)
+  //   revalidateOnFocus: false,
+  //   // ブラウザのネットワーク接続が回復した時に自動で再検証します(default: true)
+  //   revalidateOnReconnect: false,
+  // });
+  const profile = data?.data.Item.user_profile;
+  const isLoading = isValidating;
+  console.log(data, "data");
+  console.log(isValidating, "isValidating");
 
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   const err = new Error();
+  //   (async () => {
+  //     try {
+  //       const response = await getUser(params);
+  //       const result = response.data;
+  //       if (!result.status) throw (err.message = result.status_message);
+  //       setProfile(result.Item.user_profile);
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       console.log(error);
+  //       alert(error);
+  //     }
+  //   })();
+  // }, []);
 
   const updateCanPublish = useCallback((isValid: boolean, message = "") => {
     setCanPUblish({
@@ -155,10 +176,10 @@ const IndexPage: React.FC<Props> = (props) => {
         const response = await postUserProfile(params);
         const result = response.data;
         if (!result.status) throw (err.message = result.status_message);
-        setProfile({
-          ...profile,
-          icon_src: newIconSrc,
-        });
+        // setProfile({
+        //   ...profile,
+        //   icon_src: newIconSrc,
+        // });
         setUser({
           ...user!,
           user_profile: userProfile,
