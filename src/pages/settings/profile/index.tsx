@@ -31,12 +31,12 @@ type ValidObject = {
   message: string;
 };
 
-// export const getServerSideProps = async () => ({
-//   props: {
-//     layout: 'SettingLayout',
-//     title: 'プロフィール',
-//   },
-// })
+export const getServerSideProps = async () => ({
+  // props: {
+  //   layout: 'SettingLayout',
+  //   title: 'プロフィール',
+  // },
+});
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
@@ -61,12 +61,17 @@ const IndexPage: React.FC<Props> = (props) => {
   };
   const fetcher = async () => {
     return await getUser(params);
+    // return await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`);
   };
-  const { data, isValidating } = useSWR(`/api/user?userId=${userId}`, fetcher, {
-    revalidateOnFocus: false,
-    // revalidateOnMount: false,
-    dedupingInterval: 2000,
-  });
+  const { data, isValidating } = useSWR(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/user?userId=${userId}`,
+    fetcher,
+    {
+      revalidateOnFocus: false,
+    }
+  );
+  console.log(data);
+
   // {
   //   // 初期データ
   //   // initialData: props.currentUser!.user_profile,
@@ -84,6 +89,7 @@ const IndexPage: React.FC<Props> = (props) => {
   //   // ブラウザのネットワーク接続が回復した時に自動で再検証します(default: true)
   //   revalidateOnReconnect: false,
   // });
+  // const profile = data?.Item.user_profile;
   const profile = data?.data.Item.user_profile;
   const isLoading = isValidating;
   console.log(data, "data");
