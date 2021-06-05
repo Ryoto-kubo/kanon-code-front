@@ -10,16 +10,16 @@ import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { POSITIONS } from "@/consts/positions";
 import { SettingLayout } from "@/layouts/setting/";
-import { UserType } from "@/types/global";
-// import { UserProfileProps, UserType } from "@/types/global";
+// import { UserType } from "@/types/global";
+import { UserProfileProps, UserType } from "@/types/global";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import * as S3 from "@/utils/api/s3";
 import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 import Box from "@material-ui/core/Box";
-import React, { useCallback, useState } from "react";
-import useSWR from "swr";
+import React, { useCallback, useEffect, useState } from "react";
+// import useSWR from "swr";
 
 type Props = {
   title: string;
@@ -46,51 +46,51 @@ const IndexPage: React.FC<Props> = (props) => {
       message: defaultMessage,
     };
   }, []);
-  // const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const [userId] = useState(props.authUser.username);
   const [user, setUser] = useState<UserType | null>(props.currentUser);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, "")
   );
-  // const [profile, setProfile] = useState<UserProfileProps>(
-  //   props.currentUser!.user_profile
-  // );
+  const [profile, setProfile] = useState<UserProfileProps>(
+    props.currentUser!.user_profile
+  );
   const params = {
     userId: userId,
   };
-  const fetcher = async () => {
-    return await getUser(params);
-  };
-  const { data, isValidating } = useSWR(`/api/user?userId${userId}`, fetcher, {
-    // initialData: props.currentUser!.user_profile,
-    refreshInterval: 0,
-    dedupingInterval: 2000,
-    revalidateOnFocus: false,
-    focusThrottleInterval: 5000,
-  });
+  // const fetcher = async () => {
+  //   return await getUser(params);
+  // };
+  // const { data, isValidating } = useSWR(`/api/user?userId${userId}`, fetcher, {
+  //   // initialData: props.currentUser!.user_profile,
+  //   refreshInterval: 0,
+  //   dedupingInterval: 2000,
+  //   revalidateOnFocus: false,
+  //   focusThrottleInterval: 5000,
+  // });
 
   // const profile = data?.Item.user_profile;
-  const profile = data?.data.Item.user_profile;
-  const isLoading = isValidating;
-  console.log(data, "data");
-  console.log(isValidating, "isValidating");
+  // const profile = data?.data.Item.user_profile;
+  // const isLoading = isValidating;
+  // console.log(data, "data");
+  // console.log(isValidating, "isValidating");
 
-  // useEffect(() => {
-  //   const err = new Error();
-  //   (async () => {
-  //     try {
-  //       const response = await getUser(params);
-  //       const result = response.data;
-  //       if (!result.status) throw (err.message = result.status_message);
-  //       setProfile(result.Item.user_profile);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.log(error);
-  //       alert(error);
-  //     }
-  //   })();
-  // }, []);
+  useEffect(() => {
+    const err = new Error();
+    (async () => {
+      try {
+        const response = await getUser(params);
+        const result = response.data;
+        if (!result.status) throw (err.message = result.status_message);
+        setProfile(result.Item.user_profile);
+        setIsLoading(false);
+      } catch (error) {
+        console.log(error);
+        alert(error);
+      }
+    })();
+  }, []);
 
   const updateCanPublish = useCallback((isValid: boolean, message = "") => {
     setCanPUblish({
