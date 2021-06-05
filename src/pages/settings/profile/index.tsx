@@ -62,7 +62,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const fetcher = async () => {
     return await getUser(params);
   };
-  const { data, isValidating } = useSWR("/api/user", fetcher, {
+  const { data, isValidating } = useSWR(`/api/user?userId=${userId}`, fetcher, {
     revalidateOnFocus: false,
     // revalidateOnMount: false,
     dedupingInterval: 2000,
