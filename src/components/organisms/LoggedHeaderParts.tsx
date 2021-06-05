@@ -102,18 +102,19 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem>
-            {/* <MenuItem onClick={() => toPage(`/${props.displayName}`)}> */}
-            <Link prefetch href={`${props.displayName}`} passHref>
-              <StyledAnchor>
-                <StyledListItemIcon>
-                  <PersonOutlineOutlinedIcon fontSize="small" />
-                </StyledListItemIcon>
-                <ListItemText secondary="マイページ" />
-              </StyledAnchor>
-            </Link>
+          {/* <MenuItem> */}
+          <MenuItem onClick={() => toPage(`/${props.displayName}`)}>
+            {/* <Link prefetch href={`${props.displayName}`} passHref>
+              <StyledAnchor> */}
+            <StyledListItemIcon>
+              <PersonOutlineOutlinedIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="マイページ" />
+            {/* </StyledAnchor>
+            </Link> */}
           </MenuItem>
-          <MenuItem onClick={() => toPage("/post/new")}>
+          <MenuItem>
+            {/* <MenuItem onClick={() => toPage("/post/new")}> */}
             <Link prefetch href="/post/new" passHref>
               <StyledAnchor>
                 <StyledListItemIcon>
