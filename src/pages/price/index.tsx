@@ -1,19 +1,18 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { BaseTextField } from "@/components/atoms/TextField";
 import { CustomLoader } from "@/components/common/loader";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
+// import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
-import { errorMessages, validMessages } from "@/consts/error-messages";
+import { errorMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting-form";
-import theme from "@/styles/theme";
+// import theme from "@/styles/theme";
 import { UserProfileProps, UserType } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
-import Typography from "@material-ui/core/Typography";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
@@ -34,30 +33,20 @@ const StyledBoxTextFieldWrapper = styled(Box)`
     width: 70%;
   }
 `;
-const StyledPUrlWrapper = styled("div")`
-  margin: auto;
-  margin-bottom: 8px;
-  text-align: left;
-  width: 100%;
-  padding: 2px;
-  border-bottom: 2px solid ${theme.palette.primary.main};
-`;
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
   const [isLoading, setIsLoading] = useState(true);
-  const [validText, setIsValidText] = useState<string>("");
-  const [isDisabled, setIsDidabled] = useState<boolean>(true);
-  const [user, setUser] = useState<UserType | null>(props.currentUser);
+  // const [validText, setIsValidText] = useState<string>("");
+  const [isDisabled, setIsDidabled] = useState<boolean>(false);
   const [userId] = useState(props.authUser.username);
-  const [isValidName, setIsValidName] = useState<boolean>(true);
+  // const [isValid, setIsValid] = useState<boolean>(true);
   const [profile, setProfile] = useState<UserProfileProps>(
     CONSTS.INITIAL_USER_PROFILE
   );
-  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
-  const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
+  const MAX_PRICE_LENGTH = CONSTS.MAX_PRICE_LENGTH;
 
   useEffect(() => {
     const err = new Error();
@@ -78,13 +67,13 @@ const IndexPage: React.FC<Props> = (props) => {
     })();
   }, []);
 
-  const resetValid = () => {
-    setIsValidName(true);
-    setIsValidText("");
-  };
+  // const resetValid = () => {
+  //   setIsValid(true);
+  //   setIsValidText("");
+  // };
 
   const updateProfile = async () => {
-    const isValid = validName(profile.display_name);
+    const isValid = validPrice(String(profile.price));
     if (!isValid) return;
     setIsOpen(true);
     setIsDidabled(true);
@@ -96,7 +85,6 @@ const IndexPage: React.FC<Props> = (props) => {
     try {
       const response = await postUserProfile(params);
       const result = response.data;
-      console.log(result, "result");
       if (!result.status) {
         if (result.status_code === 1001) {
           alert(errorMessages.EXISTED_NAME);
@@ -106,11 +94,6 @@ const IndexPage: React.FC<Props> = (props) => {
       }
       setUpdatingMessage("変更の反映には時間がかかることがあります。");
       setIsDidabled(false);
-      console.log(profile, "profile");
-      setUser({
-        ...user!,
-        user_profile: profile,
-      });
     } catch (error) {
       alert(errorMessages.SYSTEM_ERROR);
       setIsOpen(false);
@@ -118,54 +101,37 @@ const IndexPage: React.FC<Props> = (props) => {
     }
   };
 
-  const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const changePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    const isValid = validName(value);
-    if (isValid) {
-      setIsDidabled(false);
-      resetValid();
-    } else {
-      if (value === "") resetValid();
-      setIsDidabled(true);
+    if (value === "") {
+      setProfile({ ...profile, price: 0 });
+      return;
     }
-    setProfile({ ...profile, display_name: value });
+    const isValid = validPrice(value);
+    if (isValid) {
+      setProfile({ ...profile, price: Number(value) });
+    }
   };
 
-  const validName = (value: string): boolean => {
-    const isValidMaxLength = UserProfile.validMaxLength(
+  const validPrice = (value: string) => {
+    const isVaildMaxLength = UserProfile.validMaxLength(
       value.length,
-      MAX_NAME_LENGTH
+      MAX_PRICE_LENGTH
     );
-    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value);
-    const isValidOnlySingleByteAndUnderScore = UserProfile.validOnlySingleByteAndUnderScore(
-      value
-    );
-    if (!isValidMaxLength) {
-      setIsValidName(false);
-      setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`);
-      return isValidMaxLength;
+    if (!isVaildMaxLength) {
+      return false;
     }
-    if (!isValidFirstAndLastChara) {
-      setIsValidName(false);
-      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA);
-      return isValidFirstAndLastChara;
-    }
-    if (!isValidOnlySingleByteAndUnderScore) {
-      setIsValidName(false);
-      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE);
-      return isValidOnlySingleByteAndUnderScore;
-    }
-    return (
-      isValidMaxLength &&
-      isValidFirstAndLastChara &&
-      isValidOnlySingleByteAndUnderScore
-    );
+    const isValid = UserProfile.validOnlytSingleByteNumber(value);
+    return isVaildMaxLength && isValid;
   };
 
   return (
-    <SettingLayout title="Kanon Code | 名前設定" currentUser={user}>
+    <SettingLayout
+      title="Kanon Code | 金額設定"
+      currentUser={props.currentUser}
+    >
       <SettingForm
-        linkText="Name"
+        linkText="Price"
         href="/settings/profile"
         fontSize="default"
         color="inherit"
@@ -179,22 +145,16 @@ const IndexPage: React.FC<Props> = (props) => {
             <StyledBoxTextFieldWrapper mb={4}>
               <Box mb={2}>
                 <BaseTextField
-                  id="name"
+                  id="price"
                   type="text"
-                  value={profile.display_name}
-                  label="名前"
-                  placeholder="kanon code"
+                  value={profile.price}
+                  label="100文字あたりの設定金額（円）"
+                  placeholder="100"
                   rows={0}
-                  onChange={changeName}
+                  onChange={changePrice}
                 />
               </Box>
-              <StyledPUrlWrapper>
-                <Typography>
-                  {domain}
-                  {profile.display_name}
-                </Typography>
-              </StyledPUrlWrapper>
-              {!isValidName && <ValidMessage validText={validText} />}
+              {/* {!isValid && <ValidMessage validText={validText} />} */}
             </StyledBoxTextFieldWrapper>
             <StyledButtonWrapper>
               <CustomSolidButton

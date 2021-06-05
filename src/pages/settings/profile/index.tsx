@@ -8,6 +8,7 @@ import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
+import { POSITIONS } from "@/consts/positions";
 import { SettingLayout } from "@/layouts/setting/";
 import { UserType } from "@/types/global";
 // import { UserProfileProps, UserType } from "@/types/global";
@@ -61,7 +62,28 @@ const IndexPage: React.FC<Props> = (props) => {
   const fetcher = async () => {
     return await getUser(params);
   };
-  const { data, isValidating } = useSWR("/api/user", fetcher);
+  const { data, isValidating } = useSWR("/api/user", fetcher, {
+    revalidateOnFocus: false,
+    revalidateOnMount: false,
+    dedupingInterval: 2000,
+  });
+  // {
+  //   // 初期データ
+  //   // initialData: props.currentUser!.user_profile,
+  //   // 指定期間中に同じキーの場合は重複リクエストを排除します(default: 2000)
+  // dedupingInterval: 0,
+  //   // pollingの期間 (デフォルトでは無効)
+  //   // refreshInterval: 0,
+  //   // コンポーネントのマウント時に自動で再検証します (デフォルトでは、initialDataが設定されていない場合、マウント時に再検証
+  //   // が行われます。)
+  //   revalidateOnMount: false,
+  //   //
+  //   // // revalidateOnMount: !cache.has(dataKey), //here we refer to the SWR cache
+  //   // windowのフォーカス時にRevalidateする(default: true)
+  //   revalidateOnFocus: false,
+  //   // ブラウザのネットワーク接続が回復した時に自動で再検証します(default: true)
+  //   revalidateOnReconnect: false,
+  // });
   const profile = data?.data.Item.user_profile;
   const isLoading = isValidating;
   console.log(data, "data");
@@ -180,7 +202,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <section>
             <ContentWrapper>
               <ContentHeader
-                title="プロフィール"
+                title="Profile"
                 description="Kanon Codeを利用する全てのユーザーに公開されます。"
                 fontSize={20}
                 marginBottom={1}
@@ -210,16 +232,16 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="紹介文"
                 value={profile!.introduction}
                 isDivider={true}
-                href="/"
+                href="/introduction"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
 
               <ProfileContentLink
                 label="ポジション"
-                value={profile!.position_type}
+                value={POSITIONS[profile!.position_type].label}
                 isDivider={true}
-                href="/"
+                href="/position"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
@@ -228,7 +250,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="100文字あたりの設定金額"
                 value={profile!.price}
                 isDivider={true}
-                href="/"
+                href="/price"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
@@ -237,7 +259,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="Githubユーザーネーム"
                 value={profile!.github_name}
                 isDivider={true}
-                href="/"
+                href="/github_name"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
@@ -246,7 +268,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="Twitterユーザーネーム"
                 value={profile!.twitter_name}
                 isDivider={true}
-                href="/"
+                href="/twitter_name"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>
@@ -255,7 +277,7 @@ const IndexPage: React.FC<Props> = (props) => {
                 label="webサイト"
                 value={profile!.web_site}
                 isDivider={true}
-                href="/"
+                href="/web_site"
               >
                 <IconArrowNext fontSize="large" color="action" />
               </ProfileContentLink>

@@ -35,6 +35,7 @@ const IndexPage: React.FC<Props> = (props) => {
         <Box mt={4}>
           <Box mb={3}>
             <ProfileArea
+              introduction={userProfile.introduction}
               picture={userProfile.icon_src}
               position={userProfile.position_type}
               githubName={userProfile.github_name}
@@ -70,7 +71,7 @@ export const getStaticPaths = async () => {
   // }));
   return {
     paths: [],
-    fallback: false,
+    fallback: true,
   };
 };
 
@@ -81,7 +82,7 @@ export const getStaticProps = async (context: GetStaticPropsContext) => {
     props: {
       data: result.data,
     },
-    revalidate: 60,
+    revalidate: 30,
   };
 };
 
