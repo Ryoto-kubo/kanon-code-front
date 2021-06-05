@@ -59,33 +59,17 @@ const IndexPage: React.FC<Props> = (props) => {
   const params = {
     userId: userId,
   };
-  const fetcher = async (url: string) => {
-    console.log(url, "url");
-
+  const fetcher = async () => {
     return await getUser(params);
-    // return await fetch(`${process.env.NEXT_PUBLIC_API_URL}${url}`);
   };
-  const { data, isValidating } = useSWR(`/api/user?userId=${userId}`, fetcher, {
-    dedupingInterval: 3000000,
+  const { data, isValidating } = useSWR(`/api/user?userId${userId}`, fetcher, {
+    // initialData: props.currentUser!.user_profile,
+    refreshInterval: 0,
+    dedupingInterval: 2000,
     revalidateOnFocus: false,
+    focusThrottleInterval: 5000,
   });
-  // {
-  //   // 初期データ
-  //   // initialData: props.currentUser!.user_profile,
-  //   // 指定期間中に同じキーの場合は重複リクエストを排除します(default: 2000)
-  // dedupingInterval: 0,
-  //   // pollingの期間 (デフォルトでは無効)
-  //   // refreshInterval: 0,
-  //   // コンポーネントのマウント時に自動で再検証します (デフォルトでは、initialDataが設定されていない場合、マウント時に再検証
-  //   // が行われます。)
-  //   revalidateOnMount: false,
-  //   //
-  //   // // revalidateOnMount: !cache.has(dataKey), //here we refer to the SWR cache
-  //   // windowのフォーカス時にRevalidateする(default: true)
-  //   revalidateOnFocus: false,
-  //   // ブラウザのネットワーク接続が回復した時に自動で再検証します(default: true)
-  //   revalidateOnReconnect: false,
-  // });
+
   // const profile = data?.Item.user_profile;
   const profile = data?.data.Item.user_profile;
   const isLoading = isValidating;
