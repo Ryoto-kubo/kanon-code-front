@@ -14,6 +14,7 @@ import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined"
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import SpeedOutlinedIcon from "@material-ui/icons/SpeedOutlined";
 import { Auth } from "aws-amplify";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -95,11 +96,16 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           open={open}
           onClose={handleClose}
         >
-          <MenuItem onClick={() => toPage(`/${props.displayName}`)}>
-            <StyledListItemIcon>
-              <PersonOutlineOutlinedIcon fontSize="small" />
-            </StyledListItemIcon>
-            <ListItemText secondary="マイページ" />
+          <MenuItem>
+            {/* <MenuItem onClick={() => toPage(`/${props.displayName}`)}> */}
+            <Link prefetch href={`${props.displayName}`}>
+              <a>
+                <StyledListItemIcon>
+                  <PersonOutlineOutlinedIcon fontSize="small" />
+                </StyledListItemIcon>
+                <ListItemText secondary="マイページ" />
+              </a>
+            </Link>
           </MenuItem>
           <MenuItem onClick={() => toPage("/post/new")}>
             <StyledListItemIcon>

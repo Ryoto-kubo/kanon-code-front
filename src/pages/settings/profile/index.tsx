@@ -31,13 +31,6 @@ type ValidObject = {
   message: string;
 };
 
-// export const getServerSideProps = async () => ({
-// props: {
-//   layout: 'SettingLayout',
-//   title: 'プロフィール',
-// },
-// });
-
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
@@ -163,10 +156,10 @@ const IndexPage: React.FC<Props> = (props) => {
         const response = await postUserProfile(params);
         const result = response.data;
         if (!result.status) throw (err.message = result.status_message);
-        // setProfile({
-        //   ...profile,
-        //   icon_src: newIconSrc,
-        // });
+        setProfile({
+          ...profile,
+          icon_src: newIconSrc,
+        });
         setUser({
           ...user!,
           user_profile: userProfile,
