@@ -5,12 +5,13 @@ import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
 import { ProfileContentCheck } from "@/components/molecules/ProfileContentCheck";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
+import { errorMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting/";
 import { EmailNoticesProps, UserType } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
+import { postEmailNotices } from "@/utils/api/post-email-notices";
+import Snackbar from "@material-ui/core/Snackbar";
 import React, { useEffect, useState } from "react";
-
-// import styled from "styled-components";
 
 type Props = {
   title: string;
@@ -24,10 +25,11 @@ const IndexPage: React.FC<Props> = (props) => {
   const [emailNotices, setEmailNotices] = useState<EmailNoticesProps>(
     props.currentUser!.email_notices
   );
+  const [isOpen, setIsOpen] = useState(false);
+  const [updatingMessage, setUpdatingMessage] = useState("更新中...");
   const [userId] = useState(props.authUser.username);
   const [isLoading, setIsLoading] = useState(true);
   const [user] = useState<UserType | null>(props.currentUser);
-
   const params = {
     userId: userId,
   };
@@ -43,7 +45,7 @@ const IndexPage: React.FC<Props> = (props) => {
         setIsLoading(false);
       } catch (error) {
         console.log(error);
-        alert(error);
+        alert(errorMessages.SYSTEM_ERROR);
       }
     })();
   }, []);
@@ -51,20 +53,45 @@ const IndexPage: React.FC<Props> = (props) => {
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);
   };
-  const updateEmailNotices = (key: EmailNoticesTypes, value: boolean) => {
-    emailNotices[key] = value;
-    console.log(emailNotices);
+
+  const resetUpdatingMessage = () => {
+    setUpdatingMessage("更新中...");
   };
+
+  const updateEmailNotices = async (key: EmailNoticesTypes, value: boolean) => {
+    setUpdatingMessage;
+    emailNotices[key] = value;
+    const params = {
+      userId,
+      emailNotices,
+    };
+    const err = new Error();
+    try {
+      setUpdatingMessage("変更の反映には時間がかかることがあります。");
+      const result = await postEmailNotices(params);
+      if (!result.data.status) throw err;
+      setIsOpen(false);
+    } catch (error) {
+      alert(errorMessages.SYSTEM_ERROR);
+      setIsOpen(false);
+    }
+  };
+
   const changeOpenedReview = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.currentTarget.checked;
     setEmailNotices({ ...emailNotices, is_opened_review: isChecked });
+    resetUpdatingMessage();
+    setIsOpen(true);
     updateEmailNotices("is_opened_review", isChecked);
   };
+
   const changeRequestedReview = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const isChecked = event.currentTarget.checked;
     setEmailNotices({ ...emailNotices, is_requested_review: isChecked });
+    resetUpdatingMessage();
+    setIsOpen(true);
     updateEmailNotices("is_requested_review", isChecked);
   };
 
@@ -134,6 +161,14 @@ const IndexPage: React.FC<Props> = (props) => {
               </ProfileContentCheck>
             </ContentWrapper>
           </section>
+          <Snackbar
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            open={isOpen}
+            message={updatingMessage}
+          />
         </>
       )}
     </SettingLayout>
