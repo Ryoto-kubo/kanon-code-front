@@ -7,7 +7,7 @@ import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting-form";
 import theme from "@/styles/theme";
-import { UserProfileProps, UserType } from "@/types/global";
+import { UserProfileTypes, UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
@@ -20,7 +20,7 @@ import styled from "styled-components";
 type Props = {
   title: string;
   authUser: any;
-  currentUser: UserType | null;
+  currentUser: UserTypes | null;
 };
 
 const StyledButtonWrapper = styled(Box)`
@@ -50,10 +50,10 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
-  const [user, setUser] = useState<UserType | null>(props.currentUser);
+  const [user, setUser] = useState<UserTypes | null>(props.currentUser);
   const [userId] = useState(props.authUser.username);
   const [isValidName, setIsValidName] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileProps>(
+  const [profile, setProfile] = useState<UserProfileTypes>(
     CONSTS.INITIAL_USER_PROFILE
   );
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
@@ -96,7 +96,6 @@ const IndexPage: React.FC<Props> = (props) => {
     try {
       const response = await postUserProfile(params);
       const result = response.data;
-      console.log(result, "result");
       if (!result.status) {
         if (result.status_code === 1001) {
           alert(errorMessages.EXISTED_NAME);
@@ -106,7 +105,6 @@ const IndexPage: React.FC<Props> = (props) => {
       }
       setUpdatingMessage("変更の反映には時間がかかることがあります。");
       setIsDidabled(false);
-      console.log(profile, "profile");
       setUser({
         ...user!,
         user_profile: profile,

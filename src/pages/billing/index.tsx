@@ -1,7 +1,7 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import { SettingLayout } from "@/layouts/setting-form";
-import { UserType } from "@/types/global";
+import { UserTypes } from "@/types/global";
 import Box from "@material-ui/core/Box";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -13,14 +13,9 @@ import styled from "styled-components";
 
 type Props = {
   title: string;
-  currentUser: null | UserType;
+  currentUser: null | UserTypes;
 };
 
-// const StyledBoxBgPrimary = styled(Box)(
-//   ({ theme }) => `
-//   background: ${fade(theme.palette.primary.main, 0.1)};
-// `,
-// )
 const StyledBox = styled(Box)(
   ({ theme }) => `
     width: 100%;

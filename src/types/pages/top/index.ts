@@ -1,4 +1,4 @@
-export type PostContentsProps = {
+export type PostContentsTypes = {
   update_day: number;
   update_month: number;
   partition_key: string;

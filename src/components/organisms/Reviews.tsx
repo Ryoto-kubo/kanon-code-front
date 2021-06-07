@@ -1,5 +1,5 @@
 import { Post } from '@/components/organisms/Post'
-import { PostContentsProps } from '@/types/global/index'
+import { PostContentsTypes } from '@/types/global/index'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 import Tab from '@material-ui/core/Tab'
@@ -10,7 +10,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 type Props = {
   user: any
-  posts: PostContentsProps[]
+  posts: PostContentsTypes[]
   isMe: boolean
 }
 
@@ -45,15 +45,15 @@ const TabPanel = (props: {
     </div>
   )
 }
-const makePropertyForPostUrl = (posts: PostContentsProps[]) => {
-  return posts.map((el: PostContentsProps) => {
+const makePropertyForPostUrl = (posts: PostContentsTypes[]) => {
+  return posts.map((el: PostContentsTypes) => {
     const postId = el.sort_key.split('_').pop()
     const displayName = el.user_profile.display_name
     el.postUrl = `${displayName}/post/${postId}`
     return el
   })
 }
-const splitPostsByPostStatus = (posts: PostContentsProps[]) => {
+const splitPostsByPostStatus = (posts: PostContentsTypes[]) => {
   let acceptPosts = []
   let reviewedPosts = []
   let paymentedPosts = []
@@ -111,7 +111,7 @@ export const Reviews: React.FC<Props> = (props) => {
       <TabPanel value={value} index={0}>
         <Box mb={4}>
           <Grid spacing={3} container>
-            {acceptPosts.map((el: PostContentsProps) => (
+            {acceptPosts.map((el: PostContentsTypes) => (
               <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                 <Post
                   title={el.contents.title}
@@ -130,7 +130,7 @@ export const Reviews: React.FC<Props> = (props) => {
       <TabPanel value={value} index={1}>
         <Box mb={4}>
           <Grid spacing={3} container>
-            {reviewedPosts.map((el: PostContentsProps) => (
+            {reviewedPosts.map((el: PostContentsTypes) => (
               <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                 <Post
                   title={el.contents.title}
@@ -150,7 +150,7 @@ export const Reviews: React.FC<Props> = (props) => {
         <TabPanel value={value} index={2}>
           <Box mb={4}>
             <Grid spacing={3} container>
-              {paymentedPosts.map((el: PostContentsProps) => (
+              {paymentedPosts.map((el: PostContentsTypes) => (
                 <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                   <Post
                     title={el.contents.title}

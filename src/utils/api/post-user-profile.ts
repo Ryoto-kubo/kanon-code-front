@@ -1,10 +1,10 @@
 import { apis } from "@/consts/api/";
-import { UserProfileProps } from "@/types/global";
+import { UserProfileTypes } from "@/types/global";
 import { axios } from "@/utils/axios";
 
 type PramsProps = {
   userId: string;
-  userProfile: UserProfileProps;
+  userProfile: UserProfileTypes;
 };
 
 export const postUserProfile = async (params: PramsProps) => {

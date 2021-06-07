@@ -5,7 +5,7 @@ import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { NoSettingDataWrapper } from "@/components/organisms/NoSettingDataWrapper";
 import { YEARS_EXPERIENCES } from "@/consts/years-experiences";
 import { SettingLayout } from "@/layouts/setting/";
-import { UserProfileProps, UserType } from "@/types/global";
+import { UserProfileTypes, UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -14,7 +14,7 @@ import SkilSvg from "../../../assets/illustration/skil.svg";
 type Props = {
   title: string;
   authUser: any;
-  currentUser: UserType | null;
+  currentUser: UserTypes | null;
 };
 
 const StyledPairSkilSvg = styled(SkilSvg)`
@@ -32,13 +32,13 @@ const IndexPage: React.FC<Props> = (props) => {
   const [userId] = useState(props.authUser.username);
   const [isLoading, setIsLoading] = useState(true);
   const [isInputeState, setIsInputState] = useState(false);
-  const [profile, setProfile] = useState<UserProfileProps>(
+  const [profile, setProfile] = useState<UserProfileTypes>(
     props.currentUser!.user_profile
   );
   const params = {
     userId: userId,
   };
-  const makeInputState = (profile: UserProfileProps): boolean => {
+  const makeInputState = (profile: UserProfileTypes): boolean => {
     const langList = profile.skils.map((el) => el.language);
     let isExistData = false;
     for (const value of langList) {

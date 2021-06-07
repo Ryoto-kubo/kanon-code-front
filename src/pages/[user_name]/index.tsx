@@ -2,8 +2,8 @@ import { ProfileArea } from "@/components/organisms/ProfileArea";
 import { Reviews } from "@/components/organisms/Reviews";
 import { SkilsArea } from "@/components/organisms/SkilsArea";
 import Layout from "@/layouts/standard";
-import { UserType } from "@/types/global";
-import { PostContentsProps } from "@/types/global/index";
+import { UserTypes } from "@/types/global";
+import { PostContentsTypes } from "@/types/global/index";
 import { getUserContents } from "@/utils/api/get-user-contents";
 import { Container } from "@material-ui/core/";
 import Box from "@material-ui/core/Box";
@@ -13,10 +13,10 @@ import React from "react";
 
 type Props = {
   authUser: any;
-  currentUser: null | UserType;
+  currentUser: null | UserTypes;
   data: {
-    user: UserType;
-    posts: PostContentsProps[];
+    user: UserTypes;
+    posts: PostContentsTypes[];
   };
 };
 

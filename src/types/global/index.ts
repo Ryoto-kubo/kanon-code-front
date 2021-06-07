@@ -1,4 +1,4 @@
-export type UserType = {
+export type UserTypes = {
   create_day: number;
   create_month: number;
   create_year: number;
@@ -8,10 +8,12 @@ export type UserType = {
   sort_key: string;
   type: string;
   user_id: string;
-  user_profile: UserProfileProps;
+  user_profile: UserProfileTypes;
+  email_notices: EmailNoticesTypes;
+  is_github_connect: boolean;
 };
 
-export type PostContentsProps = {
+export type PostContentsTypes = {
   update_day: number;
   update_month: number;
   partition_key: string;
@@ -42,7 +44,7 @@ export type PostContentsProps = {
   post_type: string;
   post_status: number;
   update_year: number;
-  user_profile: UserProfileProps;
+  user_profile: UserProfileTypes;
   create_year: number;
   create_day: number;
   create_month: number;
@@ -50,7 +52,7 @@ export type PostContentsProps = {
   [key: string]: any;
 };
 
-export type UserProfileProps = {
+export type UserProfileTypes = {
   display_name: string;
   github_name: string;
   icon_src: string;
@@ -63,4 +65,19 @@ export type UserProfileProps = {
   }[];
   twitter_name: string;
   web_site: string;
+};
+
+export type EmailNoticesTypes = {
+  is_opened_review: boolean;
+  is_requested_review: boolean;
+};
+
+export type BankTypes = {
+  bank_code: string;
+  bank_name: string;
+  branch_code: string;
+  branch_name: string;
+  deposit_type: number | null;
+  account_number: string;
+  account_name: string;
 };

@@ -4,8 +4,8 @@ import { FirstView } from "@/components/organisms/FirstView";
 import { Post } from "@/components/organisms/Post";
 import Layout from "@/layouts/standard";
 import theme from "@/styles/theme";
-import { UserType } from "@/types/global";
-import { PostContentsProps } from "@/types/global/";
+import { UserTypes } from "@/types/global";
+import { PostContentsTypes } from "@/types/global/";
 import { getContents } from "@/utils/api/get-contents";
 import { Box, Container, Grid } from "@material-ui/core/";
 import React from "react";
@@ -15,10 +15,10 @@ import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   authUser: any;
-  currentUser: null | UserType;
+  currentUser: null | UserTypes;
   data: {
     Count: number;
-    Items: PostContentsProps[];
+    Items: PostContentsTypes[];
     ScannedCount: number;
   };
 };
@@ -28,15 +28,15 @@ const StyledBoxWidthBorder = styled(Box)`
   padding-left: 8px;
 `;
 
-const makePropertyForPostUrl = (posts: PostContentsProps[]) => {
-  return posts.map((el: PostContentsProps) => {
+const makePropertyForPostUrl = (posts: PostContentsTypes[]) => {
+  return posts.map((el: PostContentsTypes) => {
     const postId = el.sort_key.split("_").pop();
     const displayName = el.user_profile.display_name;
     el.postUrl = `${displayName}/post/${postId}`;
     return el;
   });
 };
-const splitPostsByPostLanguage = (posts: PostContentsProps[]) => {
+const splitPostsByPostLanguage = (posts: PostContentsTypes[]) => {
   let frontPosts = [];
   let backPosts = [];
   let otherPosts = [];
@@ -65,7 +65,7 @@ const splitPostsByPostLanguage = (posts: PostContentsProps[]) => {
 const IndexPage: React.FC<Props> = (props) => {
   const items = makePropertyForPostUrl(props.data.Items);
   const { frontPosts, backPosts, otherPosts } = splitPostsByPostLanguage(items);
-  // const [contents] = useState<PostContentsProps[]>(items)
+  // const [contents] = useState<PostContentsTypes[]>(items)
 
   // const [contents, setContents] = useState<any[]>(props.data.Items);
   // const [isLoading, setIsLoading] = useState<boolean>(true);

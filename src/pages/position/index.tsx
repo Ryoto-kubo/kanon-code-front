@@ -7,7 +7,7 @@ import { errorMessages } from "@/consts/error-messages";
 import { POSITIONS } from "@/consts/positions";
 import { SettingLayout } from "@/layouts/setting-form";
 // import theme from "@/styles/theme";
-import { UserProfileProps, UserType } from "@/types/global";
+import { UserProfileTypes, UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
@@ -22,7 +22,7 @@ import styled from "styled-components";
 type Props = {
   title: string;
   authUser: any;
-  currentUser: UserType | null;
+  currentUser: UserTypes | null;
 };
 
 const StyledButtonWrapper = styled(Box)`
@@ -53,7 +53,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
   const [userId] = useState(props.authUser.username);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileProps>({
+  const [profile, setProfile] = useState<UserProfileTypes>({
     display_name: "",
     github_name: "",
     icon_src: "",

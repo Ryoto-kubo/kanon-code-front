@@ -16,8 +16,8 @@ const StyledBoxAbsolute = styled(Box)`
 `;
 
 export const CustomLoader: React.FC<Props> = ({
-  width = 60,
-  height = 60,
+  width = 40,
+  height = 40,
   color = "#5C6BC0",
 }) => {
   return (
