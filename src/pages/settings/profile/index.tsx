@@ -10,8 +10,8 @@ import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { POSITIONS } from "@/consts/positions";
 import { SettingLayout } from "@/layouts/setting/";
-// import { UserType } from "@/types/global";
-import { UserProfileProps, UserType } from "@/types/global";
+// import { UserTypes } from "@/types/global";
+import { UserProfileTypes, UserTypes } from "@/types/global";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
@@ -24,7 +24,7 @@ import React, { useCallback, useEffect, useState } from "react";
 type Props = {
   title: string;
   authUser: any;
-  currentUser: UserType | null;
+  currentUser: UserTypes | null;
 };
 type ValidObject = {
   isValid: boolean;
@@ -41,12 +41,12 @@ const IndexPage: React.FC<Props> = (props) => {
   }, []);
   const [isLoading, setIsLoading] = useState(true);
   const [userId] = useState(props.authUser.username);
-  const [user, setUser] = useState<UserType | null>(props.currentUser);
+  const [user, setUser] = useState<UserTypes | null>(props.currentUser);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, "")
   );
-  const [profile, setProfile] = useState<UserProfileProps>(
+  const [profile, setProfile] = useState<UserProfileTypes>(
     props.currentUser!.user_profile
   );
   const params = {

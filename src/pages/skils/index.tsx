@@ -6,7 +6,7 @@ import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
 import { YEARS_EXPERIENCES } from "@/consts/years-experiences";
 import { SettingLayout } from "@/layouts/setting-form";
-import { UserProfileProps, UserType } from "@/types/global";
+import { UserProfileTypes, UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
@@ -20,7 +20,7 @@ import styled from "styled-components";
 type Props = {
   title: string;
   authUser: any;
-  currentUser: null | UserType;
+  currentUser: null | UserTypes;
 };
 type TypeParams = {
   language: string;
@@ -56,7 +56,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
   const [userId] = useState(props.authUser.username);
-  const [profile, setProfile] = useState<UserProfileProps>(
+  const [profile, setProfile] = useState<UserProfileTypes>(
     CONSTS.INITIAL_USER_PROFILE
   );
   const [validList, setValidList] = useState<boolean[]>([

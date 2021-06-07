@@ -3,6 +3,12 @@ export const MAX_TAGS_LENGTH = 5;
 export const MAX_PRICE_LENGTH = 5;
 export const MAX_NAME_LENGTH = 15;
 export const MAX_LANG_LENGTH = 15;
+export const MAX_BANK_CODE_LENGTH = 4;
+export const MAX_BANK_NAME_LENGTH = 32;
+export const MAX_BRANCH_CODE_LENGTH = 3;
+export const MAX_BRANCH_NAME_LENGTH = 32;
+export const MAX_ACCOUNT_NUMBER_LENGTH = 8;
+export const MAX_ACCOUNT_NAME_LENGTH = 32;
 export const MAX_OTHERE_SERVICE_NAME_LENGTH = 100;
 export const MAX_INTRODUCTION_LENGTH = 300;
 export const MAX_DESCRIPTION_LENGTH = 1500;
@@ -78,4 +84,13 @@ export const INITIAL_USER_PROFILE = {
   ],
   twitter_name: "",
   web_site: "",
+};
+export const INITIAL_BANK = {
+  bank_code: "",
+  bank_name: "",
+  branch_code: "",
+  branch_name: "",
+  deposit_type: null,
+  account_number: "",
+  account_name: "",
 };

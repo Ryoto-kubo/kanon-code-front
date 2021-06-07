@@ -1,6 +1,6 @@
 import Layout from "@/layouts/standard";
-import { UserType } from "@/types/global";
-import { PostContentsProps } from "@/types/pages/top";
+import { UserTypes } from "@/types/global";
+import { PostContentsTypes } from "@/types/pages/top";
 import { getContent } from "@/utils/api/get-content";
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
 import { Container } from "@material-ui/core/";
@@ -10,8 +10,8 @@ import React from "react";
 
 type Props = {
   authUser: any;
-  currentUser: null | UserType;
-  data: PostContentsProps;
+  currentUser: null | UserTypes;
+  data: PostContentsTypes;
 };
 
 const IndexPage: React.FC<Props> = (props) => {

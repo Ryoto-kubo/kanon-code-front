@@ -7,7 +7,7 @@ import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting-form";
 // import theme from "@/styles/theme";
-import { UserProfileProps, UserType } from "@/types/global";
+import { UserProfileTypes, UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
@@ -19,7 +19,7 @@ import styled from "styled-components";
 type Props = {
   title: string;
   authUser: any;
-  currentUser: UserType | null;
+  currentUser: UserTypes | null;
 };
 
 const StyledButtonWrapper = styled(Box)`
@@ -43,7 +43,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [userId] = useState(props.authUser.username);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileProps>(
+  const [profile, setProfile] = useState<UserProfileTypes>(
     CONSTS.INITIAL_USER_PROFILE
   );
   const MAX_INTRODUCTION_LENGTH = CONSTS.MAX_INTRODUCTION_LENGTH;

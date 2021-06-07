@@ -8,7 +8,7 @@ import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { targetLanguages } from "@/consts/target-languages";
 import LayoutPost from "@/layouts/post";
-import { UserType } from "@/types/global";
+import { UserTypes } from "@/types/global";
 import { postContent } from "@/utils/api/post-content";
 import * as S3 from "@/utils/api/s3";
 import { PrepareContentBeforePost } from "@/utils/prepare-content-before-post";
@@ -25,7 +25,7 @@ import "./style.scss";
 
 type Props = {
   title: string;
-  currentUser: null | UserType;
+  currentUser: null | UserTypes;
 };
 type ProgrammingIcon = {
   id: number;

@@ -3,14 +3,14 @@ import { SearchField } from "@/components/molecules/SearchField";
 import { CircleGrids } from "@/components/organisms/CircleGrids";
 import { icons } from "@/components/svg/programing/Icons";
 import Layout from "@/layouts/standard";
-import { UserType } from "@/types/global";
+import { UserTypes } from "@/types/global";
 import { Container } from "@material-ui/core/";
 import { useRouter } from "next/router";
 import React, { MouseEvent, useState } from "react";
 
 type Props = {
   title: string;
-  currentUser: null | UserType;
+  currentUser: null | UserTypes;
 };
 
 const formFunc = (e: React.FormEvent) => {

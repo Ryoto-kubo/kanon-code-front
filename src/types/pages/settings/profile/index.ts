@@ -1,4 +1,4 @@
-export type UserProfileProps = {
+export type UserProfileTypes = {
   display_name: string
   github_name: string
   icon_src: string

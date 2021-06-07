@@ -7,7 +7,7 @@ import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages } from "@/consts/error-messages";
 import { SettingLayout } from "@/layouts/setting/";
-import { EmailNoticesProps, UserType } from "@/types/global";
+import { EmailNoticesTypes, UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { postEmailNotices } from "@/utils/api/post-email-notices";
 import Snackbar from "@material-ui/core/Snackbar";
@@ -16,20 +16,22 @@ import React, { useEffect, useState } from "react";
 type Props = {
   title: string;
   authUser: any;
-  currentUser: UserType | null;
+  currentUser: UserTypes | null;
 };
-type EmailNoticesTypes = Readonly<"is_opened_review" | "is_requested_review">;
+type EmailNoticesKeyTypes = Readonly<
+  "is_opened_review" | "is_requested_review"
+>;
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
-  const [emailNotices, setEmailNotices] = useState<EmailNoticesProps>(
+  const [emailNotices, setEmailNotices] = useState<EmailNoticesTypes>(
     props.currentUser!.email_notices
   );
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
   const [userId] = useState(props.authUser.username);
   const [isLoading, setIsLoading] = useState(true);
-  const [user] = useState<UserType | null>(props.currentUser);
+  const [user] = useState<UserTypes | null>(props.currentUser);
   const params = {
     userId: userId,
   };
@@ -58,7 +60,10 @@ const IndexPage: React.FC<Props> = (props) => {
     setUpdatingMessage("更新中...");
   };
 
-  const updateEmailNotices = async (key: EmailNoticesTypes, value: boolean) => {
+  const updateEmailNotices = async (
+    key: EmailNoticesKeyTypes,
+    value: boolean
+  ) => {
     setUpdatingMessage;
     emailNotices[key] = value;
     const params = {
