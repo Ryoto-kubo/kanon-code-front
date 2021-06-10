@@ -6,6 +6,7 @@ import { ProfileContentCheck } from "@/components/molecules/ProfileContentCheck"
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages } from "@/consts/error-messages";
+import { messages } from "@/consts/messages";
 import { SettingLayout } from "@/layouts/setting/";
 import { EmailNoticesTypes, UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
@@ -72,7 +73,7 @@ const IndexPage: React.FC<Props> = (props) => {
     };
     const err = new Error();
     try {
-      setUpdatingMessage("変更の反映には時間がかかることがあります。");
+      setUpdatingMessage(messages.UPDATED_MESSAGE);
       const result = await postEmailNotices(params);
       if (!result.data.status) throw err;
       setIsOpen(false);

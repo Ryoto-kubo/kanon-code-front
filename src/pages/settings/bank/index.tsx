@@ -30,6 +30,7 @@ const StyledPairBankSvg = styled(BankSvg)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
+  if (!props.authUser) return <></>;
   const [isLoading, setIsLoading] = useState(true);
   const [user] = useState<UserTypes | null>(props.currentUser);
   const [userId] = useState(props.authUser.username);

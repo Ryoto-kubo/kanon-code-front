@@ -7,6 +7,7 @@ import { BANKS, DEPOSIT_TYPES } from "@/consts/banks";
 import * as CONST from "@/consts/const";
 import { INITIAL_BANK } from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
+import { messages } from '@/consts/messages';
 import { SettingLayout } from "@/layouts/setting-form";
 import theme from "@/styles/theme";
 import { BankTypes, UserTypes } from "@/types/global";
@@ -285,7 +286,7 @@ const IndexPage: React.FC<Props> = (props) => {
     try {
       const result = await postBank({ userId, bank });
       if (!result.status) throw err;
-      setUpdatingMessage("変更の反映には時間がかかることがあります。");
+      setUpdatingMessage(messages.UPDATED_MESSAGE);
     } catch {
       setIsOpen(false);
       alert(errorMessages.SYSTEM_ERROR);

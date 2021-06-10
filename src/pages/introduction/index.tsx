@@ -5,6 +5,7 @@ import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
+import { messages } from "@/consts/messages";
 import { SettingLayout } from "@/layouts/setting-form";
 // import theme from "@/styles/theme";
 import { UserProfileTypes, UserTypes } from "@/types/global";
@@ -93,7 +94,7 @@ const IndexPage: React.FC<Props> = (props) => {
         }
         throw err;
       }
-      setUpdatingMessage("変更の反映には時間がかかることがあります。");
+      setUpdatingMessage(messages.UPDATED_MESSAGE);
       setIsDidabled(false);
 
       // setIsOpen(false)
