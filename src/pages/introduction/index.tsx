@@ -6,15 +6,14 @@ import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
 import { messages } from "@/consts/messages";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting-form";
-// import theme from "@/styles/theme";
-import { UserProfileTypes, UserTypes } from "@/types/global";
-import { getUser } from "@/utils/api/get-user";
+import { UserTypes } from "@/types/global";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -37,36 +36,16 @@ const StyledBoxTextFieldWrapper = styled(Box)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [isLoading, setIsLoading] = useState(true);
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
-  const [userId] = useState(props.authUser.username);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileTypes>(
-    CONSTS.INITIAL_USER_PROFILE
-  );
   const MAX_INTRODUCTION_LENGTH = CONSTS.MAX_INTRODUCTION_LENGTH;
 
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      const params = {
-        userId: userId,
-      };
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    })();
-  }, []);
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
 
   const resetValid = () => {
     setIsValid(true);
@@ -119,7 +98,12 @@ const IndexPage: React.FC<Props> = (props) => {
       if (value === "") resetValid();
       setIsDidabled(true);
     }
-    setProfile({ ...profile, introduction: value });
+    user.user_profile.introduction = value;
+    setUser({
+      ...user!,
+      user_profile: user.user_profile,
+    });
+    // setProfile({ ...profile, introduction: value });
   };
 
   const validIntroduction = (value: string): boolean => {

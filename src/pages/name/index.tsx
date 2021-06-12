@@ -46,11 +46,11 @@ const StyledPUrlWrapper = styled("div")`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
-  const [userId] = useState(props.authUser.username);
   const [isValidName, setIsValidName] = useState<boolean>(true);
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
