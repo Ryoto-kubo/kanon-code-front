@@ -32,19 +32,19 @@ type ValidObject = {
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
       isValid: defaultValue,
       message: defaultMessage,
     };
   }, []);
-  const [userId] = useState(props.authUser.username);
-  const [user, setUser] = useState<UserTypes | null>(props.currentUser);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, "")
   );
-  const { profile, setProfile, isLoading } = useUser(userId, props.currentUser);
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
   // const fetcher = async () => {
   //   return await getUser(params);
   // };
@@ -133,10 +133,7 @@ const IndexPage: React.FC<Props> = (props) => {
         const response = await postUserProfile(params);
         const result = response.data;
         if (!result.status) throw (err.message = result.status_message);
-        setProfile({
-          ...profile,
-          icon_src: newIconSrc,
-        });
+        profile.icon_src = newIconSrc;
         setUser({
           ...user!,
           user_profile: userProfile,

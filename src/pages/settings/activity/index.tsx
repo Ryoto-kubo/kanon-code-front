@@ -7,12 +7,12 @@ import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages } from "@/consts/error-messages";
 import { messages } from "@/consts/messages";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting/";
 import { EmailNoticesTypes, UserTypes } from "@/types/global";
-import { getUser } from "@/utils/api/get-user";
 import { postEmailNotices } from "@/utils/api/post-email-notices";
 import Snackbar from "@material-ui/core/Snackbar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 type Props = {
   title: string;
@@ -25,33 +25,13 @@ type EmailNoticesKeyTypes = Readonly<
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
   const [emailNotices, setEmailNotices] = useState<EmailNoticesTypes>(
     props.currentUser!.email_notices
   );
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [userId] = useState(props.authUser.username);
-  const [isLoading, setIsLoading] = useState(true);
-  const [user] = useState<UserTypes | null>(props.currentUser);
-  const params = {
-    userId: userId,
-  };
-
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setEmailNotices(result.Item.email_notices);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(errorMessages.SYSTEM_ERROR);
-      }
-    })();
-  }, []);
+  const { user, isLoading } = useUser(userId, props.currentUser);
 
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);

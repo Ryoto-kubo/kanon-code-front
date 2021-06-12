@@ -1,12 +1,10 @@
-import { UserProfileTypes, UserTypes } from "@/types/global";
+import { UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { useEffect, useState } from "react";
 
 export const useUser = (userId: string, currentUser: UserTypes | null) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [profile, setProfile] = useState<UserProfileTypes>(
-    currentUser!.user_profile
-  );
+  const [user, setUser] = useState<UserTypes>(currentUser!);
   const params = {
     userId: userId,
   };
@@ -20,7 +18,7 @@ export const useUser = (userId: string, currentUser: UserTypes | null) => {
           err.message = result.status_message;
           throw err;
         }
-        setProfile(result.Item.user_profile);
+        setUser(result.Item);
         setIsLoading(false);
       } catch (error) {
         console.log(error);
@@ -28,5 +26,5 @@ export const useUser = (userId: string, currentUser: UserTypes | null) => {
       }
     })();
   }, []);
-  return { profile, setProfile, isLoading };
+  return { user, setUser, isLoading };
 };
