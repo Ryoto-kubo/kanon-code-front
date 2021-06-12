@@ -5,16 +5,16 @@ import { CustomLoader } from "@/components/common/loader";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
-import { messages } from '@/consts/messages';
+import { messages } from "@/consts/messages";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting-form";
 // import theme from "@/styles/theme";
-import { UserProfileTypes, UserTypes } from "@/types/global";
-import { getUser } from "@/utils/api/get-user";
+import { UserTypes } from "@/types/global";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -37,41 +37,13 @@ const StyledBoxTextFieldWrapper = styled(Box)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
+  const MAX_PRICE_LENGTH = CONSTS.MAX_PRICE_LENGTH;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [isLoading, setIsLoading] = useState(true);
-  // const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
-  const [userId] = useState(props.authUser.username);
-  // const [isValid, setIsValid] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileTypes>(
-    CONSTS.INITIAL_USER_PROFILE
-  );
-  const MAX_PRICE_LENGTH = CONSTS.MAX_PRICE_LENGTH;
-
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      const params = {
-        userId: userId,
-      };
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    })();
-  }, []);
-
-  // const resetValid = () => {
-  //   setIsValid(true);
-  //   setIsValidText("");
-  // };
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
 
   const updateProfile = async () => {
     const isValid = validPrice(String(profile.price));
@@ -105,12 +77,20 @@ const IndexPage: React.FC<Props> = (props) => {
   const changePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     if (value === "") {
-      setProfile({ ...profile, price: 0 });
+      user.user_profile.price = 0;
+      setUser({
+        ...user!,
+        user_profile: user.user_profile,
+      });
       return;
     }
     const isValid = validPrice(value);
     if (isValid) {
-      setProfile({ ...profile, price: Number(value) });
+      user.user_profile.price = Number(value);
+      setUser({
+        ...user!,
+        user_profile: user.user_profile,
+      });
     }
   };
 
