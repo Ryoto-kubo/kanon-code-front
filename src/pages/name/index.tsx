@@ -6,16 +6,16 @@ import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { messages } from "@/consts/messages";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting-form";
 import theme from "@/styles/theme";
-import { UserProfileTypes, UserTypes } from "@/types/global";
-import { getUser } from "@/utils/api/get-user";
+import { UserTypes } from "@/types/global";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import Snackbar from "@material-ui/core/Snackbar";
 import Typography from "@material-ui/core/Typography";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -48,36 +48,15 @@ const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [isLoading, setIsLoading] = useState(true);
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
-  const [user, setUser] = useState<UserTypes | null>(props.currentUser);
   const [userId] = useState(props.authUser.username);
   const [isValidName, setIsValidName] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileTypes>(
-    CONSTS.INITIAL_USER_PROFILE
-  );
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
 
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      const params = {
-        userId: userId,
-      };
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    })();
-  }, []);
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
 
   const resetValid = () => {
     setIsValidName(true);
@@ -127,7 +106,11 @@ const IndexPage: React.FC<Props> = (props) => {
       if (value === "") resetValid();
       setIsDidabled(true);
     }
-    setProfile({ ...profile, display_name: value });
+    user.user_profile.display_name = value;
+    setUser({
+      ...user!,
+      user_profile: user.user_profile,
+    });
   };
 
   const validName = (value: string): boolean => {
