@@ -40,34 +40,11 @@ const IndexPage: React.FC<Props> = (props) => {
   const MAX_OTHERE_SERVICE_NAME_LENGTH = CONSTS.MAX_OTHERE_SERVICE_NAME_LENGTH;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  // const [isLoading, setIsLoading] = useState(true);
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [isValidName, setIsValidName] = useState<boolean>(true);
-  // const [profile, setProfile] = useState<UserProfileTypes>(
-  //   CONSTS.INITIAL_USER_PROFILE
-  // );
   const { user, setUser, isLoading } = useUser(userId, props.currentUser);
   const profile = user.user_profile;
-
-  // useEffect(() => {
-  //   const err = new Error();
-  //   (async () => {
-  //     const params = {
-  //       userId: userId,
-  //     };
-  //     try {
-  //       const response = await getUser(params);
-  //       const result = response.data;
-  //       if (!result.status) throw (err.message = result.status_message);
-  //       setProfile(result.Item.user_profile);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.log(error);
-  //       alert(error);
-  //     }
-  //   })();
-  // }, []);
 
   const resetValid = () => {
     setIsValidName(true);
@@ -118,7 +95,6 @@ const IndexPage: React.FC<Props> = (props) => {
       ...user!,
       user_profile: user.user_profile,
     });
-    // setProfile({ ...profile, twitter_name: value });
   };
 
   const validName = (value: string): boolean => {
