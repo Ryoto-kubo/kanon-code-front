@@ -37,13 +37,12 @@ const StyledBoxTextFieldWrapper = styled(Box)`
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const userId = props.authUser.username;
+  const MAX_INTRODUCTION_LENGTH = CONSTS.MAX_INTRODUCTION_LENGTH;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const MAX_INTRODUCTION_LENGTH = CONSTS.MAX_INTRODUCTION_LENGTH;
-
   const { user, setUser, isLoading } = useUser(userId, props.currentUser);
   const profile = user.user_profile;
 
@@ -65,7 +64,6 @@ const IndexPage: React.FC<Props> = (props) => {
     try {
       const response = await postUserProfile(params);
       const result = response.data;
-      console.log(result, "result");
       if (!result.status) {
         if (result.status_code === 1001) {
           alert(errorMessages.EXISTED_NAME);
@@ -75,18 +73,12 @@ const IndexPage: React.FC<Props> = (props) => {
       }
       setUpdatingMessage(messages.UPDATED_MESSAGE);
       setIsDidabled(false);
-
-      // setIsOpen(false)
     } catch (error) {
       alert(errorMessages.SYSTEM_ERROR);
       setIsOpen(false);
       setIsDidabled(false);
     }
   };
-
-  // const close = () => {
-  //   setIsOpen(false);
-  // };
 
   const changeIntroduction = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -103,7 +95,6 @@ const IndexPage: React.FC<Props> = (props) => {
       ...user!,
       user_profile: user.user_profile,
     });
-    // setProfile({ ...profile, introduction: value });
   };
 
   const validIntroduction = (value: string): boolean => {
