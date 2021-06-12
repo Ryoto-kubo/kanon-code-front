@@ -1,5 +1,5 @@
 import { apis } from "@/consts/api/";
-import { ResponseCreditType } from "@/types/api/credit";
+import { ResponseCreditType } from "@/types/api/get-credit";
 import { axios } from "@/utils/axios";
 import { AxiosResponse } from "axios";
 
