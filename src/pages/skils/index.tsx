@@ -6,16 +6,16 @@ import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
 import { messages } from "@/consts/messages";
 import { YEARS_EXPERIENCES } from "@/consts/years-experiences";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting-form";
-import { UserProfileTypes, UserTypes } from "@/types/global";
-import { getUser } from "@/utils/api/get-user";
+import { UserTypes } from "@/types/global";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
 import MenuItem from "@material-ui/core/MenuItem";
 import Snackbar from "@material-ui/core/Snackbar";
 import TextField from "@material-ui/core/TextField";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -50,16 +50,14 @@ const renderOptions = (): JSX.Element[] => {
 };
 
 const IndexPage: React.FC<Props> = (props) => {
+  if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
+  const MAX_LANG_LENGTH = CONSTS.MAX_LANG_LENGTH;
   const [skilParams] = useState<TypeParams>(CONSTS.INITIAL_SKILS);
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [isLoading, setIsLoading] = useState(true);
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
-  const [userId] = useState(props.authUser.username);
-  const [profile, setProfile] = useState<UserProfileTypes>(
-    CONSTS.INITIAL_USER_PROFILE
-  );
   const [validList, setValidList] = useState<boolean[]>([
     true,
     true,
@@ -67,26 +65,8 @@ const IndexPage: React.FC<Props> = (props) => {
     true,
     true,
   ]);
-  const MAX_LANG_LENGTH = CONSTS.MAX_LANG_LENGTH;
-
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      const params = {
-        userId: userId,
-      };
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    })();
-  }, []);
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
 
   const update = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -162,7 +142,11 @@ const IndexPage: React.FC<Props> = (props) => {
       };
       const newSkils = profile.skils.slice();
       newSkils[index] = newItem;
-      setProfile({ ...profile, skils: newSkils });
+      user.user_profile.skils = newSkils;
+      setUser({
+        ...user!,
+        user_profile: user.user_profile,
+      });
     },
     [profile]
   );
