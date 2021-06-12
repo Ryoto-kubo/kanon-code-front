@@ -83,7 +83,8 @@ const StyledButtonWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  const [userId] = useState(props.authUser.username);
+  if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
   const [isOpen, setIsOpen] = useState(false);
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
