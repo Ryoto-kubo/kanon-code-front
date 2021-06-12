@@ -7,7 +7,7 @@ import { BANKS, DEPOSIT_TYPES } from "@/consts/banks";
 import * as CONST from "@/consts/const";
 import { INITIAL_BANK } from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
-import { messages } from '@/consts/messages';
+import { messages } from "@/consts/messages";
 import { SettingLayout } from "@/layouts/setting-form";
 import theme from "@/styles/theme";
 import { BankTypes, UserTypes } from "@/types/global";

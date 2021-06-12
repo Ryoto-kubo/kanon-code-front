@@ -1,7 +1,9 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
+import { CustomLoader } from "@/components/common/loader";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import { messages } from "@/consts/messages";
+import { useCredit } from "@/hooks/useCredit";
 import { SettingLayout } from "@/layouts/setting-form";
 import { UserTypes } from "@/types/global";
 import { postCredit } from "@/utils/api/post-credit";
@@ -57,25 +59,8 @@ const Wrapper = ({
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [userId] = useState(authUser.username);
-
-  // useEffect(() => {
-  //   const err = new Error();
-  //   (async () => {
-  //     try {
-  //       const response = await getBank({ userId });
-  //       const result = response.data;
-  //       if (!result.status) throw (err.message = result.status_message);
-  //       setBank(result.Item ? result.Item.bank : INITIAL_BANK);
-  //       setDepositAlignment(result.Item ? result.Item.bank.deposit_type : null);
-  //       setBankAlignment(result.Item ? result.Item.bank.bank_code : null);
-  //       setIsLoading(false);
-  //     } catch {
-  //       console.error(err);
-  //       alert(errorMessages.SYSTEM_ERROR);
-  //     }
-  //   })();
-  // }, []);
+  const userId = authUser.username;
+  const { credit, isLoading } = useCredit(userId);
 
   const changeNumber = (event: stripeJs.StripeCardElementChangeEvent) => {
     const empty = event.empty;
@@ -94,6 +79,16 @@ const Wrapper = ({
     }
   };
 
+  const postConfirm = () => {
+    let lsResult = true;
+    if (credit) {
+      lsResult = confirm(
+        "登録されているカード情報は上書きされます。よろしいですか？"
+      );
+    }
+    return lsResult;
+  };
+
   const update = async () => {
     if (!isValid) return;
     if (!stripe || !elements) return;
@@ -104,6 +99,8 @@ const Wrapper = ({
       setIsValid(false);
       return;
     }
+    const isConfirm = postConfirm();
+    if (!isConfirm) return;
     setIsOpen(true);
     const err = new Error();
     const responseToken = token.id;
@@ -121,7 +118,7 @@ const Wrapper = ({
       if (!result.status) throw (err.message = result.status_message);
       setUpdatingMessage(messages.UPDATED_MESSAGE);
     } catch {
-      setIsOpen(true);
+      setIsOpen(false);
     }
   };
 
@@ -131,64 +128,70 @@ const Wrapper = ({
       currentUser={currentUser}
     >
       <SettingForm
-        linkText="クレジット"
+        linkText="Credit"
         href="/settings/billing"
         fontSize="default"
         color="inherit"
         headingFontSize={24}
         marginBottom={0}
       >
-        <Box textAlign="center">
-          <StyledBox>
-            <StyledBoxBgColorWhite>
-              <CardElement
-                options={{
-                  style: {
-                    base: {
-                      fontSize: "16px",
-                      color: "#424770",
-                      "::placeholder": {
-                        color: "#aab7c4",
+        {isLoading ? (
+          <CustomLoader width={40} height={40} />
+        ) : (
+          <Box textAlign="center">
+            <StyledBox>
+              <StyledBoxBgColorWhite>
+                <CardElement
+                  options={{
+                    style: {
+                      base: {
+                        fontSize: "16px",
+                        color: "#424770",
+                        "::placeholder": {
+                          color: "#aab7c4",
+                        },
+                        backgroundColor: "#ffffff",
                       },
-                      backgroundColor: "#ffffff",
+                      invalid: {
+                        color: "#EA4335",
+                      },
                     },
-                    invalid: {
-                      color: "#EA4335",
-                    },
-                  },
-                }}
-                onChange={changeNumber}
-              />
-            </StyledBoxBgColorWhite>
-            {!isValid && <ValidMessage validText="入力された番号は無効です" />}
-            <List disablePadding>
-              <ListItem disableGutters dense>
-                ・カード情報をStripeにのみ送信・保存されます
-              </ListItem>
-              <ListItem disableGutters dense>
-                ・レビュワーのユーザー名を知ることができます
-              </ListItem>
-              <ListItem disableGutters dense>
-                ・お支払いに関するQ＆A
-              </ListItem>
-            </List>
-          </StyledBox>
-          <CustomSolidButton
-            sizing="small"
-            onClick={update}
-            disabled={isDisabled}
-          >
-            登録
-          </CustomSolidButton>
-          <Snackbar
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            open={isOpen}
-            message={updatingMessage}
-          />
-        </Box>
+                  }}
+                  onChange={changeNumber}
+                />
+              </StyledBoxBgColorWhite>
+              {!isValid && (
+                <ValidMessage validText="入力された番号は無効です" />
+              )}
+              <List disablePadding>
+                <ListItem disableGutters dense>
+                  ・カード情報をStripeにのみ送信・保存されます
+                </ListItem>
+                <ListItem disableGutters dense>
+                  ・レビュワーのユーザー名を知ることができます
+                </ListItem>
+                <ListItem disableGutters dense>
+                  ・お支払いに関するQ＆A
+                </ListItem>
+              </List>
+            </StyledBox>
+            <CustomSolidButton
+              sizing="small"
+              onClick={update}
+              disabled={isDisabled}
+            >
+              登録
+            </CustomSolidButton>
+            <Snackbar
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              open={isOpen}
+              message={updatingMessage}
+            />
+          </Box>
+        )}
       </SettingForm>
     </SettingLayout>
   );

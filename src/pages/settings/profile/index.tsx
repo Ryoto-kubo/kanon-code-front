@@ -10,7 +10,6 @@ import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { POSITIONS } from "@/consts/positions";
 import { SettingLayout } from "@/layouts/setting/";
-// import { UserTypes } from "@/types/global";
 import { UserProfileTypes, UserTypes } from "@/types/global";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
 import { getUser } from "@/utils/api/get-user";
