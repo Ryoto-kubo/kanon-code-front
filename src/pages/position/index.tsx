@@ -4,11 +4,11 @@ import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
+import { messages } from "@/consts/messages";
 import { POSITIONS } from "@/consts/positions";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting-form";
-// import theme from "@/styles/theme";
-import { UserProfileTypes, UserTypes } from "@/types/global";
-import { getUser } from "@/utils/api/get-user";
+import { UserTypes } from "@/types/global";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import { UserProfile } from "@/utils/user-profile";
 import Box from "@material-ui/core/Box";
@@ -16,7 +16,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Snackbar from "@material-ui/core/Snackbar";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
@@ -48,46 +48,21 @@ const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [isLoading, setIsLoading] = useState(true);
   const [validText, setIsValidText] = useState<string>("");
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
   const [userId] = useState(props.authUser.username);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const [profile, setProfile] = useState<UserProfileTypes>({
-    display_name: "",
-    github_name: "",
-    icon_src: "",
-    introduction: "",
-    position_type: 0,
-    price: 0,
-    skils: [],
-    twitter_name: "",
-    web_site: "",
-  });
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
   const ALLOW_POSITION_TYPE_LIST = CONSTS.ALLOW_POSITION_TYPE_LIST;
-
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      const params = {
-        userId: userId,
-      };
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    })();
-  }, []);
+  const profile = user.user_profile;
 
   const changePosition = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
-    setProfile({ ...profile, position_type: Number(value) });
+    user.user_profile.position_type = Number(value);
+    setUser({
+      ...user!,
+      user_profile: user.user_profile,
+    });
   };
 
   const updateProfile = async () => {
@@ -110,10 +85,8 @@ const IndexPage: React.FC<Props> = (props) => {
         }
         throw err;
       }
-      setUpdatingMessage("変更の反映には時間がかかることがあります。");
+      setUpdatingMessage(messages.UPDATED_MESSAGE);
       setIsDidabled(false);
-
-      // setIsOpen(false)
     } catch (error) {
       alert(errorMessages.SYSTEM_ERROR);
       setIsOpen(false);

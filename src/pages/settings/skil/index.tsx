@@ -4,13 +4,14 @@ import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { NoSettingDataWrapper } from "@/components/organisms/NoSettingDataWrapper";
 import { YEARS_EXPERIENCES } from "@/consts/years-experiences";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting/";
 import { UserProfileTypes, UserTypes } from "@/types/global";
-import { getUser } from "@/utils/api/get-user";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import SkilSvg from "../../../assets/illustration/skil.svg";
+
 type Props = {
   title: string;
   authUser: any;
@@ -30,14 +31,6 @@ const StyledPairSkilSvg = styled(SkilSvg)`
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
   const [userId] = useState(props.authUser.username);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isInputeState, setIsInputState] = useState(false);
-  const [profile, setProfile] = useState<UserProfileTypes>(
-    props.currentUser!.user_profile
-  );
-  const params = {
-    userId: userId,
-  };
   const makeInputState = (profile: UserProfileTypes): boolean => {
     const langList = profile.skils.map((el) => el.language);
     let isExistData = false;
@@ -50,23 +43,9 @@ const IndexPage: React.FC<Props> = (props) => {
     return isExistData;
   };
 
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        const isResult = makeInputState(result.Item.user_profile);
-        setIsInputState(isResult);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-        alert(error);
-      }
-    })();
-  }, []);
+  const { user, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
+  const isInputeState = makeInputState(profile);
 
   return (
     <SettingLayout

@@ -11,6 +11,7 @@ export const apis = {
   REGISTER_CONTENT: "/api/registerContent",
   CREATE_PRESIGNED_URL: "/api/createPresignedUrl",
   SUGGEST_PROGRAMMINGL_ANGUAGES: "/api/suggestProgrammingLanguages",
-  EMAIL_NOTICES: 'api/emailNotices',
-  BANK: 'api/bank'
+  EMAIL_NOTICES: "api/emailNotices",
+  BANK: "api/bank",
+  CREDIT: "api/credit",
 };

@@ -9,17 +9,16 @@ import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { POSITIONS } from "@/consts/positions";
+// import useSWR from "swr";
+import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting/";
-// import { UserTypes } from "@/types/global";
-import { UserProfileTypes, UserTypes } from "@/types/global";
+import { UserTypes } from "@/types/global";
 import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
-import { getUser } from "@/utils/api/get-user";
 import { postUserProfile } from "@/utils/api/post-user-profile";
 import * as S3 from "@/utils/api/s3";
 import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
 import Box from "@material-ui/core/Box";
-import React, { useCallback, useEffect, useState } from "react";
-// import useSWR from "swr";
+import React, { useCallback, useState } from "react";
 
 type Props = {
   title: string;
@@ -33,25 +32,19 @@ type ValidObject = {
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
       isValid: defaultValue,
       message: defaultMessage,
     };
   }, []);
-  const [isLoading, setIsLoading] = useState(true);
-  const [userId] = useState(props.authUser.username);
-  const [user, setUser] = useState<UserTypes | null>(props.currentUser);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, "")
   );
-  const [profile, setProfile] = useState<UserProfileTypes>(
-    props.currentUser!.user_profile
-  );
-  const params = {
-    userId: userId,
-  };
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
   // const fetcher = async () => {
   //   return await getUser(params);
   // };
@@ -68,22 +61,6 @@ const IndexPage: React.FC<Props> = (props) => {
   // const isLoading = isValidating;
   // console.log(data, "data");
   // console.log(isValidating, "isValidating");
-
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      try {
-        const response = await getUser(params);
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setProfile(result.Item.user_profile);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-        alert(error);
-      }
-    })();
-  }, []);
 
   const updateCanPublish = useCallback((isValid: boolean, message = "") => {
     setCanPUblish({
@@ -156,10 +133,7 @@ const IndexPage: React.FC<Props> = (props) => {
         const response = await postUserProfile(params);
         const result = response.data;
         if (!result.status) throw (err.message = result.status_message);
-        setProfile({
-          ...profile,
-          icon_src: newIconSrc,
-        });
+        profile.icon_src = newIconSrc;
         setUser({
           ...user!,
           user_profile: userProfile,

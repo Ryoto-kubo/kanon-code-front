@@ -81,3 +81,12 @@ export type BankTypes = {
   account_number: string;
   account_name: string;
 };
+
+export type CreditTypes = {
+  partition_key: string;
+  sort_key: string;
+  token: string;
+  card_id: string;
+  last4_chara: string;
+  customChara: string;
+};

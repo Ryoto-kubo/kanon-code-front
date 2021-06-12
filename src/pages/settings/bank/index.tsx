@@ -4,15 +4,13 @@ import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { NoSettingDataWrapper } from "@/components/organisms/NoSettingDataWrapper";
 import { DEPOSIT_TYPES } from "@/consts/banks";
-import { errorMessages } from "@/consts/error-messages";
+import { useBank } from "@/hooks/useBank";
 import { SettingLayout } from "@/layouts/setting/";
-import { BankTypes, UserTypes } from "@/types/global";
-import { getBank } from "@/utils/api/get-bank";
+import { UserTypes } from "@/types/global";
 // import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import BankSvg from "../../../assets/illustration/bank.svg";
-
 type Props = {
   title: string;
   authUser: any;
@@ -30,29 +28,15 @@ const StyledPairBankSvg = styled(BankSvg)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [user] = useState<UserTypes | null>(props.currentUser);
-  const [userId] = useState(props.authUser.username);
-  const [bank, setBank] = useState<BankTypes | null>();
-
-  useEffect(() => {
-    const err = new Error();
-    (async () => {
-      try {
-        const response = await getBank({ userId });
-        const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
-        setBank(result.Item.bank);
-        setIsLoading(false);
-      } catch (error) {
-        console.error(error);
-        alert(errorMessages.SYSTEM_ERROR);
-      }
-    })();
-  }, []);
+  if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
+  const { bank, isLoading } = useBank(userId);
 
   return (
-    <SettingLayout title={`Kanon Code | お振込先`} currentUser={user}>
+    <SettingLayout
+      title={`Kanon Code | お振込先`}
+      currentUser={props.currentUser}
+    >
       {isLoading ? (
         <CustomLoader width={40} height={40} />
       ) : (
