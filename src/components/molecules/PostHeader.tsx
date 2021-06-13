@@ -25,7 +25,7 @@ export const PostHeader: React.FC<Props> = (props) => {
     <Box>
       <Link href={props.postUrl} passHref>
         <StyledAnchor>
-          <CustomHeading2 fontSize={16} marginBottom={1}>
+          <CustomHeading2 fontSize={16} marginBottom={0.5}>
             {props.title}
           </CustomHeading2>
         </StyledAnchor>

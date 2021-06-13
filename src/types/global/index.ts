@@ -18,27 +18,7 @@ export type PostContentsTypes = {
   update_month: number;
   partition_key: string;
   is_delete: boolean;
-  contents: {
-    tag_list: string[];
-    target_icon: {
-      icon_path: string;
-      id: number;
-      value: string;
-    };
-    description: {
-      body_html: string;
-      value: string;
-    };
-    input_file_name_lists: {
-      body_html: string;
-      file_name: string;
-      is_valid: boolean;
-      key: string;
-      source_code: string;
-    };
-    target_language: number;
-    title: string;
-  };
+  contents: ContentTypes;
   sort_key: string;
   user_id: string;
   post_type: string;
@@ -50,6 +30,28 @@ export type PostContentsTypes = {
   create_month: number;
   type: string;
   [key: string]: any;
+};
+
+export type ContentTypes = {
+  tag_list: string[];
+  target_icon: {
+    icon_path: string;
+    id: number;
+    value: string;
+  };
+  description: {
+    body_html: string;
+    value: string;
+  };
+  input_file_name_lists: {
+    body_html: string;
+    file_name: string;
+    is_valid: boolean;
+    key: string;
+    source_code: string;
+  };
+  target_language: number;
+  title: string;
 };
 
 export type UserProfileTypes = {

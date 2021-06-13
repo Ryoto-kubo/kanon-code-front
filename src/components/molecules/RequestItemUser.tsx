@@ -6,13 +6,13 @@ import Link from "next/link";
 import React from "react";
 import styled from "styled-components";
 
-interface Props {
+type Props = {
   name: string;
   date: string;
   userIcon: string;
   width?: string;
   height?: string;
-}
+};
 
 const StyledAnchor = styled(`a`)`
   color: ${theme.palette.text.primary};
@@ -21,11 +21,11 @@ const StyledAnchor = styled(`a`)`
     text-decoration: underline;
   }
 `;
-export const PostFooter: React.FC<Props> = (props) => {
+export const RequestItemUser: React.FC<Props> = (props) => {
   return (
     <Box display="flex" alignItems="center">
       <CircleElement width={`${props.width}`} height={`${props.height}`}>
-        <Link href={props.name} passHref>
+        <Link href={`/${props.name}`} passHref>
           <a>
             <img
               src={props.userIcon}
@@ -38,8 +38,8 @@ export const PostFooter: React.FC<Props> = (props) => {
           </a>
         </Link>
       </CircleElement>
-      <Box>
-        <Link href={props.name} passHref>
+      <Box mr={1}>
+        <Link href={`/${props.name}`} passHref>
           <StyledAnchor>
             <Box component="p">{props.name}</Box>
           </StyledAnchor>

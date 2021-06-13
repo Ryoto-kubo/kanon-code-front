@@ -1,18 +1,27 @@
 import { Box } from "@material-ui/core/";
 import React from "react";
 
-export const CircleElement: React.FC = (props) => {
+type Props = {
+  width?: string;
+  height?: string;
+};
+
+export const CircleElement: React.FC<Props> = ({
+  children,
+  width = "50px",
+  height = "50px",
+}) => {
   return (
     <Box
-      width={50}
-      height={50}
+      width={width}
+      height={height}
       borderRadius={100}
       display="flex"
       alignItems="center"
       justifyContent="center"
       mr={1}
     >
-      {props.children}
+      {children}
     </Box>
   );
 };

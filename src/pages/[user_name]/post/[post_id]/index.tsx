@@ -1,12 +1,13 @@
-import Layout from "@/layouts/standard";
-import { UserTypes } from "@/types/global";
-import { PostContentsTypes } from "@/types/pages/top";
-import { getContent } from "@/utils/api/get-content";
-// import { getPagesUrl } from "@/utils/api/get-pages-url";
-import { Container } from "@material-ui/core/";
-import React from "react";
 // import React, { useEffect, useState } from "react";
 // import styled from "styled-components";
+import { ReviewRequestItem } from "@/components/organisms/ReviewRequestItem";
+import Layout from "@/layouts/standard";
+import { UserTypes } from "@/types/global";
+import { PostContentsTypes } from "@/types/global/";
+import { getContent } from "@/utils/api/get-content";
+// import { getPagesUrl } from "@/utils/api/get-pages-url";
+import Container from "@material-ui/core/Container";
+import React from "react";
 
 type Props = {
   authUser: any;
@@ -16,13 +17,23 @@ type Props = {
 
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props);
+  const year = props.data.create_year;
+  const month = props.data.create_month;
+  const day = props.data.create_day;
+  const createDate = `${year}/${month}/${day}`;
 
   return (
     <Layout
       title="Kanon Code | コードレビュを全てのエンジニアへ"
       currentUser={props.currentUser}
     >
-      <Container>{props.data.contents.title}</Container>
+      <Container maxWidth="md">
+        <ReviewRequestItem
+          contents={props.data.contents}
+          profile={props.data.user_profile}
+          createDate={createDate}
+        />
+      </Container>
     </Layout>
   );
 };
@@ -46,7 +57,11 @@ export const getStaticPaths = async () => {
 
 export const getStaticProps = async (props: any) => {
   const postId = props.params.post_id;
+  console.log(postId, "postId");
+
   const result = await getContent({ postId: postId });
+  console.log(result, "result");
+
   return {
     props: {
       data: result.data.Items[0],
