@@ -30,7 +30,7 @@ const StyledBoxImgWrapper = styled(Box)`
   }
 `;
 const StyledBoxUserWrapper = styled(Box)`
-  margin-bottom: 8px;
+  margin-bottom: 16px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     margin-bottom: 0px;
   }
