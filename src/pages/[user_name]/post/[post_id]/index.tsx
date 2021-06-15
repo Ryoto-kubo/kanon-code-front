@@ -1,13 +1,15 @@
 // import React, { useEffect, useState } from "react";
-// import styled from "styled-components";
-import { ReviewRequestItem } from "@/components/organisms/ReviewRequestItem";
+import { ReviewRequestContents } from "@/components/organisms/ReviewRequestContents";
+import { ReviewRequestItemHeader } from "@/components/organisms/ReviewRequestItemHeader";
 import Layout from "@/layouts/standard";
 import { UserTypes } from "@/types/global";
 import { PostContentsTypes } from "@/types/global/";
 import { getContent } from "@/utils/api/get-content";
+import Box from "@material-ui/core/Box";
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
 import Container from "@material-ui/core/Container";
 import React from "react";
+import styled from "styled-components";
 
 type Props = {
   authUser: any;
@@ -15,25 +17,34 @@ type Props = {
   data: PostContentsTypes;
 };
 
+const StyledBoxBg = styled(Box)`
+  background: #fafafa;
+  padding: 40px 0;
+`;
+
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props);
   const year = props.data.create_year;
   const month = props.data.create_month;
   const day = props.data.create_day;
   const createDate = `${year}/${month}/${day}`;
+  const contents = props.data.contents;
+  const title = contents.title;
 
   return (
-    <Layout
-      title="Kanon Code | コードレビュを全てのエンジニアへ"
-      currentUser={props.currentUser}
-    >
-      <Container maxWidth="md">
-        <ReviewRequestItem
-          contents={props.data.contents}
-          profile={props.data.user_profile}
-          createDate={createDate}
-        />
-      </Container>
+    <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
+      <StyledBoxBg>
+        <Container maxWidth="md">
+          <Box mb={4}>
+            <ReviewRequestItemHeader
+              contents={contents}
+              profile={props.data.user_profile}
+              createDate={createDate}
+            />
+          </Box>
+          <ReviewRequestContents contents={contents} />
+        </Container>
+      </StyledBoxBg>
     </Layout>
   );
 };

@@ -49,7 +49,7 @@ export type ContentTypes = {
     is_valid: boolean;
     key: string;
     source_code: string;
-  };
+  }[];
   target_language: number;
   title: string;
 };

@@ -21,6 +21,7 @@ import { RecoilRoot } from "recoil";
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from "styled-components";
+import "./style.scss";
 
 const StyledWrapper = styled.div`
   background: #ffffff;

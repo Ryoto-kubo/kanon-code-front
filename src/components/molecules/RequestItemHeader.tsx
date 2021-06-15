@@ -1,4 +1,4 @@
-import { SolidLinkSecondary } from "@/components/atoms/SolidLinkSecondary";
+// import { SolidLinkSecondary } from "@/components/atoms/SolidLinkSecondary";
 import { RequestItemTitle } from "@/components/molecules/RequestItemTitle";
 import { RequestItemUser } from "@/components/molecules/RequestItemUser";
 import { ContentTypes, UserProfileTypes } from "@/types/global/";
@@ -59,8 +59,8 @@ export const RequestItemHeader: React.FC<Props> = (props) => {
           <StyledBoxTitle>
             <StyledBoxImgWrapper>
               <img
-                width={"50px"}
-                height={"50px"}
+                width={"70px"}
+                height={"70px"}
                 src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${iconSrc}`}
               />
             </StyledBoxImgWrapper>
@@ -78,11 +78,11 @@ export const RequestItemHeader: React.FC<Props> = (props) => {
             />
           </StyledBoxUserWrapper>
         </Box>
-        <Box>
+        {/* <Box>
           <SolidLinkSecondary href="#" borderRadius={4}>
             レビューする
           </SolidLinkSecondary>
-        </Box>
+        </Box> */}
       </StyledBoxTitleWrapper>
     </>
   );
