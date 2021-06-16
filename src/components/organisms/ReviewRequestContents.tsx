@@ -34,17 +34,19 @@ export const ReviewRequestContents: React.FC<Props> = (props) => {
 
   return (
     <>
-      <Box mb={2}>
+      <Box mb={8}>
         <StyledBoxTitleWrapper>
           <CustomHeading2 fontSize={18} marginBottom={0.5}>
             Description
           </CustomHeading2>
         </StyledBoxTitleWrapper>
-        <span
-          dangerouslySetInnerHTML={{
-            __html: marked(props.contents.description.body_html),
-          }}
-        />
+        <div className="description-wrapper">
+          <span
+            dangerouslySetInnerHTML={{
+              __html: marked(props.contents.description.body_html),
+            }}
+          />
+        </div>
       </Box>
       <StyledBoxTitleWrapper>
         <CustomHeading2 fontSize={18} marginBottom={0.5}>

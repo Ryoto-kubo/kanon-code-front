@@ -16,8 +16,8 @@ const StyledBoxTitle = styled(Box)`
   margin-bottom: 8px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     margin-bottom: 0px;
-    display: flex;
-    align-items: center;
+    // display: flex;
+    // align-items: center;
   }
 `;
 const StyledBoxImgWrapper = styled(Box)`
@@ -25,9 +25,6 @@ const StyledBoxImgWrapper = styled(Box)`
   margin-bottom: 8px;
   display: flex;
   justify-content: center;
-  ${(props) => props.theme.breakpoints.up("sm")} {
-    margin-right: 16px;
-  }
 `;
 const StyledBoxUserWrapper = styled(Box)`
   margin-bottom: 16px;
@@ -38,9 +35,6 @@ const StyledBoxUserWrapper = styled(Box)`
 const StyledBoxTitleWrapper = styled(Box)`
   margin-bottom: 0px;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     margin-bottom: 8px;
   }
 `;

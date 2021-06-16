@@ -18,8 +18,16 @@ type Props = {
 };
 
 const StyledBoxBg = styled(Box)`
-  background: #fafafa;
-  padding: 40px 0;
+  padding: 40px 0px;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    background: #fafafa;
+    padding: 40px 16px;
+  }
+`;
+
+const StyledContainer = styled(Container)`
+  background: #ffffff;
+  padding-top: 24px;
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
@@ -34,7 +42,7 @@ const IndexPage: React.FC<Props> = (props) => {
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <StyledBoxBg>
-        <Container maxWidth="md">
+        <StyledContainer maxWidth="md">
           <Box mb={4}>
             <ReviewRequestItemHeader
               contents={contents}
@@ -43,7 +51,7 @@ const IndexPage: React.FC<Props> = (props) => {
             />
           </Box>
           <ReviewRequestContents contents={contents} />
-        </Container>
+        </StyledContainer>
       </StyledBoxBg>
     </Layout>
   );
