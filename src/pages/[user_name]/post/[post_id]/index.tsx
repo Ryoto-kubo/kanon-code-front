@@ -43,7 +43,7 @@ const IndexPage: React.FC<Props> = (props) => {
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <StyledBoxBg>
         <StyledContainer maxWidth="md">
-          <Box mb={4}>
+          <Box mb={5}>
             <ReviewRequestItemHeader
               contents={contents}
               profile={props.data.user_profile}

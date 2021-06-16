@@ -1,6 +1,7 @@
 // import { SolidLinkSecondary } from "@/components/atoms/SolidLinkSecondary";
 import { RequestItemTitle } from "@/components/molecules/RequestItemTitle";
 import { RequestItemUser } from "@/components/molecules/RequestItemUser";
+import theme from "@/styles/theme";
 import { ContentTypes, UserProfileTypes } from "@/types/global/";
 import Box from "@material-ui/core/Box";
 import React from "react";
@@ -25,6 +26,7 @@ const StyledBoxImgWrapper = styled(Box)`
   margin-bottom: 8px;
   display: flex;
   justify-content: center;
+  // border-bottom: 10px solid ${theme.palette.primary.main};
 `;
 const StyledBoxUserWrapper = styled(Box)`
   margin-bottom: 16px;

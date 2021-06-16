@@ -1,4 +1,5 @@
 import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
+import { SouceTree } from "@/components/molecules/SouceTree";
 import theme from "@/styles/theme";
 import { ContentTypes } from "@/types/global/";
 import Box from "@material-ui/core/Box";
@@ -18,6 +19,24 @@ const StyledBoxTitleWrapper = styled(Box)`
   border-left: 5px solid ${theme.palette.primary.main};
 `;
 
+const StyledBoxTreeWrapper = styled(Box)`
+  display: none;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    display: block;
+  }
+`;
+const StyledBoxCodeWrapper = styled(Box)`
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    display: flex;
+    justify-content: space-between;
+  }
+`;
+const StyledBoxCode = styled(Box)`
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    width: calc(100% - 20px);
+  }
+`;
+
 export const ReviewRequestContents: React.FC<Props> = (props) => {
   marked.setOptions({
     highlight: function (code, lang) {
@@ -29,14 +48,13 @@ export const ReviewRequestContents: React.FC<Props> = (props) => {
     sanitize: false, // trueにすると特殊文字をエスケープする
     silent: false, // trueにするとパースに失敗してもExceptionを投げなくなる
   });
-  // useEffect(() => {
-  // });
+  const inputFileNameLists = props.contents.input_file_name_lists;
 
   return (
     <>
-      <Box mb={8}>
-        <StyledBoxTitleWrapper>
-          <CustomHeading2 fontSize={18} marginBottom={0.5}>
+      <Box mb={5}>
+        <StyledBoxTitleWrapper component="section">
+          <CustomHeading2 fontSize={20} marginBottom={0}>
             Description
           </CustomHeading2>
         </StyledBoxTitleWrapper>
@@ -48,16 +66,23 @@ export const ReviewRequestContents: React.FC<Props> = (props) => {
           />
         </div>
       </Box>
-      <StyledBoxTitleWrapper>
-        <CustomHeading2 fontSize={18} marginBottom={0.5}>
+      <StyledBoxTitleWrapper component="section">
+        <CustomHeading2 fontSize={20} marginBottom={0}>
           SourceCode
         </CustomHeading2>
       </StyledBoxTitleWrapper>
-      <span
-        dangerouslySetInnerHTML={{
-          __html: marked(props.contents.input_file_name_lists[0].body_html),
-        }}
-      />
+      <StyledBoxCodeWrapper>
+        <StyledBoxTreeWrapper>
+          <SouceTree inputFileNameLists={inputFileNameLists} />
+        </StyledBoxTreeWrapper>
+        <StyledBoxCode>
+          <span
+            dangerouslySetInnerHTML={{
+              __html: marked(inputFileNameLists[0].body_html),
+            }}
+          />
+        </StyledBoxCode>
+      </StyledBoxCodeWrapper>
     </>
   );
 };
