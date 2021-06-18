@@ -1,4 +1,5 @@
 // import React, { useEffect, useState } from "react";
+import { ReviewList } from "@/components/organisms/ReviewList";
 import { ReviewRequestContents } from "@/components/organisms/ReviewRequestContents";
 import { ReviewRequestItemHeader } from "@/components/organisms/ReviewRequestItemHeader";
 import Layout from "@/layouts/standard";
@@ -17,7 +18,7 @@ type Props = {
   data: PostContentsTypes;
 };
 
-const StyledBoxBg = styled(Box)`
+const StyledBoxBgGray = styled(Box)`
   padding: 40px 0px;
   ${(props) => props.theme.breakpoints.up("sm")} {
     background: #fafafa;
@@ -25,8 +26,16 @@ const StyledBoxBg = styled(Box)`
   }
 `;
 
+const StyledBoxBgWhite = styled(Box)`
+  padding: 40px 0px;
+  border-radius: 4px;
+  ${(props) => props.theme.breakpoints.up("sm")} {
+    background: #ffffff;
+    padding: 40px 24px;
+  }
+`;
+
 const StyledContainer = styled(Container)`
-  background: #ffffff;
   padding-top: 24px;
 `;
 
@@ -41,18 +50,27 @@ const IndexPage: React.FC<Props> = (props) => {
 
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
-      <StyledBoxBg>
+      <StyledBoxBgGray>
         <StyledContainer maxWidth="md">
           <Box mb={5}>
-            <ReviewRequestItemHeader
-              contents={contents}
-              profile={props.data.user_profile}
-              createDate={createDate}
-            />
+            <StyledBoxBgWhite>
+              <Box mb={5}>
+                <ReviewRequestItemHeader
+                  contents={contents}
+                  profile={props.data.user_profile}
+                  createDate={createDate}
+                />
+              </Box>
+              <Box mb={0}>
+                <ReviewRequestContents contents={contents} />
+              </Box>
+            </StyledBoxBgWhite>
           </Box>
-          <ReviewRequestContents contents={contents} />
+          <StyledBoxBgWhite>
+            <ReviewList />
+          </StyledBoxBgWhite>
         </StyledContainer>
-      </StyledBoxBg>
+      </StyledBoxBgGray>
     </Layout>
   );
 };

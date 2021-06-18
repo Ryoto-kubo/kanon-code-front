@@ -267,6 +267,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
               <StyledBoxPreviewWrapper id="body">
                 {props.activeStep === 1 && (
                   <span
+                    className="post-item-wrapper"
                     dangerouslySetInnerHTML={{
                       __html: marked(props.value),
                     }}

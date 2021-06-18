@@ -28,7 +28,6 @@
 }
 
 pre {
-  margin: 1.3rem 0;
   background: #292a33;
   border-radius: 3px;
   padding: 16px;
@@ -46,5 +45,18 @@ pre {
     // .hljs-keyword {
     //   color: #c485bf;
     // }
+  }
+}
+
+.post-item-wrapper {
+  pre {
+    margin: 1.3rem 0;
+  }
+}
+.request-item-wrapper {
+  height: 100%;
+  pre {
+    margin: 0;
+    height: 100%;
   }
 }

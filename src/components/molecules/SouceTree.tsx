@@ -1,6 +1,19 @@
-import { ParagraphText } from "@/components/atoms/ParagraphText";
+import { SourceTreeTypes } from "@/types/global";
+import Button from "@material-ui/core/Button";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import TreeItem from "@material-ui/lab/TreeItem";
+import TreeView from "@material-ui/lab/TreeView";
 import React from "react";
+import styled from "styled-components";
 
+const StyledButton = styled(Button)`
+  padding: 0;
+  background: none;
+  &:hover {
+    background: none;
+  }
+`;
 type Props = {
   inputFileNameLists: {
     body_html: string;
@@ -9,86 +22,51 @@ type Props = {
     key: string;
     source_code: string;
   }[];
+  sourceTree: SourceTreeTypes[];
+  switchSourceCode: (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 };
-// └──
-// ├─
-// │
-export const SouceTree: React.FC<Props> = ({ inputFileNameLists }) => {
-  console.log(inputFileNameLists);
 
-  const makeFileNameLists = () => {
-    let fileNameLists: string[][] = [];
-    for (const item of inputFileNameLists) {
-      const fileNames = item.file_name.split("/");
-      fileNameLists.push(fileNames);
-      // fileNameLists.push(...fileNames);
-    }
-    return fileNameLists;
+export const SouceTree: React.FC<Props> = ({
+  inputFileNameLists,
+  sourceTree,
+  switchSourceCode,
+}) => {
+  console.log(inputFileNameLists);
+  const data: SourceTreeTypes = {
+    id: "root",
+    name: "Source Tree",
+    children: sourceTree,
   };
 
-  const fileNameLists = makeFileNameLists();
-  console.log(fileNameLists);
-  const startTime = performance.now();
-  for (const firstIndex in fileNameLists) {
-    console.log("----------------");
-    console.log(firstIndex);
-    const fileNameList = fileNameLists[firstIndex];
-    for (const item of fileNameList) {
-      for (const thirdIndex in fileNameLists) {
-        if (firstIndex === thirdIndex) continue;
-        const refList = fileNameLists[thirdIndex];
-        for (const refValue of refList) {
-          console.log(item, "item");
-          console.log(refValue, "refValue");
-        }
-      }
-    }
-  }
-  const endTime = performance.now();
-  const elapsed = endTime - startTime;
-  const elapsedStr = elapsed.toPrecision(3);
-  console.log(`${elapsedStr}`);
-  // const hoge = [
-  //   `└── router`,
-  //   `│　　└── index.js`,
-  //   `└── src`,
-  //   `　　└── components`,
-  //   `　　　　└── index.js`,
-  //   `　　　　└── index.js`,
-  //   `　　　　└── index.js`,
-  // ];
-
-  // const some: { key: string } = {};
-  // for (const item of fileNameLists) {
-  //   const foundIndex = fileNameLists.findIndex((value) => value === item);
-  //   console.log(foundIndex, item);
-  // }
+  const renderTree = (nodes: SourceTreeTypes) =>
+    nodes.children ? (
+      <TreeItem key={nodes.id} nodeId={nodes.id} label={nodes.name}>
+        {Array.isArray(nodes.children)
+          ? nodes.children.map((node) => renderTree(node))
+          : null}
+      </TreeItem>
+    ) : (
+      <StyledButton
+        key={nodes.id}
+        disableRipple
+        value={nodes.active_step}
+        onClick={switchSourceCode}
+      >
+        <TreeItem nodeId={nodes.id} label={nodes.name} />
+      </StyledButton>
+    );
 
   return (
     <>
-      <ParagraphText variant="subtitle1" component="p">
-        SourceTree
-      </ParagraphText>
-      {/* {hoge.map((el) => (
-        <>
-          <span>{el}</span>
-          <br />
-        </>
-      ))} */}
-      {/* <span>└── router</span>
-      <br />
-      <span>│&nbsp;&nbsp;└── index.js</span>
-      <br />
-      <span>└── src</span>
-      <br />
-      <span>&nbsp;&nbsp;└── components</span>
-      <br />
-      <span>&nbsp;&nbsp;&nbsp;&nbsp;└── index.js</span>
-      <br />
-      <span>&nbsp;&nbsp;&nbsp;&nbsp;└── index.js</span>
-      <br />
-      <span>&nbsp;&nbsp;&nbsp;&nbsp;└── index.js</span>
-      <br /> */}
+      <TreeView
+        defaultCollapseIcon={<ExpandMoreIcon />}
+        defaultExpanded={["root"]}
+        defaultExpandIcon={<ChevronRightIcon />}
+      >
+        {renderTree(data)}
+      </TreeView>
     </>
   );
 };

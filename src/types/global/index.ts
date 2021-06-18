@@ -51,6 +51,7 @@ export type ContentTypes = {
     source_code: string;
   }[];
   target_language: number;
+  source_tree: SourceTreeTypes[];
   title: string;
 };
 
@@ -91,4 +92,11 @@ export type CreditTypes = {
   card_id: string;
   last4_chara: string;
   customChara: string;
+};
+
+export type SourceTreeTypes = {
+  id: string;
+  name: string;
+  active_step?: number;
+  children?: SourceTreeTypes[];
 };

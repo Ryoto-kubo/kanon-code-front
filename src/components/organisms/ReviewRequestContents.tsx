@@ -1,28 +1,26 @@
-import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
+import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
 import { SouceTree } from "@/components/molecules/SouceTree";
-import theme from "@/styles/theme";
 import { ContentTypes } from "@/types/global/";
 import Box from "@material-ui/core/Box";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import highlightjs from "highlight.js";
 import "highlight.js/scss/vs2015.scss";
 import marked from "marked";
-import React from "react";
+import React, { useState } from "react";
+import SwipeableViews from "react-swipeable-views";
 import styled from "styled-components";
 
 type Props = {
   contents: ContentTypes;
 };
 
-const StyledBoxTitleWrapper = styled(Box)`
-  margin-bottom: 16px;
-  padding-left: 8px;
-  border-left: 5px solid ${theme.palette.primary.main};
-`;
-
 const StyledBoxTreeWrapper = styled(Box)`
   display: none;
   ${(props) => props.theme.breakpoints.up("sm")} {
     display: block;
+    width: calc(100% - 700px);
+    margin-right: 24px;
   }
 `;
 const StyledBoxCodeWrapper = styled(Box)`
@@ -31,13 +29,21 @@ const StyledBoxCodeWrapper = styled(Box)`
     justify-content: space-between;
   }
 `;
-const StyledBoxCode = styled(Box)`
+const StyledBox = styled(Box)`
+  width: 100%;
   ${(props) => props.theme.breakpoints.up("sm")} {
-    width: calc(100% - 20px);
+    width: calc(100% - 200px);
   }
+`;
+const StyledBoxCode = styled(Box)`
+  // ${(props) => props.theme.breakpoints.up("sm")} {
+    display: block;
+    height: 100%;
+  // }
 `;
 
 export const ReviewRequestContents: React.FC<Props> = (props) => {
+  const [activeStep, setActiveStep] = useState(0);
   marked.setOptions({
     highlight: function (code, lang) {
       return highlightjs.highlightAuto(code, [lang]).value;
@@ -49,15 +55,21 @@ export const ReviewRequestContents: React.FC<Props> = (props) => {
     silent: false, // trueにするとパースに失敗してもExceptionを投げなくなる
   });
   const inputFileNameLists = props.contents.input_file_name_lists;
+  const sourceTree = props.contents.source_tree;
+  const switchSourceCode = (
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    const value = Number(event.currentTarget.value);
+    setActiveStep(value);
+  };
+  const handleChange = (_: React.ChangeEvent<{}>, newValue: number) => {
+    setActiveStep(newValue);
+  };
 
   return (
     <>
-      <Box mb={5}>
-        <StyledBoxTitleWrapper component="section">
-          <CustomHeading2 fontSize={20} marginBottom={0}>
-            Description
-          </CustomHeading2>
-        </StyledBoxTitleWrapper>
+      <Box mb={5} component="section">
+        <RightBorderTitle text="Description" fontSize={20} marginBottom={0} />
         <div className="description-wrapper">
           <span
             dangerouslySetInnerHTML={{
@@ -66,23 +78,49 @@ export const ReviewRequestContents: React.FC<Props> = (props) => {
           />
         </div>
       </Box>
-      <StyledBoxTitleWrapper component="section">
-        <CustomHeading2 fontSize={20} marginBottom={0}>
-          SourceCode
-        </CustomHeading2>
-      </StyledBoxTitleWrapper>
-      <StyledBoxCodeWrapper>
-        <StyledBoxTreeWrapper>
-          <SouceTree inputFileNameLists={inputFileNameLists} />
-        </StyledBoxTreeWrapper>
-        <StyledBoxCode>
-          <span
-            dangerouslySetInnerHTML={{
-              __html: marked(inputFileNameLists[0].body_html),
-            }}
-          />
-        </StyledBoxCode>
-      </StyledBoxCodeWrapper>
+      <Box component="section">
+        <RightBorderTitle text="SourceCode" fontSize={20} marginBottom={0} />
+        <StyledBoxCodeWrapper>
+          <StyledBoxTreeWrapper>
+            <SouceTree
+              inputFileNameLists={inputFileNameLists}
+              sourceTree={sourceTree}
+              switchSourceCode={switchSourceCode}
+            />
+          </StyledBoxTreeWrapper>
+          <StyledBox>
+            <Tabs
+              value={activeStep}
+              onChange={handleChange}
+              indicatorColor="primary"
+              textColor="primary"
+            >
+              {inputFileNameLists.map((el, index) => (
+                <Tab key={index} label={el.file_name} />
+              ))}
+            </Tabs>
+            <SwipeableViews
+              index={activeStep}
+              style={{
+                width: "100%",
+              }}
+              slideStyle={{ overflow: "unset" }}
+              slideClassName="slide-childlen"
+            >
+              {inputFileNameLists.map((el, index) => (
+                <StyledBoxCode key={index}>
+                  <span
+                    className="request-item-wrapper"
+                    dangerouslySetInnerHTML={{
+                      __html: marked(el.body_html),
+                    }}
+                  />
+                </StyledBoxCode>
+              ))}
+            </SwipeableViews>
+          </StyledBox>
+        </StyledBoxCodeWrapper>
+      </Box>
     </>
   );
 };
