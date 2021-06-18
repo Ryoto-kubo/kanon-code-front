@@ -92,6 +92,7 @@ export const getStaticPaths = async () => {
   };
 };
 
+// export const getServeSideProps = async (props: any) => {
 export const getStaticProps = async (props: any) => {
   const postId = props.params.post_id;
   console.log(postId, "postId");
