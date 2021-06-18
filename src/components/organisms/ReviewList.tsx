@@ -12,7 +12,7 @@ const Editor = dynamic(
     const promise = import("@/components/parts/Editor").then((r) => r.Editor);
     return promise;
   },
-  { ssr: true }
+  { ssr: false }
 );
 
 type ValidObject = {

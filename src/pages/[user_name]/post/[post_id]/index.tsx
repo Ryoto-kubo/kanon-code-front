@@ -76,36 +76,36 @@ const IndexPage: React.FC<Props> = (props) => {
 };
 
 // サーバーサイドで実行される
-export const getStaticPaths = async () => {
-  // const result = await getPagesUrl();
-  // const paths = result.data.map(
-  //   (el: { postId: string; displayName: string }) => ({
-  //     params: {
-  //       post_id: el.postId,
-  //       user_name: el.displayName,
-  //     },
-  //   })
-  // );
-  return {
-    paths: [],
-    fallback: true,
-  };
-};
+// export const getStaticPaths = async () => {
+//   // const result = await getPagesUrl();
+//   // const paths = result.data.map(
+//   //   (el: { postId: string; displayName: string }) => ({
+//   //     params: {
+//   //       post_id: el.postId,
+//   //       user_name: el.displayName,
+//   //     },
+//   //   })
+//   // );
+//   return {
+//     paths: [],
+//     fallback: true,
+//   };
+// };
 
 // export const getServeSideProps = async (props: any) => {
-export const getStaticProps = async (props: any) => {
-  const postId = props.params.post_id;
-  console.log(postId, "postId");
+// export const getStaticProps = async (props: any) => {
+//   const postId = props.params.post_id;
+//   console.log(postId, "postId");
 
-  const result = await getContent({ postId: postId });
-  console.log(result, "result");
+//   const result = await getContent({ postId: postId });
+//   console.log(result, "result");
 
-  return {
-    props: {
-      data: result.data.Items[0],
-    },
-  };
-};
+//   return {
+//     props: {
+//       data: result.data.Items[0],
+//     },
+//   };
+// };
 
 // paramsには上記pathsで指定した値が入る（1postずつ）
 // export const getInitialProps = async (context: any) => {
@@ -117,14 +117,14 @@ export const getStaticProps = async (props: any) => {
 //     },
 //   };
 // };
-// export const getServerSideProps = async (context: any) => {
-//   const postId = context.params.post_id;
-//   const result = await getContent({ postId: postId });
-//   return {
-//     props: {
-//       data: result.data.Items[0],
-//     },
-//   };
-// };
+export const getServerSideProps = async (context: any) => {
+  const postId = context.params.post_id;
+  const result = await getContent({ postId: postId });
+  return {
+    props: {
+      data: result.data.Items[0],
+    },
+  };
+};
 
 export default IndexPage;
