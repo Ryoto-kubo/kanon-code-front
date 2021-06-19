@@ -29,7 +29,9 @@ export const LayoutDashboard = ({ children, title, currentUser }: Props) => {
       <StyleBoxMain mt={4} component="main">
         <Container>
           <StyleBoxContentWrapper>
-            <LeftMenu />
+            <Box mr={4}>
+              <LeftMenu />
+            </Box>
             {children}
           </StyleBoxContentWrapper>
         </Container>

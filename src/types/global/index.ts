@@ -11,6 +11,7 @@ export type UserTypes = {
   user_profile: UserProfileTypes;
   email_notices: EmailNoticesTypes;
   is_github_connect: boolean;
+  is_delete: boolean;
 };
 
 export type PostContentsTypes = {
