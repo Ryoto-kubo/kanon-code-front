@@ -1,17 +1,17 @@
-import { CircleElement } from "@/components/atoms/Circle";
-import { ParagraphText } from "@/components/atoms/ParagraphText";
-import theme from "@/styles/theme";
-import { Box } from "@material-ui/core/";
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import { CircleElement } from '@/components/atoms/Circle'
+import { ParagraphText } from '@/components/atoms/ParagraphText'
+import theme from '@/styles/theme'
+import { Box } from '@material-ui/core/'
+import Link from 'next/link'
+import React from 'react'
+import styled from 'styled-components'
 
 interface Props {
-  name: string;
-  date: string;
-  userIcon: string;
-  width?: string;
-  height?: string;
+  name: string
+  date: string
+  userIcon: string
+  width?: string
+  height?: string
 }
 
 const StyledAnchor = styled(`a`)`
@@ -20,17 +20,17 @@ const StyledAnchor = styled(`a`)`
   &:hover {
     text-decoration: underline;
   }
-`;
+`
 export const PostFooter: React.FC<Props> = (props) => {
   return (
     <Box display="flex" alignItems="center">
       <CircleElement width={`${props.width}`} height={`${props.height}`}>
-        <Link href={props.name} passHref>
+        <Link href={`/${props.name}`} passHref>
           <a>
             <img
               src={props.userIcon}
               style={{
-                borderRadius: "50px",
+                borderRadius: '50px',
                 width: `${props.width}`,
                 height: `${props.height}`,
               }}
@@ -39,9 +39,9 @@ export const PostFooter: React.FC<Props> = (props) => {
         </Link>
       </CircleElement>
       <Box>
-        <Link href={props.name} passHref>
+        <Link href={`/${props.name}`} passHref>
           <StyledAnchor>
-            <Box component="p">{props.name}</Box>
+            <Box component="p">{`/${props.name}`}</Box>
           </StyledAnchor>
         </Link>
         <ParagraphText variant="body2" component="p" color="textSecondary">
@@ -49,5 +49,5 @@ export const PostFooter: React.FC<Props> = (props) => {
         </ParagraphText>
       </Box>
     </Box>
-  );
-};
+  )
+}
