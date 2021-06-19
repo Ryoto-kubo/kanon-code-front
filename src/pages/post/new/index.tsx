@@ -3,7 +3,7 @@ import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
 import { TextFieldWithCheckBox } from "@/components/molecules/TextFieldWithCheckBox";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
 import { InputTagWrapper } from "@/components/organisms/InputTagWrapper";
-import { PostSettingDialog } from "@/components/parts/PostSettingDialog";
+import { PostSettingDialog } from "@/components/parts/postSettingDialog";
 import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { targetLanguages } from "@/consts/target-languages";
@@ -42,7 +42,7 @@ type ValidObject = {
 
 const Editor = dynamic(
   () => {
-    const promise = import("@/components/parts/Editor").then((r) => r.Editor);
+    const promise = import("@/components/parts/editor").then((r) => r.Editor);
     return promise;
   },
   { ssr: false }

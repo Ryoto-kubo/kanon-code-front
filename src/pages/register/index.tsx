@@ -2,7 +2,7 @@ import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { TypoHeading1 } from "@/components/atoms/TypoHeading1";
 import { CustomLoader } from "@/components/common/loader";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
-import { RegisteredDialog } from "@/components/parts/RegisteredDialog";
+import { RegisteredDialog } from "@/components/parts/registeredDialog";
 import { apis } from "@/consts/api/";
 import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
