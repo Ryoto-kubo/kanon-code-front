@@ -9,7 +9,7 @@ import React, { useCallback, useState } from "react";
 
 const Editor = dynamic(
   () => {
-    const promise = import("@/components/parts/Editor").then((r) => r.Editor);
+    const promise = import("@/components/parts/editor").then((r) => r.Editor);
     return promise;
   },
   { ssr: false }
