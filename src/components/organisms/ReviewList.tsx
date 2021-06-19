@@ -1,77 +1,77 @@
-import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
-import * as CONSTS from "@/consts/const";
-import { validMessages } from "@/consts/error-messages";
-import * as S3 from "@/utils/api/s3";
-import { PrepareContentBeforePost } from "@/utils/prepare-content-before-post";
-import { validLength } from "@/utils/valid";
-import dynamic from "next/dynamic";
-import React, { useCallback, useState } from "react";
+import { RightBorderTitle } from '@/components/molecules/RightBorderTitle'
+import * as CONSTS from '@/consts/const'
+import { validMessages } from '@/consts/error-messages'
+import * as S3 from '@/utils/api/s3'
+import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
+import { validLength } from '@/utils/valid'
+import dynamic from 'next/dynamic'
+import React, { useCallback, useState } from 'react'
 
 const Editor = dynamic(
   () => {
-    const promise = import("@/components/parts/editor").then((r) => r.Editor);
-    return promise;
+    const promise = import('@/components/parts/editor').then((r) => r.Editor)
+    return promise
   },
-  { ssr: false }
-);
+  { ssr: false },
+)
 
 type ValidObject = {
-  isValid: boolean;
-  message: string;
-};
+  isValid: boolean
+  message: string
+}
 
 export const ReviewList: React.FC = () => {
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
       isValid: defaultValue,
       message: defaultMessage,
-    };
-  }, []);
+    }
+  }, [])
 
-  const [description, setDescription] = useState("");
-  const [activeStep, setActiveStep] = useState(0);
+  const [description, setDescription] = useState('')
+  const [activeStep, setActiveStep] = useState(0)
   const [canPublish, setCanPUblish] = useState<ValidObject>(
-    createValidObject(true, "")
-  );
+    createValidObject(true, ''),
+  )
 
   const [isValidDescriptionObject, setIsValidDescriptionObject] = useState<
     ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION));
+  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION))
 
   const changeDescritption = useCallback(
     (value: string): void => {
       const prepareContentBeforePost = new PrepareContentBeforePost(
         value,
         setIsValidDescriptionObject,
-        isValidDescriptionObject
-      );
+        isValidDescriptionObject,
+      )
       const isValidMaxLength = prepareContentBeforePost.validLength(
         CONSTS.MAX_DESCRIPTION_LENGTH,
-        validMessages.OVER_LENGTH_DESCRIPION
-      );
+        validMessages.OVER_LENGTH_DESCRIPION,
+      )
       const isExist = prepareContentBeforePost.validEmpty(
-        validMessages.REQUIRED_DESCRIPTION
-      );
+        validMessages.REQUIRED_DESCRIPTION,
+      )
       if (isValidMaxLength && isExist) {
-        prepareContentBeforePost.successed();
+        prepareContentBeforePost.successed()
       }
-      setDescription(value);
+      setDescription(value)
     },
-    [description]
-  );
+    [description],
+  )
   const changeActiveStep = useCallback(
     (value: number): void => {
-      setActiveStep(value);
+      setActiveStep(value)
     },
-    [activeStep]
-  );
-  const updateCanPublish = useCallback((isValid: boolean, message = "") => {
+    [activeStep],
+  )
+  const updateCanPublish = useCallback((isValid: boolean, message = '') => {
     setCanPUblish({
       ...canPublish,
       isValid: isValid,
       message: message,
-    });
-  }, []);
+    })
+  }, [])
 
   return (
     <>
@@ -90,5 +90,5 @@ export const ReviewList: React.FC = () => {
         MAX_LENGTH={CONSTS.MAX_DESCRIPTION_LENGTH}
       />
     </>
-  );
-};
+  )
+}
