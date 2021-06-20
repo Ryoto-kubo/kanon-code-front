@@ -78,16 +78,16 @@ export const ReviewList: React.FC = () => {
       <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
       <Editor
         id="editor"
-        name="Review"
+        isFullDisplayButton={true}
         headerText="Review"
         onChange={changeDescritption}
         changeActiveStep={changeActiveStep}
         value={description}
         activeStep={activeStep}
-        isValid={validLength(description, CONSTS.MAX_DESCRIPTION_LENGTH)}
+        isValid={validLength(description, CONSTS.MAX_REVIEW_LENGTH)}
         updateCanPublish={updateCanPublish}
         uploadImageToS3={S3.uploadImageToS3}
-        MAX_LENGTH={CONSTS.MAX_DESCRIPTION_LENGTH}
+        MAX_LENGTH={CONSTS.MAX_REVIEW_LENGTH}
       />
     </>
   )

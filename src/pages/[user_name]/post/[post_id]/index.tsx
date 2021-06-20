@@ -1,52 +1,53 @@
 // import React, { useEffect, useState } from "react";
-import { ReviewList } from "@/components/organisms/ReviewList";
-import { ReviewRequestContents } from "@/components/organisms/ReviewRequestContents";
-import { ReviewRequestItemHeader } from "@/components/organisms/ReviewRequestItemHeader";
-import Layout from "@/layouts/standard";
-import { UserTypes } from "@/types/global";
-import { PostContentsTypes } from "@/types/global/";
-import { getContent } from "@/utils/api/get-content";
-import Box from "@material-ui/core/Box";
+import { ReviewList } from '@/components/organisms/ReviewList'
+import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents'
+import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader'
+import Layout from '@/layouts/standard'
+import { UserTypes } from '@/types/global'
+import { PostContentsTypes } from '@/types/global/'
+import { getContent } from '@/utils/api/get-content'
+import Box from '@material-ui/core/Box'
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
-import Container from "@material-ui/core/Container";
-import React from "react";
-import styled from "styled-components";
+import Container from '@material-ui/core/Container'
+import React from 'react'
+import styled from 'styled-components'
 
 type Props = {
-  authUser: any;
-  currentUser: null | UserTypes;
-  data: PostContentsTypes;
-};
+  authUser: any
+  currentUser: null | UserTypes
+  data: PostContentsTypes
+}
 
 const StyledBoxBgGray = styled(Box)`
   padding: 40px 0px;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     background: #fafafa;
     padding: 40px 16px;
   }
-`;
-
+`
 const StyledBoxBgWhite = styled(Box)`
-  padding: 40px 0px;
+  padding: 0px;
   border-radius: 4px;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     background: #ffffff;
-    padding: 40px 24px;
+    padding: 24px;
   }
-`;
-
+`
 const StyledContainer = styled(Container)`
   padding-top: 24px;
-`;
+`
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
-  const year = props.data.create_year;
-  const month = props.data.create_month;
-  const day = props.data.create_day;
-  const createDate = `${year}/${month}/${day}`;
-  const contents = props.data.contents;
-  const title = contents.title;
+  console.log(props)
+  const year = props.data.create_year
+  const month = props.data.create_month
+  const day = props.data.create_day
+  const createDate = `${year}/${month}/${day}`
+  const contents = props.data.contents
+  const title = contents.title
+  const myUserId = props.currentUser?.partition_key
+  const contributorId = props.data.partition_key
+  const isMe = myUserId === contributorId
 
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
@@ -59,6 +60,7 @@ const IndexPage: React.FC<Props> = (props) => {
                   contents={contents}
                   profile={props.data.user_profile}
                   createDate={createDate}
+                  isMe={isMe}
                 />
               </Box>
               <Box mb={0}>
@@ -72,8 +74,8 @@ const IndexPage: React.FC<Props> = (props) => {
         </StyledContainer>
       </StyledBoxBgGray>
     </Layout>
-  );
-};
+  )
+}
 
 // サーバーサイドで実行される
 export const getStaticPaths = async () => {
@@ -89,23 +91,23 @@ export const getStaticPaths = async () => {
   return {
     paths: [],
     fallback: true,
-  };
-};
+  }
+}
 
 // export const getServeSideProps = async (props: any) => {
 export const getStaticProps = async (props: any) => {
-  const postId = props.params.post_id;
-  console.log(postId, "postId");
+  const postId = props.params.post_id
+  console.log(postId, 'postId')
 
-  const result = await getContent({ postId: postId });
-  console.log(result, "result");
+  const result = await getContent({ postId: postId })
+  console.log(result, 'result')
 
   return {
     props: {
       data: result.data.Items[0],
     },
-  };
-};
+  }
+}
 
 // paramsには上記pathsで指定した値が入る（1postずつ）
 // export const getInitialProps = async (context: any) => {
@@ -127,4 +129,4 @@ export const getStaticProps = async (props: any) => {
 //   };
 // };
 
-export default IndexPage;
+export default IndexPage

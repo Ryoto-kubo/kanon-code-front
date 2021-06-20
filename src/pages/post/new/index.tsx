@@ -523,7 +523,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <Box mb={5} className="description-wrapper">
             <Editor
               id="editor"
-              name="Description"
+              isFullDisplayButton={true}
               headerText="Description"
               onChange={changeDescritption}
               changeActiveStep={changeActiveStep}
@@ -571,7 +571,7 @@ const IndexPage: React.FC<Props> = (props) => {
               <StyledBoxCordEditorWrapper>
                 <Editor
                   id="cord-editor"
-                  name="SourceCode"
+                  isFullDisplayButton={false}
                   headerText="Source Code"
                   onChange={changeSourceCode}
                   changeActiveStep={changeActiveStep}
