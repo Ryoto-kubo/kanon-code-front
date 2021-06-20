@@ -28,6 +28,7 @@ const StyleBoxLeftMenuWrapper = styled(Box)`
 `
 const StyleBoxMobileMenuWrapper = styled(Box)`
   display: block;
+  margin-bottom: 16px;
   ${(props) => props.theme.breakpoints.up('sm')} {
     display: none;
   }

@@ -1,3 +1,4 @@
+import { CustomHeading2 } from '@/components/atoms/CustomHeading2'
 import { ErrorView } from '@/components/common/error'
 import { CustomLoader } from '@/components/common/loader'
 import { Reviews } from '@/components/organisms/Reviews'
@@ -39,6 +40,9 @@ const IndexPage: React.FC<Props> = (props) => {
         <CustomLoader width={40} height={40} />
       ) : (
         <Box width={'100%'}>
+          <CustomHeading2 fontSize={24} marginBottom={1}>
+            Reviews
+          </CustomHeading2>
           <Reviews user={props.authUser} posts={posts} isMe={true} />
         </Box>
       )}
