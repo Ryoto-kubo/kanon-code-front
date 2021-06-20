@@ -1,13 +1,13 @@
 import Box from '@material-ui/core/Box'
 import React, { ReactNode } from 'react'
 import styled from 'styled-components'
-import WorkingSvg from '../../../assets/illustration/working.svg'
+import ArticleSvg from '../../../assets/illustration/article.svg'
 
 type Props = {
   marginBottom: number
   children: ReactNode
 }
-const StyledWorkingSvg = styled(WorkingSvg)`
+const StyledArticleSvg = styled(ArticleSvg)`
   width: 100%;
   ${(props) => props.theme.breakpoints.up('sm')} {
     width: 80%;
@@ -20,16 +20,16 @@ const StyledBox = styled(Box)`
   width: 100%;
   text-align: center;
 `
-export const WorkingIllustration = (props: Props) => {
+export const NonArticleIllustration = (props: Props) => {
   return (
     <StyledBox>
       <Box>
-        <StyledWorkingSvg />
+        <StyledArticleSvg />
       </Box>
-      <Box mb={props.marginBottom}>
-        投稿したレビュー依頼がありません。
+      <Box mb={props.marginBottom} lineHeight={1.8}>
+        まだレビューを行っていません。
         <br />
-        以下のリンクからレビュー依頼をしてみましょう。
+        レビューを待っている投稿を探しにいきましょう！
       </Box>
       {props.children}
     </StyledBox>
