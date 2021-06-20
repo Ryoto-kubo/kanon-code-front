@@ -6,27 +6,27 @@ import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 
 export const menus = [
   {
-    name: 'レビュー',
+    name: 'Reviews',
     icon: <CreateOutlinedIcon />,
     href: '/dashboard/reviews',
   },
   {
-    name: 'レビューリクエスト',
+    name: 'Review request',
     icon: <RateReviewOutlinedIcon />,
     href: '/dashboard/review_requests',
   },
   {
-    name: '購入したレビュー',
+    name: 'Payments',
     icon: <ShoppingCartOutlinedIcon />,
     href: '/dashboard/payments_history',
   },
   {
-    name: 'ライブラリー',
+    name: 'Library',
     icon: <LocalLibraryOutlinedIcon />,
     href: '/dashboard/library',
   },
   {
-    name: '売り上げ',
+    name: 'Salse',
     icon: <MonetizationOnOutlinedIcon />,
     href: '/dashboard/salse',
   },

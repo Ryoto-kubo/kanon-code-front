@@ -1,4 +1,8 @@
+import { SolidLink } from '@/components/atoms/SolidLink'
 import { Post } from '@/components/organisms/Post'
+import { NonArticleIllustration } from '@/components/parts/illustrations/non-article'
+import { NonPaymentIllustration } from '@/components/parts/illustrations/non-payment'
+import { NonWorkingIllustration } from '@/components/parts/illustrations/non-working'
 import { PostContentsTypes } from '@/types/global/index'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
@@ -111,46 +115,14 @@ export const Reviews: React.FC<Props> = (props) => {
       <TabPanel value={value} index={0}>
         <Box mb={4}>
           <Grid spacing={3} container>
-            {acceptPosts.map((el: PostContentsTypes) => (
-              <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                <Post
-                  title={el.contents.title}
-                  postUrl={el.postUrl}
-                  iconPath={el.contents.target_icon.icon_path}
-                  name={el.user_profile.display_name}
-                  date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                  tagArray={el.contents.tag_list}
-                  userIcon={el.user_profile.icon_src}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </TabPanel>
-      <TabPanel value={value} index={1}>
-        <Box mb={4}>
-          <Grid spacing={3} container>
-            {reviewedPosts.map((el: PostContentsTypes) => (
-              <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                <Post
-                  title={el.contents.title}
-                  postUrl={el.postUrl}
-                  iconPath={el.contents.target_icon.icon_path}
-                  name={el.user_profile.display_name}
-                  date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                  tagArray={el.contents.tag_list}
-                  userIcon={el.user_profile.icon_src}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
-      </TabPanel>
-      {props.isMe && (
-        <TabPanel value={value} index={2}>
-          <Box mb={4}>
-            <Grid spacing={3} container>
-              {paymentedPosts.map((el: PostContentsTypes) => (
+            {acceptPosts.length === 0 ? (
+              <NonWorkingIllustration marginBottom={2}>
+                <SolidLink href="/post/new" borderRadius={4}>
+                  レビューを依頼する
+                </SolidLink>
+              </NonWorkingIllustration>
+            ) : (
+              acceptPosts.map((el: PostContentsTypes) => (
                 <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                   <Post
                     title={el.contents.title}
@@ -162,7 +134,63 @@ export const Reviews: React.FC<Props> = (props) => {
                     userIcon={el.user_profile.icon_src}
                   />
                 </Grid>
-              ))}
+              ))
+            )}
+          </Grid>
+        </Box>
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <Box mb={4}>
+          <Grid spacing={3} container>
+            {reviewedPosts.length === 0 ? (
+              <NonArticleIllustration marginBottom={2}>
+                <SolidLink href="/" borderRadius={4}>
+                  投稿を探しにいく！
+                </SolidLink>
+              </NonArticleIllustration>
+            ) : (
+              reviewedPosts.map((el: PostContentsTypes) => (
+                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                  <Post
+                    title={el.contents.title}
+                    postUrl={el.postUrl}
+                    iconPath={el.contents.target_icon.icon_path}
+                    name={el.user_profile.display_name}
+                    date={`${el.create_year}/${el.create_month}/${el.create_day}`}
+                    tagArray={el.contents.tag_list}
+                    userIcon={el.user_profile.icon_src}
+                  />
+                </Grid>
+              ))
+            )}
+          </Grid>
+        </Box>
+      </TabPanel>
+      {props.isMe && (
+        <TabPanel value={value} index={2}>
+          <Box mb={4}>
+            <Grid spacing={3} container>
+              {paymentedPosts.length === 0 ? (
+                <NonPaymentIllustration marginBottom={2}>
+                  {/* <SolidLink href="/" borderRadius={4}>
+                    投稿を探しにいく！
+                  </SolidLink> */}
+                </NonPaymentIllustration>
+              ) : (
+                paymentedPosts.map((el: PostContentsTypes) => (
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                    <Post
+                      title={el.contents.title}
+                      postUrl={el.postUrl}
+                      iconPath={el.contents.target_icon.icon_path}
+                      name={el.user_profile.display_name}
+                      date={`${el.create_year}/${el.create_month}/${el.create_day}`}
+                      tagArray={el.contents.tag_list}
+                      userIcon={el.user_profile.icon_src}
+                    />
+                  </Grid>
+                ))
+              )}
             </Grid>
           </Box>
         </TabPanel>
