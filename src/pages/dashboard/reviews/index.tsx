@@ -18,9 +18,8 @@ const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser || !props.currentUser) return <></>
   const userName = props.currentUser.display_name
   const { data, isValidating } = useUserContents(userName)
-  if (!data) return <></>
-  const status = data.data.status
-  if (!status) {
+  const status = data?.data.status
+  if (status === false) {
     return (
       <LayoutDashboard
         title="Kanon Code | ダッシュボード:レビュー"
@@ -30,7 +29,7 @@ const IndexPage: React.FC<Props> = (props) => {
       </LayoutDashboard>
     )
   }
-  const posts = data.data.posts
+  const posts = data?.data.posts
   return (
     <LayoutDashboard
       title="Kanon Code | ダッシュボード:レビュー"
