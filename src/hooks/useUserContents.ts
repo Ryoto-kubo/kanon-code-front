@@ -5,7 +5,6 @@ import { getUserContents } from '@/utils/api/get-user-contents'
 import useSWR from 'swr'
 
 const fetcher = async (userName: string) => {
-  // return await getUserContents({ userName: userName })
   const errorObject = createErrorObject(errorMessages.SYSTEM_ERROR, 1001)
   return await getUserContents({ userName: userName }).catch(() => {
     errorObject.data.posts = null

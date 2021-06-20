@@ -38,7 +38,7 @@ const IndexPage: React.FC<Props> = (props) => {
       {isValidating ? (
         <CustomLoader width={40} height={40} />
       ) : (
-        <Box>
+        <Box width={'100%'}>
           <Reviews user={props.authUser} posts={posts} isMe={true} />
         </Box>
       )}

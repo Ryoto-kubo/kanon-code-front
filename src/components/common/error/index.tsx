@@ -3,7 +3,7 @@ import React from 'react'
 import styled from 'styled-components'
 import SorrySvg from '../../../assets/illustration/sorry.svg'
 
-const StyledCelebrationSvg = styled(SorrySvg)`
+const StyledSorrySvg = styled(SorrySvg)`
   width: 100%;
   ${(props) => props.theme.breakpoints.up('sm')} {
     width: 80%;
@@ -21,7 +21,7 @@ export const ErrorView = () => {
   return (
     <StyledBox>
       <Box>
-        <StyledCelebrationSvg />
+        <StyledSorrySvg />
       </Box>
       申し訳ございません。読み込み時にエラーが発生しました。
       <br />

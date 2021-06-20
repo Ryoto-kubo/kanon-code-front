@@ -1,4 +1,6 @@
+import { SolidLink } from '@/components/atoms/SolidLink'
 import { Post } from '@/components/organisms/Post'
+import { WorkingIllustration } from '@/components/parts/illustrations/working'
 import { PostContentsTypes } from '@/types/global/index'
 import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
@@ -111,19 +113,27 @@ export const Reviews: React.FC<Props> = (props) => {
       <TabPanel value={value} index={0}>
         <Box mb={4}>
           <Grid spacing={3} container>
-            {acceptPosts.map((el: PostContentsTypes) => (
-              <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                <Post
-                  title={el.contents.title}
-                  postUrl={el.postUrl}
-                  iconPath={el.contents.target_icon.icon_path}
-                  name={el.user_profile.display_name}
-                  date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                  tagArray={el.contents.tag_list}
-                  userIcon={el.user_profile.icon_src}
-                />
-              </Grid>
-            ))}
+            {acceptPosts.length === 0 ? (
+              <WorkingIllustration marginBottom={2}>
+                <SolidLink href="/post/new" borderRadius={4}>
+                  レビューを依頼する
+                </SolidLink>
+              </WorkingIllustration>
+            ) : (
+              acceptPosts.map((el: PostContentsTypes) => (
+                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                  <Post
+                    title={el.contents.title}
+                    postUrl={el.postUrl}
+                    iconPath={el.contents.target_icon.icon_path}
+                    name={el.user_profile.display_name}
+                    date={`${el.create_year}/${el.create_month}/${el.create_day}`}
+                    tagArray={el.contents.tag_list}
+                    userIcon={el.user_profile.icon_src}
+                  />
+                </Grid>
+              ))
+            )}
           </Grid>
         </Box>
       </TabPanel>
