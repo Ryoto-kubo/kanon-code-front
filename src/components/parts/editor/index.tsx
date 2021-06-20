@@ -23,7 +23,7 @@ const SOURCE_CODE = 'Source Code'
 
 type Props = {
   id: string
-  name: string
+  isFullDisplayButton: boolean
   headerText: string
   changeActiveStep: (value: number) => void
   onChange: (value: string) => void | any
@@ -278,7 +278,7 @@ export const Editor: React.FC<Props> = React.memo((props) => {
           </SwipeableViews>
         </StyledBoxMaxWidth>
         <EditorButtons
-          name={props.name}
+          isFullDisplayButton={props.isFullDisplayButton}
           switchPreview={switchPreview}
           insertCodeMde={insertCodeMde}
           insertLinkMde={insertLinkMde}
