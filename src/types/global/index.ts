@@ -102,6 +102,11 @@ export type SourceTreeTypes = {
   children?: SourceTreeTypes[]
 }
 
+export type BookmarkTypes = {
+  partition_key: string
+  sort_key: string
+}
+
 export type ErrorTypes = {
   data: {
     status: boolean
