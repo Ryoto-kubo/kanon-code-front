@@ -1,18 +1,18 @@
-import { CircleElement } from "@/components/atoms/Circle";
-import { ParagraphText } from "@/components/atoms/ParagraphText";
-import theme from "@/styles/theme";
-import { Box } from "@material-ui/core/";
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import { CircleElement } from '@/components/atoms/Circle'
+import { ParagraphText } from '@/components/atoms/ParagraphText'
+import theme from '@/styles/theme'
+import { Box } from '@material-ui/core/'
+import Link from 'next/link'
+import React from 'react'
+import styled from 'styled-components'
 
 type Props = {
-  name: string;
-  date: string;
-  userIcon: string;
-  width?: string;
-  height?: string;
-};
+  name: string
+  date: string
+  userIcon: string
+  width?: string
+  height?: string
+}
 
 const StyledAnchor = styled(`a`)`
   color: ${theme.palette.text.primary};
@@ -20,8 +20,8 @@ const StyledAnchor = styled(`a`)`
   &:hover {
     text-decoration: underline;
   }
-`;
-export const RequestItemUser: React.FC<Props> = (props) => {
+`
+export const RequestItemUser: React.FC<Props> = React.memo((props) => {
   return (
     <Box display="flex" alignItems="center">
       <CircleElement width={`${props.width}`} height={`${props.height}`}>
@@ -30,7 +30,7 @@ export const RequestItemUser: React.FC<Props> = (props) => {
             <img
               src={props.userIcon}
               style={{
-                borderRadius: "50px",
+                borderRadius: '50px',
                 width: `${props.width}`,
                 height: `${props.height}`,
               }}
@@ -49,5 +49,5 @@ export const RequestItemUser: React.FC<Props> = (props) => {
         </ParagraphText>
       </Box>
     </Box>
-  );
-};
+  )
+})

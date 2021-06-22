@@ -2,6 +2,7 @@
 import { ReviewList } from '@/components/organisms/ReviewList'
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents'
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader'
+import { useGetBookmark } from '@/hooks/useGetBookmark'
 import Layout from '@/layouts/standard'
 import { UserTypes } from '@/types/global'
 import { PostContentsTypes } from '@/types/global/'
@@ -39,15 +40,18 @@ const StyledContainer = styled(Container)`
 
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props)
+
   const year = props.data.create_year
   const month = props.data.create_month
   const day = props.data.create_day
   const createDate = `${year}/${month}/${day}`
   const contents = props.data.contents
   const title = contents.title
-  const myUserId = props.currentUser?.partition_key
+  const myUserId = props.currentUser ? props.currentUser.partition_key : ''
   const contributorId = props.data.partition_key
+  const postId = props.data.sort_key
   const isMe = myUserId === contributorId
+  const { data } = useGetBookmark(myUserId, postId)
 
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
@@ -61,6 +65,9 @@ const IndexPage: React.FC<Props> = (props) => {
                   profile={props.data.user_profile}
                   createDate={createDate}
                   isMe={isMe}
+                  myUserId={myUserId!}
+                  postId={postId}
+                  data={data}
                 />
               </Box>
               <Box mb={0}>
@@ -97,11 +104,7 @@ export const getStaticPaths = async () => {
 // export const getServeSideProps = async (props: any) => {
 export const getStaticProps = async (props: any) => {
   const postId = props.params.post_id
-  console.log(postId, 'postId')
-
   const result = await getContent({ postId: postId })
-  console.log(result, 'result')
-
   return {
     props: {
       data: result.data.Items[0],
