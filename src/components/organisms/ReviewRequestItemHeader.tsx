@@ -5,9 +5,8 @@ import { RequestItemTitle } from '@/components/molecules/RequestItemTitle'
 import { RequestItemUser } from '@/components/molecules/RequestItemUser'
 import { IconDot } from '@/components/svg/materialIcons/IconDot'
 import { errorMessages } from '@/consts/error-messages'
+import { useGetBookmark } from '@/hooks/useGetBookmark'
 import theme from '@/styles/theme'
-import { ResponseBookmarkTypes } from '@/types/api/get-bookmark'
-import { ErrorTypes } from '@/types/global'
 import { ContentTypes, UserProfileTypes } from '@/types/global/'
 import { postBookmark } from '@/utils/api/post-bookmark'
 import Box from '@material-ui/core/Box'
@@ -16,9 +15,8 @@ import ListItemText from '@material-ui/core/ListItemText'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
-import { AxiosResponse } from 'axios'
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 type Props = {
@@ -28,7 +26,8 @@ type Props = {
   isMe: boolean
   myUserId: string
   postId: string
-  data: AxiosResponse<ResponseBookmarkTypes> | ErrorTypes | undefined
+  // data: AxiosResponse<ResponseBookmarkTypes> | ErrorTypes | undefined
+  // isValidating: boolean
 }
 
 const StyledBoxTitle = styled(Box)`
@@ -69,10 +68,10 @@ const StyledListItemIcon = styled(ListItemIcon)`
 export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const [isBookmark, setIsBookmark] = useState(false)
-  useEffect(() => {
-    setIsBookmark(props.data?.data.Item ? true : false)
-  }, [])
+  const { hasBookamark, setHasBookmark } = useGetBookmark(
+    props.myUserId,
+    props.postId,
+  )
   const iconSrc = props.contents.target_icon.icon_path
   const title = props.contents.title
   const tagArray = props.contents.tag_list
@@ -97,12 +96,14 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
     try {
       const result = await postBookmark(params)
       if (!result.data.status) throw err
-      setIsBookmark(!isBookmark)
+      setHasBookmark(!hasBookamark)
     } catch (error) {
       console.log(error)
       alert(errorMessages.BOOKMARK_ERROR)
     }
   }
+
+  console.log(hasBookamark, 'hasBookamark')
 
   return (
     <>
@@ -142,7 +143,7 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
               <StyledBoxButtonWrapper>
                 <BookmarkButton
                   sizing={'small'}
-                  variant={isBookmark ? 'contained' : 'outlined'}
+                  variant={hasBookamark ? 'contained' : 'outlined'}
                   color={'primary'}
                   onClick={() => bookmark()}
                 />
