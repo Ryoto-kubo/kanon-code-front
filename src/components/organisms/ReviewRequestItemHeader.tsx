@@ -16,7 +16,7 @@ import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import styled from 'styled-components'
 
 type Props = {
@@ -60,6 +60,7 @@ const StyledBoxMenuWrapper = styled(Box)`
 `
 const StyledBoxButtonWrapper = styled(Box)`
   margin-bottom: 24px;
+  min-height: 30px;
 `
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
@@ -72,22 +73,24 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
     props.myUserId,
     props.postId,
   )
+  console.log('render')
+
   const iconSrc = props.contents.target_icon.icon_path
   const title = props.contents.title
   const tagArray = props.contents.tag_list
   const name = props.profile.display_name
   const userIcon = props.profile.icon_src
   const open = Boolean(anchorEl)
-  const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget)
-  }
-  const handleClose = () => {
+  }, [])
+  const handleClose = useCallback(() => {
     setAnchorEl(null)
-  }
-  const toPage = (path: string) => {
+  }, [])
+  const toPage = useCallback((path: string) => {
     router.push(path)
-  }
-  const bookmark = async () => {
+  }, [])
+  const bookmark = useCallback(async () => {
     const params = {
       myUserId: props.myUserId,
       postId: props.postId,
@@ -101,9 +104,10 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
       console.log(error)
       alert(errorMessages.BOOKMARK_ERROR)
     }
-  }
+  }, [hasBookamark])
 
   console.log(hasBookamark, 'hasBookamark')
+  console.log('-----')
 
   return (
     <>
@@ -145,6 +149,7 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
                   sizing={'small'}
                   variant={hasBookamark ? 'contained' : 'outlined'}
                   color={'primary'}
+                  className="bookmark-btn"
                   onClick={() => bookmark()}
                 />
               </StyledBoxButtonWrapper>
