@@ -149,7 +149,6 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
                   sizing={'small'}
                   variant={hasBookamark ? 'contained' : 'outlined'}
                   color={'primary'}
-                  className="bookmark-btn"
                   onClick={() => bookmark()}
                 />
               </StyledBoxButtonWrapper>
