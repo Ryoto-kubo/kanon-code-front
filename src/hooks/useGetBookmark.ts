@@ -2,14 +2,14 @@ import { getBookmark } from '@/utils/api/get-bookmark'
 import { useEffect, useState } from 'react'
 
 export const useGetBookmark = (myUserId: string, postId: string) => {
-  const [hasBookamark, setHasBookmark] = useState(false)
+  const [hasBookmark, setHasBookmark] = useState(false)
   useEffect(() => {
     ;(async () => {
       const result = await getBookmark({ myUserId, postId })
       setHasBookmark(result.data.Item ? true : false)
     })()
   }, [])
-  return { hasBookamark, setHasBookmark }
+  return { hasBookmark, setHasBookmark }
   // const { data, isValidating } = useSWR(
   //   apis.BOOKMARK,
   //   () => fetcher(myUserId, postId),

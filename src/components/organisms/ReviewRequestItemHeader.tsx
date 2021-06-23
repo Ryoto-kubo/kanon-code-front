@@ -26,8 +26,6 @@ type Props = {
   isMe: boolean
   myUserId: string
   postId: string
-  // data: AxiosResponse<ResponseBookmarkTypes> | ErrorTypes | undefined
-  // isValidating: boolean
 }
 
 const StyledBoxTitle = styled(Box)`
@@ -69,12 +67,12 @@ const StyledListItemIcon = styled(ListItemIcon)`
 export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const { hasBookamark, setHasBookmark } = useGetBookmark(
-    props.myUserId,
-    props.postId,
-  )
-  console.log('render')
-
+  if (props.myUserId !== '') {
+    var { hasBookmark, setHasBookmark } = useGetBookmark(
+      props.myUserId,
+      props.postId,
+    )
+  }
   const iconSrc = props.contents.target_icon.icon_path
   const title = props.contents.title
   const tagArray = props.contents.tag_list
@@ -99,61 +97,60 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
     try {
       const result = await postBookmark(params)
       if (!result.data.status) throw err
-      setHasBookmark(!hasBookamark)
+      setHasBookmark(!hasBookmark)
     } catch (error) {
       console.log(error)
       alert(errorMessages.BOOKMARK_ERROR)
     }
-  }, [hasBookamark])
-
-  console.log(hasBookamark, 'hasBookamark')
-  console.log('-----')
+  }, [hasBookmark])
 
   return (
     <>
       <StyledBoxTitleWrapper>
         <Box>
-          <StyledBoxMenuWrapper>
-            {props.isMe ? (
-              <StyledBoxButtonWrapper>
-                <CustomIconButton disableRipple={true} func={handleMenu}>
-                  <IconDot fontSize="small" />
-                </CustomIconButton>
-                <Menu
-                  id="menu-appbar"
-                  anchorEl={anchorEl}
-                  getContentAnchorEl={null}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
-                  }}
-                  open={open}
-                  onClose={handleClose}
-                >
-                  <MenuItem onClick={() => toPage(`/`)}>
-                    <StyledListItemIcon>
-                      <EditOutlinedIcon fontSize="small" />
-                    </StyledListItemIcon>
-                    <ListItemText secondary="編集" />
-                  </MenuItem>
-                </Menu>
-              </StyledBoxButtonWrapper>
-            ) : (
-              <StyledBoxButtonWrapper>
-                <BookmarkButton
-                  sizing={'small'}
-                  variant={hasBookamark ? 'contained' : 'outlined'}
-                  color={'primary'}
-                  onClick={() => bookmark()}
-                />
-              </StyledBoxButtonWrapper>
-            )}
-          </StyledBoxMenuWrapper>
+          {props.myUserId !== '' && (
+            <StyledBoxMenuWrapper>
+              {props.isMe ? (
+                <StyledBoxButtonWrapper>
+                  <CustomIconButton disableRipple={true} func={handleMenu}>
+                    <IconDot fontSize="small" />
+                  </CustomIconButton>
+                  <Menu
+                    id="menu-appbar"
+                    anchorEl={anchorEl}
+                    getContentAnchorEl={null}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: 'top',
+                      horizontal: 'right',
+                    }}
+                    open={open}
+                    onClose={handleClose}
+                  >
+                    <MenuItem onClick={() => toPage(`/`)}>
+                      <StyledListItemIcon>
+                        <EditOutlinedIcon fontSize="small" />
+                      </StyledListItemIcon>
+                      <ListItemText secondary="編集" />
+                    </MenuItem>
+                  </Menu>
+                </StyledBoxButtonWrapper>
+              ) : (
+                <StyledBoxButtonWrapper>
+                  <BookmarkButton
+                    sizing={'small'}
+                    variant={hasBookmark ? 'contained' : 'outlined'}
+                    color={'primary'}
+                    onClick={() => bookmark()}
+                  />
+                </StyledBoxButtonWrapper>
+              )}
+            </StyledBoxMenuWrapper>
+          )}
           <StyledBoxTitle>
             <StyledBoxImgWrapper>
               <img

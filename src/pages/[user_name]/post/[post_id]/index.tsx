@@ -9,7 +9,7 @@ import { getContent } from '@/utils/api/get-content'
 import Box from '@material-ui/core/Box'
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
 import Container from '@material-ui/core/Container'
-import React, { useEffect } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
@@ -39,7 +39,6 @@ const StyledContainer = styled(Container)`
 
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props)
-
   const year = props.data.create_year
   const month = props.data.create_month
   const day = props.data.create_day
@@ -50,8 +49,6 @@ const IndexPage: React.FC<Props> = (props) => {
   const contributorId = props.data.partition_key
   const postId = props.data.sort_key
   const isMe = myUserId === contributorId
-  useEffect(() => {})
-  // const { data, isValidating } = useGetBookmark(myUserId, postId)
 
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
@@ -67,8 +64,6 @@ const IndexPage: React.FC<Props> = (props) => {
                   isMe={isMe}
                   myUserId={myUserId!}
                   postId={postId}
-                  // data={data}
-                  // isValidating={isValidating}
                 />
               </Box>
               <Box mb={0}>
