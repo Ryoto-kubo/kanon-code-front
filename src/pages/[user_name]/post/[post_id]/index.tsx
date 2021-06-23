@@ -2,7 +2,6 @@
 import { ReviewList } from '@/components/organisms/ReviewList'
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents'
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader'
-import { useGetBookmark } from '@/hooks/useGetBookmark'
 import Layout from '@/layouts/standard'
 import { UserTypes } from '@/types/global'
 import { PostContentsTypes } from '@/types/global/'
@@ -10,7 +9,7 @@ import { getContent } from '@/utils/api/get-content'
 import Box from '@material-ui/core/Box'
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
 import Container from '@material-ui/core/Container'
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
 type Props = {
@@ -51,7 +50,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const contributorId = props.data.partition_key
   const postId = props.data.sort_key
   const isMe = myUserId === contributorId
-  const { data } = useGetBookmark(myUserId, postId)
+  useEffect(() => {})
+  // const { data, isValidating } = useGetBookmark(myUserId, postId)
 
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
@@ -67,7 +67,8 @@ const IndexPage: React.FC<Props> = (props) => {
                   isMe={isMe}
                   myUserId={myUserId!}
                   postId={postId}
-                  data={data}
+                  // data={data}
+                  // isValidating={isValidating}
                 />
               </Box>
               <Box mb={0}>
