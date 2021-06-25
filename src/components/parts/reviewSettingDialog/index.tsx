@@ -23,6 +23,7 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 type Props = {
+  title: string
   review: string
   isOpenDialog: boolean
   showToggleDialog: (
@@ -265,7 +266,6 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
                         __html: marked(el),
                       }}
                     />
-                    {index}
                     {!excludeTags.includes(el) &&
                       rawHtmlList.length - 1 !== index && (
                         <StyledButton
