@@ -1,54 +1,35 @@
-```typescript
-useEffect(() => {
-  let isCodeBlock = false
-  marked(props.review, (_, result) => {
-    let joinedCode: string = ''
-    const resultList: string[] = []
-    const splitedList = result.split('\n')
-    for (const item of splitedList) {
-      const foundBeginCode = item.search(BEGIN_CODE_TAG)
-      const foundEndCode = item.search(ENDE_CODE_TAG)
-      if (isCodeBlock) {
-        joinedCode = `${joinedCode}\n${item}`
-        if (foundEndCode >= 0) {
-          isCodeBlock = false
-          resultList.push(joinedCode)
-        }
-      } else {
-        if (foundBeginCode >= 0 || foundEndCode >= 0) {
-          isCodeBlock = true
-          joinedCode = `${joinedCode}${item}`
-        } else {
-          resultList.push(item)
-          isCodeBlock = false
-        }
-      }
-    }
-    console.log(resultList, 'resultList')
-
-    setRawHtmlList(resultList)
-  })
-}, [props.review])
-```
+# タイトル
 
 ## よかった点
 
-- good
+コード自体はいいと思います。
+特段悪い箇所はないかと思います。
 
-```javascript
-const changePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const value = Number(event.target.value)
-  setPrice(value)
+```typescript
+const registerContent = async (
+  paymentType: number,
+  beginPaymentArea: number | null,
+  price: number,
+) => {
+  const params = createParams(paymentType, beginPaymentArea, price)
+  console.log(params, 'params')
+  try {
+    const response = await postReview(params)
+    console.log(response)
+  } catch (error) {
+    console.error(error)
+  }
 }
 ```
+
+ココのコードは特にいいと思いますよ！！
 
 ## 改善点
 
-- bad
+このあたりのコードは少し改善したほうがいいです。
 
 ```javascript
-const badPrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-  const value = Number(event.target.value)
-  setPrice(value)
-}
+var hoge = 1
 ```
+
+var で宣言した変数は global になってしまうため const 又は let でスコープを限定する、最代入がないことをわからせた方がリーダブルではあります。

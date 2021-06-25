@@ -1,10 +1,11 @@
 // import React, { useEffect, useState } from "react";
 import { ReviewEditor } from '@/components/organisms/ReviewEditor'
+import { ReviewList } from '@/components/organisms/ReviewList'
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents'
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader'
 import Layout from '@/layouts/standard'
 import { UserTypes } from '@/types/global'
-import { PostContentsTypes } from '@/types/global/'
+import { PostContentsTypes, PostReviewTypes } from '@/types/global/'
 import { getContent } from '@/utils/api/get-content'
 import Box from '@material-ui/core/Box'
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
@@ -15,7 +16,10 @@ import styled from 'styled-components'
 type Props = {
   authUser: any
   currentUser: null | UserTypes
-  data: PostContentsTypes
+  data: {
+    content: PostContentsTypes
+    reviews: PostReviewTypes[]
+  }
 }
 
 const StyledBoxBgGray = styled(Box)`
@@ -39,17 +43,21 @@ const StyledContainer = styled(Container)`
 
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props)
-  const year = props.data.create_year
-  const month = props.data.create_month
-  const day = props.data.create_day
+  const content = props.data.content
+  const reviews = props.data.reviews
+  const reviewedUserIds = props.data.reviews.map((el) => el.user_id)
+  const year = content.create_year
+  const month = content.create_month
+  const day = content.create_day
   const createDate = `${year}/${month}/${day}`
-  const contents = props.data.contents
+  const contents = content.contents
   const title = contents.title
   const myUserId = props.currentUser ? props.currentUser.partition_key : ''
-  const contributorId = props.data.partition_key
-  const postId = props.data.sort_key
+  const userProfile = props.currentUser ? props.currentUser.user_profile : null
+  const contributorId = content.partition_key
+  const postId = content.sort_key
   const isMe = myUserId === contributorId
-
+  const isReviewed = reviewedUserIds.includes(myUserId)
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <StyledBoxBgGray>
@@ -59,7 +67,7 @@ const IndexPage: React.FC<Props> = (props) => {
               <Box mb={5}>
                 <ReviewRequestItemHeader
                   contents={contents}
-                  profile={props.data.user_profile}
+                  profile={content.user_profile}
                   createDate={createDate}
                   isMe={isMe}
                   myUserId={myUserId!}
@@ -71,9 +79,20 @@ const IndexPage: React.FC<Props> = (props) => {
               </Box>
             </StyledBoxBgWhite>
           </Box>
-          {!isMe && myUserId !== '' && (
+          {!isMe && myUserId !== '' && !isReviewed && (
+            <Box mb={5}>
+              <StyledBoxBgWhite>
+                <ReviewEditor
+                  myUserId={myUserId}
+                  postId={postId}
+                  userProfile={userProfile}
+                />
+              </StyledBoxBgWhite>
+            </Box>
+          )}
+          {reviews.length > 0 && (
             <StyledBoxBgWhite>
-              <ReviewEditor />
+              <ReviewList reviews={reviews} />
             </StyledBoxBgWhite>
           )}
         </StyledContainer>
@@ -103,9 +122,11 @@ export const getStaticPaths = async () => {
 export const getStaticProps = async (props: any) => {
   const postId = props.params.post_id
   const result = await getContent({ postId: postId })
+  console.log(result)
+
   return {
     props: {
-      data: result.data.Items[0],
+      data: result.data.Items,
     },
   }
 }

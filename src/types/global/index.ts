@@ -33,6 +33,24 @@ export type PostContentsTypes = {
   [key: string]: any
 }
 
+export type PostReviewTypes = {
+  update_day: number
+  update_month: number
+  partition_key: string
+  is_delete: boolean
+  contents: ReviewContentTypes
+  sort_key: string
+  user_id: string
+  post_type: string
+  post_status: number
+  update_year: number
+  user_profile: UserProfileTypes
+  create_year: number
+  create_day: number
+  create_month: number
+  type: string
+}
+
 export type ContentTypes = {
   tag_list: string[]
   target_icon: {
@@ -106,6 +124,14 @@ export type SourceTreeTypes = {
 export type BookmarkTypes = {
   partition_key: string
   sort_key: string
+}
+
+export type ReviewContentTypes = {
+  review: {
+    value: string
+    body_html: string
+    display_body_html: string
+  }
 }
 
 export type ErrorTypes = {

@@ -3,12 +3,16 @@ import { RightBorderTitle } from '@/components/molecules/RightBorderTitle'
 import { ReviewSettingDialog } from '@/components/parts/reviewSettingDialog'
 import * as CONSTS from '@/consts/const'
 import { validMessages } from '@/consts/error-messages'
+import { UserProfileTypes } from '@/types/global'
+import { postReview } from '@/utils/api/post-review'
 import * as S3 from '@/utils/api/s3'
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
+import marked from 'marked'
 import dynamic from 'next/dynamic'
 import React, { useCallback, useState } from 'react'
+
 const Editor = dynamic(
   () => {
     const promise = import('@/components/parts/editor').then((r) => r.Editor)
@@ -17,6 +21,11 @@ const Editor = dynamic(
   { ssr: false },
 )
 
+type Props = {
+  myUserId: string
+  postId: string
+  userProfile: UserProfileTypes | null
+}
 type ValidObject = {
   isValid: boolean
   message: string
@@ -38,7 +47,7 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
   }
 }
 
-export const ReviewEditor: React.FC = () => {
+export const ReviewEditor: React.FC<Props> = (props) => {
   const [review, setReview] = useState(initReview())
   const [activeStep, setActiveStep] = useState(0)
   const [isOpenDialog, setIsOpenDialog] = useState(false)
@@ -87,20 +96,52 @@ export const ReviewEditor: React.FC = () => {
   ) => {
     setIsOpenDialog(!isOpenDialog)
   }
-  const registerContent = (
+  const createParams = (
     paymentType: number,
     beginPaymentArea: number | null,
     price: number,
+    displayBodyHtml: string,
   ) => {
-    console.log(paymentType, 'paymentType')
-    console.log(beginPaymentArea, 'beginPaymentArea')
-    console.log(price, 'price')
-    console.log(review, 'review')
+    return {
+      userId: props.myUserId,
+      postId: props.postId,
+      userProfile: props.userProfile!,
+      contents: {
+        review: {
+          value: review,
+          body_html: marked(review),
+          display_body_html: displayBodyHtml,
+        },
+      },
+      paymentType: paymentType,
+      paymentArea: beginPaymentArea,
+      price,
+    }
+  }
+  const registerContent = async (
+    paymentType: number,
+    beginPaymentArea: number | null,
+    price: number,
+    displayBodyHtml: string,
+  ) => {
+    const params = createParams(
+      paymentType,
+      beginPaymentArea,
+      price,
+      displayBodyHtml,
+    )
+    console.log(params, 'params')
+    try {
+      const response = await postReview(params)
+      console.log(response)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   return (
     <>
-      <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
+      <RightBorderTitle text="Review" fontSize={20} marginBottom={0} />
       <Box mb={2}>
         <Editor
           id="editor"

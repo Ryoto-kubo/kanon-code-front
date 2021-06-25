@@ -32,6 +32,7 @@ type Props = {
     paymentType: number,
     beginPaymentArea: number | null,
     price: number,
+    displayBodyHtml: string,
   ) => void
 }
 
@@ -103,8 +104,7 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
   const BEGIN_CODE_TAG = '<pre>'
   const ENDE_CODE_TAG = '</pre>'
   const PAYMENT_FREE = 0
-  // const PAYMENT_FEE = 1
-  const [paymentType, setPaymentType] = useState(PAYMENT_FREE)
+  const [paymentType, setPaymentType] = useState(PAYMENT_FREE) // 0: 無料 1: 有料
   const [beginPaymentArea, setBeginPaymentArea] = useState<number | null>(null)
   const [rawHtmlList, setRawHtmlList] = useState<string[]>([''])
   const [price, setPrice] = useState(1500)
@@ -174,12 +174,21 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
     setIsValidPaymentArea(createValidObject(true, ''))
     setBeginPaymentArea(selectedIndex)
   }
+  const makeDisplayBodyHtml = () => {
+    if (beginPaymentArea === null) return ''
+    let joinedCode: string = ''
+    for (let i = 0; i <= beginPaymentArea; i++) {
+      const item = rawHtmlList[i!]
+      joinedCode = `${joinedCode}\n${item}`
+    }
+    return joinedCode
+  }
   const preRegister = () => {
     const isValidPaymentArea = validPaymentArea()
     if (!isValidPrice.isValid || !isValidPaymentArea) return
-    props.registerContent(paymentType, beginPaymentArea, price)
+    const displayBodyHtml = makeDisplayBodyHtml()
+    props.registerContent(paymentType, beginPaymentArea, price, displayBodyHtml)
   }
-
   return (
     <Dialog
       open={props.isOpenDialog}
@@ -256,8 +265,9 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
                         __html: marked(el),
                       }}
                     />
-                    {!excludeTags.includes(el) ||
-                      (rawHtmlList.length - 1 !== index && (
+                    {index}
+                    {!excludeTags.includes(el) &&
+                      rawHtmlList.length - 1 !== index && (
                         <StyledButton
                           onClick={() => selectPaymentArea(index)}
                           style={{
@@ -269,7 +279,7 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
                         >
                           Click!このラインより上のエリアが無料で表示されます
                         </StyledButton>
-                      ))}
+                      )}
                   </Box>
                 ))}
               </StyledBoxBg>
