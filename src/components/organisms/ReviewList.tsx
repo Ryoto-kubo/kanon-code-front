@@ -1,94 +1,80 @@
+import { CustomSolidButton } from '@/components/atoms/SolidButton'
+import { RequestItemUser } from '@/components/molecules/RequestItemUser'
 import { RightBorderTitle } from '@/components/molecules/RightBorderTitle'
-import * as CONSTS from '@/consts/const'
-import { validMessages } from '@/consts/error-messages'
-import * as S3 from '@/utils/api/s3'
-import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
-import { validLength } from '@/utils/valid'
-import dynamic from 'next/dynamic'
-import React, { useCallback, useState } from 'react'
+import theme from '@/styles/theme'
+import { PostReviewTypes } from '@/types/global/'
+import Box from '@material-ui/core/Box'
+import marked from 'marked'
+import React from 'react'
+import styled from 'styled-components'
 
-const Editor = dynamic(
-  () => {
-    const promise = import('@/components/parts/editor').then((r) => r.Editor)
-    return promise
-  },
-  { ssr: false },
-)
-
-type ValidObject = {
-  isValid: boolean
-  message: string
+type Props = {
+  reviews: PostReviewTypes[]
 }
 
-export const ReviewList: React.FC = () => {
-  const createValidObject = useCallback((defaultValue, defaultMessage) => {
-    return {
-      isValid: defaultValue,
-      message: defaultMessage,
-    }
-  }, [])
-
-  const [description, setDescription] = useState('')
-  const [activeStep, setActiveStep] = useState(0)
-  const [canPublish, setCanPUblish] = useState<ValidObject>(
-    createValidObject(true, ''),
-  )
-
-  const [isValidDescriptionObject, setIsValidDescriptionObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION))
-
-  const changeDescritption = useCallback(
-    (value: string): void => {
-      const prepareContentBeforePost = new PrepareContentBeforePost(
-        value,
-        setIsValidDescriptionObject,
-        isValidDescriptionObject,
-      )
-      const isValidMaxLength = prepareContentBeforePost.validLength(
-        CONSTS.MAX_DESCRIPTION_LENGTH,
-        validMessages.OVER_LENGTH_DESCRIPION,
-      )
-      const isExist = prepareContentBeforePost.validEmpty(
-        validMessages.REQUIRED_DESCRIPTION,
-      )
-      if (isValidMaxLength && isExist) {
-        prepareContentBeforePost.successed()
-      }
-      setDescription(value)
-    },
-    [description],
-  )
-  const changeActiveStep = useCallback(
-    (value: number): void => {
-      setActiveStep(value)
-    },
-    [activeStep],
-  )
-  const updateCanPublish = useCallback((isValid: boolean, message = '') => {
-    setCanPUblish({
-      ...canPublish,
-      isValid: isValid,
-      message: message,
-    })
-  }, [])
-
+const StyledBoxBorder = styled(Box)`
+  border: 3px solid ${theme.palette.primary.main};
+  width: 100%;
+`
+const StyledBoxShowMessage = styled(Box)`
+  text-align: center;
+  margin-bottom: 32px;
+  &:after {
+    border-top: 1px dashed #a8abb1;
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: -12px;
+    content: '';
+  }
+`
+const StyledBoxBg = styled(Box)`
+  background: #ffffff;
+  display: inline-block;
+  padding: 0 8px;
+`
+export const ReviewList: React.FC<Props> = ({ reviews }) => {
+  const showToggleDialog = (
+    _: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
+    console.log('hoge')
+  }
   return (
     <>
       <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
-      <Editor
-        id="editor"
-        isFullDisplayButton={true}
-        headerText="Review"
-        onChange={changeDescritption}
-        changeActiveStep={changeActiveStep}
-        value={description}
-        activeStep={activeStep}
-        isValid={validLength(description, CONSTS.MAX_REVIEW_LENGTH)}
-        updateCanPublish={updateCanPublish}
-        uploadImageToS3={S3.uploadImageToS3}
-        MAX_LENGTH={CONSTS.MAX_REVIEW_LENGTH}
-      />
+      {reviews.map((el, index) => (
+        <Box key={index}>
+          <Box mb={1}>
+            <RequestItemUser
+              name={el.user_profile.display_name}
+              date={`${el.create_year}/${el.create_month}/${el.create_day}/`}
+              userIcon={el.user_profile.icon_src}
+              width={'32px'}
+              height={'32px'}
+            />
+          </Box>
+          <div className="review-item-wrapper">
+            <span
+              dangerouslySetInnerHTML={{
+                __html: marked(el.contents.review.display_body_html),
+              }}
+            />
+          </div>
+          <StyledBoxShowMessage>
+            <StyledBoxBg>続きのレビューを見るには</StyledBoxBg>
+          </StyledBoxShowMessage>
+          <Box textAlign="center" mb={2}>
+            <CustomSolidButton
+              sizing="small"
+              onClick={showToggleDialog}
+              color="secondary"
+            >
+              レビューを開封する
+            </CustomSolidButton>
+          </Box>
+          <StyledBoxBorder />
+        </Box>
+      ))}
     </>
   )
 }

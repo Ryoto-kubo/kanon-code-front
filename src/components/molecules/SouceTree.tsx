@@ -1,11 +1,11 @@
-import { SourceTreeTypes } from "@/types/global";
-import Button from "@material-ui/core/Button";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import TreeItem from "@material-ui/lab/TreeItem";
-import TreeView from "@material-ui/lab/TreeView";
-import React from "react";
-import styled from "styled-components";
+import { SourceTreeTypes } from '@/types/global'
+import Button from '@material-ui/core/Button'
+import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore'
+import TreeItem from '@material-ui/lab/TreeItem'
+import TreeView from '@material-ui/lab/TreeView'
+import React from 'react'
+import styled from 'styled-components'
 
 const StyledButton = styled(Button)`
   padding: 0;
@@ -13,32 +13,26 @@ const StyledButton = styled(Button)`
   &:hover {
     background: none;
   }
-`;
+`
 type Props = {
-  inputFileNameLists: {
-    body_html: string;
-    file_name: string;
-    is_valid: boolean;
-    key: string;
-    source_code: string;
-  }[];
-  sourceTree: SourceTreeTypes[];
+  nodeIds: string[]
+  sourceTree: SourceTreeTypes[]
   switchSourceCode: (
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => void;
-};
+    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => void
+}
 
 export const SouceTree: React.FC<Props> = ({
-  inputFileNameLists,
+  nodeIds,
   sourceTree,
   switchSourceCode,
 }) => {
-  console.log(inputFileNameLists);
+  console.log(sourceTree)
   const data: SourceTreeTypes = {
-    id: "root",
-    name: "Source Tree",
+    id: 'root',
+    name: 'Source Tree',
     children: sourceTree,
-  };
+  }
 
   const renderTree = (nodes: SourceTreeTypes) =>
     nodes.children ? (
@@ -56,17 +50,17 @@ export const SouceTree: React.FC<Props> = ({
       >
         <TreeItem nodeId={nodes.id} label={nodes.name} />
       </StyledButton>
-    );
+    )
 
   return (
     <>
       <TreeView
         defaultCollapseIcon={<ExpandMoreIcon />}
-        defaultExpanded={["root"]}
+        defaultExpanded={['root', ...nodeIds]}
         defaultExpandIcon={<ChevronRightIcon />}
       >
         {renderTree(data)}
       </TreeView>
     </>
-  );
-};
+  )
+}

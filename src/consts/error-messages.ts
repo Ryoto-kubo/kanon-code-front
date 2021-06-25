@@ -37,10 +37,12 @@ export const validMessages = {
   NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA:
     '最初と最後にアンダースコア（_）を使うことはできません',
   NOT_ACCEPT_FILE_EXTENTION: 'JPEG、PNG、GIF画像のみをアップロードできます',
+  NOT_SELECTED_PAYMENTAREA: '有料範囲を選択してください',
   OVER_FILE_SIZE: '10MB以下の画像を選択してください',
   OVER_LENGTH_TITLE: `タイトルは${CONSTS.MAX_TITLE_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_DESCRIPION: `デスクリプションは${CONSTS.MAX_DESCRIPTION_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.MAX_FILE_NAME_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.MAX_SOURCE_CODE_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_PRICE: `${CONSTS.MAX_PRICE_LENGTH}桁以下の数値を入力してください`,
+  ZERO_UNDER_OVER_MAX_PRICE: '¥0~¥100,000以上の金額を入力してください',
 }
