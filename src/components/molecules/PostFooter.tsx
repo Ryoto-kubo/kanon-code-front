@@ -41,7 +41,7 @@ export const PostFooter: React.FC<Props> = (props) => {
       <Box>
         <Link href={`/${props.name}`} passHref>
           <StyledAnchor>
-            <Box component="p">{`/${props.name}`}</Box>
+            <Box component="p">{`${props.name}`}</Box>
           </StyledAnchor>
         </Link>
         <ParagraphText variant="body2" component="p" color="textSecondary">

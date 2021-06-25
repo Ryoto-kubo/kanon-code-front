@@ -6,6 +6,7 @@ interface Props {
   sizing: 'small' | 'medium' | 'large'
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
   disabled?: boolean
+  color?: 'default' | 'inherit' | 'primary' | 'secondary' | undefined
 }
 
 const StyledSolidButton = styled(Button)`
@@ -18,11 +19,12 @@ const StyledSolidButton = styled(Button)`
   text-transform: none;
 `
 export const CustomSolidButton: React.FC<Props> = (props) => {
+  const color = props.color ? props.color : 'primary'
   return (
     <StyledSolidButton
       size={props.sizing}
       variant="contained"
-      color="primary"
+      color={color}
       disableElevation
       onClick={props.onClick}
       disabled={props.disabled}

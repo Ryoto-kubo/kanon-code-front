@@ -14,6 +14,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
+import CancelPresentationIcon from '@material-ui/icons/CancelPresentation'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 import { useRouter } from 'next/router'
 import React, { useCallback, useState } from 'react'
@@ -134,6 +135,12 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
                     <MenuItem onClick={() => toPage(`/`)}>
                       <StyledListItemIcon>
                         <EditOutlinedIcon fontSize="small" />
+                      </StyledListItemIcon>
+                      <ListItemText secondary="編集" />
+                    </MenuItem>
+                    <MenuItem onClick={() => toPage(`/`)}>
+                      <StyledListItemIcon>
+                        <CancelPresentationIcon fontSize="small" />
                       </StyledListItemIcon>
                       <ListItemText secondary="編集" />
                     </MenuItem>

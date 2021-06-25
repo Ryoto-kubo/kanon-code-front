@@ -1,5 +1,5 @@
 // import React, { useEffect, useState } from "react";
-import { ReviewList } from '@/components/organisms/ReviewList'
+import { ReviewEditor } from '@/components/organisms/ReviewEditor'
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents'
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader'
 import Layout from '@/layouts/standard'
@@ -71,9 +71,11 @@ const IndexPage: React.FC<Props> = (props) => {
               </Box>
             </StyledBoxBgWhite>
           </Box>
-          <StyledBoxBgWhite>
-            <ReviewList />
-          </StyledBoxBgWhite>
+          {!isMe && myUserId !== '' && (
+            <StyledBoxBgWhite>
+              <ReviewEditor />
+            </StyledBoxBgWhite>
+          )}
         </StyledContainer>
       </StyledBoxBgGray>
     </Layout>

@@ -53,6 +53,7 @@ export type ContentTypes = {
   }[]
   target_language: number
   source_tree: SourceTreeTypes[]
+  node_ids: string[]
   title: string
 }
 
