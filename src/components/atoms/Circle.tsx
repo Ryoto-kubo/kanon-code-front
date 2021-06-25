@@ -1,15 +1,16 @@
-import { Box } from "@material-ui/core/";
-import React from "react";
+import { Box } from '@material-ui/core/'
+import React from 'react'
 
 type Props = {
-  width?: string;
-  height?: string;
-};
+  width?: string
+  height?: string
+  margin?: string
+}
 
 export const CircleElement: React.FC<Props> = ({
   children,
-  width = "50px",
-  height = "50px",
+  width = '50px',
+  height = '50px',
 }) => {
   return (
     <Box
@@ -23,5 +24,5 @@ export const CircleElement: React.FC<Props> = ({
     >
       {children}
     </Box>
-  );
-};
+  )
+}

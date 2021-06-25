@@ -22,7 +22,6 @@ export type PostContentsTypes = {
   contents: ContentTypes
   sort_key: string
   user_id: string
-  post_type: string
   post_status: number
   update_year: number
   user_profile: UserProfileTypes
@@ -34,21 +33,22 @@ export type PostContentsTypes = {
 }
 
 export type PostReviewTypes = {
-  update_day: number
-  update_month: number
   partition_key: string
-  is_delete: boolean
-  contents: ReviewContentTypes
   sort_key: string
+  type: string
+  contents: ReviewContentTypes
   user_id: string
-  post_type: string
-  post_status: number
-  update_year: number
   user_profile: UserProfileTypes
+  price: number
+  payment_area: number
+  payment_type: number
   create_year: number
   create_day: number
   create_month: number
-  type: string
+  update_year: number
+  update_month: number
+  update_day: number
+  is_delete: boolean
 }
 
 export type ContentTypes = {
@@ -128,6 +128,7 @@ export type BookmarkTypes = {
 
 export type ReviewContentTypes = {
   review: {
+    title: string
     value: string
     body_html: string
     display_body_html: string

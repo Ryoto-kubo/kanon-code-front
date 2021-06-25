@@ -1,4 +1,5 @@
-import { CustomSolidButton } from '@/components/atoms/SolidButton'
+import { Price } from '@/components/atoms/Price'
+import { AnnounceOpenReview } from '@/components/molecules/AnnounceOpenReview'
 import { RequestItemUser } from '@/components/molecules/RequestItemUser'
 import { RightBorderTitle } from '@/components/molecules/RightBorderTitle'
 import theme from '@/styles/theme'
@@ -7,32 +8,23 @@ import Box from '@material-ui/core/Box'
 import marked from 'marked'
 import React from 'react'
 import styled from 'styled-components'
-
 type Props = {
   reviews: PostReviewTypes[]
 }
 
+const StyledBoxTitleWrapper = styled(Box)`
+  margin-bottom: 8px;
+  border-bottom: 3px solid ${theme.palette.primary.main};
+`
 const StyledBoxBorder = styled(Box)`
   border: 3px solid ${theme.palette.primary.main};
   width: 100%;
 `
-const StyledBoxShowMessage = styled(Box)`
-  text-align: center;
-  margin-bottom: 32px;
-  &:after {
-    border-top: 1px dashed #a8abb1;
-    display: block;
-    width: 100%;
-    height: 1px;
-    margin-top: -12px;
-    content: '';
-  }
+const StyledBoxFlex = styled(Box)`
+  display: flex;
+  justify-content: space-between;
 `
-const StyledBoxBg = styled(Box)`
-  background: #ffffff;
-  display: inline-block;
-  padding: 0 8px;
-`
+
 export const ReviewList: React.FC<Props> = ({ reviews }) => {
   const showToggleDialog = (
     _: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -43,8 +35,8 @@ export const ReviewList: React.FC<Props> = ({ reviews }) => {
     <>
       <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
       {reviews.map((el, index) => (
-        <Box key={index}>
-          <Box mb={1}>
+        <Box key={index} component="section">
+          <StyledBoxFlex mb={2}>
             <RequestItemUser
               name={el.user_profile.display_name}
               date={`${el.create_year}/${el.create_month}/${el.create_day}/`}
@@ -52,7 +44,11 @@ export const ReviewList: React.FC<Props> = ({ reviews }) => {
               width={'32px'}
               height={'32px'}
             />
-          </Box>
+            <Price price={el.price} />
+          </StyledBoxFlex>
+          <StyledBoxTitleWrapper>
+            <h1>{el.contents.review.title}</h1>
+          </StyledBoxTitleWrapper>
           <div className="review-item-wrapper">
             <span
               dangerouslySetInnerHTML={{
@@ -60,18 +56,14 @@ export const ReviewList: React.FC<Props> = ({ reviews }) => {
               }}
             />
           </div>
-          <StyledBoxShowMessage>
-            <StyledBoxBg>続きのレビューを見るには</StyledBoxBg>
-          </StyledBoxShowMessage>
-          <Box textAlign="center" mb={2}>
-            <CustomSolidButton
-              sizing="small"
-              onClick={showToggleDialog}
-              color="secondary"
-            >
-              レビューを開封する
-            </CustomSolidButton>
-          </Box>
+          <AnnounceOpenReview
+            title={el.contents.review.title}
+            profile={el.user_profile}
+            width={'40px'}
+            height={'40px'}
+            price={el.price}
+            showToggleDialog={showToggleDialog}
+          />
           <StyledBoxBorder />
         </Box>
       ))}

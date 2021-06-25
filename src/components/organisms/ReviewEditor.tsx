@@ -1,5 +1,7 @@
 import { CustomSolidButton } from '@/components/atoms/SolidButton'
 import { RightBorderTitle } from '@/components/molecules/RightBorderTitle'
+import { ValidMessage } from '@/components/molecules/ValidMessage'
+import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
 import { ReviewSettingDialog } from '@/components/parts/reviewSettingDialog'
 import * as CONSTS from '@/consts/const'
 import { validMessages } from '@/consts/error-messages'
@@ -32,9 +34,7 @@ type ValidObject = {
 }
 
 const initReview = () => {
-  return `# タイトル
-
-## よかった点
+  return `## よかった点
 
 ## 改善点
 `
@@ -48,14 +48,41 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 }
 
 export const ReviewEditor: React.FC<Props> = (props) => {
+  const [title, setTitle] = useState('')
   const [review, setReview] = useState(initReview())
   const [activeStep, setActiveStep] = useState(0)
   const [isOpenDialog, setIsOpenDialog] = useState(false)
+  const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
+    createValidObject(true, validMessages.REQUIRED_TITLE),
+  )
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, ''),
   )
   const [isValidReviewObject, setIsValidReviewObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_DESCRIPTION),
+  )
+  const changeTitle = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>): void => {
+      const value = e.target.value
+      const prepareContentBeforePost = new PrepareContentBeforePost(
+        value,
+        setIsValidTitleObject,
+        isValidTitleObject,
+      )
+      const isValidMaxLength = prepareContentBeforePost.validLength(
+        CONSTS.MAX_TITLE_LENGTH,
+        validMessages.OVER_LENGTH_TITLE,
+      )
+      if (!isValidMaxLength) return
+      const isExist = prepareContentBeforePost.validEmpty(
+        validMessages.REQUIRED_TITLE,
+      )
+      if (isValidMaxLength && isExist) {
+        prepareContentBeforePost.successed()
+      }
+      setTitle(value)
+    },
+    [title],
   )
   const changeReview = useCallback(
     (value: string): void => {
@@ -94,6 +121,14 @@ export const ReviewEditor: React.FC<Props> = (props) => {
   const showToggleDialog = (
     _: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
+    if (title === '') {
+      setIsValidTitleObject({
+        ...isValidTitleObject,
+        isValid: false,
+        message: validMessages.REQUIRED_TITLE,
+      })
+      return
+    }
     setIsOpenDialog(!isOpenDialog)
   }
   const createParams = (
@@ -108,6 +143,7 @@ export const ReviewEditor: React.FC<Props> = (props) => {
       userProfile: props.userProfile!,
       contents: {
         review: {
+          title: title,
           value: review,
           body_html: marked(review),
           display_body_html: displayBodyHtml,
@@ -143,6 +179,16 @@ export const ReviewEditor: React.FC<Props> = (props) => {
     <>
       <RightBorderTitle text="Review" fontSize={20} marginBottom={0} />
       <Box mb={2}>
+        <Box mb={3} className="title-wrapper">
+          <InputPostTitleWrapper
+            title={title}
+            onChange={changeTitle}
+            placeholder="Title"
+          />
+          {!isValidTitleObject.isValid && (
+            <ValidMessage validText={isValidTitleObject.message} />
+          )}
+        </Box>
         <Editor
           id="editor"
           isFullDisplayButton={true}
@@ -167,6 +213,7 @@ export const ReviewEditor: React.FC<Props> = (props) => {
         </CustomSolidButton>
       </Box>
       <ReviewSettingDialog
+        title={title}
         review={review}
         isOpenDialog={isOpenDialog}
         showToggleDialog={showToggleDialog}
