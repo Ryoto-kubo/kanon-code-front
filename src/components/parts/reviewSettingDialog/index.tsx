@@ -2,7 +2,7 @@ import { CustomHeading2 } from '@/components/atoms/CustomHeading2'
 import { CustomSolidButton } from '@/components/atoms/SolidButton'
 import { BaseTextField } from '@/components/atoms/TextField'
 import { ValidMessage } from '@/components/molecules/ValidMessage'
-import { MAX_PRICE } from '@/consts/const'
+import { MAX_PRICE, PAYMENT_FEE, PAYMENT_FREE } from '@/consts/const'
 import { validMessages } from '@/consts/error-messages'
 import { paymentTypes } from '@/consts/payment-types'
 import theme from '@/styles/theme'
@@ -21,7 +21,6 @@ import { TransitionProps } from '@material-ui/core/transitions'
 import marked from 'marked'
 import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
-
 type Props = {
   title: string
   review: string
@@ -104,7 +103,6 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
   const excludeTags = ['', '<ul>', '</ul>']
   const BEGIN_CODE_TAG = '<pre>'
   const ENDE_CODE_TAG = '</pre>'
-  const PAYMENT_FREE = 0
   const [paymentType, setPaymentType] = useState(PAYMENT_FREE) // 0: 無料 1: 有料
   const [beginPaymentArea, setBeginPaymentArea] = useState<number | null>(null)
   const [rawHtmlList, setRawHtmlList] = useState<string[]>([''])
@@ -186,7 +184,9 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
   }
   const preRegister = () => {
     const isValidPaymentArea = validPaymentArea()
-    if (!isValidPrice.isValid || !isValidPaymentArea) return
+    if (paymentType === PAYMENT_FEE) {
+      if (!isValidPrice.isValid || !isValidPaymentArea) return
+    }
     const displayBodyHtml = makeDisplayBodyHtml()
     props.registerContent(paymentType, beginPaymentArea, price, displayBodyHtml)
   }

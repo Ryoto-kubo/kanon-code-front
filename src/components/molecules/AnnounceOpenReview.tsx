@@ -51,7 +51,7 @@ const StyledBoxTitleWrapper = styled(Box)`
   font-size: 16px;
   margin-bottom: 8px;
   display: inline-block;
-  border-bottom: 1px dashed #a8abb1;
+  // border-bottom: 1px dashed #a8abb1;
 `
 const StyledAnchor = styled(`a`)`
   color: ${theme.palette.text.primary};

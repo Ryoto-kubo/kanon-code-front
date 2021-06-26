@@ -32,7 +32,7 @@ export type PostContentsTypes = {
   [key: string]: any
 }
 
-export type PostReviewTypes = {
+export type ReviewTypes = {
   partition_key: string
   sort_key: string
   type: string
