@@ -58,6 +58,10 @@ const IndexPage: React.FC<Props> = (props) => {
   const postId = content.sort_key
   const isMe = myUserId === contributorId
   const isReviewed = reviewedUserIds.includes(myUserId)
+  // 自分の投稿ではない、ログインしている、まだレビューをしていなければレビューをできる
+  const canReview = !isMe && myUserId !== '' && !isReviewed
+  console.log(canReview)
+
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <StyledBoxBgGray>
@@ -79,7 +83,7 @@ const IndexPage: React.FC<Props> = (props) => {
               </Box>
             </StyledBoxBgWhite>
           </Box>
-          {!isMe && myUserId !== '' && !isReviewed && (
+          {canReview && (
             <Box mb={5}>
               <StyledBoxBgWhite>
                 <ReviewEditor
@@ -92,7 +96,7 @@ const IndexPage: React.FC<Props> = (props) => {
           )}
           {reviews.length > 0 && (
             <StyledBoxBgWhite>
-              <ReviewList reviews={reviews} />
+              <ReviewList reviews={reviews} myUserId={myUserId} />
             </StyledBoxBgWhite>
           )}
         </StyledContainer>
