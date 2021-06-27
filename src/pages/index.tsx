@@ -1,71 +1,71 @@
-import { TypoHeading2 } from '@/components/atoms/TypoHeading2'
+import { TypoHeading2 } from "@/components/atoms/TypoHeading2";
 // import { CustomLoader } from "@/components/common/loader";
-import { FirstView } from '@/components/organisms/FirstView'
-import { Post } from '@/components/organisms/Post'
-import Layout from '@/layouts/standard'
-import theme from '@/styles/theme'
-import { UserType } from '@/types/global'
-import { PostContentsProps } from '@/types/global/'
-import { getContents } from '@/utils/api/get-contents'
-import { Box, Container, Grid } from '@material-ui/core/'
-import React from 'react'
-import styled from 'styled-components'
+import { FirstView } from "@/components/organisms/FirstView";
+import { Post } from "@/components/organisms/Post";
+import Layout from "@/layouts/standard";
+import theme from "@/styles/theme";
+import { UserTypes } from "@/types/global";
+import { PostContentsTypes } from "@/types/global/";
+import { getContents } from "@/utils/api/get-contents";
+import { Box, Container, Grid } from "@material-ui/core/";
+import React from "react";
+import styled from "styled-components";
 // import React, { useEffect, useState } from "react";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 
 type Props = {
-  authUser: any
-  currentUser: null | UserType
+  authUser: any;
+  currentUser: null | UserTypes;
   data: {
-    Count: number
-    Items: PostContentsProps[]
-    ScannedCount: number
-  }
-}
+    Count: number;
+    Items: PostContentsTypes[];
+    ScannedCount: number;
+  };
+};
 
 const StyledBoxWidthBorder = styled(Box)`
   border-left: 3px solid ${theme.palette.primary.main};
   padding-left: 8px;
-`
+`;
 
-const makePropertyForPostUrl = (posts: PostContentsProps[]) => {
-  return posts.map((el: PostContentsProps) => {
-    const postId = el.sort_key.split('_').pop()
-    const displayName = el.user_profile.display_name
-    el.postUrl = `${displayName}/post/${postId}`
-    return el
-  })
-}
-const splitPostsByPostLanguage = (posts: PostContentsProps[]) => {
-  let frontPosts = []
-  let backPosts = []
-  let otherPosts = []
-  const FRONT = 0
-  const BACK = 1
-  const OTHER = 2
+const makePropertyForPostUrl = (posts: PostContentsTypes[]) => {
+  return posts.map((el: PostContentsTypes) => {
+    const postId = el.sort_key.split("_").pop();
+    const displayName = el.user_profile.display_name;
+    el.postUrl = `${displayName}/post/${postId}`;
+    return el;
+  });
+};
+const splitPostsByPostLanguage = (posts: PostContentsTypes[]) => {
+  let frontPosts = [];
+  let backPosts = [];
+  let otherPosts = [];
+  const FRONT = 0;
+  const BACK = 1;
+  const OTHER = 2;
   for (const item of posts) {
     switch (item.contents.target_language) {
       case FRONT:
-        frontPosts.push(item)
-        break
+        frontPosts.push(item);
+        break;
       case BACK:
-        backPosts.push(item)
-        break
+        backPosts.push(item);
+        break;
       case OTHER:
-        otherPosts.push(item)
-        break
+        otherPosts.push(item);
+        break;
     }
   }
   return {
     frontPosts,
     backPosts,
     otherPosts,
-  }
-}
+  };
+};
 const IndexPage: React.FC<Props> = (props) => {
-  const items = makePropertyForPostUrl(props.data.Items)
-  const { frontPosts, backPosts, otherPosts } = splitPostsByPostLanguage(items)
-  // const [contents] = useState<PostContentsProps[]>(items)
+  const items = makePropertyForPostUrl(props.data.Items);
+  const { frontPosts, backPosts, otherPosts } = splitPostsByPostLanguage(items);
+  // const [contents] = useState<PostContentsTypes[]>(items)
 
   // const [contents, setContents] = useState<any[]>(props.data.Items);
   // const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -171,26 +171,26 @@ const IndexPage: React.FC<Props> = (props) => {
       {/* )} */}
     </Layout>
     // </>
-  )
-}
+  );
+};
 // サーバーサイドで実行される
 export const getStaticProps = async () => {
   // export const getServerSideProps = async () => {
   try {
-    const response = await getContents()
+    const response = await getContents();
     return {
       props: {
         data: response.data,
       },
-      revalidate: 60,
-    }
+      revalidate: 30,
+    };
   } catch (error) {
     return {
       props: {
         data: null,
       },
-    }
+    };
   }
-}
+};
 
-export default IndexPage
+export default IndexPage;

@@ -14,6 +14,7 @@ import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined"
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import SpeedOutlinedIcon from "@material-ui/icons/SpeedOutlined";
 import { Auth } from "aws-amplify";
+// import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import styled from "styled-components";
@@ -34,6 +35,12 @@ const StyledUseMr = styled.span`
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
 `;
+// const StyledAnchor = styled(ListItemIcon)`
+// display: flex;
+// text-decoration: none;
+// align-items: center;
+// }
+// `;
 
 export const LoggedHeaderParts: React.FC<Props> = (props) => {
   const router = useRouter();

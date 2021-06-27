@@ -1,4 +1,4 @@
-export type UserType = {
+export type UserTypes = {
   create_day: number;
   create_month: number;
   create_year: number;

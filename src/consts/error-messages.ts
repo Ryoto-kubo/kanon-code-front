@@ -18,8 +18,13 @@ export type ValidMessages =
 export const errorMessages = {
   SYSTEM_ERROR:
     'システムエラーが発生しました。しばらく時間をおいてやり直してください。',
+  BOOKMARK_ERROR:
+    'ブックマークの登録又は解除に失敗しました。しばらく時間をおいてやり直してください。',
+  REVIEW_ERROR:
+    'レビューの投稿に失敗しました。しばらく時間をおいてやり直してください。',
   EXISTED_NAME: '既に使用されている名前です。',
   IMAGE_COMPRESSION_ERROR: '画像の圧縮に失敗しました',
+  INVAILD_VALUE: '不正な値です',
 }
 export const validMessages = {
   REQUIRED_TITLE: 'タイトルを入力してください',
@@ -29,10 +34,17 @@ export const validMessages = {
   REQUIRED_SOURCE_CODE: 'ソースコードを入力してください',
   ONLY_SINGLEBYTE_AND_UNDERSCORE:
     '半角英数字とアンダースコア（_）のみ使用できます',
+  ONLY_SINGLEBYTE: '半角英数字のみ使用できます',
+  ONLY_SINGLEBYTE_NUMBER: '半角数字で入力してください',
   NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA:
     '最初と最後にアンダースコア（_）を使うことはできません',
-  OVER_LENGTH_TITLE: `タイトルは${CONSTS.TITLE_MAX_LENGTH}文字以下で入力してください`,
-  OVER_LENGTH_DESCRIPION: `デスクリプションは${CONSTS.DESCRIPTION_MAX_LENGTH}文字以下で入力してください`,
-  OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.FILE_NAME_MAX_LENGTH}文字以下で入力してください`,
-  OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.SOURCE_CODE_MAX_LENGTH}文字以下で入力してください`,
+  NOT_ACCEPT_FILE_EXTENTION: 'JPEG、PNG、GIF画像のみをアップロードできます',
+  NOT_SELECTED_PAYMENTAREA: '有料範囲を選択してください',
+  OVER_FILE_SIZE: '10MB以下の画像を選択してください',
+  OVER_LENGTH_TITLE: `タイトルは${CONSTS.MAX_TITLE_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_DESCRIPION: `デスクリプションは${CONSTS.MAX_DESCRIPTION_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.MAX_FILE_NAME_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.MAX_SOURCE_CODE_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_PRICE: `${CONSTS.MAX_PRICE_LENGTH}桁以下の数値を入力してください`,
+  ZERO_UNDER_OVER_MAX_PRICE: '¥0~¥100,000以上の金額を入力してください',
 }

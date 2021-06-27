@@ -12,7 +12,7 @@ import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
-  name: string
+  isFullDisplayButton: boolean
   switchPreview: (event: React.MouseEvent<HTMLButtonElement>) => void
   insertCodeMde: (event: React.MouseEvent<HTMLButtonElement>) => void
   insertLinkMde: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -87,7 +87,7 @@ const StyledInputLabel = styled(InputLabel)`
 
 export const EditorButtons: React.FC<Props> = React.memo((props) => {
   const {
-    name,
+    isFullDisplayButton,
     switchPreview,
     insertCodeMde,
     insertLinkMde,
@@ -129,7 +129,7 @@ export const EditorButtons: React.FC<Props> = React.memo((props) => {
           </StyledBoxCircle>
         </StyledIconButton>
       </TooltipWrapper>
-      {name === 'Description' && (
+      {isFullDisplayButton && (
         <TooltipWrapper title="Link">
           <StyledIconButton
             disableFocusRipple
@@ -144,7 +144,7 @@ export const EditorButtons: React.FC<Props> = React.memo((props) => {
           </StyledIconButton>
         </TooltipWrapper>
       )}
-      {name === 'Description' && (
+      {isFullDisplayButton && (
         <TooltipWrapper title="Image">
           {props.isUploading ? (
             <StyledBoxCircle>

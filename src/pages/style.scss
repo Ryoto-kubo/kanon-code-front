@@ -1,0 +1,72 @@
+.source-code-wrapper {
+  .title {
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .notification {
+    color: #ff604f;
+  }
+}
+
+.description-wrapper,
+.review-item-wrapper {
+  h1 {
+    border-bottom: 1px solid #dddddd;
+    margin-bottom: 16px;
+    &:not(:first-child) {
+      margin-top: 48px;
+    }
+  }
+  h2 {
+    margin-top: 32px;
+    border-bottom: 1px solid #dddddd;
+    margin-bottom: 16px;
+  }
+  p {
+    line-height: 1.9;
+    font-size: 16px;
+  }
+  a {
+    color: #5c6bc0;
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+      text-decoration-color: #5c6bc0;
+    }
+  }
+}
+
+pre {
+  background: #292a33;
+  border-radius: 3px;
+  padding: 16px;
+  overflow-x: auto;
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+    monospace;
+  code {
+    color: #ffffff;
+    .hljs-function {
+      color: #569cd6;
+      .hljs-params {
+        color: #4ec9b0;
+      }
+    }
+    // .hljs-keyword {
+    //   color: #c485bf;
+    // }
+  }
+}
+
+.post-item-wrapper {
+  pre {
+    margin: 1.3rem 0;
+  }
+}
+.request-item-wrapper {
+  height: 100%;
+  pre {
+    margin: 0;
+    height: 100%;
+    max-height: 700px;
+  }
+}

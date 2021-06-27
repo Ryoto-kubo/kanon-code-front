@@ -1,7 +1,7 @@
 import { LinkWrapper } from "@/components/atoms/Link";
 import { KanonCodeLogo } from "@/components/atoms/Logo";
 import { SolidLink } from "@/components/atoms/SolidLink";
-import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
+import { StandardAppBar } from "@/components/atoms/StandardAppBar";
 import { SearchLink } from "@/components/molecules/SearchLink";
 import { Box } from "@material-ui/core/";
 import React from "react";
@@ -23,7 +23,7 @@ const StyledUseMr = styled.span`
 
 export const TheStndardHeader: React.FC = () => {
   return (
-    <CustomStickyAppBar>
+    <StandardAppBar>
       <StyledBox
         display="flex"
         alignItems="center"
@@ -41,6 +41,6 @@ export const TheStndardHeader: React.FC = () => {
           </SolidLink>
         </Box>
       </StyledBox>
-    </CustomStickyAppBar>
+    </StandardAppBar>
   );
 };

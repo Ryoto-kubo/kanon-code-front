@@ -1,22 +1,22 @@
-export const positions = [
+export const POSITIONS = [
   {
     value: 0,
-    label: '未選択',
+    label: "未選択",
   },
   {
     value: 1,
-    label: 'フルスタックエンジニア',
+    label: "フルスタックエンジニア",
   },
   {
     value: 2,
-    label: 'フロントエンドエンジニア',
+    label: "フロントエンドエンジニア",
   },
   {
     value: 3,
-    label: 'サーバーサイドエンジニア',
+    label: "サーバーサイドエンジニア",
   },
   {
     value: 4,
-    label: 'インフラエンジニア',
+    label: "インフラエンジニア",
   },
-]
+];

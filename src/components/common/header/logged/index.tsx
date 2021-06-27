@@ -1,14 +1,14 @@
 import { LinkWrapper } from "@/components/atoms/Link";
 import { KanonCodeLogo } from "@/components/atoms/Logo";
-import { CustomStickyAppBar } from "@/components/atoms/StickyAppBar";
+import { StandardAppBar } from "@/components/atoms/StandardAppBar";
 import { LoggedHeaderParts } from "@/components/organisms/LoggedHeaderParts";
-import { UserType } from "@/types/global";
+import { UserTypes } from "@/types/global";
 import { Box } from "@material-ui/core/";
 import React from "react";
 import styled from "styled-components";
 
 type Props = {
-  currentUser: null | UserType;
+  currentUser: null | UserTypes;
 };
 
 const StyledBox = styled(Box)`
@@ -34,7 +34,7 @@ export const TheLoggedHeader: React.FC<Props> = (props) => {
   };
 
   return (
-    <CustomStickyAppBar>
+    <StandardAppBar>
       <StyledBox
         display="flex"
         alignItems="center"
@@ -52,6 +52,6 @@ export const TheLoggedHeader: React.FC<Props> = (props) => {
           />
         </Box>
       </StyledBox>
-    </CustomStickyAppBar>
+    </StandardAppBar>
   );
 };

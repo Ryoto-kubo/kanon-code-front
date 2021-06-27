@@ -15,12 +15,12 @@ export const UserLinks: React.FC<Props> = (props) => {
   return (
     <Box display="flex" alignItems="center">
       {props.githubName !== "" && (
-        <Box mr={1}>
+        <Box mr={1} width={20} height={20}>
           <LinkGithub githubName={props.githubName} fontSize={props.fontSize} />
         </Box>
       )}
       {props.twitterName !== "" && (
-        <Box mr={1}>
+        <Box mr={1} width={20} height={20}>
           <LinkTwitter
             twitterName={props.twitterName}
             fontSize={props.fontSize}
@@ -28,7 +28,7 @@ export const UserLinks: React.FC<Props> = (props) => {
         </Box>
       )}
       {props.webSite !== "" && (
-        <Box mr={1}>
+        <Box mr={1} width={20} height={20}>
           <LinkWeb webSite={props.webSite} fontSize={props.fontSize} />
         </Box>
       )}

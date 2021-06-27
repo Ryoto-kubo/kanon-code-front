@@ -3,7 +3,7 @@ import { CustomNprogress } from "@/components/common/nextNprogress";
 import { SettingLayout } from "@/layouts/setting";
 import Layout from "@/layouts/standard";
 import theme from "@/styles/theme";
-import { UserType } from "@/types/global";
+import { UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { CognitoUser } from "@aws-amplify/auth";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -21,6 +21,8 @@ import { RecoilRoot } from "recoil";
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from "styled-components";
+import "./editor.scss";
+import "./style.scss";
 
 const StyledWrapper = styled.div`
   background: #ffffff;
@@ -36,12 +38,12 @@ const StyledWrapper = styled.div`
 const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   // Remove the server-side injected CSS.(https://material-ui.com/guides/server-rendering/)
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
-  const [currentUser, setCurrentUser] = useState<UserType | null>(null);
+  const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
   const layout = pageProps.layout;
   const title = pageProps.title;
-  const err = new Error();
   console.log("_app.tsx");
+  const err = new Error();
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
@@ -55,12 +57,14 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
           userId: payload["cognito:username"],
         };
         const response = await getUser(params);
-        if (response.status !== 200) throw err;
-        const user = response.data.Item;
+        const result = response.data;
+        if (!result.status) throw (err.message = result.status_message);
+        const user = result.Item;
         setAuthUser(authenticatedUser);
         setCurrentUser(user);
         setisFetch(true);
-      } catch {
+      } catch (error) {
+        // alert(error);
         setAuthUser(null);
         setCurrentUser(null);
         setisFetch(true);
@@ -79,7 +83,11 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             currentUser={currentUser}
           >
             <CustomNprogress />
-            <Component {...pageProps} authUser={authUser} />
+            <Component
+              {...pageProps}
+              authUser={authUser}
+              currentUser={currentUser}
+            />
           </SettingLayout>
         );
       case "Layout":

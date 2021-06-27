@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-export const banks = [
+export const BANKS = [
   {
     id: uuidv4(),
     code: "0005",
@@ -67,7 +67,7 @@ export const banks = [
   },
 ];
 
-export const depositTypes = [
+export const DEPOSIT_TYPES = [
   {
     id: uuidv4(),
     value: 0,

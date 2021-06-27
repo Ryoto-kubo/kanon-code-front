@@ -1,210 +1,252 @@
-// import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { ContentHeader } from '@/components/molecules/ContentHeader'
-import { FileExChange } from '@/components/molecules/FileExChange'
-import { ProfileContentFile } from '@/components/molecules/ProfileContentFile'
-import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
-// import { SettingProfileFields } from "@/components/molecules/SettingProfileTextFields";
-import { ContentWrapper } from '@/components/organisms/ContentWrapper'
-import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext'
-// import { positions } from "@/consts/select-options";
-// import { SettingLayout } from "@/layouts/setting";
-// import Box from "@material-ui/core/Box";
-// import MenuItem from "@material-ui/core/MenuItem";
-// import { CognitoUser } from '@aws-amplify/auth'
-import React, { useState } from 'react'
-
-// import styled from "styled-components";
+import { CustomSnackbar } from "@/components/atoms/CustomSnackbar";
+// import Snackbar from '@material-ui/core/Snackbar'
+import { CustomLoader } from "@/components/common/loader";
+import { ContentHeader } from "@/components/molecules/ContentHeader";
+import { FileExChange } from "@/components/molecules/FileExChange";
+import { ProfileContentFile } from "@/components/molecules/ProfileContentFile";
+import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
+import { ContentWrapper } from "@/components/organisms/ContentWrapper";
+import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
+import { errorMessages, validMessages } from "@/consts/error-messages";
+import { POSITIONS } from "@/consts/positions";
+// import useSWR from "swr";
+import { useUser } from "@/hooks/useUser";
+import { SettingLayout } from "@/layouts/setting/";
+import { UserTypes } from "@/types/global";
+import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
+import { postUserProfile } from "@/utils/api/post-user-profile";
+import * as S3 from "@/utils/api/s3";
+import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
+import Box from "@material-ui/core/Box";
+import React, { useCallback, useState } from "react";
 
 type Props = {
-  title: string
-  authUser: any
-}
-
-// const StyledBoxFlex = styled(Box)`
-//   ${(props) => props.theme.breakpoints.up("sm")} {
-//     display: flex;
-//     justify-content: space-between;
-//   }
-// `;
-// const StyledBoxCalcWidth = styled(Box)`
-//   ${(props) => props.theme.breakpoints.up("sm")} {
-//     width: calc(100% - 150px);
-//   }
-// `;
-
-export const getServerSideProps = async () => ({
-  props: {
-    layout: 'SettingLayout',
-    title: 'プロフィール',
-  },
-})
+  title: string;
+  authUser: any;
+  currentUser: UserTypes | null;
+};
+type ValidObject = {
+  isValid: boolean;
+  message: string;
+};
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>
-  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-  const [settingParams, setSettingParams] = useState({
-    name: 'ryoto kubo',
-    introduction: `フロントエンドエンジニアです。主にNuxtやNextを触っています。
-    個人開発大好きエンジニアです。よろしくお願いします！`,
-    price: '',
-    position: '',
-    githubName: '',
-    twitterName: '',
-    webSite: '',
-  })
-  console.log(setSettingParams)
+  if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
+  const createValidObject = useCallback((defaultValue, defaultMessage) => {
+    return {
+      isValid: defaultValue,
+      message: defaultMessage,
+    };
+  }, []);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
+  const [canPublish, setCanPUblish] = useState<ValidObject>(
+    createValidObject(true, "")
+  );
+  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const profile = user.user_profile;
+  // const fetcher = async () => {
+  //   return await getUser(params);
+  // };
+  // const { data, isValidating } = useSWR(`/api/user?userId${userId}`, fetcher, {
+  //   // initialData: props.currentUser!.user_profile,
+  //   refreshInterval: 0,
+  //   dedupingInterval: 2000,
+  //   revalidateOnFocus: false,
+  //   focusThrottleInterval: 5000,
+  // });
 
-  const userInfo =
-    props.authUser !== null
-      ? props.authUser.signInUserSession.idToken.payload
-      : 'null'
-  // const open = Boolean(anchorEl);
-  // const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-  //   setAnchorEl(event.currentTarget);
-  // };
-  // const handleClose = () => {
-  //   setAnchorEl(null);
-  // };
-  // const changeName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, name: e.target.value });
-  // };
-  // const changeIntroduction = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, introduction: e.target.value });
-  // };
-  // const changePosition = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, position: Number(e.target.value) });
-  // };
-  // const changeprice = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, price: Number(e.target.value) });
-  // };
-  // const changeGithubName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, githubName: e.target.value });
-  // };
-  // const changeTwitterName = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, twitterName: e.target.value });
-  // };
-  // const changeWebSite = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setSettingParams({ ...settingParams, webSite: e.target.value });
-  // };
-  // const update = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   event.preventDefault();
-  //   console.log(settingParams);
-  // };
+  // const profile = data?.Item.user_profile;
+  // const profile = data?.data.Item.user_profile;
+  // const isLoading = isValidating;
+  // console.log(data, "data");
+  // console.log(isValidating, "isValidating");
 
-  // const renderOptions = (): JSX.Element[] => {
-  //   return positions.map((option) => (
-  //     <MenuItem key={option.value} value={option.value}>
-  //       {option.label}
-  //     </MenuItem>
-  //   ));
-  // };
+  const updateCanPublish = useCallback((isValid: boolean, message = "") => {
+    setCanPUblish({
+      ...canPublish,
+      isValid: isValid,
+      message: message,
+    });
+  }, []);
+
+  const closeSnackBar = () => {
+    setCanPUblish({
+      ...canPublish,
+      isValid: true,
+    });
+  };
+
+  const validFileExtentionAndFileSize = (instance: PrepareImageBeforePost) => {
+    const isValidFileExtention = instance.validImageExtention();
+    if (!isValidFileExtention) {
+      updateCanPublish(false, validMessages.NOT_ACCEPT_FILE_EXTENTION);
+      return false;
+    }
+    const isValidImageSize = instance.validImageSize();
+    if (!isValidImageSize) {
+      updateCanPublish(false, validMessages.OVER_FILE_SIZE);
+      return false;
+    }
+    return isValidFileExtention && isValidImageSize;
+  };
+
+  const changeIcon = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      const file = event.target.files![0];
+      if (!file) return;
+      const prepareImageBeforePost = new PrepareImageBeforePost(file);
+      const isValid = validFileExtentionAndFileSize(prepareImageBeforePost);
+      if (!isValid) return;
+      setIsUploading(true);
+      const err = new Error();
+      const newFileName = prepareImageBeforePost.createNewFileName();
+      try {
+        const compressedFile = await prepareImageBeforePost.compressionImage();
+        if (!compressedFile) throw err;
+        const response = await getPreSignedUrl(newFileName);
+        const result = response.data;
+        if (!result.status) throw err;
+        const presignedUrl = result.presignedUrl;
+        await S3.uploadImageToS3(presignedUrl, compressedFile);
+        const newIconSrc = `${process.env.NEXT_PUBLIC_BUCKET_URL}upload/${newFileName}`;
+        updateProfile(newIconSrc);
+      } catch (error) {
+        console.error(error);
+        alert(errorMessages.SYSTEM_ERROR);
+        setIsUploading(false);
+      }
+    },
+    []
+  );
+
+  const updateProfile = useCallback(
+    async (newIconSrc: string) => {
+      const err = new Error();
+      const userProfile = profile;
+      userProfile.icon_src = newIconSrc;
+      const params = {
+        userId: userId,
+        userProfile: userProfile,
+      };
+      try {
+        const response = await postUserProfile(params);
+        const result = response.data;
+        if (!result.status) throw (err.message = result.status_message);
+        profile.icon_src = newIconSrc;
+        setUser({
+          ...user!,
+          user_profile: userProfile,
+        });
+        setIsUploading(false);
+      } catch (error) {
+        alert(error);
+        setIsUploading(false);
+      }
+    },
+    [profile]
+  );
 
   return (
-    <section>
-      <ContentWrapper>
-        <ContentHeader
-          title="プロフィール"
-          description="Kanon Codeを利用する全てのユーザーに公開されます。"
-          fontSize={20}
-          marginBottom={1}
-        />
-        <ProfileContentFile
-          label="アイコン"
-          description="写真を追加することでアカウントをカスタマイズできます"
-          isDivider={false}
-          htmlFor="avatar"
-        >
-          <FileExChange htmlFor="avatar" picture={userInfo.picture} />
-        </ProfileContentFile>
-        <ProfileContentLink
-          label="名前"
-          value={settingParams.name}
-          isDivider={true}
-          href="/"
-        >
-          <IconArrowNext fontSize="large" color="action" />
-        </ProfileContentLink>
-        <ProfileContentLink
-          label="紹介文"
-          value={settingParams.introduction}
-          isDivider={true}
-          href="/"
-        >
-          <IconArrowNext fontSize="large" color="action" />
-        </ProfileContentLink>
+    <SettingLayout title={`Kanon Code | プロフィール`} currentUser={user}>
+      {isLoading ? (
+        <CustomLoader width={40} height={40} />
+      ) : (
+        <>
+          <section>
+            <ContentWrapper>
+              <ContentHeader
+                title="Profile"
+                description="Kanon Codeを利用する全てのユーザーに公開されます。"
+                fontSize={20}
+                marginBottom={1}
+              />
+              <ProfileContentFile
+                label="アイコン"
+                description="写真を追加することでアカウントをカスタマイズできます"
+                isDivider={false}
+                htmlFor="avatar"
+              >
+                <FileExChange
+                  htmlFor="avatar"
+                  picture={profile!.icon_src}
+                  changeIcon={changeIcon}
+                  isUploading={isUploading}
+                />
+              </ProfileContentFile>
+              <ProfileContentLink
+                label="名前"
+                value={profile!.display_name}
+                isDivider={true}
+                href="/name"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
+              <ProfileContentLink
+                label="紹介文"
+                value={profile!.introduction}
+                isDivider={true}
+                href="/introduction"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-        <ProfileContentLink
-          label="ポジション"
-          value={settingParams.position}
-          isDivider={true}
-          href="/"
-        >
-          <IconArrowNext fontSize="large" color="action" />
-        </ProfileContentLink>
+              <ProfileContentLink
+                label="ポジション"
+                value={POSITIONS[profile!.position_type].label}
+                isDivider={true}
+                href="/position"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-        <ProfileContentLink
-          label="100文字あたりの設定金額"
-          value={settingParams.price}
-          isDivider={true}
-          href="/"
-        >
-          <IconArrowNext fontSize="large" color="action" />
-        </ProfileContentLink>
+              <ProfileContentLink
+                label="100文字あたりの設定金額"
+                value={profile!.price}
+                isDivider={true}
+                href="/price"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-        <ProfileContentLink
-          label="Githubユーザーネーム"
-          value={settingParams.githubName}
-          isDivider={true}
-          href="/"
-        >
-          <IconArrowNext fontSize="large" color="action" />
-        </ProfileContentLink>
+              <ProfileContentLink
+                label="Githubユーザーネーム"
+                value={profile!.github_name}
+                isDivider={true}
+                href="/github_name"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-        <ProfileContentLink
-          label="Twitterユーザーネーム"
-          value={settingParams.twitterName}
-          isDivider={true}
-          href="/"
-        >
-          <IconArrowNext fontSize="large" color="action" />
-        </ProfileContentLink>
+              <ProfileContentLink
+                label="Twitterユーザーネーム"
+                value={profile!.twitter_name}
+                isDivider={true}
+                href="/twitter_name"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
 
-        <ProfileContentLink
-          label="webサイト"
-          value={settingParams.webSite}
-          isDivider={true}
-          href="/"
-        >
-          <IconArrowNext fontSize="large" color="action" />
-        </ProfileContentLink>
-      </ContentWrapper>
-      {/* <StyledBoxFlex>
-        <FileExChange htmlFor="avatar" picture={userInfo.picture} />
-        <StyledBoxCalcWidth mb={5}>
-          <SettingProfileFields
-            settingParams={settingParams}
-            renderOptions={renderOptions()}
-            onChangeName={changeName}
-            onChangeIntroduction={changeIntroduction}
-            onChangePosition={changePosition}
-            onChangeprice={changeprice}
-            onChangeGithubName={changeGithubName}
-            onChangeTwitterName={changeTwitterName}
-            onChangeWebSite={changeWebSite}
-            handleMenu={handleMenu}
-            handleClose={handleClose}
-            anchorEl={anchorEl}
-            open={open}
-          />
-          <Box textAlign="center">
-            <CustomSolidButton sizing="medium" onClick={update}>
-              更新する
-            </CustomSolidButton>
-          </Box>
-        </StyledBoxCalcWidth>
-      </StyledBoxFlex> */}
-    </section>
-  )
-}
+              <ProfileContentLink
+                label="webサイト"
+                value={profile!.web_site}
+                isDivider={true}
+                href="/web_site"
+              >
+                <IconArrowNext fontSize="large" color="action" />
+              </ProfileContentLink>
+            </ContentWrapper>
+          </section>
+          <CustomSnackbar
+            isOpen={!canPublish.isValid}
+            closeSnackBar={closeSnackBar}
+          >
+            <Box fontWeight="bold">{canPublish.message}</Box>
+          </CustomSnackbar>
+        </>
+      )}
+    </SettingLayout>
+  );
+};
 
-export default IndexPage
+export default IndexPage;
