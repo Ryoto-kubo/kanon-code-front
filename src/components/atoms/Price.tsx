@@ -1,21 +1,23 @@
-import theme from '@/styles/theme'
 import Box from '@material-ui/core/Box'
 import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
-  price: number
+  color: '#5C6BC0' | '#EC576B'
+  text: string
 }
 
 const StyledBoxPriceWrapper = styled(Box)`
-  border: 2px solid ${theme.palette.secondary.main};
   border-radius: 4px;
   padding: 4px 10px;
-  color: ${theme.palette.secondary.main};
   font-weight: bold;
   height: 100%;
 `
 
-export const Price: React.FC<Props> = ({ price }) => {
-  return <StyledBoxPriceWrapper>¥{price}</StyledBoxPriceWrapper>
+export const Price: React.FC<Props> = ({ color, text }) => {
+  return (
+    <StyledBoxPriceWrapper color={color} border={`2px solid ${color}`}>
+      {text}
+    </StyledBoxPriceWrapper>
+  )
 }

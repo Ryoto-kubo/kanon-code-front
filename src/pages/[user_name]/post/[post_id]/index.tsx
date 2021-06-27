@@ -5,12 +5,12 @@ import { ReviewRequestContents } from '@/components/organisms/ReviewRequestConte
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader'
 import Layout from '@/layouts/standard'
 import { UserTypes } from '@/types/global'
-import { PostContentsTypes, PostReviewTypes } from '@/types/global/'
+import { PostContentsTypes, ReviewTypes } from '@/types/global/'
 import { getContent } from '@/utils/api/get-content'
 import Box from '@material-ui/core/Box'
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
 import Container from '@material-ui/core/Container'
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 
 type Props = {
@@ -18,7 +18,7 @@ type Props = {
   currentUser: null | UserTypes
   data: {
     content: PostContentsTypes
-    reviews: PostReviewTypes[]
+    reviews: ReviewTypes[]
   }
 }
 
@@ -43,8 +43,8 @@ const StyledContainer = styled(Container)`
 
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props)
+  const [reviews, setReviews] = useState(props.data.reviews)
   const content = props.data.content
-  const reviews = props.data.reviews
   const reviewedUserIds = props.data.reviews.map((el) => el.user_id)
   const year = content.create_year
   const month = content.create_month
@@ -52,12 +52,25 @@ const IndexPage: React.FC<Props> = (props) => {
   const createDate = `${year}/${month}/${day}`
   const contents = content.contents
   const title = contents.title
+  const authUserId = props.authUser ? props.authUser.username : ''
   const myUserId = props.currentUser ? props.currentUser.partition_key : ''
   const userProfile = props.currentUser ? props.currentUser.user_profile : null
   const contributorId = content.partition_key
   const postId = content.sort_key
   const isMe = myUserId === contributorId
   const isReviewed = reviewedUserIds.includes(myUserId)
+  const [canReview, setCanReview] = useState(
+    !isMe && myUserId !== '' && !isReviewed,
+  )
+
+  // 自分の投稿ではない、ログインしている、まだレビューをしていなければレビューをできる
+  const updateDisplay = (responseReview: ReviewTypes) => {
+    console.log(responseReview)
+    const newReviews = reviews.slice()
+    newReviews.unshift(responseReview)
+    setCanReview(false)
+    setReviews(newReviews)
+  }
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <StyledBoxBgGray>
@@ -79,20 +92,25 @@ const IndexPage: React.FC<Props> = (props) => {
               </Box>
             </StyledBoxBgWhite>
           </Box>
-          {!isMe && myUserId !== '' && !isReviewed && (
+          {canReview && (
             <Box mb={5}>
               <StyledBoxBgWhite>
                 <ReviewEditor
                   myUserId={myUserId}
                   postId={postId}
                   userProfile={userProfile}
+                  updateDisplay={updateDisplay}
                 />
               </StyledBoxBgWhite>
             </Box>
           )}
           {reviews.length > 0 && (
             <StyledBoxBgWhite>
-              <ReviewList reviews={reviews} />
+              <ReviewList
+                reviews={reviews}
+                authUserId={authUserId}
+                postId={postId}
+              />
             </StyledBoxBgWhite>
           )}
         </StyledContainer>

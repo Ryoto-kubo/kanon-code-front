@@ -4,13 +4,15 @@ import { ValidMessage } from '@/components/molecules/ValidMessage'
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper'
 import { ReviewSettingDialog } from '@/components/parts/reviewSettingDialog'
 import * as CONSTS from '@/consts/const'
-import { validMessages } from '@/consts/error-messages'
+import { errorMessages, validMessages } from '@/consts/error-messages'
 import { UserProfileTypes } from '@/types/global'
+import { ReviewTypes } from '@/types/global/'
 import { postReview } from '@/utils/api/post-review'
 import * as S3 from '@/utils/api/s3'
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
+import Snackbar from '@material-ui/core/Snackbar'
 import marked from 'marked'
 import dynamic from 'next/dynamic'
 import React, { useCallback, useState } from 'react'
@@ -27,6 +29,7 @@ type Props = {
   myUserId: string
   postId: string
   userProfile: UserProfileTypes | null
+  updateDisplay: (responseReview: ReviewTypes) => void
 }
 type ValidObject = {
   isValid: boolean
@@ -47,7 +50,9 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
   }
 }
 
-export const ReviewEditor: React.FC<Props> = (props) => {
+export const ReviewEditor: React.FC<Props> = React.memo((props) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [updatingMessage, setUpdatingMessage] = useState('レビュー保存中...')
   const [title, setTitle] = useState('')
   const [review, setReview] = useState(initReview())
   const [activeStep, setActiveStep] = useState(0)
@@ -160,18 +165,25 @@ export const ReviewEditor: React.FC<Props> = (props) => {
     price: number,
     displayBodyHtml: string,
   ) => {
+    const err = new Error()
     const params = createParams(
       paymentType,
       beginPaymentArea,
       price,
       displayBodyHtml,
     )
+    setIsOpen(true)
+    setIsOpenDialog(!isOpenDialog)
     console.log(params, 'params')
     try {
       const response = await postReview(params)
-      console.log(response)
+      if (!response.data.status) throw err
+      setUpdatingMessage('レビューを投稿しました')
+      props.updateDisplay(response.data.Item)
     } catch (error) {
       console.error(error)
+      alert(errorMessages.REVIEW_ERROR)
+      setIsOpen(false)
     }
   }
 
@@ -219,6 +231,14 @@ export const ReviewEditor: React.FC<Props> = (props) => {
         showToggleDialog={showToggleDialog}
         registerContent={registerContent}
       />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={isOpen}
+        message={updatingMessage}
+      />
     </>
   )
-}
+})

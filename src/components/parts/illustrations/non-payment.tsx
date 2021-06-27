@@ -27,7 +27,7 @@ export const NonPaymentIllustration = (props: Props) => {
         <StyledPaymentSvg />
       </Box>
       <Box mb={props.marginBottom} lineHeight={1.8}>
-        まだ、レビューを開封していません。
+        まだ、レビューを購入していません。
         <br />
         レビューがきているか確認しに行きましょう！
       </Box>
