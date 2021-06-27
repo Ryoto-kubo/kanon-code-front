@@ -43,7 +43,9 @@ const StyledBoxFlex = styled(Box)`
 const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
   const stripe = useStripe();
   console.log(reviews, "reviews");
-  const [paymentedList, setPaymentedList] = useState();
+  const [paymentedList, setPaymentedList] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [isOpenPayment, setIsOpenPayment] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isOpenCreditAnnounce, setIsOpenCreditAnnounce] = useState(false);
