@@ -5,6 +5,7 @@ import { RequestItemUser } from '@/components/molecules/RequestItemUser'
 import { RightBorderTitle } from '@/components/molecules/RightBorderTitle'
 import { PaymentDialog } from '@/components/parts/paymentDialog'
 import { RegistCreditAnnounceDialog } from '@/components/parts/registCreditAnnounceDialog'
+import { SigninDialog } from '@/components/parts/signinDialog'
 import {
   PAYMENT_FEE,
   PAYMENT_FREE,
@@ -41,8 +42,11 @@ const StyledBoxFlex = styled(Box)`
 `
 
 export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
+  console.log(authUserId, 'authUserId')
+
   const [isOpenPayment, setIsOpenPayment] = useState(false)
   const [isOpenCreditAnnounce, setIsOpenCreditAnnounce] = useState(false)
+  const [isOpenSignin, setIsOpenSignin] = useState(false)
   const [title, setTitle] = useState('')
   const [name, setName] = useState('')
   const [iconSrc, setIconSrc] = useState('')
@@ -58,6 +62,10 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
     argIconSrc: string,
     argPrice: number,
   ) => {
+    if (authUserId === '') {
+      setIsOpenSignin(true)
+      return
+    }
     if (credit === null) {
       setIsOpenCreditAnnounce(true)
       return
@@ -71,6 +79,9 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
   }
   const payment = () => {
     console.log('pay')
+  }
+  const closeSigninDialog = () => {
+    setIsOpenSignin(false)
   }
   const closePaymentDialog = () => {
     setIsOpenPayment(false)
@@ -113,7 +124,7 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
             }}
           />
         </div>
-        {!isSelfReviewItem && (
+        {!isSelfReviewItem && !isPaymentFree && (
           <AnnounceOpenReview
             title={title}
             profile={el.user_profile}
@@ -154,6 +165,10 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
       <RegistCreditAnnounceDialog
         isOpenDialog={isOpenCreditAnnounce}
         showToggleDialog={closeCreditDialog}
+      />
+      <SigninDialog
+        isOpenDialog={isOpenSignin}
+        closeDialog={closeSigninDialog}
       />
     </>
   )

@@ -12,6 +12,7 @@ import * as S3 from '@/utils/api/s3'
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post'
 import { validLength } from '@/utils/valid'
 import Box from '@material-ui/core/Box'
+import Snackbar from '@material-ui/core/Snackbar'
 import marked from 'marked'
 import dynamic from 'next/dynamic'
 import React, { useCallback, useState } from 'react'
@@ -50,6 +51,8 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 }
 
 export const ReviewEditor: React.FC<Props> = React.memo((props) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [updatingMessage, setUpdatingMessage] = useState('レビュー保存中...')
   const [title, setTitle] = useState('')
   const [review, setReview] = useState(initReview())
   const [activeStep, setActiveStep] = useState(0)
@@ -169,15 +172,18 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
       price,
       displayBodyHtml,
     )
+    setIsOpen(true)
     setIsOpenDialog(!isOpenDialog)
     console.log(params, 'params')
     try {
       const response = await postReview(params)
       if (!response.data.status) throw err
+      setUpdatingMessage('レビューを投稿しました')
       props.updateDisplay(response.data.Item)
     } catch (error) {
       console.error(error)
       alert(errorMessages.REVIEW_ERROR)
+      setIsOpen(false)
     }
   }
 
@@ -224,6 +230,14 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
         isOpenDialog={isOpenDialog}
         showToggleDialog={showToggleDialog}
         registerContent={registerContent}
+      />
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={isOpen}
+        message={updatingMessage}
       />
     </>
   )
