@@ -15,5 +15,7 @@ export const apis = {
   BANK: '/api/bank',
   CREDIT: '/api/credit',
   BOOKMARK: '/api/bookmark',
-  REVIRE: 'api/review'
+  REVIRE: 'api/review',
+  PAYMENT: 'api/payment',
+  REGISTER_CUSTOMER: 'api/registerCustomer',
 }

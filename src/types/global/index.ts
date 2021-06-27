@@ -108,8 +108,10 @@ export type BankTypes = {
 export type CreditTypes = {
   partition_key: string
   sort_key: string
-  token: string
-  card_id: string
+  customer_id: string
+  setup_client_secret: string
+  setup_id: string
+  setup_method: string
   last4_chara: string
   customChara: string
 }

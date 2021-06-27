@@ -73,7 +73,7 @@ export const PaymentDialog: React.FC<Props> = (props) => {
         <CustomHeading2 fontSize={20} marginBottom={0}>
           レビュー購入
         </CustomHeading2>
-        <Price price={props.price} />
+        <Price color={'#EC576B'} text={`¥${props.price}`} />
       </StyledBoxWrapper>
       <StyledBoxBg>
         <DialogContent>

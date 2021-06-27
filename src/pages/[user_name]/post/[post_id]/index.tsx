@@ -45,7 +45,6 @@ const IndexPage: React.FC<Props> = (props) => {
   console.log(props)
   const [reviews, setReviews] = useState(props.data.reviews)
   const content = props.data.content
-  // const reviews = props.data.reviews
   const reviewedUserIds = props.data.reviews.map((el) => el.user_id)
   const year = content.create_year
   const month = content.create_month
@@ -107,7 +106,11 @@ const IndexPage: React.FC<Props> = (props) => {
           )}
           {reviews.length > 0 && (
             <StyledBoxBgWhite>
-              <ReviewList reviews={reviews} authUserId={authUserId} />
+              <ReviewList
+                reviews={reviews}
+                authUserId={authUserId}
+                postId={postId}
+              />
             </StyledBoxBgWhite>
           )}
         </StyledContainer>

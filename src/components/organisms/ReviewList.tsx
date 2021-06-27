@@ -6,23 +6,22 @@ import { RightBorderTitle } from '@/components/molecules/RightBorderTitle'
 import { PaymentDialog } from '@/components/parts/paymentDialog'
 import { RegistCreditAnnounceDialog } from '@/components/parts/registCreditAnnounceDialog'
 import { SigninDialog } from '@/components/parts/signinDialog'
-import {
-  PAYMENT_FEE,
-  PAYMENT_FREE,
-  REVIEW_PREFIX,
-  USER_PREFIX,
-} from '@/consts/const'
+import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from '@/consts/const'
 import { useCredit } from '@/hooks/useCredit'
 import theme from '@/styles/theme'
 import { ReviewTypes } from '@/types/global/'
+import { postPayment } from '@/utils/api/post-payment'
+import { getStripe } from '@/utils/stripe'
 import Box from '@material-ui/core/Box'
+import { Elements, useStripe } from '@stripe/react-stripe-js'
 import marked from 'marked'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 
 type Props = {
-  authUserId: string
   reviews: ReviewTypes[]
+  authUserId: string
+  postId: string
 }
 
 const StyledBoxTitleWrapper = styled(Box)`
@@ -41,9 +40,8 @@ const StyledBoxFlex = styled(Box)`
   align-items: center;
 `
 
-export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
-  console.log(authUserId, 'authUserId')
-
+const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
+  const stripe = useStripe()
   const [isOpenPayment, setIsOpenPayment] = useState(false)
   const [isOpenCreditAnnounce, setIsOpenCreditAnnounce] = useState(false)
   const [isOpenSignin, setIsOpenSignin] = useState(false)
@@ -51,12 +49,14 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
   const [name, setName] = useState('')
   const [iconSrc, setIconSrc] = useState('')
   const [price, setPrice] = useState(0)
+  const [reviewerId, setReviewerId] = useState('')
   const { credit, isLoading } = useCredit(authUserId)
-  const partitionKey = `${USER_PREFIX}${authUserId}`
+  const partitionKey = `${USER_PREFIX}${authUserId}` // my user id
   const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserId}`
   console.log(reviews)
 
   const showToggleDialog = (
+    argReviewId: string,
     argTitle: string,
     argName: string,
     argIconSrc: string,
@@ -71,14 +71,35 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
       return
     }
     if (partitionKey !== credit.partition_key) return
+    setReviewerId(argReviewId)
     setTitle(argTitle)
     setName(argName)
     setIconSrc(argIconSrc)
     setPrice(argPrice)
     setIsOpenPayment(true)
   }
-  const payment = () => {
-    console.log('pay')
+  const payment = async () => {
+    if (!credit) return
+    const err = new Error()
+    const params = {
+      postId,
+      reviewerId,
+      userId: partitionKey,
+      price,
+      title,
+      paymentMethod: credit.setup_method,
+      customerId: credit.customer_id,
+    }
+    try {
+      const response = await postPayment(params)
+      if (!response.data.status) throw err
+      const clientSecret = response.data.client_secret
+      console.log(response, 'response')
+
+      if (!stripe || !clientSecret) return
+      const paymentResult = await stripe.confirmCardPayment(clientSecret)
+      console.log(paymentResult, 'paymentResult')
+    } catch (error) {}
   }
   const closeSigninDialog = () => {
     setIsOpenSignin(false)
@@ -95,11 +116,11 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
     const price = el.price
     const title = el.contents.review.title
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`
-    const pyamentType = el.payment_type
     const bodyHtml = el.contents.review.body_html
     const displayBodyHtml = el.contents.review.display_body_html
     const isSelfReviewItem = el.sort_key === myReviewId
     const isPaymentFree = el.payment_type === PAYMENT_FREE
+    const sortKey = el.sort_key
     return (
       <Box key={index} component="section" mb={7}>
         <StyledBoxFlex mb={2}>
@@ -110,7 +131,12 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
             width={'32px'}
             height={'32px'}
           />
-          {pyamentType === PAYMENT_FEE && <Price price={price} />}
+          {!isSelfReviewItem && (
+            <Price
+              color={isPaymentFree ? '#5C6BC0' : '#EC576B'}
+              text={isPaymentFree ? 'FREE' : `¥${price}`}
+            />
+          )}
         </StyledBoxFlex>
         <StyledBoxTitleWrapper>
           <h1>{title}</h1>
@@ -132,7 +158,7 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
             height={'40px'}
             price={price}
             showToggleDialog={() =>
-              showToggleDialog(title, name, iconSrc, price)
+              showToggleDialog(sortKey, title, name, iconSrc, price)
             }
           />
         )}
@@ -160,7 +186,7 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
         height={'40px'}
         isOpenDialog={isOpenPayment}
         closeDialog={closePaymentDialog}
-        payment={() => payment}
+        payment={payment}
       />
       <RegistCreditAnnounceDialog
         isOpenDialog={isOpenCreditAnnounce}
@@ -171,5 +197,15 @@ export const ReviewList: React.FC<Props> = ({ authUserId, reviews }) => {
         closeDialog={closeSigninDialog}
       />
     </>
+  )
+}
+
+export const ReviewList = (props: Props) => {
+  const promiseStripe = getStripe()
+
+  return (
+    <Elements stripe={promiseStripe}>
+      <Wrapper {...props} />
+    </Elements>
   )
 }
