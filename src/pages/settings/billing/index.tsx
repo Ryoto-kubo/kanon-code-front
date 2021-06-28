@@ -1,36 +1,36 @@
-import { CustomLoader } from '@/components/common/loader'
-import { ContentHeader } from '@/components/molecules/ContentHeader'
-import { ProfileContentLink } from '@/components/molecules/ProfileContentLink'
-import { ContentWrapper } from '@/components/organisms/ContentWrapper'
-import { NoSettingDataWrapper } from '@/components/organisms/NoSettingDataWrapper'
-import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext'
-import { useCredit } from '@/hooks/useCredit'
-import { SettingLayout } from '@/layouts/setting/'
-import { UserTypes } from '@/types/global'
-import React from 'react'
-import styled from 'styled-components'
-import CreditSvg from '../../../assets/illustration/credit.svg'
+import { CustomLoader } from "@/components/common/loader";
+import { ContentHeader } from "@/components/molecules/ContentHeader";
+import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
+import { ContentWrapper } from "@/components/organisms/ContentWrapper";
+import { NoSettingDataWrapper } from "@/components/organisms/NoSettingDataWrapper";
+import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
+import { useCredit } from "@/hooks/useCredit";
+import { SettingLayout } from "@/layouts/setting/";
+import { UserTypes } from "@/types/global";
+import React from "react";
+import styled from "styled-components";
+import CreditSvg from "../../../assets/illustration/credit.svg";
 
 type Props = {
-  title: string
-  authUser: any
-  currentUser: UserTypes | null
-}
+  title: string;
+  authUser: any;
+  currentUser: UserTypes | null;
+};
 
 const StyledPairCreditSvg = styled(CreditSvg)`
   width: 100%;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${(props) => props.theme.breakpoints.up("sm")} {
     width: 60%;
   }
-  ${(props) => props.theme.breakpoints.up('md')} {
+  ${(props) => props.theme.breakpoints.up("md")} {
     width: 450px;
   }
-`
+`;
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>
-  const userId = props.authUser.username
-  const { credit, isLoading } = useCredit(userId)
+  if (!props.authUser) return <></>;
+  const userId = props.authUser.username;
+  const { credit, isLoading } = useCredit(userId);
 
   return (
     <SettingLayout
@@ -76,7 +76,7 @@ const IndexPage: React.FC<Props> = (props) => {
         </>
       )}
     </SettingLayout>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;
