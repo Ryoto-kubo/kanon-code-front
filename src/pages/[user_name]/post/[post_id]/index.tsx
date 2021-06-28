@@ -11,16 +11,13 @@ import { getContent } from "@/utils/api/get-content";
 import Box from "@material-ui/core/Box";
 // import { getPagesUrl } from "@/utils/api/get-pages-url";
 import Container from "@material-ui/core/Container";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 
 type Props = {
   authUser: any;
   currentUser: null | UserTypes;
-  data: {
-    content: PostContentsTypes;
-    reviews: ReviewTypes[];
-  };
+  data: PostContentsTypes;
 };
 
 const StyledBoxBgGray = styled(Box)`
@@ -44,37 +41,36 @@ const StyledContainer = styled(Container)`
 
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props);
-  const content = props.data.content;
-  const reviewedUserIds = props.data.reviews.map((el) => el.user_id);
+  const content = props.data;
+  const contents = content.contents;
+  const title = contents.title;
+  const postId = content.sort_key;
+  const userProfile = props.currentUser ? props.currentUser.user_profile : null;
+  const myUserId = props.currentUser ? props.currentUser.partition_key : "";
+  const contributorId = content.partition_key;
+  const isMe = myUserId === contributorId;
   const year = content.create_year;
   const month = content.create_month;
   const day = content.create_day;
   const createDate = `${year}/${month}/${day}`;
-  const contents = content.contents;
-  const title = contents.title;
   const authUserId = props.authUser ? props.authUser.username : "";
-  const myUserId = props.currentUser ? props.currentUser.partition_key : "";
-  const userProfile = props.currentUser ? props.currentUser.user_profile : null;
-  const contributorId = content.partition_key;
-  const postId = content.sort_key;
-  const isMe = myUserId === contributorId;
-  const isReviewed = reviewedUserIds.includes(myUserId);
-  const [canReview, setCanReview] = useState(
-    !isMe && myUserId !== "" && !isReviewed
-  );
-  const { reviewsResponse, isLoading } = useReviews(postId);
-  const isResult = reviewsResponse.data.status;
-
-  const [reviews, setReviews] = useState(props.data.reviews);
-
-  // 自分の投稿ではない、ログインしている、まだレビューをしていなければレビューをできる
+  const {
+    reviewsResponse,
+    reviews,
+    setReviews,
+    canReview,
+    setCanReview,
+    isLoading,
+  } = useReviews(postId, isMe, myUserId);
+  const status = reviewsResponse.data.status;
   const updateDisplay = (responseReview: ReviewTypes) => {
     console.log(responseReview);
-    const newReviews = reviews.slice();
+    const newReviews = reviews!.slice();
     newReviews.unshift(responseReview);
     setCanReview(false);
     setReviews(newReviews);
   };
+
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <StyledBoxBgGray>
@@ -108,15 +104,15 @@ const IndexPage: React.FC<Props> = (props) => {
               />
             </StyledBoxBgWhite>
           </Box>
-          {reviews.length > 0 && (
-            <StyledBoxBgWhite>
-              <ReviewList
-                reviews={reviews}
-                authUserId={authUserId}
-                postId={postId}
-              />
-            </StyledBoxBgWhite>
-          )}
+          <StyledBoxBgWhite>
+            <ReviewList
+              status={status}
+              reviews={reviews!}
+              authUserId={authUserId}
+              postId={postId}
+              isReviewsLoading={isLoading}
+            />
+          </StyledBoxBgWhite>
         </StyledContainer>
       </StyledBoxBgGray>
     </Layout>
@@ -148,7 +144,7 @@ export const getStaticProps = async (props: any) => {
 
   return {
     props: {
-      data: result.data.Items,
+      data: result.data.Items[0],
     },
   };
 };

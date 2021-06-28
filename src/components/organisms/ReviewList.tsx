@@ -1,8 +1,10 @@
 import { Price } from "@/components/atoms/Price";
+import { ErrorView } from "@/components/common/error";
 import { CustomLoader } from "@/components/common/loader";
 import { AnnounceOpenReview } from "@/components/molecules/AnnounceOpenReview";
 import { RequestItemUser } from "@/components/molecules/RequestItemUser";
 import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
+import { RelaxIllustration } from "@/components/parts/illustrations/relax";
 import { PaymentDialog } from "@/components/parts/paymentDialog";
 import { RegistCreditAnnounceDialog } from "@/components/parts/registCreditAnnounceDialog";
 import { SigninDialog } from "@/components/parts/signinDialog";
@@ -17,11 +19,12 @@ import { Elements, useStripe } from "@stripe/react-stripe-js";
 import marked from "marked";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
-
 type Props = {
+  status: boolean;
   reviews: ReviewTypes[];
   authUserId: string;
   postId: string;
+  isReviewsLoading: boolean;
 };
 
 const StyledBoxTitleWrapper = styled(Box)`
@@ -40,7 +43,7 @@ const StyledBoxFlex = styled(Box)`
   align-items: center;
 `;
 
-const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
+const Wrapper: React.FC<Props> = ({ status, reviews, authUserId, postId }) => {
   const partitionKey = `${USER_PREFIX}${authUserId}`; // my user id
   const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserId}`;
   const [paymentedList, setPaymentedList] = useState<{
@@ -202,13 +205,18 @@ const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
 
   return (
     <>
-      <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
       {isLoading ? (
         <Box position="relative" padding={2}>
           <CustomLoader width={30} height={30} />
         </Box>
+      ) : status ? (
+        reviews.length > 0 ? (
+          reviews.map((el, index) => renderReviewedItem(el, index))
+        ) : (
+          <RelaxIllustration />
+        )
       ) : (
-        reviews.map((el, index) => renderReviewedItem(el, index))
+        <ErrorView />
       )}
       <PaymentDialog
         title={title}
@@ -240,7 +248,14 @@ export const ReviewList = (props: Props) => {
 
   return (
     <Elements stripe={promiseStripe}>
-      <Wrapper {...props} />
+      <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
+      {props.isReviewsLoading ? (
+        <Box position="relative" padding={2}>
+          <CustomLoader width={30} height={30} />
+        </Box>
+      ) : (
+        <Wrapper {...props} />
+      )}
     </Elements>
   );
 };
