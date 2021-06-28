@@ -1,7 +1,7 @@
-import { ErrorTypes } from '@/types/global'
+import { ErrorTypes } from "@/types/global";
 export const createErrorObject = (
   message: string,
-  code: number,
+  code: number
 ): ErrorTypes => {
   return {
     data: {
@@ -9,5 +9,5 @@ export const createErrorObject = (
       status_message: message,
       status_code: code,
     },
-  }
-}
+  };
+};

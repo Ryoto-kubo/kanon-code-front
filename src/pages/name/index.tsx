@@ -155,7 +155,7 @@ const IndexPage: React.FC<Props> = (props) => {
         marginBottom={0}
       >
         {isLoading ? (
-          <CustomLoader width={40} height={40} />
+          <CustomLoader width={30} height={30} />
         ) : (
           <>
             <StyledBoxTextFieldWrapper mb={4}>

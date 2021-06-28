@@ -158,7 +158,7 @@ const Wrapper = ({
         marginBottom={0}
       >
         {isLoading ? (
-          <CustomLoader width={40} height={40} />
+          <CustomLoader width={30} height={30} />
         ) : (
           <Box textAlign="center">
             <StyledBox>
