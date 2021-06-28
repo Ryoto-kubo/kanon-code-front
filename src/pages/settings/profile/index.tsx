@@ -150,7 +150,7 @@ const IndexPage: React.FC<Props> = (props) => {
   return (
     <SettingLayout title={`Kanon Code | プロフィール`} currentUser={user}>
       {isLoading ? (
-        <CustomLoader width={40} height={40} />
+        <CustomLoader width={30} height={30} />
       ) : (
         <>
           <section>

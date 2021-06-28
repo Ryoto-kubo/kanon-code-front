@@ -37,7 +37,7 @@ const IndexPage: React.FC<Props> = (props) => {
       currentUser={props.currentUser}
     >
       {isValidating ? (
-        <CustomLoader width={40} height={40} />
+        <CustomLoader width={30} height={30} />
       ) : (
         <Box width={'100%'}>
           <CustomHeading2 fontSize={24} marginBottom={1}>

@@ -41,8 +41,8 @@ const StyledBoxFlex = styled(Box)`
 `;
 
 const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
-  const stripe = useStripe();
-  console.log(reviews, "reviews");
+  const partitionKey = `${USER_PREFIX}${authUserId}`; // my user id
+  const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserId}`;
   const [paymentedList, setPaymentedList] = useState<{
     [key: string]: boolean;
   }>({});
@@ -55,11 +55,12 @@ const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
   const [iconSrc, setIconSrc] = useState("");
   const [price, setPrice] = useState(0);
   const [reviewId, setReviewId] = useState("");
-  const { credit, isLoading } = useCredit(authUserId);
   const [isSucceeded, setIsSucceeded] = useState(false);
+  const { credit, isLoading } = useCredit(authUserId);
+  const stripe = useStripe();
 
-  const partitionKey = `${USER_PREFIX}${authUserId}`; // my user id
-  const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserId}`;
+  console.log(credit, "credit");
+  console.log(reviews, "reviews");
   useEffect(() => {
     const reviewIdList = reviews.map((el) => el.sort_key);
     const paymentedList: { [key: string]: boolean } = {};
@@ -204,7 +205,7 @@ const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
       <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
       {isLoading ? (
         <Box position="relative" padding={2}>
-          <CustomLoader width={40} height={40} />
+          <CustomLoader width={30} height={30} />
         </Box>
       ) : (
         reviews.map((el, index) => renderReviewedItem(el, index))

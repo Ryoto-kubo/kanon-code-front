@@ -91,7 +91,7 @@ const IndexPage: React.FC<Props> = (props) => {
       currentUser={props.currentUser}
     >
       {/* {isLoading ? (
-        <CustomLoader width={40} height={40} />
+        <CustomLoader width={30} height={30} />
       ) : ( */}
       <Container>
         {!props.currentUser && <FirstView />}
