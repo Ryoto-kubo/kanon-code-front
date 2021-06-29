@@ -22,6 +22,7 @@ import styled from "styled-components";
 type Props = {
   status: boolean;
   reviews: ReviewTypes[];
+  isMe: boolean;
   authUserId: string;
   postId: string;
   isReviewsLoading: boolean;
@@ -43,7 +44,13 @@ const StyledBoxFlex = styled(Box)`
   align-items: center;
 `;
 
-const Wrapper: React.FC<Props> = ({ status, reviews, authUserId, postId }) => {
+const Wrapper: React.FC<Props> = ({
+  status,
+  reviews,
+  isMe,
+  authUserId,
+  postId,
+}) => {
   const partitionKey = `${USER_PREFIX}${authUserId}`; // my user id
   const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserId}`;
   const [paymentedList, setPaymentedList] = useState<{
@@ -212,6 +219,8 @@ const Wrapper: React.FC<Props> = ({ status, reviews, authUserId, postId }) => {
       ) : status ? (
         reviews.length > 0 ? (
           reviews.map((el, index) => renderReviewedItem(el, index))
+        ) : isMe ? (
+          <RelaxIllustration secondText="リラックスして少し休憩しませんか？" />
         ) : (
           <RelaxIllustration />
         )

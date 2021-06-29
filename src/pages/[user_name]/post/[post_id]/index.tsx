@@ -109,6 +109,7 @@ const IndexPage: React.FC<Props> = (props) => {
             <ReviewList
               status={status}
               reviews={reviews!}
+              isMe={isMe}
               authUserId={authUserId}
               postId={postId}
               isReviewsLoading={isLoading}

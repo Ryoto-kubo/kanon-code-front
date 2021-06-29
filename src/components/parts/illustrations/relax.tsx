@@ -3,6 +3,10 @@ import React from "react";
 import styled from "styled-components";
 import RelaxSvg from "../../../assets/illustration/relaxing.svg";
 
+type Props = {
+  secondText?: string;
+};
+
 const StyledRelaxSvg = styled(RelaxSvg)`
   width: 100%;
   ${(props) => props.theme.breakpoints.up("sm")} {
@@ -16,7 +20,8 @@ const StyledBox = styled(Box)`
   width: 100%;
   text-align: center;
 `;
-export const RelaxIllustration = () => {
+
+export const RelaxIllustration = (props: Props) => {
   return (
     <StyledBox>
       <Box>
@@ -25,7 +30,7 @@ export const RelaxIllustration = () => {
       <Box lineHeight={1.8}>
         まだレビューは投稿されていません。
         <br />
-        リラックスして少し休憩しませんか？
+        {props.secondText}
       </Box>
     </StyledBox>
   );
