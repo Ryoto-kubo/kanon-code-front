@@ -61,6 +61,9 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
   console.log(props, "props");
 
   const [isOpen, setIsOpen] = useState(false);
+  const [reviewedMessage, setReviewedMessage] = useState(
+    "レビューをいただいております。"
+  );
   const [updatingMessage, setUpdatingMessage] = useState("レビュー保存中...");
   const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [title, setTitle] = useState("");
@@ -190,6 +193,7 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
       if (!response.data.status) throw err;
       setUpdatingMessage("レビューを投稿しました");
       props.updateDisplay(response.data.Item);
+      setReviewedMessage("レビューを投稿しました。");
     } catch (error) {
       console.error(error);
       alert(errorMessages.REVIEW_ERROR);
@@ -265,7 +269,7 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
         </Box>
       ) : (
         <Box>
-          <Reviewed />
+          <Reviewed text={reviewedMessage} />
         </Box>
       )}
 
