@@ -19,4 +19,5 @@ export const apis = {
   REVIEWS: "api/reviews",
   PAYMENT: "api/payment",
   REGISTER_CUSTOMER: "api/registerCustomer",
+  REGISTER_PAYMENT: "api/registerPayment",
 };

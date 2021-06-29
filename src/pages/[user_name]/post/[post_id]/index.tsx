@@ -113,6 +113,7 @@ const IndexPage: React.FC<Props> = (props) => {
               authUserId={authUserId}
               postId={postId}
               isReviewsLoading={isLoading}
+              userProfile={userProfile}
             />
           </StyledBoxBgWhite>
         </StyledContainer>

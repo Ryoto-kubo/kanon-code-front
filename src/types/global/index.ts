@@ -36,7 +36,7 @@ export type ReviewTypes = {
   partition_key: string;
   sort_key: string;
   type: string;
-  contents: ReviewContentTypes;
+  contents: ReviewContentsTypes;
   user_id: string;
   user_profile: UserProfileTypes;
   price: number;
@@ -128,7 +128,7 @@ export type BookmarkTypes = {
   sort_key: string;
 };
 
-export type ReviewContentTypes = {
+export type ReviewContentsTypes = {
   review: {
     title: string;
     value: string;

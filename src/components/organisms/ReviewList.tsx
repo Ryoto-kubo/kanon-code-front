@@ -11,14 +11,20 @@ import { SigninDialog } from "@/components/parts/signinDialog";
 import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from "@/consts/const";
 import { useCredit } from "@/hooks/useCredit";
 import theme from "@/styles/theme";
-import { ReviewTypes } from "@/types/global/";
+import {
+  ReviewContentsTypes,
+  ReviewTypes,
+  UserProfileTypes,
+} from "@/types/global/";
 import { postPayment } from "@/utils/api/post-payment";
+import { postRegisterPayment } from "@/utils/api/post-register-payment";
 import { getStripe } from "@/utils/stripe";
 import Box from "@material-ui/core/Box";
 import { Elements, useStripe } from "@stripe/react-stripe-js";
 import marked from "marked";
 import React, { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
+
 type Props = {
   status: boolean;
   reviews: ReviewTypes[];
@@ -26,6 +32,7 @@ type Props = {
   authUserId: string;
   postId: string;
   isReviewsLoading: boolean;
+  userProfile: UserProfileTypes | null;
 };
 
 const StyledBoxTitleWrapper = styled(Box)`
@@ -50,6 +57,7 @@ const Wrapper: React.FC<Props> = ({
   isMe,
   authUserId,
   postId,
+  userProfile,
 }) => {
   const partitionKey = `${USER_PREFIX}${authUserId}`; // my user id
   const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserId}`;
@@ -65,6 +73,11 @@ const Wrapper: React.FC<Props> = ({
   const [iconSrc, setIconSrc] = useState("");
   const [price, setPrice] = useState(0);
   const [reviewId, setReviewId] = useState("");
+  const [reviewerId, setReviewerId] = useState("");
+  const [
+    registerContents,
+    setRegisterContents,
+  ] = useState<ReviewContentsTypes | null>(null);
   const [isSucceeded, setIsSucceeded] = useState(false);
   const { credit, isLoading } = useCredit(authUserId);
   const stripe = useStripe();
@@ -86,7 +99,9 @@ const Wrapper: React.FC<Props> = ({
     argTitle: string,
     argName: string,
     argIconSrc: string,
-    argPrice: number
+    argPrice: number,
+    argReviewerId: string,
+    argContents: ReviewContentsTypes
   ) => {
     if (authUserId === "") {
       setIsOpenSignin(true);
@@ -103,6 +118,8 @@ const Wrapper: React.FC<Props> = ({
     setName(argName);
     setIconSrc(argIconSrc);
     setPrice(argPrice);
+    setReviewerId(argReviewerId);
+    setRegisterContents(argContents);
     setIsOpenPayment(true);
   };
   const createParams = () => {
@@ -116,10 +133,23 @@ const Wrapper: React.FC<Props> = ({
       customerId: credit!.customer_id,
     };
   };
+  const createRegisterPaymentParams = () => {
+    const profile = userProfile!;
+    const contents = registerContents!;
+    return {
+      userId: partitionKey,
+      reviewId,
+      reviewerId,
+      postId,
+      profile,
+      contents,
+    };
+  };
   const payment = async () => {
     if (!credit) return;
     const err = new Error();
     const params = createParams();
+    const registerParams = createRegisterPaymentParams();
     setIsDisabled(true);
     try {
       const response = await postPayment(params);
@@ -130,6 +160,9 @@ const Wrapper: React.FC<Props> = ({
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
       console.log(paymentResult, "paymentResult");
       if (paymentResult.paymentIntent?.status !== "succeeded") throw err;
+      const registerResult = await postRegisterPayment(registerParams);
+      console.log(registerResult, "registerResult");
+
       setPaymentedList({
         ...paymentedList,
         [reviewId]: true,
@@ -155,13 +188,15 @@ const Wrapper: React.FC<Props> = ({
     const name = el.user_profile.display_name;
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
-    const title = el.contents.review.title;
+    const contents = el.contents;
+    const title = contents.review.title;
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`;
-    const bodyHtml = el.contents.review.body_html;
-    const displayBodyHtml = el.contents.review.display_body_html;
+    const bodyHtml = contents.review.body_html;
+    const displayBodyHtml = contents.review.display_body_html;
     const isSelfReviewItem = el.sort_key === myReviewId;
     const isPaymentFree = el.payment_type === PAYMENT_FREE;
     const sortKey = el.sort_key;
+    const reviewerId = el.user_id;
     return (
       <Box key={index} component="section" mb={7}>
         <StyledBoxFlex mb={2}>
@@ -201,7 +236,15 @@ const Wrapper: React.FC<Props> = ({
             height={"40px"}
             price={price}
             showToggleDialog={() =>
-              showToggleDialog(sortKey, title, name, iconSrc, price)
+              showToggleDialog(
+                sortKey,
+                title,
+                name,
+                iconSrc,
+                price,
+                reviewerId,
+                contents
+              )
             }
           />
         )}
