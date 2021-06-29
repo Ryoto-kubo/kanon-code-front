@@ -4,6 +4,7 @@ import { Reviewed } from "@/components/common/reviewed";
 import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
+import { CoffeeBreakIllustration } from "@/components/parts/illustrations/cofee-break";
 import { ReviewSettingDialog } from "@/components/parts/reviewSettingDialog";
 import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
@@ -29,6 +30,7 @@ const Editor = dynamic(
 type Props = {
   myUserId: string;
   postId: string;
+  isMe: boolean;
   isLoading: boolean;
   canReview: boolean;
   userProfile: UserProfileTypes | null;
@@ -234,11 +236,16 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
             </CustomSolidButton>
           </Box>
         </>
+      ) : props.isMe ? (
+        <Box>
+          <CoffeeBreakIllustration text="自身の投稿です。" />
+        </Box>
       ) : (
         <Box>
           <Reviewed />
         </Box>
       )}
+
       <ReviewSettingDialog
         title={title}
         review={review}

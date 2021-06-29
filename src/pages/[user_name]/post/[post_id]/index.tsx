@@ -97,6 +97,7 @@ const IndexPage: React.FC<Props> = (props) => {
               <ReviewEditor
                 myUserId={myUserId}
                 postId={postId}
+                isMe={isMe}
                 isLoading={isLoading}
                 canReview={canReview}
                 userProfile={userProfile}
