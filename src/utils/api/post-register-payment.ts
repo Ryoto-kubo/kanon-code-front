@@ -1,6 +1,6 @@
 import { apis } from "@/consts/api/";
 import { SuccessTypes } from "@/types/api/success";
-import { ReviewContentsTypes, UserProfileTypes } from "@/types/global/";
+import { UserProfileTypes } from "@/types/global/";
 import { axios } from "@/utils/axios";
 import { AxiosResponse } from "axios";
 
@@ -10,7 +10,6 @@ type ParamsType = {
   reviewerId: string;
   postId: string;
   profile: UserProfileTypes;
-  contents: ReviewContentsTypes;
 };
 
 export const postRegisterPayment = async (

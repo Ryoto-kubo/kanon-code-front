@@ -53,16 +53,20 @@ const IndexPage: React.FC<Props> = (props) => {
   const month = content.create_month;
   const day = content.create_day;
   const createDate = `${year}/${month}/${day}`;
-  const authUserId = props.authUser ? props.authUser.username : "";
+  const authUserName = props.authUser ? props.authUser.username : "";
   const {
+    creditResponse,
     reviewsResponse,
+    credit,
     reviews,
     setReviews,
     canReview,
     setCanReview,
+    paymentedList,
+    setPaymentedList,
     isLoading,
   } = useReviews(postId, isMe, myUserId);
-  const status = reviewsResponse.data.status;
+  const status = reviewsResponse.data.status && creditResponse.data.status;
   const updateDisplay = (responseReview: ReviewTypes) => {
     console.log(responseReview);
     const newReviews = reviews!.slice();
@@ -108,12 +112,16 @@ const IndexPage: React.FC<Props> = (props) => {
           <StyledBoxBgWhite>
             <ReviewList
               status={status}
+              credit={credit!}
               reviews={reviews!}
               isMe={isMe}
-              authUserId={authUserId}
+              isLoading={isLoading}
+              authUserName={authUserName}
               postId={postId}
               isReviewsLoading={isLoading}
               userProfile={userProfile}
+              paymentedList={paymentedList}
+              setPaymentedList={setPaymentedList}
             />
           </StyledBoxBgWhite>
         </StyledContainer>

@@ -15,5 +15,5 @@ type CustomSetupIntent = SetupIntent & {
 export const postRegisterCustomer = async (
   params: ParamsType,
 ): Promise<AxiosResponse<CustomSetupIntent>> => {
-  return await axios.post(apis.REGISTER_CUSTOMER, { userId: params })
+  return await axios.post(apis.REGISTER_CUSTOMER, { params })
 }
