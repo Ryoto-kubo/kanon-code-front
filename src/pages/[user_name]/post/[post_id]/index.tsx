@@ -114,6 +114,7 @@ const IndexPage: React.FC<Props> = (props) => {
               status={status}
               credit={credit!}
               reviews={reviews!}
+              setReviews={setReviews}
               isMe={isMe}
               isLoading={isLoading}
               authUserName={authUserName}

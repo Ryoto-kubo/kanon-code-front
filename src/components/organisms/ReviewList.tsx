@@ -25,6 +25,7 @@ type Props = {
   status: boolean;
   credit: CreditTypes;
   reviews: CustomReviewTypes[];
+  setReviews: React.Dispatch<React.SetStateAction<CustomReviewTypes[] | null>>;
   isMe: boolean;
   isLoading: boolean;
   authUserName: string;
@@ -57,6 +58,7 @@ const Wrapper: React.FC<Props> = ({
   status,
   credit,
   reviews,
+  setReviews,
   isMe,
   isLoading,
   authUserName,
@@ -141,7 +143,18 @@ const Wrapper: React.FC<Props> = ({
       if (paymentResult.paymentIntent?.status !== "succeeded") throw err;
       const registerResult = await postRegisterPayment(registerParams);
       console.log(registerResult, "registerResult");
+      const newReviews = reviews!.slice();
+      for (const item of newReviews) {
+        console.log(reviewId, "reviewId");
 
+        if (item.sort_key === reviewId) {
+          item.contents.review.display_body_html =
+            registerResult.data.contents.review.body_html;
+        }
+      }
+      console.log(paymentedList, "paymentedList");
+
+      setReviews(newReviews);
       setPaymentedList({ ...paymentedList, [reviewId]: true });
       setIsSucceeded(true);
       setIsDisabled(false);
