@@ -36,7 +36,7 @@ export type ReviewTypes = {
   partition_key: string;
   sort_key: string;
   type: string;
-  contents: ReviewContentTypes;
+  contents: ReviewContentsTypes;
   user_id: string;
   user_profile: UserProfileTypes;
   price: number;
@@ -109,7 +109,6 @@ export type CreditTypes = {
   partition_key: string;
   sort_key: string;
   customer_id: string;
-  setup_client_secret: string;
   setup_id: string;
   setup_method: string;
   last4_chara: string;
@@ -128,7 +127,7 @@ export type BookmarkTypes = {
   sort_key: string;
 };
 
-export type ReviewContentTypes = {
+export type ReviewContentsTypes = {
   review: {
     title: string;
     value: string;
@@ -136,6 +135,34 @@ export type ReviewContentTypes = {
     display_body_html: string;
   };
 };
+
+export type CustomReviewTypes = {
+  partition_key: string;
+  sort_key: string;
+  type: string;
+  contents: CustomReviewContentsTypes;
+  user_id: string;
+  user_profile: UserProfileTypes;
+  price: number;
+  payment_area: number;
+  payment_type: number;
+  create_year: number;
+  create_day: number;
+  create_month: number;
+  update_year: number;
+  update_month: number;
+  update_day: number;
+  is_delete: boolean;
+};
+
+export type CustomReviewContentsTypes = {
+  review: {
+    title: string;
+    display_body_html: string;
+  };
+};
+
+export type PaymentsTypes = {};
 
 export type ErrorTypes = {
   data: {

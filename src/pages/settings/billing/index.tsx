@@ -29,7 +29,8 @@ const StyledPairCreditSvg = styled(CreditSvg)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
-  const userId = props.authUser.username;
+  const userId = props.currentUser!.partition_key;
+
   const { credit, isLoading } = useCredit(userId);
 
   return (

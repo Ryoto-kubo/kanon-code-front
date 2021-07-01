@@ -4,7 +4,9 @@ import { Reviewed } from "@/components/common/reviewed";
 import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
+import { CoffeeBreakIllustration } from "@/components/parts/illustrations/cofee-break";
 import { ReviewSettingDialog } from "@/components/parts/reviewSettingDialog";
+import { SigninDialog } from "@/components/parts/signinDialog";
 import * as CONSTS from "@/consts/const";
 import { errorMessages, validMessages } from "@/consts/error-messages";
 import { UserProfileTypes } from "@/types/global";
@@ -18,6 +20,7 @@ import Snackbar from "@material-ui/core/Snackbar";
 import marked from "marked";
 import dynamic from "next/dynamic";
 import React, { useCallback, useState } from "react";
+
 const Editor = dynamic(
   () => {
     const promise = import("@/components/parts/editor").then((r) => r.Editor);
@@ -29,6 +32,7 @@ const Editor = dynamic(
 type Props = {
   myUserId: string;
   postId: string;
+  isMe: boolean;
   isLoading: boolean;
   canReview: boolean;
   userProfile: UserProfileTypes | null;
@@ -54,8 +58,14 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 export const ReviewEditor: React.FC<Props> = React.memo((props) => {
+  console.log(props, "props");
+
   const [isOpen, setIsOpen] = useState(false);
+  const [reviewedMessage, setReviewedMessage] = useState(
+    "レビューをいただいております。"
+  );
   const [updatingMessage, setUpdatingMessage] = useState("レビュー保存中...");
+  const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [title, setTitle] = useState("");
   const [review, setReview] = useState(initReview());
   const [activeStep, setActiveStep] = useState(0);
@@ -183,12 +193,20 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
       if (!response.data.status) throw err;
       setUpdatingMessage("レビューを投稿しました");
       props.updateDisplay(response.data.Item);
+      setReviewedMessage("レビューを投稿しました。");
     } catch (error) {
       console.error(error);
       alert(errorMessages.REVIEW_ERROR);
       setIsOpen(false);
     }
   };
+
+  const showToggleSigninDialog = () => {
+    setIsOpenSignin(true);
+  };
+  const closeSigninDialog = useCallback(() => {
+    setIsOpenSignin(false);
+  }, []);
 
   return (
     <>
@@ -234,17 +252,37 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
             </CustomSolidButton>
           </Box>
         </>
+      ) : !props.myUserId ? (
+        <Box textAlign="center">
+          <Box mb={1}>レビューをするにはサインインが必要です。</Box>
+          <CustomSolidButton
+            sizing="small"
+            onClick={showToggleSigninDialog}
+            color="primary"
+          >
+            サインイン
+          </CustomSolidButton>
+        </Box>
+      ) : props.isMe ? (
+        <Box>
+          <CoffeeBreakIllustration text="自身の投稿です。" />
+        </Box>
       ) : (
         <Box>
-          <Reviewed />
+          <Reviewed text={reviewedMessage} />
         </Box>
       )}
+
       <ReviewSettingDialog
         title={title}
         review={review}
         isOpenDialog={isOpenDialog}
         showToggleDialog={showToggleDialog}
         registerContent={registerContent}
+      />
+      <SigninDialog
+        isOpenDialog={isOpenSignin}
+        closeDialog={closeSigninDialog}
       />
       <Snackbar
         anchorOrigin={{

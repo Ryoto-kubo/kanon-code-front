@@ -4,6 +4,10 @@ import React from "react";
 import styled from "styled-components";
 import Thanks from "../../../assets/illustration/thanks.svg";
 
+type Props = {
+  text: string;
+};
+
 const StyledThanks = styled(Thanks)`
   width: 100%;
   ${(props) => props.theme.breakpoints.up("sm")} {
@@ -24,14 +28,14 @@ const StyledBoxThanks = styled(Box)`
   color: ${theme.palette.secondary.main};
 `;
 
-export const Reviewed = () => {
+export const Reviewed = (props: Props) => {
   return (
     <StyledBox>
       <Box>
         <StyledThanks />
       </Box>
       <StyledBoxThanks>Thanks!</StyledBoxThanks>
-      レビューをいただいております。
+      {props.text}
       <br />
       疲れたときはゆっくりしてくださいね。
     </StyledBox>

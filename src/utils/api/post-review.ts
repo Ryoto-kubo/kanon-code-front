@@ -1,6 +1,6 @@
 import { apis } from "@/consts/api/";
 import { ResponseReviewTypes } from "@/types/api/get-review";
-import { ReviewContentTypes, UserProfileTypes } from "@/types/global";
+import { ReviewContentsTypes, UserProfileTypes } from "@/types/global";
 import { axios } from "@/utils/axios";
 import { AxiosResponse } from "axios";
 
@@ -8,7 +8,7 @@ type ParamsType = {
   userId: string;
   postId: string;
   userProfile: UserProfileTypes;
-  contents: ReviewContentTypes;
+  contents: ReviewContentsTypes;
   paymentType: number;
   paymentArea: number | null;
   price: number;
