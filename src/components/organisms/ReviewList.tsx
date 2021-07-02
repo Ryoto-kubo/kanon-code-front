@@ -142,18 +142,13 @@ const Wrapper: React.FC<Props> = ({
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
       if (paymentResult.paymentIntent?.status !== "succeeded") throw err;
       const registerResult = await postRegisterPayment(registerParams);
-      console.log(registerResult, "registerResult");
       const newReviews = reviews!.slice();
       for (const item of newReviews) {
-        console.log(reviewId, "reviewId");
-
         if (item.sort_key === reviewId) {
           item.contents.review.display_body_html =
             registerResult.data.contents.review.body_html;
         }
       }
-      console.log(paymentedList, "paymentedList");
-
       setReviews(newReviews);
       setPaymentedList({ ...paymentedList, [reviewId]: true });
       setIsSucceeded(true);
@@ -194,10 +189,14 @@ const Wrapper: React.FC<Props> = ({
             width={"32px"}
             height={"32px"}
           />
-          {!isSelfReviewItem && (
+          {isSelfReviewItem ? (
+            <Price color="#5C6BC0" text="自身のレビュー" />
+          ) : paymentedList![sortKey] ? (
+            <Price color="#EC576B" text="購入済み" />
+          ) : (
             <Price
               color={isPaymentFree ? "#5C6BC0" : "#EC576B"}
-              text={isPaymentFree ? "FREE" : `¥${price}`}
+              text={isPaymentFree ? "FREE!!" : `¥${price}`}
             />
           )}
         </StyledBoxFlex>
