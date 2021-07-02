@@ -40,7 +40,6 @@ const StyledContainer = styled(Container)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
   const content = props.data;
   const contents = content.contents;
   const title = contents.title;
@@ -68,7 +67,9 @@ const IndexPage: React.FC<Props> = (props) => {
   } = useReviews(postId, isMe, myUserId);
   const status = reviewsResponse.data.status && creditResponse.data.status;
   const updateDisplay = (responseReview: ReviewTypes) => {
-    console.log(responseReview);
+    // 投稿した直後は自身のものなので全文表示させる
+    responseReview.contents.review.display_body_html =
+      responseReview.contents.review.body_html;
     const newReviews = reviews!.slice();
     newReviews.unshift(responseReview);
     setCanReview(false);
