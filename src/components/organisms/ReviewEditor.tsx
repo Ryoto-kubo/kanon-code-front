@@ -58,8 +58,6 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 export const ReviewEditor: React.FC<Props> = React.memo((props) => {
-  console.log(props, "props");
-
   const [isOpen, setIsOpen] = useState(false);
   const [reviewedMessage, setReviewedMessage] = useState(
     "レビューをいただいております。"
@@ -187,7 +185,6 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
     );
     setIsOpen(true);
     setIsOpenDialog(!isOpenDialog);
-    console.log(params, "params");
     try {
       const response = await postReview(params);
       if (!response.data.status) throw err;
