@@ -51,15 +51,16 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         const idToken = authenticatedUser.signInUserSession.idToken
         const jwtToken = idToken.jwtToken
         setCookie(null, "idToken", jwtToken, {})
-        const response = await getUser();
+        const response = await getUser()
+        console.log(response, 'response');
         const result = response.data;
-        if (!result.status) throw (err.message = result.status_message);
+        if (!result.status) throw err
         const user = result.Item;
         setAuthUser(authenticatedUser);
         setCurrentUser(user);
         setisFetch(true);
       } catch (error) {
-        // alert(error);
+        console.error(error);
         setAuthUser(null);
         setCurrentUser(null);
         setisFetch(true);

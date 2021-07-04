@@ -10,6 +10,5 @@ import { AxiosResponse } from "axios";
 export const getUser = async (
   // params: ParamsType
 ): Promise<AxiosResponse<ResponseUserTypes>> => {
-  return await axios.get(apis.USER);
-  // return await axios.get(apis.USER, { params });
+  return await axios.get(apis.USER)
 };
