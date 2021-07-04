@@ -82,15 +82,15 @@ const IndexPage: React.FC<Props> = (props) => {
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
   const payload = props.authUser.signInUserSession.idToken.payload;
   const userId = payload["cognito:username"];
-  const params = {
-    userId: userId,
-  };
+  // const params = {
+  //   userId: userId,
+  // };
   const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
   useEffect(() => {
     const err = new Error();
     (async () => {
       try {
-        const result = await getUser(params);
+        const result = await getUser();
         if (result.status !== 200) throw err;
         const item = result.data.Item;
         const userProfile = item.user_profile;

@@ -65,24 +65,6 @@ const splitPostsByPostLanguage = (posts: PostContentsTypes[]) => {
 const IndexPage: React.FC<Props> = (props) => {
   const items = makePropertyForPostUrl(props.data.Items);
   const { frontPosts, backPosts, otherPosts } = splitPostsByPostLanguage(items);
-  // const [contents] = useState<PostContentsTypes[]>(items)
-
-  // const [contents, setContents] = useState<any[]>(props.data.Items);
-  // const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  // useEffect(() => {
-  //   const err = new Error();
-  //   (async () => {
-  //     try {
-  //       const result = await getContents();
-  //       if (result.status !== 200) throw err;
-  //       setContents(result.data.Items);
-  //       setIsLoading(false);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   })();
-  // }, []);
 
   return (
     // <>
