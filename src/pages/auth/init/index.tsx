@@ -21,9 +21,9 @@ const IndexPage: React.FC<Props> = (props) => {
   const payload = props.authUser.signInUserSession.idToken.payload;
   console.log(payload, "payload");
 
-  const params = {
-    userId: payload["cognito:username"],
-  };
+  // const params = {
+  //   userId: payload["cognito:username"],
+  // };
 
   const moveToRegister = () => {
     router.push("/register");
@@ -34,7 +34,7 @@ const IndexPage: React.FC<Props> = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await getUser(params);
+        const response = await getUser();
         if (response.status !== 200) throw err;
         const item = response.data.Item;
         if (item === undefined) {
