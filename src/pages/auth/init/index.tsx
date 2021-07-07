@@ -15,7 +15,11 @@ const registUser = async (payload: any) => {
   return await axios.post(apis.REGISTER, payload);
 };
 const IndexPage: React.FC<Props> = (props) => {
+  console.log('auth before');
+
   if (!props.authUser) return <></>;
+  console.log('auth after');
+
   const router = useRouter();
   const err = new Error();
   const payload = props.authUser.signInUserSession.idToken.payload;
@@ -32,6 +36,8 @@ const IndexPage: React.FC<Props> = (props) => {
     router.push("/");
   };
   useEffect(() => {
+    console.log('auth effect');
+
     (async () => {
       try {
         const response = await getUser();
