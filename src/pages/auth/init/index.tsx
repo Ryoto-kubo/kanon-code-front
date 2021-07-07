@@ -35,6 +35,8 @@ const IndexPage: React.FC<Props> = (props) => {
     (async () => {
       try {
         const response = await getUser();
+        console.log(response, 'response');
+
         if (response.status !== 200) throw err;
         const item = response.data.Item;
         if (item === undefined) {
