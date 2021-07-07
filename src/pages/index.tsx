@@ -63,6 +63,8 @@ const splitPostsByPostLanguage = (posts: PostContentsTypes[]) => {
   };
 };
 const IndexPage: React.FC<Props> = (props) => {
+  console.log(props, 'props');
+
   const items = makePropertyForPostUrl(props.data.Items);
   const { frontPosts, backPosts, otherPosts } = splitPostsByPostLanguage(items);
 
