@@ -15,8 +15,8 @@ const registUser = async (payload: any) => {
   return await axios.post(apis.REGISTER, payload);
 };
 const IndexPage: React.FC<Props> = (props) => {
-  console.log('auth before');
-  // if (!props.authUser) return <></>;
+  console.log(props, 'props auth before');
+  if (!props.authUser) return <></>;
   console.log('auth after');
   const router = useRouter();
   const payload = props.authUser.signInUserSession.idToken.payload;
