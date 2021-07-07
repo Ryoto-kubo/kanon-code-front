@@ -30,8 +30,8 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
   useEffect(() => {
     (async () => {
       try {
-        const responseCredit = await getCredit({ userId });
-        const responseReviews = await getReviews({ userId, postId });
+        const responseCredit = await getCredit();
+        const responseReviews = await getReviews({ postId });
         responseReviews.data.Items.reviews;
         const creditStatus = responseCredit.data.status;
         const reviewsStatus = responseReviews.data.status;

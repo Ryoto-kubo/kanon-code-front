@@ -3,12 +3,12 @@ import { ResponseCreditType } from "@/types/api/get-credit";
 import { axios } from "@/utils/axios";
 import { AxiosResponse } from "axios";
 
-type ParamsType = {
-  userId: string;
-};
+// type ParamsType = {
+//   userId: string;
+// };
 
 export const getCredit = async (
-  params: ParamsType
+  // params: ParamsType
 ): Promise<AxiosResponse<ResponseCreditType>> => {
-  return await axios.get(apis.CREDIT, { params });
+  return await axios.get(apis.CREDIT);
 };
