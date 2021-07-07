@@ -40,6 +40,8 @@ const StyledContainer = styled(Container)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
+  console.log(props);
+
   const content = props.data;
   const contents = content.contents;
   const title = contents.title;

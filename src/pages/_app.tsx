@@ -50,7 +50,10 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         const idToken = authenticatedUser.signInUserSession.idToken
         const jwtToken = idToken.jwtToken
-        setCookie(null, "idToken", jwtToken, {})
+        setCookie(null, "idToken", jwtToken, {
+          path: '/',
+          // httpOnly: true
+        })
         const response = await getUser()
         const result = response.data;
         if (!result.status) throw err

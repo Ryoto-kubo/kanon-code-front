@@ -21,8 +21,6 @@ type Props = {
 };
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
-
   const userProfile = props.data.user.user_profile;
   const displayName = userProfile.display_name;
   const userId = props.data.user.user_id;
