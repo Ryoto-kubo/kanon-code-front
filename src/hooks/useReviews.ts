@@ -31,9 +31,6 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
     (async () => {
       try {
         const responseCredit = await getCredit();
-        console.log(responseCredit, 'responseCredit');
-
-        // const responseCredit = await getCredit({ userId });
         const responseReviews = await getReviews({ postId });
         responseReviews.data.Items.reviews;
         const creditStatus = responseCredit.data.status;
