@@ -16,19 +16,11 @@ const registUser = async (payload: any) => {
 };
 const IndexPage: React.FC<Props> = (props) => {
   console.log('auth before');
-
-  if (!props.authUser) return <></>;
+  // if (!props.authUser) return <></>;
   console.log('auth after');
-
   const router = useRouter();
-  const err = new Error();
   const payload = props.authUser.signInUserSession.idToken.payload;
   console.log(payload, "payload");
-
-  // const params = {
-  //   userId: payload["cognito:username"],
-  // };
-
   const moveToRegister = () => {
     router.push("/register");
   };
@@ -36,6 +28,7 @@ const IndexPage: React.FC<Props> = (props) => {
     router.push("/");
   };
   useEffect(() => {
+    const err = new Error();
     console.log('auth effect');
 
     (async () => {
