@@ -62,6 +62,8 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         setCurrentUser(user);
         setisFetch(true);
       } catch (error) {
+        console.log(error.response);
+
         if (error.response) {
           alert(error.response.data.status_message)
         }
