@@ -50,11 +50,14 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         const authenticatedUser = await Auth.currentAuthenticatedUser();
         const idToken = authenticatedUser.signInUserSession.idToken
         const jwtToken = idToken.jwtToken
-        setCookie(null, "idToken", jwtToken, {
-          path: '/',
-          // httpOnly: true
-        })
+        setCookie(null, "idToken", jwtToken)
+        // setCookie(null, "idToken", jwtToken, {
+        //   path: '/',
+        //   // httpOnly: true
+        // })
         const response = await getUser()
+        console.log(response, 'response');
+
         const result = response.data;
         if (!result.status) throw err
         const user = result.Item as UserTypes
@@ -62,7 +65,7 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         setCurrentUser(user);
         setisFetch(true);
       } catch (error) {
-        console.log(error.response);
+        console.log(error.response, 'app.tsxc');
 
         if (error.response) {
           alert(error.response.data.status_message)

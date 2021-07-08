@@ -15,12 +15,9 @@ const registUser = async (payload: any) => {
   return await axios.post(apis.REGISTER, payload);
 };
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props, 'props auth before');
+  console.log(props, 'props auth start');
   // if (!props.authUser) return <></>;
-  console.log('auth after');
   const router = useRouter();
-  const payload = props.authUser.signInUserSession?.idToken.payload;
-  console.log(payload, "payload");
   const moveToRegister = () => {
     router.push("/register");
   };
@@ -29,6 +26,9 @@ const IndexPage: React.FC<Props> = (props) => {
   };
   useEffect(() => {
     const err = new Error();
+    const payload = props.authUser?.signInUserSession.idToken.payload;
+    console.log(payload, "payload");
+
     console.log('auth effect');
 
     (async () => {
@@ -52,6 +52,8 @@ const IndexPage: React.FC<Props> = (props) => {
           }
         }
       } catch (error) {
+        console.log(error.response, 'auth');
+
         console.log(error);
         alert(errorMessages.SYSTEM_ERROR);
         moveToTop();
