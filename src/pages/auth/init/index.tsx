@@ -16,10 +16,10 @@ const registUser = async (payload: any) => {
 };
 const IndexPage: React.FC<Props> = (props) => {
   console.log(props, 'props auth before');
-  if (!props.authUser) return <></>;
+  // if (!props.authUser) return <></>;
   console.log('auth after');
   const router = useRouter();
-  const payload = props.authUser.signInUserSession.idToken.payload;
+  const payload = props.authUser.signInUserSession?.idToken.payload;
   console.log(payload, "payload");
   const moveToRegister = () => {
     router.push("/register");
