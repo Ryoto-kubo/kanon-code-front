@@ -15,6 +15,7 @@ import Box from "@material-ui/core/Box";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { Auth } from "aws-amplify";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
@@ -71,8 +72,8 @@ const StyledPUrlWrapper = styled("div")`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
   const router = useRouter();
+  const [userId, setUserId] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
@@ -80,28 +81,25 @@ const IndexPage: React.FC<Props> = (props) => {
   const [validText, setIsValidText] = useState<string>("");
   const [name, setUserName] = useState<string>("");
   const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
-  const payload = props.authUser.signInUserSession.idToken.payload;
-  const userId = payload["cognito:username"];
-  // const params = {
-  //   userId: userId,
-  // };
   const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
   useEffect(() => {
     const err = new Error();
     (async () => {
       try {
+        await Auth.currentAuthenticatedUser();
         const result = await getUser();
         if (result.status !== 200) throw err;
         const item = result.data.Item;
         const userProfile = item.user_profile;
-        if (userProfile.display_name !== "") {
-          router.push("/");
-        } else {
+        if (userProfile.display_name === "") {
+          setUserId(item.partition_key);
           setIsLoading(false);
+        } else {
+          router.push("/");
         }
       } catch (error) {
         console.error(error);
-        alert(errorMessages.SYSTEM_ERROR);
+        router.push("/");
       }
     })();
   }, []);
@@ -163,8 +161,8 @@ const IndexPage: React.FC<Props> = (props) => {
     if (isDisabled || !isValidName) return;
     const params = createParams();
     try {
-      const result = await axios.post(apis.UPDATE_DISPLAY_NAME, params);
-      if (result.status !== 200) throw err;
+      const result = await axios.post(apis.DISPLAY_NAME, params);
+      if (!result.data.status) throw err;
       if (result.data.isSuccess) {
         setShowModal(true);
       } else {

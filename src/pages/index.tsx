@@ -7,10 +7,10 @@ import theme from "@/styles/theme";
 import { UserTypes } from "@/types/global";
 import { PostContentsTypes } from "@/types/global/";
 import { getContents } from "@/utils/api/get-contents";
+import { getUser } from "@/utils/api/get-user";
 import { Box, Container, Grid } from "@material-ui/core/";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-// import React, { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 type Props = {
@@ -63,22 +63,38 @@ const splitPostsByPostLanguage = (posts: PostContentsTypes[]) => {
   };
 };
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props, 'props');
-
+  const [user, setUser] = useState<UserTypes | null>(null)
+  const [isFetch, setIsFetch] = useState<boolean>(false)
   const items = makePropertyForPostUrl(props.data.Items);
   const { frontPosts, backPosts, otherPosts } = splitPostsByPostLanguage(items);
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getUser();
+        const result = response.data.Item as UserTypes
+        setUser(result)
+        setIsFetch(true)
+      } catch (error) {
+        console.error(error.response, 'top');
 
+        setIsFetch(true)
+      }
+    })()
+  }, [])
+  if (!isFetch) {
+    return <></>
+  }
   return (
     // <>
     <Layout
       title="Kanon Code | コードレビュを全てのエンジニアへ"
-      currentUser={props.currentUser}
+      currentUser={user}
     >
       {/* {isLoading ? (
         <CustomLoader width={30} height={30} />
       ) : ( */}
       <Container>
-        {!props.currentUser && <FirstView />}
+        {!user && <FirstView />}
         <Box component="section" mb={5}>
           {frontPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>

@@ -3,7 +3,6 @@ import { CommonHead } from "@/components/common/head/index";
 import { TheLoggedHeader } from "@/components/common/header/logged";
 import { TheStndardHeader } from "@/components/common/header/standard";
 import { UserTypes } from "@/types/global";
-// import { Toolbar } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import React, { ReactNode } from "react";
 import styled from "styled-components";
@@ -24,7 +23,6 @@ const Layout = ({ children, title, currentUser }: Props) => {
       <CommonHead title={title} />
       {currentUser && <TheLoggedHeader currentUser={currentUser} />}
       {!currentUser && <TheStndardHeader />}
-      {/* <Toolbar /> */}
       <StyleBoxMain mt={4} component="main">
         {children}
       </StyleBoxMain>

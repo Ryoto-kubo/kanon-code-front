@@ -16,8 +16,10 @@ import SpeedOutlinedIcon from "@material-ui/icons/SpeedOutlined";
 import { Auth } from "aws-amplify";
 // import Link from "next/link";
 import { useRouter } from "next/router";
+import { destroyCookie } from 'nookies';
 import React, { useState } from "react";
 import styled from "styled-components";
+
 
 interface Props {
   picture: string;
@@ -58,8 +60,8 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   };
   const signOut = async () => {
     try {
-      const result = await Auth.signOut();
-      console.log(result);
+      destroyCookie(null, 'idToken')
+      await Auth.signOut();
     } catch (err) {
       console.log(err);
     }

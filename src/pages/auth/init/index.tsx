@@ -1,22 +1,20 @@
 import { CustomLoader } from "@/components/common/loader";
-import { apis } from "@/consts/api/";
 import { errorMessages } from "@/consts/error-messages";
 import { getUser } from "@/utils/api/get-user";
-import { axios } from "@/utils/axios";
+import { postRegist } from '@/utils/api/post-register';
+import { Auth } from 'aws-amplify';
 import { useRouter } from "next/router";
+import { setCookie } from 'nookies';
 import React, { useEffect } from "react";
-
 type Props = {
   title: string;
-  authUser: any;
+  // authUser: any;
 };
 
-const registUser = async (payload: any) => {
-  return await axios.post(apis.REGISTER, payload);
-};
+// const registUser = async (payload: any) => {
+//   return await axios.post(apis.REGISTER, payload);
+// };
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props, 'props auth start');
-  // if (!props.authUser) return <></>;
   const router = useRouter();
   const moveToRegister = () => {
     router.push("/register");
@@ -26,21 +24,23 @@ const IndexPage: React.FC<Props> = (props) => {
   };
   useEffect(() => {
     const err = new Error();
-    const payload = props.authUser?.signInUserSession.idToken.payload;
-    console.log(payload, "payload");
-
-    console.log('auth effect');
-
     (async () => {
       try {
+        console.log('auth');
+
+        const authenticatedUser = await Auth.currentAuthenticatedUser();
+        const jwtToken = authenticatedUser.signInUserSession.idToken.jwtToken
+        setCookie(null, "idToken", jwtToken)
         const response = await getUser();
         console.log(response, 'response');
 
         if (response.status !== 200) throw err;
         const item = response.data.Item;
+        console.log(item, 'item');
+
         if (item === undefined) {
           // ユーザー未登録
-          const response = await registUser(payload);
+          const response = await postRegist();
           if (response.status !== 200) throw err;
           moveToRegister();
         } else {
@@ -52,7 +52,7 @@ const IndexPage: React.FC<Props> = (props) => {
           }
         }
       } catch (error) {
-        console.log(error.response, 'auth');
+        console.log(error.response);
 
         console.log(error);
         alert(errorMessages.SYSTEM_ERROR);

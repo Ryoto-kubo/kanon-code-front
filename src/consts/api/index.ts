@@ -7,7 +7,7 @@ export const apis = {
   CONTENTS: "/api/contents",
   CONTENT: "/api/content",
   PAGES_URL: "/api/pagesUrl",
-  UPDATE_DISPLAY_NAME: "/api/updateDisplayName",
+  DISPLAY_NAME: "/api/displayName",
   REGISTER_CONTENT: "/api/registerContent",
   CREATE_PRESIGNED_URL: "/api/createPresignedUrl",
   SUGGEST_PROGRAMMINGL_ANGUAGES: "/api/suggestProgrammingLanguages",
