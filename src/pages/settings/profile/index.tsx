@@ -170,15 +170,6 @@ const IndexPage: React.FC<Props> = (props) => {
             </ProfileContentLink>
 
             <ProfileContentLink
-              label="100文字あたりの設定金額"
-              value={profile.price}
-              isDivider={true}
-              href="/price"
-            >
-              <IconArrowNext fontSize="large" color="action" />
-            </ProfileContentLink>
-
-            <ProfileContentLink
               label="Githubユーザーネーム"
               value={profile.github_name}
               isDivider={true}

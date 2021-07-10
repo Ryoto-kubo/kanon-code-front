@@ -1,12 +1,10 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
 import { BaseTextField } from "@/components/atoms/TextField";
-import { CustomLoader } from "@/components/common/loader";
 // import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
 import { messages } from "@/consts/messages";
-import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting-form";
 // import theme from "@/styles/theme";
 import { UserTypes } from "@/types/global";
@@ -18,9 +16,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
 };
 
 const StyledButtonWrapper = styled(Box)`
@@ -37,13 +34,12 @@ const StyledBoxTextFieldWrapper = styled(Box)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
-  const userId = props.authUser.username;
   const MAX_PRICE_LENGTH = CONSTS.MAX_PRICE_LENGTH;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
-  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
-  const profile = user.user_profile;
+  const [user, setUser] = useState<UserTypes>(props.currentUser);
+  const profile = props.currentUser.user_profile;
 
   const updateProfile = async () => {
     const isValid = validPrice(String(profile.price));
@@ -52,7 +48,6 @@ const IndexPage: React.FC<Props> = (props) => {
     setIsDidabled(true);
     const err = new Error();
     const params = {
-      userId: userId,
       userProfile: profile,
     };
     try {
@@ -119,10 +114,6 @@ const IndexPage: React.FC<Props> = (props) => {
         headingFontSize={24}
         marginBottom={0}
       >
-        {isLoading ? (
-          <CustomLoader width={30} height={30} />
-        ) : (
-          <>
             <StyledBoxTextFieldWrapper mb={4}>
               <Box mb={2}>
                 <BaseTextField
@@ -154,8 +145,6 @@ const IndexPage: React.FC<Props> = (props) => {
               open={isOpen}
               message={updatingMessage}
             />
-          </>
-        )}
       </SettingForm>
     </SettingLayout>
   );
