@@ -9,7 +9,7 @@ export const apis = {
   PAGES_URL: "/api/pagesUrl",
   DISPLAY_NAME: "/api/displayName",
   REGISTER_CONTENT: "/api/registerContent",
-  CREATE_PRESIGNED_URL: "/api/createPresignedUrl",
+  PRESIGNED_URL: "/api/presignedUrl",
   SUGGEST_PROGRAMMINGL_ANGUAGES: "/api/suggestProgrammingLanguages",
   EMAIL_NOTICES: "/api/emailNotices",
   BANK: "/api/bank",

@@ -7,15 +7,14 @@ import theme from "@/styles/theme";
 import { UserTypes } from "@/types/global";
 import { PostContentsTypes } from "@/types/global/";
 import { getContents } from "@/utils/api/get-contents";
-import { getUser } from "@/utils/api/get-user";
 import { Box, Container, Grid } from "@material-ui/core/";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 
 type Props = {
   authUser: any;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes | null
   data: {
     Count: number;
     Items: PostContentsTypes[];
@@ -63,38 +62,15 @@ const splitPostsByPostLanguage = (posts: PostContentsTypes[]) => {
   };
 };
 const IndexPage: React.FC<Props> = (props) => {
-  const [user, setUser] = useState<UserTypes | null>(null)
-  const [isFetch, setIsFetch] = useState<boolean>(false)
   const items = makePropertyForPostUrl(props.data.Items);
   const { frontPosts, backPosts, otherPosts } = splitPostsByPostLanguage(items);
-  useEffect(() => {
-    (async () => {
-      try {
-        const response = await getUser();
-        const result = response.data.Item as UserTypes
-        setUser(result)
-        setIsFetch(true)
-      } catch (error) {
-        console.error(error.response, 'top');
-
-        setIsFetch(true)
-      }
-    })()
-  }, [])
-  if (!isFetch) {
-    return <></>
-  }
   return (
-    // <>
     <Layout
       title="Kanon Code | コードレビュを全てのエンジニアへ"
-      currentUser={user}
+      currentUser={props.currentUser}
     >
-      {/* {isLoading ? (
-        <CustomLoader width={30} height={30} />
-      ) : ( */}
       <Container>
-        {!user && <FirstView />}
+        {!props.currentUser && <FirstView />}
         <Box component="section" mb={5}>
           {frontPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>
@@ -168,9 +144,7 @@ const IndexPage: React.FC<Props> = (props) => {
           </Box>
         </Box>
       </Container>
-      {/* )} */}
     </Layout>
-    // </>
   );
 };
 // サーバーサイドで実行される
