@@ -3,7 +3,6 @@ import { EmailNoticesTypes } from "@/types/global";
 import { axios } from "@/utils/axios";
 
 type PramsProps = {
-  userId: string;
   emailNotices: EmailNoticesTypes;
 };
 

@@ -1,12 +1,10 @@
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { CustomLoader } from "@/components/common/loader";
 import { ValidMessage } from "@/components/molecules/ValidMessage";
 import { SettingForm } from "@/components/organisms/SettingForm";
 import * as CONSTS from "@/consts/const";
 import { errorMessages } from "@/consts/error-messages";
 import { messages } from "@/consts/messages";
 import { YEARS_EXPERIENCES } from "@/consts/years-experiences";
-import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting-form";
 import { UserTypes } from "@/types/global";
 import { postUserProfile } from "@/utils/api/post-user-profile";
@@ -19,9 +17,8 @@ import React, { useCallback, useState } from "react";
 import styled from "styled-components";
 
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes;
 };
 type TypeParams = {
   language: string;
@@ -51,8 +48,6 @@ const renderOptions = (): JSX.Element[] => {
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
-  const userId = props.authUser.username;
-  const MAX_LANG_LENGTH = CONSTS.MAX_LANG_LENGTH;
   const [skilParams] = useState<TypeParams>(CONSTS.INITIAL_SKILS);
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
@@ -65,8 +60,9 @@ const IndexPage: React.FC<Props> = (props) => {
     true,
     true,
   ]);
-  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
-  const profile = user.user_profile;
+  const [user, setUser] = useState<UserTypes>(props.currentUser);
+  const MAX_LANG_LENGTH = CONSTS.MAX_LANG_LENGTH;
+  const profile = props.currentUser.user_profile;
 
   const update = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,7 +71,6 @@ const IndexPage: React.FC<Props> = (props) => {
       setIsDidabled(true);
       const err = new Error();
       const params = {
-        userId: userId,
         userProfile: profile,
       };
       try {
@@ -202,30 +197,24 @@ const IndexPage: React.FC<Props> = (props) => {
         headingFontSize={24}
         marginBottom={0}
       >
-        {isLoading ? (
-          <CustomLoader width={30} height={30} />
-        ) : (
-          <>
-            {renderTextFields()}
-            <StyledButtonWrapper>
-              <CustomSolidButton
-                sizing="small"
-                onClick={update}
-                disabled={isDisabled}
-              >
-                登録
-              </CustomSolidButton>
-            </StyledButtonWrapper>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              open={isOpen}
-              message={updatingMessage}
-            />
-          </>
-        )}
+        {renderTextFields()}
+        <StyledButtonWrapper>
+          <CustomSolidButton
+            sizing="small"
+            onClick={update}
+            disabled={isDisabled}
+          >
+            登録
+          </CustomSolidButton>
+        </StyledButtonWrapper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          open={isOpen}
+          message={updatingMessage}
+        />
       </SettingForm>
     </SettingLayout>
   );

@@ -28,7 +28,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
+const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
@@ -54,11 +54,15 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
         setCurrentUser(user);
         setisFetch(true);
       } catch (error) {
+        console.log(error.response);
+
         if (error.response) {
           destroyCookie(null, 'idToken')
           alert(error.response.data.status_message)
           await Auth.signOut();
         }
+        if (router.pathname === "/" || router.pathname === "/signin") return;
+        router.push("/");
         setisFetch(true);
       }
     })();
