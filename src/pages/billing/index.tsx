@@ -62,8 +62,6 @@ const Wrapper = ({
   const [isValid, setIsValid] = useState<boolean>(true);
   const userId = currentUser!.partition_key;
   const { credit, isLoading } = useCredit();
-  console.log(credit, "credit");
-
   const changeNumber = (event: stripeJs.StripeCardElementChangeEvent) => {
     const empty = event.empty;
     const complete = event.complete;

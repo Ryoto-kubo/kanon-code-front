@@ -11,8 +11,6 @@ export const useCredit = () => {
     (async () => {
       try {
         const response = await getCredit();
-        console.log(response, "response");
-
         const result = response.data;
         if (!result.status) throw (err.message = result.status_message);
         setCredit(result.Item ? result.Item : null);

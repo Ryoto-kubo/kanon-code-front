@@ -43,7 +43,8 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
       try {
         const cognitoUser = await Auth.currentAuthenticatedUser();
         const currentSession = await Auth.currentSession();
-        cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err:any, session:any) => {
+        cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err: any, session: any) => {
+          console.error(err);
           const error = new Error()
           const payload = cognitoUser.signInUserSession.idToken.payload
           const { idToken } = session;
