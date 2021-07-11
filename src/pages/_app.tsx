@@ -34,7 +34,6 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const [isFetch, setisFetch] = useState<boolean>(false);
   console.log("_app.tsx");
   useEffect(() => {
-    const err = new Error()
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles && jssStyles.parentNode) {
       jssStyles.parentNode.removeChild(jssStyles);
@@ -42,26 +41,30 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
     (async () => {
       console.log("_app.tsx async");
       try {
-        const authenticatedUser = await Auth.currentAuthenticatedUser();
-        const idToken = authenticatedUser.signInUserSession.idToken
-        const jwtToken = idToken.jwtToken;
-        setCookie(null, "idToken", jwtToken);
-        const response = await getUser()
-        const result = response.data;
-        if (!result.status) throw err
-        const user = result.Item as UserTypes
-        setAuthUser(idToken.payload);
-        setCurrentUser(user);
-        setisFetch(true);
+        const cognitoUser = await Auth.currentAuthenticatedUser();
+        const currentSession = await Auth.currentSession();
+        cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err:any, session:any) => {
+          const error = new Error()
+          const payload = cognitoUser.signInUserSession.idToken.payload
+          const { idToken } = session;
+          setCookie(null, "idToken", idToken.jwtToken);
+          const response = await getUser()
+          const result = response.data;
+          if (!result.status) throw error
+          const user = result.Item as UserTypes
+          setAuthUser(payload);
+          setCurrentUser(user);
+          setisFetch(true);
+        });
       } catch (error) {
         console.log(error.response);
-
         if (error.response) {
           destroyCookie(null, 'idToken')
           alert(error.response.data.status_message)
           await Auth.signOut();
+          return
         }
-        if (router.pathname === "/" || router.pathname === "/signin") return;
+        // if (router.pathname === "/" || router.pathname === "/signin") return;
         router.push("/");
         setisFetch(true);
       }

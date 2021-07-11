@@ -12,9 +12,8 @@ import styled from "styled-components";
 import CreditSvg from "../../../assets/illustration/credit.svg";
 
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
 };
 
 const StyledPairCreditSvg = styled(CreditSvg)`
@@ -29,14 +28,12 @@ const StyledPairCreditSvg = styled(CreditSvg)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
-  const userId = props.currentUser!.partition_key;
-
-  const { credit, isLoading } = useCredit(userId);
-
+  const user = props.currentUser;
+  const { credit, isLoading } = useCredit();
   return (
     <SettingLayout
       title={`Kanon Code | クレジットカード情報`}
-      currentUser={props.currentUser}
+      currentUser={user}
     >
       {isLoading ? (
         <CustomLoader width={30} height={30} />

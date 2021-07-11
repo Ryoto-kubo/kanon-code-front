@@ -27,8 +27,7 @@ const IndexPage: React.FC<Props> = (props) => {
   );
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [user, setUser] = useState<UserTypes>(props.currentUser);
-
+  const user = props.currentUser;
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);
   };

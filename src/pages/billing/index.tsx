@@ -25,9 +25,8 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
 };
 
 const StyledBox = styled(Box)(
@@ -52,7 +51,7 @@ const Wrapper = ({
   currentUser,
 }: {
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
 }) => {
   if (!authUser) return <></>;
   const stripe = useStripe();
@@ -62,7 +61,8 @@ const Wrapper = ({
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [isValid, setIsValid] = useState<boolean>(true);
   const userId = currentUser!.partition_key;
-  const { credit, isLoading } = useCredit(userId);
+  const { credit, isLoading } = useCredit();
+  console.log(credit, "credit");
 
   const changeNumber = (event: stripeJs.StripeCardElementChangeEvent) => {
     const empty = event.empty;
@@ -103,12 +103,12 @@ const Wrapper = ({
     }
     const isConfirm = postConfirm();
     if (!isConfirm) return;
+    setIsDidabled(true);
     setIsOpen(true);
     const err = new Error();
     const last4Chara = token.card!.last4;
     try {
-      const responseCustomer = await postRegisterCustomer({ userId });
-      console.log(responseCustomer, "responseCustomer");
+      const responseCustomer = await postRegisterCustomer();
       if (!responseCustomer.data.status) throw err;
       const customerId = responseCustomer.data.customer;
       const clientSecret = responseCustomer.data.client_secret;
@@ -140,6 +140,7 @@ const Wrapper = ({
       const result = response.data;
       if (!result.status) throw err;
       setUpdatingMessage(messages.UPDATED_MESSAGE);
+      setIsDidabled(false);
     } catch {
       setIsOpen(false);
     }

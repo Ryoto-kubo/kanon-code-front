@@ -3,9 +3,7 @@ import { CreditTypes } from "@/types/global";
 import { getCredit } from "@/utils/api/get-credit";
 import { useEffect, useState } from "react";
 
-export const useCredit = (userId: string) => {
-  console.log(userId, "userId");
-
+export const useCredit = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [credit, setCredit] = useState<CreditTypes | null>(null);
   useEffect(() => {
@@ -13,6 +11,8 @@ export const useCredit = (userId: string) => {
     (async () => {
       try {
         const response = await getCredit();
+        console.log(response, "response");
+
         const result = response.data;
         if (!result.status) throw (err.message = result.status_message);
         setCredit(result.Item ? result.Item : null);
