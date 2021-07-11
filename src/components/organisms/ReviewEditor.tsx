@@ -154,7 +154,6 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
     displayBodyHtml: string
   ) => {
     return {
-      userId: props.myUserId,
       postId: props.postId,
       userProfile: props.userProfile!,
       contents: {

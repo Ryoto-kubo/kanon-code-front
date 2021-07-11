@@ -5,7 +5,6 @@ import { axios } from "@/utils/axios";
 import { AxiosResponse } from "axios";
 
 type ParamsType = {
-  userId: string;
   postId: string;
   userProfile: UserProfileTypes;
   contents: ReviewContentsTypes;

@@ -16,7 +16,7 @@ import styled from "styled-components";
 
 type Props = {
   authUser: any;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes | null;
   data: PostContentsTypes;
 };
 
@@ -40,8 +40,6 @@ const StyledContainer = styled(Container)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
-
   const content = props.data;
   const contents = content.contents;
   const title = contents.title;
@@ -54,7 +52,7 @@ const IndexPage: React.FC<Props> = (props) => {
   const month = content.create_month;
   const day = content.create_day;
   const createDate = `${year}/${month}/${day}`;
-  const authUserName = props.authUser ? props.authUser.username : "";
+  const authUserName = props.authUser ? props.authUser['cognito:username'] : "";
   const {
     creditResponse,
     reviewsResponse,

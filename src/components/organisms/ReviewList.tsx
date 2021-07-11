@@ -67,6 +67,8 @@ const Wrapper: React.FC<Props> = ({
   paymentedList,
   setPaymentedList,
 }) => {
+  console.log(reviews, "reviews");
+
   const partitionKey = `${USER_PREFIX}${authUserName}`; // my user id
   const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserName}`;
   const [isOpenPayment, setIsOpenPayment] = useState(false);
