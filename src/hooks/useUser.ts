@@ -2,11 +2,9 @@ import { UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { useEffect, useState } from "react";
 
-export const useUser = (userId: string, currentUser: UserTypes | null) => {
-  console.log(userId, "useUser");
-
+export const useUser = (currentUser: UserTypes | null) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<UserTypes>(currentUser!);
+  const [user, setUser] = useState<UserTypes | null>(currentUser!);
   useEffect(() => {
     const err = new Error();
     (async () => {

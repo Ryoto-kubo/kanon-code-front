@@ -12,9 +12,8 @@ import React from "react";
 import styled from "styled-components";
 import BankSvg from "../../../assets/illustration/bank.svg";
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
 };
 
 const StyledPairBankSvg = styled(BankSvg)`
@@ -29,13 +28,13 @@ const StyledPairBankSvg = styled(BankSvg)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
-  const userId = props.authUser.username;
-  const { bank, isLoading } = useBank(userId);
+  const user = props.currentUser
+  const { bank, isLoading } = useBank();
 
   return (
     <SettingLayout
       title={`Kanon Code | お振込先`}
-      currentUser={props.currentUser}
+      currentUser={user}
     >
       {isLoading ? (
         <CustomLoader width={30} height={30} />

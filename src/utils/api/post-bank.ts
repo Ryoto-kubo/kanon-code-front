@@ -3,7 +3,6 @@ import { BankTypes } from "@/types/global";
 import { axios } from "@/utils/axios";
 
 type ParamsType = {
-  userId: string;
   bank: BankTypes;
 };
 

@@ -5,5 +5,5 @@ export const getPreSignedUrl = async (newFileName: string) => {
   const params = {
     newFileName: newFileName,
   };
-  return await axios.get(apis.CREATE_PRESIGNED_URL, { params });
+  return await axios.get(apis.PRESIGNED_URL, { params });
 };

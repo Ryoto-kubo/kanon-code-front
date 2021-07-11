@@ -21,9 +21,8 @@ import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 type Props = {
-  title: string
   authUser: any
-  currentUser: UserTypes | null
+  currentUser: UserTypes
 }
 type BankKeyTypes = Readonly<
   | 'bank_code'
@@ -84,7 +83,6 @@ const StyledButtonWrapper = styled(Box)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>
-  const userId = props.authUser.username
   const [isOpen, setIsOpen] = useState(false)
   const [isDisabled, setIsDidabled] = useState<boolean>(true)
   const [updatingMessage, setUpdatingMessage] = useState('更新中...')
@@ -106,7 +104,7 @@ const IndexPage: React.FC<Props> = (props) => {
     const err = new Error()
     ;(async () => {
       try {
-        const response = await getBank({ userId })
+        const response = await getBank()
         const result = response.data
         if (!result.status) throw (err.message = result.status_message)
         setBank(result.Item ? result.Item.bank : INITIAL_BANK)
@@ -285,7 +283,7 @@ const IndexPage: React.FC<Props> = (props) => {
     setUpdatingMessage('更新中...')
     setIsOpen(true)
     try {
-      const result = await postBank({ userId, bank })
+      const result = await postBank({ bank })
       if (!result.status) throw err
       setUpdatingMessage(messages.UPDATED_MESSAGE)
     } catch {

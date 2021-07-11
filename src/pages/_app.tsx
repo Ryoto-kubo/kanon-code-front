@@ -1,9 +1,8 @@
 import "@/aws/cognito/config";
 import { CustomNprogress } from "@/components/common/nextNprogress";
-import { SettingLayout } from "@/layouts/setting";
-import Layout from "@/layouts/standard";
 import theme from "@/styles/theme";
 import { UserTypes } from "@/types/global";
+import { getUser } from '@/utils/api/get-user';
 import { CognitoUser } from "@aws-amplify/auth";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import { StylesProvider, ThemeProvider as MaterialUIThemeProvider } from "@material-ui/styles";
@@ -11,14 +10,13 @@ import { Auth } from "aws-amplify";
 import "modern-css-reset/dist/reset.min.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { destroyCookie, setCookie } from 'nookies';
 import "nprogress/nprogress.css"; // バーのデフォルトスタイルのインポート
 import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
 import styled, { ThemeProvider as StyledComponentsThemeProvider } from "styled-components";
 import "./editor.scss";
 import "./style.scss";
-
-
 const StyledWrapper = styled.div`
   background: #ffffff;
   position: relative;
@@ -34,8 +32,6 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
-  const layout = pageProps.layout;
-  const title = pageProps.title;
   console.log("_app.tsx");
   useEffect(() => {
     const jssStyles = document.querySelector("#jss-server-side");
@@ -44,72 +40,37 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
     }
     (async () => {
       console.log("_app.tsx async");
-
       try {
-        const authenticatedUser = await Auth.currentAuthenticatedUser();
-        const jwtToken = authenticatedUser.signInUserSession.idToken.jwtToken;
-        // setCookie(null, "idToken", jwtToken);
-        document.cookie = `idToken=${jwtToken}`;
-        // const authenticatedUser = await Auth.currentAuthenticatedUser();
-        // const idToken = authenticatedUser.signInUserSession.idToken
-        // const jwtToken = idToken.jwtToken
-        // setCookie(null, "idToken", jwtToken)
-        // const response = await getUser()
-        // const result = response.data;
-        // if (!result.status) throw err
-        // const user = result.Item as UserTypes
-        // setAuthUser(authenticatedUser);
-        // setCurrentUser(user);
-        setisFetch(true);
+        const cognitoUser = await Auth.currentAuthenticatedUser();
+        const currentSession = await Auth.currentSession();
+        cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err: any, session: any) => {
+          const error = new Error()
+          if(err) throw error
+          const payload = cognitoUser.signInUserSession.idToken.payload
+          const { idToken } = session;
+          setCookie(null, "idToken", idToken.jwtToken);
+          const response = await getUser()
+          const result = response.data;
+          if (!result.status) throw error
+          const user = result.Item as UserTypes
+          setAuthUser(payload);
+          setCurrentUser(user);
+          setisFetch(true);
+        });
       } catch (error) {
-        // if (error.response) {
-        //   alert(error.response.data.status_message)
-        // }
-        // setAuthUser(null);
-        // setCurrentUser(null);
-        setisFetch(true);
+        console.log(error.response);
+        if (error.response) {
+          destroyCookie(null, 'idToken')
+          alert(error.response.data.status_message)
+          await Auth.signOut();
+          return
+        }
         // if (router.pathname === "/" || router.pathname === "/signin") return;
-        // router.push("/");
+        router.push("/");
+        setisFetch(true);
       }
     })();
   }, []);
-
-  const getLayout = () => {
-    switch (layout) {
-      case "SettingLayout":
-        return (
-          <SettingLayout
-            title={`Kanon Code | ${title}`}
-            currentUser={currentUser}
-          >
-            <CustomNprogress />
-            <Component
-              {...pageProps}
-              authUser={authUser}
-              currentUser={currentUser}
-            />
-          </SettingLayout>
-        );
-      case "Layout":
-        return (
-          <Layout title={`Kanon Code | ${title}`} currentUser={currentUser}>
-            <CustomNprogress />
-            <Component {...pageProps} currentUser={currentUser} />
-          </Layout>
-        );
-      default:
-        return (
-          <>
-            <CustomNprogress />
-            <Component
-              {...pageProps}
-              authUser={authUser}
-              currentUser={currentUser}
-            />
-          </>
-        );
-    }
-  };
 
   if (!isFetch) return <></>;
   return (
@@ -126,8 +87,14 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
             </Head>
             <CssBaseline />
             <StyledWrapper>
-              {/* <Component {...pageProps} authUser={authUser} /> */}
-              {getLayout()}
+              <>
+                <CustomNprogress />
+                <Component
+                  {...pageProps}
+                  authUser={authUser}
+                  currentUser={currentUser}
+                />
+              </>
             </StyledWrapper>
           </StyledComponentsThemeProvider>
         </MaterialUIThemeProvider>

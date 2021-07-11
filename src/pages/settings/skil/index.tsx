@@ -1,21 +1,18 @@
-import { CustomLoader } from "@/components/common/loader";
 import { ContentHeader } from "@/components/molecules/ContentHeader";
 import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
 import { ContentWrapper } from "@/components/organisms/ContentWrapper";
 import { NoSettingDataWrapper } from "@/components/organisms/NoSettingDataWrapper";
 import { YEARS_EXPERIENCES } from "@/consts/years-experiences";
-import { useUser } from "@/hooks/useUser";
 import { SettingLayout } from "@/layouts/setting/";
 import { UserProfileTypes, UserTypes } from "@/types/global";
-import React, { useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 import SkilSvg from "../../../assets/illustration/skil.svg";
 
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
 };
 
 const StyledPairSkilSvg = styled(SkilSvg)`
@@ -30,7 +27,6 @@ const StyledPairSkilSvg = styled(SkilSvg)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
-  const [userId] = useState(props.authUser.username);
   const makeInputState = (profile: UserProfileTypes): boolean => {
     const langList = profile.skils.map((el) => el.language);
     let isExistData = false;
@@ -43,8 +39,7 @@ const IndexPage: React.FC<Props> = (props) => {
     return isExistData;
   };
 
-  const { user, isLoading } = useUser(userId, props.currentUser);
-  const profile = user.user_profile;
+  const profile = props.currentUser.user_profile;
   const isInputeState = makeInputState(profile);
 
   return (
@@ -52,10 +47,6 @@ const IndexPage: React.FC<Props> = (props) => {
       title={`Kanon Code | スキル`}
       currentUser={props.currentUser}
     >
-      {isLoading ? (
-        <CustomLoader width={30} height={30} />
-      ) : (
-        <>
           <section>
             {isInputeState ? (
               <ContentWrapper>
@@ -92,8 +83,6 @@ const IndexPage: React.FC<Props> = (props) => {
               </NoSettingDataWrapper>
             )}
           </section>
-        </>
-      )}
     </SettingLayout>
   );
 };
