@@ -1,5 +1,6 @@
 import { CustomHeading2 } from '@/components/atoms/CustomHeading2'
 import { PROGRAMMING_ICONS } from '@/consts/programming-icons'
+import { Player } from "@lottiefiles/react-lottie-player"
 import Box from '@material-ui/core/Box'
 import Button from '@material-ui/core/Button'
 import Dialog from '@material-ui/core/Dialog'
@@ -28,6 +29,7 @@ type ProgrammingIcons = {
 }[]
 type Props = {
   title: string
+  isSuccessed: boolean
   isOpenDialog: boolean
   closeDialog: () => void
   targetLanguages: {
@@ -87,109 +89,145 @@ const StyledBoxInputWrapper = styled(Box)`
     width: 85%;
   }
 `
+const StyledBoxAbsolute = styled(Box)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+const StyledBoxMessageWrapper = styled(Box)`
+  text-align: center;
+  font-weight: bold;
+`;
 
 export const PostSettingDialog: React.FC<Props> = (props) => {
+  const SUCCESS_ANIMATION_SRC =
+  "https://assets7.lottiefiles.com/packages/lf20_yom6uvgj.json";
+
   return (
     <Dialog
       open={props.isOpenDialog}
       TransitionComponent={Transition}
       keepMounted
+      fullWidth
+      maxWidth={"sm"}
       onClose={props.closeDialog}
       aria-labelledby="alert-dialog-slide-title"
       aria-describedby="alert-dialog-slide-description"
     >
-      <StyledBoxWrapper>
-        <CustomHeading2 fontSize={20} marginBottom={0}>
-          {props.title}
-        </CustomHeading2>
-      </StyledBoxWrapper>
-      <Box>
-        <DialogContent>
-          <StyledTitle>Languages</StyledTitle>
-          <FormControl component="fieldset">
-            <RadioGroup
-              aria-label="targetLanguage"
-              name="targetLanguage"
-              value={props.targetLanguageValue}
-              onChange={props.selectTargetLanguage}
-            >
-              <StyledBoxFlex>
-                {props.targetLanguages.map((el) => (
-                  <FormControlLabel
-                    key={el.id}
-                    value={el.value}
-                    control={<Radio color="primary" />}
-                    label={el.text}
-                  />
-                ))}
-              </StyledBoxFlex>
-            </RadioGroup>
-          </FormControl>
-        </DialogContent>
-      </Box>
-      <Box>
-        <DialogContent>
-          <StyledTitle>Icon</StyledTitle>
-          <StyledBoxFlex>
-            <StyledBoxIconWrapper>
-              {props.programmingIcon.id !== 0 && (
-                <img
-                  width={50}
-                  height={50}
-                  src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.programmingIcon.iconPath}`}
-                />
-              )}
-            </StyledBoxIconWrapper>
-            <StyledBoxInputWrapper>
-              <Autocomplete
-                id="icon"
-                onChange={(event, value) =>
-                  props.selectProgrammingIcon(event, value)
-                }
-                options={PROGRAMMING_ICONS as ProgrammingIcons}
-                renderOption={(option) => (
-                  <React.Fragment>
-                    <Box display="flex" alignItems="center">
-                      <Box mr={1.5} height={25}>
-                        <img
-                          width={25}
-                          height={25}
-                          src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${option.iconPath}`}
-                        />
-                      </Box>
-                      <span>{option.value}</span>
-                    </Box>
-                  </React.Fragment>
-                )}
-                getOptionLabel={(option) => option.value}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    label="icon"
-                    margin="normal"
-                    variant="outlined"
-                  />
-                )}
+      {props.isSuccessed ? (
+        <Box height={344} position="relative">
+          <StyledBoxAbsolute>
+            <Box mb={1}>
+              <Player
+                autoplay
+                keepLastFrame
+                src={SUCCESS_ANIMATION_SRC}
+                controls={true}
+                style={{ height: "100px", width: "100px" }}
               />
-            </StyledBoxInputWrapper>
-          </StyledBoxFlex>
-        </DialogContent>
-      </Box>
-      <StyledBoxButtonsWrapper>
-        <Box mr={1} display="inline-block">
-          <Button onClick={props.closeDialog} color="primary">
-            キャンセル
-          </Button>
+            </Box>
+            <StyledBoxMessageWrapper>
+              <Box>レビューを投稿しました！</Box>
+            </StyledBoxMessageWrapper>
+          </StyledBoxAbsolute>
         </Box>
-        <Button
-          onClick={() => props.registerContent()}
-          variant="contained"
-          color="primary"
-          disableElevation
-        >
-          投稿
-        </Button>
-      </StyledBoxButtonsWrapper>
+      ): (
+        <>
+          <StyledBoxWrapper>
+            <CustomHeading2 fontSize={20} marginBottom={0}>
+              {props.title}
+            </CustomHeading2>
+          </StyledBoxWrapper>
+          <Box>
+            <DialogContent>
+              <StyledTitle>Languages</StyledTitle>
+              <FormControl component="fieldset">
+                <RadioGroup
+                  aria-label="targetLanguage"
+                  name="targetLanguage"
+                  value={props.targetLanguageValue}
+                  onChange={props.selectTargetLanguage}
+                >
+                  <StyledBoxFlex>
+                    {props.targetLanguages.map((el) => (
+                      <FormControlLabel
+                        key={el.id}
+                        value={el.value}
+                        control={<Radio color="primary" />}
+                        label={el.text}
+                      />
+                    ))}
+                  </StyledBoxFlex>
+                </RadioGroup>
+              </FormControl>
+            </DialogContent>
+          </Box>
+          <Box>
+            <DialogContent>
+              <StyledTitle>Icon</StyledTitle>
+              <StyledBoxFlex>
+                <StyledBoxIconWrapper>
+                  {props.programmingIcon.id !== 0 && (
+                    <img
+                      width={50}
+                      height={50}
+                      src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.programmingIcon.iconPath}`}
+                    />
+                  )}
+                </StyledBoxIconWrapper>
+                <StyledBoxInputWrapper>
+                  <Autocomplete
+                    id="icon"
+                    onChange={(event, value) =>
+                      props.selectProgrammingIcon(event, value)
+                    }
+                    options={PROGRAMMING_ICONS as ProgrammingIcons}
+                    renderOption={(option) => (
+                      <React.Fragment>
+                        <Box display="flex" alignItems="center">
+                          <Box mr={1.5} height={25}>
+                            <img
+                              width={25}
+                              height={25}
+                              src={`${process.env.NEXT_PUBLIC_BUCKET_URL}${option.iconPath}`}
+                            />
+                          </Box>
+                          <span>{option.value}</span>
+                        </Box>
+                      </React.Fragment>
+                    )}
+                    getOptionLabel={(option) => option.value}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="icon"
+                        margin="normal"
+                        variant="outlined"
+                      />
+                    )}
+                  />
+                </StyledBoxInputWrapper>
+              </StyledBoxFlex>
+            </DialogContent>
+          </Box>
+          <StyledBoxButtonsWrapper>
+            <Box mr={1} display="inline-block">
+              <Button onClick={props.closeDialog} color="primary">
+                キャンセル
+              </Button>
+            </Box>
+            <Button
+              onClick={() => props.registerContent()}
+              variant="contained"
+              color="primary"
+              disableElevation
+            >
+              投稿
+            </Button>
+          </StyledBoxButtonsWrapper>
+        </>
+      )}
     </Dialog>
   )
 }

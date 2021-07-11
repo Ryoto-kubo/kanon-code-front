@@ -45,7 +45,9 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         const currentSession = await Auth.currentSession();
         cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err: any, session: any) => {
           const error = new Error()
-          if(err) throw error
+          if (err) throw error
+          console.log(err);
+
           const payload = cognitoUser.signInUserSession.idToken.payload
           const { idToken } = session;
           setCookie(null, "idToken", idToken.jwtToken);

@@ -24,7 +24,7 @@ import { v4 as uuidv4 } from 'uuid'
 import './style.scss'
 
 type Props = {
-  title: string
+  authUser: any
   currentUser: null | UserTypes
 }
 type ProgrammingIcon = {
@@ -79,7 +79,7 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `
 
 const IndexPage: React.FC<Props> = (props) => {
-  const userId = props.currentUser!.user_id
+  if (!props.authUser) return <></>
   const userProfile = props.currentUser!.user_profile
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
@@ -88,6 +88,7 @@ const IndexPage: React.FC<Props> = (props) => {
     }
   }, [])
   const [title, setTitle] = useState('')
+  const [isSuccessed, setIsSuccessed] = useState(false)
   const [tagList, setTagList] = useState<string[]>([])
   const [description, setDescription] = useState('')
   const [sourceCode, setSourceCode] = useState('```\n\n```')
@@ -132,6 +133,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const [uuid] = useState(uuidv4())
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
+    console.log(isPosted, 'isPosted');
+    console.log(isValidExistData, 'isValidExistData');
     if (isValidExistData && !isPosted) {
       if (confirm('データが入力されています。保存せずに終了しますか？')) {
         history.back()
@@ -146,7 +149,7 @@ const IndexPage: React.FC<Props> = (props) => {
     // データが存在していて下書き保存されていなければ表示させる
     const isValidExistData = validExistData()
     execPreviousPageIfneeded(isValidExistData)
-  }, [title, tagList, description, inputFileNameLists])
+  }, [title, tagList, description, inputFileNameLists, isPosted])
   const closeSnackBar = () => {
     setCanPUblish({
       ...canPublish,
@@ -159,7 +162,6 @@ const IndexPage: React.FC<Props> = (props) => {
   const createParams = (key: string) => {
     return {
       uuid: uuid,
-      userId: userId,
       userProfile: userProfile,
       postType: key,
       contents: {
@@ -271,6 +273,7 @@ const IndexPage: React.FC<Props> = (props) => {
       const result = await postContent(params)
       if (result.status !== 200) throw err
       setIsPosted(true)
+      setIsSuccessed(true)
     } catch {
       console.error(err)
       alert(errorMessages.SYSTEM_ERROR)
@@ -595,6 +598,7 @@ const IndexPage: React.FC<Props> = (props) => {
       </StyledContainer>
       <PostSettingDialog
         title="PostSetting"
+        isSuccessed={isSuccessed}
         isOpenDialog={isOpenDialog}
         closeDialog={closeDialog}
         targetLanguages={targetLanguages}
