@@ -1,7 +1,11 @@
 import { SolidLink } from "@/components/atoms/SolidLink";
+import { CustomLoader } from "@/components/common/loader";
+import { NoticeReviewItem } from '@/components/molecules/NoticeReviewItem';
 import { NotificationsButton } from "@/components/molecules/NotificationsButton";
 import { SearchLink } from "@/components/molecules/SearchLink";
 import { UserImageButton } from "@/components/molecules/UserImageButton";
+import { getNotice } from '@/utils/api/get-notice';
+import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import Hidden from "@material-ui/core/Hidden";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
@@ -17,9 +21,9 @@ import { Auth } from "aws-amplify";
 // import Link from "next/link";
 import { useRouter } from "next/router";
 import { destroyCookie } from 'nookies';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-
+import { v4 as uuidv4 } from "uuid";
 
 interface Props {
   picture: string;
@@ -37,22 +41,45 @@ const StyledUseMr = styled.span`
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
 `;
-// const StyledAnchor = styled(ListItemIcon)`
-// display: flex;
-// text-decoration: none;
-// align-items: center;
-// }
-// `;
+const StyledBoxNoticeWrapper = styled(Box)`
+  position: relative;
+  width: 24px;
+`;
+const StyledMenu = styled(Menu)`
+  width: 320px;
+`;
 
 export const LoggedHeaderParts: React.FC<Props> = (props) => {
   const router = useRouter();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  const [anchorNoticeEl, setAnchorNoticeEl] = useState<null | HTMLElement>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [noteices, setNotices] = useState<any>(null)
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getNotice()
+        console.log(response, 'response');
+        setNotices(response.data.Items)
+        setIsLoading(true)
+      } catch (error) {
+        setIsLoading(true)
+      }
+    })()
+  },[])
   const open = Boolean(anchorEl);
+  const noticeOpen = Boolean(anchorNoticeEl)
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  const handleNotice = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorNoticeEl(event.currentTarget);
+  };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleCloseNotice = () => {
+    setAnchorNoticeEl(null);
   };
 
   const toPage = (path: string) => {
@@ -73,7 +100,51 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
         <SearchLink />
       </StyledUseMr>
       <StyledUseMr>
-        <NotificationsButton disableRipple={true} func={props.func} />
+        {isLoading ? (
+          <>
+            <NotificationsButton disableRipple={true} func={handleNotice} />
+            <StyledMenu
+              id="menu-appbar"
+              anchorEl={anchorNoticeEl}
+              getContentAnchorEl={null}
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={noticeOpen}
+              onClose={handleCloseNotice}
+            >
+              {noteices.map((el: any) => (
+                el.type === "review" && (
+                  <MenuItem key={uuidv4()}>
+                    <NoticeReviewItem
+                      title={el.title}
+                      reviewerName={el.user_profile.display_name}
+                      name={el.name}
+                      iconSrc={el.user_profile.icon_src}
+                      postId={el.partition_key}
+                      isRead={
+                        el.is_read
+                      }
+                      date={`${el.create_year}/${el.create_month}/${el.create_day}`}
+                      width={'35px'}
+                      height={'35px'}
+                    />
+                  </MenuItem>
+                )
+              ))}
+            </StyledMenu>
+          </>
+        ) : (
+          <StyledBoxNoticeWrapper>
+            <CustomLoader width={24} height={24} />
+          </StyledBoxNoticeWrapper>
+        )}
       </StyledUseMr>
       <Hidden xsDown>
         <StyledUseMr>
