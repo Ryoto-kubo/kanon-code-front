@@ -7,8 +7,7 @@ import styled from "styled-components";
 
 type Props = {
   title: string;
-  reviewerName: string;
-  name: string;
+  paymentedName: string;
   iconSrc: string;
   partitionKey: string;
   sortKey: string;
@@ -43,12 +42,11 @@ const StyledBoxDate = styled(Box)`
   font-size: 12px;
 `;
 
-export const NoticeReviewItem: React.FC<Props> = (props) => {
-  const postId = props.partitionKey.split("_")[1];
+export const NoticePaymentItem: React.FC<Props> = (props) => {
   return (
     <StyledWrapper>
       <CircleElement width={`${props.width}`} height={`${props.height}`}>
-        <Link href={`/${props.reviewerName}`} passHref>
+        <Link href={`/${props.paymentedName}`} passHref>
           <a>
             <img
               src={props.iconSrc}
@@ -63,14 +61,14 @@ export const NoticeReviewItem: React.FC<Props> = (props) => {
       </CircleElement>
       <StyledMessageWrapper>
         <Box>
-          <Link href={`/${props.reviewerName}`} passHref>
-            <StyledAnchor>{props.reviewerName}</StyledAnchor>
+          <Link href={`/${props.paymentedName}`} passHref>
+            <StyledAnchor>{props.paymentedName}</StyledAnchor>
           </Link>
-          さんが
-          <Link href={`/${props.name}/post/${postId}`} passHref>
+          さんがあなたのレビュー
+          <Link href="/dashboard/payments_history" passHref>
             <StyledAnchor>「{props.title}」</StyledAnchor>
           </Link>
-          にレビューしました。
+          を購入しました
         </Box>
         <StyledBoxDate>{props.date}</StyledBoxDate>
       </StyledMessageWrapper>

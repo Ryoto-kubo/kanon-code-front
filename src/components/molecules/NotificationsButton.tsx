@@ -10,7 +10,7 @@ interface Props {
 export const NotificationsButton: React.FC<Props> = (props) => {
   return (
     <CustomIconButton disableRipple={true} func={props.func}>
-      <NotificationsNoneIcon color="action" />
+      <NotificationsNoneIcon color="action" viewBox="0 0 24 24" />
     </CustomIconButton>
   );
 };

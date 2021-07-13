@@ -68,6 +68,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const status = reviewsResponse.data.status && creditResponse.data.status;
   const updateDisplay = (responseReview: ReviewTypes) => {
     // 投稿した直後は自身のものなので全文表示させる
+    console.log(responseReview, 'responseReview');
+
     responseReview.contents.review.display_body_html =
       responseReview.contents.review.body_html;
     const newReviews = reviews!.slice();
