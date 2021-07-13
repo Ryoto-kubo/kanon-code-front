@@ -1,16 +1,18 @@
 import { SolidLink } from "@/components/atoms/SolidLink";
 import { CustomLoader } from "@/components/common/loader";
+import { NoticePaymentItem } from '@/components/molecules/NoticePaymentItem';
 import { NoticeReviewItem } from '@/components/molecules/NoticeReviewItem';
 import { NotificationsButton } from "@/components/molecules/NotificationsButton";
 import { SearchLink } from "@/components/molecules/SearchLink";
 import { UserImageButton } from "@/components/molecules/UserImageButton";
+import { DropMenu } from '@/components/parts/dropMenu/';
 import { getNotice } from '@/utils/api/get-notice';
+import Badge from '@material-ui/core/Badge';
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
 import Hidden from "@material-ui/core/Hidden";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
-import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import CodeOutlinedIcon from "@material-ui/icons/CodeOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
@@ -23,8 +25,7 @@ import { useRouter } from "next/router";
 import { destroyCookie } from 'nookies';
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
-
+import { v4 as uuidv4 } from 'uuid';
 interface Props {
   picture: string;
   displayName: string;
@@ -45,9 +46,6 @@ const StyledBoxNoticeWrapper = styled(Box)`
   position: relative;
   width: 24px;
 `;
-const StyledMenu = styled(Menu)`
-  width: 320px;
-`;
 
 export const LoggedHeaderParts: React.FC<Props> = (props) => {
   const router = useRouter();
@@ -55,12 +53,13 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   const [anchorNoticeEl, setAnchorNoticeEl] = useState<null | HTMLElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [noteices, setNotices] = useState<any>(null)
+
   useEffect(() => {
     (async () => {
       try {
         const response = await getNotice()
         console.log(response, 'response');
-        setNotices(response.data.Items)
+        setNotices(response.data)
         setIsLoading(true)
       } catch (error) {
         setIsLoading(true)
@@ -102,43 +101,59 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
       <StyledUseMr>
         {isLoading ? (
           <>
-            <NotificationsButton disableRipple={true} func={handleNotice} />
-            <StyledMenu
-              id="menu-appbar"
-              anchorEl={anchorNoticeEl}
-              getContentAnchorEl={null}
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={noticeOpen}
-              onClose={handleCloseNotice}
-            >
-              {noteices.map((el: any) => (
-                el.type === "review" && (
-                  <MenuItem key={uuidv4()}>
-                    <NoticeReviewItem
-                      title={el.title}
-                      reviewerName={el.user_profile.display_name}
-                      name={el.name}
-                      iconSrc={el.user_profile.icon_src}
-                      postId={el.partition_key}
-                      isRead={
-                        el.is_read
-                      }
-                      date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                      width={'35px'}
-                      height={'35px'}
-                    />
-                  </MenuItem>
-                )
-              ))}
-            </StyledMenu>
+            {noteices.Items.length > 0 ? (
+              <>
+                <Badge badgeContent={noteices.count} color="secondary">
+                  <NotificationsButton disableRipple={true} func={handleNotice} />
+                </Badge>
+                <DropMenu
+                  anchorEl={anchorNoticeEl}
+                  isOpen={noticeOpen}
+                  onClose={handleCloseNotice}
+                >
+                  {noteices.Items.map((el: any) => (
+                    el.type === "review" ? (
+                      <MenuItem key={uuidv4()}>
+                        <NoticeReviewItem
+                          title={el.title}
+                          reviewerName={el.profile.display_name}
+                          name={el.my_display_name}
+                          iconSrc={el.profile.icon_src}
+                          partitionKey={el.partition_key}
+                          sortKey={el.sort_key}
+                          isRead={
+                            el.is_read
+                          }
+                          date={el.date}
+                          width={'35px'}
+                          height={'35px'}
+                        />
+                      </MenuItem>
+                    ) : (
+                      el.type === "payment" && (
+                        <MenuItem key={uuidv4()}>
+                          <NoticePaymentItem
+                            title={el.title}
+                            paymentedName={el.profile.display_name}
+                              iconSrc={el.profile.icon_src}
+                              partitionKey={el.partition_key}
+                              sortKey={el.sort_key}
+                            isRead={
+                              el.is_read
+                            }
+                            date={el.date}
+                            width={'35px'}
+                            height={'35px'}
+                          />
+                        </MenuItem>
+                      )
+                    )
+                  ))}
+                </DropMenu>
+              </>
+              ) : (
+                <NotificationsButton disableRipple={true} func={handleNotice} />
+              )}
           </>
         ) : (
           <StyledBoxNoticeWrapper>
@@ -159,20 +174,9 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           disableRipple={true}
           func={handleMenu}
         />
-        <Menu
-          id="menu-appbar"
+        <DropMenu
           anchorEl={anchorEl}
-          getContentAnchorEl={null}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          keepMounted
-          transformOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          open={open}
+          isOpen={open}
           onClose={handleClose}
         >
           <MenuItem onClick={() => toPage(`/${props.displayName}`)}>
@@ -207,7 +211,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
             </StyledListItemIcon>
             <ListItemText secondary="ログアウト" />
           </MenuItem>
-        </Menu>
+        </DropMenu>
       </StyledUseMr>
     </>
   );
