@@ -1,7 +1,9 @@
 import { CircleElement } from "@/components/atoms/Circle";
 import theme from "@/styles/theme";
+import { postNotices } from "@/utils/api/post-notices";
 import Box from "@material-ui/core/Box";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
 import styled from "styled-components";
 
@@ -42,9 +44,40 @@ const StyledMessageWrapper = styled(Box)`
 const StyledBoxDate = styled(Box)`
   font-size: 12px;
 `;
+const StyledButton = styled('button')`
+  outline: none;
+  border: none;
+  padding: 0;
+  background: transparent;
+  font-weight: bold;
+  &:hover{
+    text-decoration: underline;
+    cursor: pointer;
+  }
+`;
 
 export const NoticeReviewItem: React.FC<Props> = (props) => {
   const postId = props.partitionKey.split("_")[1];
+  const router = useRouter();
+
+  const movePage = async (
+    partitionKey: string,
+    sortKey: string,
+    isRead: boolean,
+    url: string
+  ) => {
+    const err = new Error();
+    if (isRead) {
+      router.push(url);
+      return;
+    }
+    try {
+      await postNotices({ partitionKey, sortKey });
+      router.push(url);
+    } catch {
+      console.error(err);
+    }
+  };
   return (
     <StyledWrapper>
       <CircleElement width={`${props.width}`} height={`${props.height}`}>
@@ -67,10 +100,14 @@ export const NoticeReviewItem: React.FC<Props> = (props) => {
             <StyledAnchor>{props.reviewerName}</StyledAnchor>
           </Link>
           さんが
-          <Link href={`/${props.name}/post/${postId}`} passHref>
+          <StyledButton onClick={() => movePage(props.partitionKey, props.sortKey, props.isRead, `/${props.name}/post/${postId}`)}>
+            「{props.title}
+          </StyledButton>
+          にレビューしました。
+          {/* <Link href={`/${props.name}/post/${postId}`} passHref>
             <StyledAnchor>「{props.title}」</StyledAnchor>
           </Link>
-          にレビューしました。
+          にレビューしました。 */}
         </Box>
         <StyledBoxDate>{props.date}</StyledBoxDate>
       </StyledMessageWrapper>
