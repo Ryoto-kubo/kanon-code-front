@@ -51,21 +51,6 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
         setAuthUser(payload);
         setCurrentUser(user);
         setisFetch(true);
-        // const currentSession = await Auth.currentSession();
-        // cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err: any, session: any) => {
-        //   const error = new Error()
-        //   if (err) throw error
-        //   const payload = cognitoUser.signInUserSession.idToken.payload
-        //   const { idToken } = session;
-        //   const response = await getUser()
-        //   const result = response.data;
-        //   if (!result.status) throw error
-        //   const user = result.Item as UserTypes
-        //   setAuthUser(payload);
-        //   setCurrentUser(user);
-        //   setisFetch(true);
-        //   setCookie(null, "idToken", idToken.jwtToken);
-        // });
       } catch (error) {
         console.log(error.response);
         if (error.response) {

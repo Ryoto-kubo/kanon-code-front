@@ -6,7 +6,7 @@ import { NotificationsButton } from "@/components/molecules/NotificationsButton"
 import { SearchLink } from "@/components/molecules/SearchLink";
 import { UserImageButton } from "@/components/molecules/UserImageButton";
 import { DropMenu } from '@/components/parts/dropMenu/';
-import { getNotice } from '@/utils/api/get-notice';
+import { getNotices } from '@/utils/api/get-notices';
 import Badge from '@material-ui/core/Badge';
 import Box from "@material-ui/core/Box";
 import Divider from "@material-ui/core/Divider";
@@ -26,6 +26,7 @@ import { destroyCookie } from 'nookies';
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { v4 as uuidv4 } from 'uuid';
+
 interface Props {
   picture: string;
   displayName: string;
@@ -57,15 +58,16 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   useEffect(() => {
     (async () => {
       try {
-        const response = await getNotice()
-        console.log(response, 'response');
+        const response = await getNotices()
         setNotices(response.data)
         setIsLoading(true)
       } catch (error) {
         setIsLoading(true)
       }
     })()
-  },[])
+  }, [])
+  console.log(noteices, 'noteices');
+
   const open = Boolean(anchorEl);
   const noticeOpen = Boolean(anchorNoticeEl)
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -80,7 +82,6 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   const handleCloseNotice = () => {
     setAnchorNoticeEl(null);
   };
-
   const toPage = (path: string) => {
     router.push(path);
   };
@@ -113,7 +114,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
                 >
                   {noteices.Items.map((el: any) => (
                     el.type === "review" ? (
-                      <MenuItem key={uuidv4()}>
+                      <MenuItem key={uuidv4()} className={el.is_read ? '' : 'non-read'}>
                         <NoticeReviewItem
                           title={el.title}
                           reviewerName={el.profile.display_name}
@@ -131,7 +132,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
                       </MenuItem>
                     ) : (
                       el.type === "payment" && (
-                        <MenuItem key={uuidv4()}>
+                        <MenuItem key={uuidv4()} className={el.is_read ? '' : 'non-read'}>
                           <NoticePaymentItem
                             title={el.title}
                             paymentedName={el.profile.display_name}

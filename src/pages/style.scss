@@ -41,7 +41,7 @@ pre {
   border-radius: 3px;
   padding: 16px;
   overflow-x: auto;
-  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
     monospace;
   code {
     color: #ffffff;
@@ -69,4 +69,8 @@ pre {
     height: 100%;
     max-height: 700px;
   }
+}
+
+.non-read {
+  background: rgba(92, 107, 192, 0.1);
 }

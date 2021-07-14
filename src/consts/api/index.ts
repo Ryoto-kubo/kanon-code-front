@@ -20,5 +20,5 @@ export const apis = {
   PAYMENT: "api/payment",
   REGISTER_CUSTOMER: "api/registerCustomer",
   REGISTER_PAYMENT: "api/registerPayment",
-  NOTICE: "api/notice",
+  NOTICES: "api/notices",
 };
