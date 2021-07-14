@@ -10,7 +10,7 @@ import { Auth } from "aws-amplify";
 import "modern-css-reset/dist/reset.min.css";
 import { AppProps } from "next/app";
 import Head from "next/head";
-import { destroyCookie, setCookie } from 'nookies';
+import { destroyCookie } from 'nookies';
 import "nprogress/nprogress.css"; // バーのデフォルトスタイルのインポート
 import React, { useEffect, useState } from "react";
 import { RecoilRoot } from "recoil";
@@ -41,24 +41,31 @@ const MyApp = ({ Component, pageProps, router }: AppProps): JSX.Element => {
     (async () => {
       console.log("_app.tsx async");
       try {
+        const err = new Error()
         const cognitoUser = await Auth.currentAuthenticatedUser();
-        const currentSession = await Auth.currentSession();
-        cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err: any, session: any) => {
-          const error = new Error()
-          if (err) throw error
-          console.log(err);
-
-          const payload = cognitoUser.signInUserSession.idToken.payload
-          const { idToken } = session;
-          setCookie(null, "idToken", idToken.jwtToken);
-          const response = await getUser()
-          const result = response.data;
-          if (!result.status) throw error
-          const user = result.Item as UserTypes
-          setAuthUser(payload);
-          setCurrentUser(user);
-          setisFetch(true);
-        });
+        const payload = cognitoUser.signInUserSession.idToken.payload
+        const response = await getUser()
+        const result = response.data;
+        if (!result.status) throw err
+        const user = result.Item as UserTypes
+        setAuthUser(payload);
+        setCurrentUser(user);
+        setisFetch(true);
+        // const currentSession = await Auth.currentSession();
+        // cognitoUser.refreshSession(currentSession.getRefreshToken(), async (err: any, session: any) => {
+        //   const error = new Error()
+        //   if (err) throw error
+        //   const payload = cognitoUser.signInUserSession.idToken.payload
+        //   const { idToken } = session;
+        //   const response = await getUser()
+        //   const result = response.data;
+        //   if (!result.status) throw error
+        //   const user = result.Item as UserTypes
+        //   setAuthUser(payload);
+        //   setCurrentUser(user);
+        //   setisFetch(true);
+        //   setCookie(null, "idToken", idToken.jwtToken);
+        // });
       } catch (error) {
         console.log(error.response);
         if (error.response) {
