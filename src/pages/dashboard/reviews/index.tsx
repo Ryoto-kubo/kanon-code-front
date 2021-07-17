@@ -20,7 +20,7 @@ const IndexPage: React.FC<Props> = (props) => {
   console.log(data, "data");
 
   const status = data?.data.status;
-  if (!status) {
+  if (status === false) {
     return (
       <LayoutDashboard
         title="Kanon Code | ダッシュボード:レビュー"
@@ -37,16 +37,16 @@ const IndexPage: React.FC<Props> = (props) => {
       title="Kanon Code | ダッシュボード:レビュー"
       currentUser={props.currentUser}
     >
-      {isValidating ? (
-        <CustomLoader width={30} height={30} />
-      ) : (
-        <Box width={"100%"}>
-          <CustomHeading2 fontSize={24} marginBottom={1}>
-            Reviews
-          </CustomHeading2>
+      <Box width={"100%"} position="relative" minHeight="300px">
+        <CustomHeading2 fontSize={24} marginBottom={1}>
+          Reviews
+        </CustomHeading2>
+        {isValidating ? (
+          <CustomLoader width={30} height={30} />
+        ) : (
           <MyReviews posts={posts} reviews={reviews} />
-        </Box>
-      )}
+        )}
+      </Box>
     </LayoutDashboard>
   );
 };
