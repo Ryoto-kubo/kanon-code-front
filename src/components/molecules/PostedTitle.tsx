@@ -40,7 +40,7 @@ export const PostedTitle: React.FC<Props> = (props) => {
         </Box>
         <Box>
           <Box>
-            <Link href={props.url} passHref>
+            <Link href={`/${props.url}`} passHref>
               <StyledAnchor>
                 <CustomHeading2
                   fontSize={props.fontSize}
