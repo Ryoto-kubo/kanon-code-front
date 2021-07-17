@@ -172,3 +172,23 @@ export type ErrorTypes = {
     [key: string]: any;
   };
 };
+
+export type PostsTypes = {
+  partition_key: string;
+  sort_key: string;
+  posted_contents: ContentTypes;
+  user_profile: UserProfileTypes;
+  post_status: number;
+  date: string;
+  payments: PaymentedTypes[];
+};
+
+export type PaymentedTypes = {
+  partition_key: string;
+  sort_key: string;
+  reviewed_contents: ReviewContentsTypes;
+  reviewer_user_profile: UserProfileTypes;
+  reviewer_user_id: string;
+  price: number;
+  date: string;
+};

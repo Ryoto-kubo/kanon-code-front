@@ -18,7 +18,7 @@ interface Props {
 const StyledPaper = styled(Paper)`
   height: 100%;
 `;
-const StyledMaxWidthdiv = styled(Box)`
+const StyledMaxWidth = styled(Box)`
   min-height: 175px;
   padding: 16px;
 `;
@@ -26,7 +26,7 @@ const StyledMaxWidthdiv = styled(Box)`
 export const Post: React.FC<Props> = (props) => {
   return (
     <StyledPaper>
-      <StyledMaxWidthdiv display="flex" alignItems="center">
+      <StyledMaxWidth display="flex" alignItems="center">
         <Box mr={2} flexShrink={0}>
           <img
             width={"50px"}
@@ -48,7 +48,7 @@ export const Post: React.FC<Props> = (props) => {
             height={"40px"}
           />
         </Box>
-      </StyledMaxWidthdiv>
+      </StyledMaxWidth>
     </StyledPaper>
   );
 };

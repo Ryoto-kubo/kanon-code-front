@@ -1,8 +1,8 @@
 import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
 import { ErrorView } from "@/components/common/error";
 import { CustomLoader } from "@/components/common/loader";
-import { Reviews } from "@/components/organisms/Reviews";
-import { useUserContents } from "@/hooks/useUserContents";
+import { MyReviews } from "@/components/organisms/MyReviews";
+import { useMyContents } from "@/hooks/useMyContents";
 import { LayoutDashboard } from "@/layouts/dashboard";
 import { UserTypes } from "@/types/global";
 import Box from "@material-ui/core/Box";
@@ -16,10 +16,11 @@ type Props = {
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser || !props.currentUser) return <></>;
-  const userName = props.currentUser.display_name;
-  const { data, isValidating } = useUserContents(userName);
+  const { data, isValidating } = useMyContents();
+  console.log(data, "data");
+
   const status = data?.data.status;
-  if (!status) {
+  if (!status && isValidating) {
     return (
       <LayoutDashboard
         title="Kanon Code | ダッシュボード:レビュー"
@@ -30,6 +31,7 @@ const IndexPage: React.FC<Props> = (props) => {
     );
   }
   const posts = data?.data.posts;
+  const reviews = data?.data.reviews;
   return (
     <LayoutDashboard
       title="Kanon Code | ダッシュボード:レビュー"
@@ -42,7 +44,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <CustomHeading2 fontSize={24} marginBottom={1}>
             Reviews
           </CustomHeading2>
-          <Reviews user={props.authUser} posts={posts} isMe={true} />
+          <MyReviews posts={posts} reviews={reviews} />
         </Box>
       )}
     </LayoutDashboard>
