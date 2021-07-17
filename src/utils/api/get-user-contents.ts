@@ -1,14 +1,14 @@
-import { apis } from '@/consts/api/'
-import { UserContentsTypes } from '@/types/api/get-user-contents'
-import { axios } from '@/utils/axios'
-import { AxiosResponse } from 'axios'
+import { apis } from "@/consts/api/";
+import { UserContentsTypes } from "@/types/api/get-user-contents";
+import { axios } from "@/utils/axios";
+import { AxiosResponse } from "axios";
 
 type ParamsType = {
-  userName: string
-}
+  userName: string;
+};
 
 export const getUserContents = async (
-  params: ParamsType,
+  params: ParamsType
 ): Promise<AxiosResponse<UserContentsTypes>> => {
-  return await axios.get(apis.USERS_CONTENTS, { params })
-}
+  return await axios.get(apis.USER_CONTENTS, { params });
+};

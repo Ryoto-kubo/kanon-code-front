@@ -1,7 +1,6 @@
 import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
 import LocalLibraryOutlinedIcon from '@material-ui/icons/LocalLibraryOutlined'
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined'
-import RateReviewOutlinedIcon from '@material-ui/icons/RateReviewOutlined'
 import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
 
 export const menus = [
@@ -10,11 +9,11 @@ export const menus = [
     icon: <CreateOutlinedIcon />,
     href: '/dashboard/reviews',
   },
-  {
-    name: 'Review request',
-    icon: <RateReviewOutlinedIcon />,
-    href: '/dashboard/review_requests',
-  },
+  // {
+  //   name: 'Review request',
+  //   icon: <RateReviewOutlinedIcon />,
+  //   href: '/dashboard/review_requests',
+  // },
   {
     name: 'Payments',
     icon: <ShoppingCartOutlinedIcon />,
@@ -26,9 +25,9 @@ export const menus = [
     href: '/dashboard/library',
   },
   {
-    name: 'Salse',
+    name: 'Sales',
     icon: <MonetizationOnOutlinedIcon />,
-    href: '/dashboard/salse',
+    href: '/dashboard/sales',
   },
   // {
   //   name: 'Github',

@@ -126,6 +126,7 @@ const Wrapper: React.FC<Props> = ({
       reviewerId,
       postId,
       profile,
+      price,
     };
   };
   const payment = async () => {

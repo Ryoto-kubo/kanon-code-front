@@ -10,6 +10,7 @@ type ParamsType = {
   reviewerId: string;
   postId: string;
   profile: UserProfileTypes;
+  price: number;
 };
 
 type CustomResponseTypes = SuccessTypes & {
