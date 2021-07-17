@@ -53,7 +53,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [anchorNoticeEl, setAnchorNoticeEl] = useState<null | HTMLElement>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [noteices, setNotices] = useState<any>(null)
+  const [notices, setNotices] = useState<any>(null)
 
   useEffect(() => {
     (async () => {
@@ -66,8 +66,6 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
       }
     })()
   }, [])
-  console.log(noteices, 'noteices');
-
   const open = Boolean(anchorEl);
   const noticeOpen = Boolean(anchorNoticeEl)
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -102,9 +100,9 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
       <StyledUseMr>
         {isLoading ? (
           <>
-            {noteices.Items.length > 0 ? (
+            {notices.Items.length > 0 ? (
               <>
-                <Badge badgeContent={noteices.count} color="secondary">
+                <Badge badgeContent={notices.count} color="secondary">
                   <NotificationsButton disableRipple={true} func={handleNotice} />
                 </Badge>
                 <DropMenu
@@ -112,7 +110,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
                   isOpen={noticeOpen}
                   onClose={handleCloseNotice}
                 >
-                  {noteices.Items.map((el: any) => (
+                  {notices.Items.map((el: any) => (
                     el.type === "review" ? (
                       <MenuItem key={uuidv4()} className={el.is_read ? '' : 'non-read'}>
                         <NoticeReviewItem
