@@ -176,35 +176,58 @@ export const MyReviews: React.FC<Props> = (props) => {
             ) : (
                 props.posts.map((post: PostsTypes) => (
                   <StyledBoxPaymentWrapper key={uuidv4()}>
-                    <Box mb={1}>
-                      <PostedTitle
-                        imgWidth="40px"
-                        imgHeight="40px"
-                        iconSrc={post.posted_contents.target_icon.icon_path}
-                        url={makePostUrl(post.user_profile, post.sort_key)}
-                        title={post.posted_contents.title}
-                        fontSize={16}
-                        marginBottom={0}
-                        tagList={post.posted_contents.tag_list}
-                      />
-                    </Box>
-                    <Grid spacing={3} container>
-                    {post.payments.map((payment: PaymentedTypes) =>
-                      <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                      <PaymentedReview
-                      key={uuidv4()}
-                            reviwerName={payment.reviewer_user_profile.display_name}
-                            date={payment.date}
-                            userIcon={payment.reviewer_user_profile.icon_src}
-                          price={payment.price}
-                          title={payment.reviewed_contents.review.title}
+                    {post.payments.length > 0 ? (
+                      <>
+                      <Box mb={1}>
+                        <PostedTitle
+                          imgWidth="40px"
+                          imgHeight="40px"
+                          iconSrc={post.posted_contents.target_icon.icon_path}
+                          url={makePostUrl(post.user_profile, post.sort_key)}
+                          title={post.posted_contents.title}
                           fontSize={16}
                           marginBottom={0}
-
+                          tagList={post.posted_contents.tag_list}
                         />
-                        </Grid>
-                      )}
+                      </Box>
+                      <Grid spacing={3} container>
+                        {
+                          post.payments.map((payment: PaymentedTypes) =>
+                            <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                              <PaymentedReview
+                                key={uuidv4()}
+                                reviwerName={payment.reviewer_user_profile.display_name}
+                                date={payment.date}
+                                userIcon={payment.reviewer_user_profile.icon_src}
+                                price={payment.price}
+                                title={payment.reviewed_contents.review.title}
+                                fontSize={16}
+                                marginBottom={0}
+                              />
+                            </Grid>
+                          )
+                        }
                       </Grid>
+                    </>
+                  ) : (
+                    <>
+                      <Box mb={1}>
+                        <PostedTitle
+                          imgWidth="40px"
+                          imgHeight="40px"
+                          iconSrc={post.posted_contents.target_icon.icon_path}
+                          url={makePostUrl(post.user_profile, post.sort_key)}
+                          title={post.posted_contents.title}
+                          fontSize={16}
+                          marginBottom={0}
+                          tagList={post.posted_contents.tag_list}
+                        />
+                      </Box>
+                      <p>
+                        まだレビューを購入していません。
+                      </p>
+                    </>
+                  )}
                 </StyledBoxPaymentWrapper>
               ))
             )}
