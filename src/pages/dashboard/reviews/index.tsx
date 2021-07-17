@@ -20,7 +20,7 @@ const IndexPage: React.FC<Props> = (props) => {
   console.log(data, "data");
 
   const status = data?.data.status;
-  if (!status && isValidating) {
+  if (!status) {
     return (
       <LayoutDashboard
         title="Kanon Code | ダッシュボード:レビュー"
