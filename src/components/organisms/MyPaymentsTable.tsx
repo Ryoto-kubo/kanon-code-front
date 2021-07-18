@@ -30,24 +30,24 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
     <>
       {props.posts.map((postItem: PostsTypes) => (
         <Box key={uuidv4()}>
-          <Box mb={1}>
-            <Paper>
-              <Box p={1}>
-                <PostedTitle
-                  imgWidth="40px"
-                  imgHeight="40px"
-                  iconSrc={postItem.posted_contents.target_icon.icon_path}
-                  url={makePostUrl(postItem.user_profile, postItem.sort_key)}
-                  title={postItem.posted_contents.title}
-                  fontSize={16}
-                  marginBottom={0}
-                  tagList={postItem.posted_contents.tag_list}
-                />
-              </Box>
-            </Paper>
-          </Box>
+          <Paper>
+            <Box p={1}>
+              <PostedTitle
+                imgWidth="40px"
+                imgHeight="40px"
+                iconSrc={postItem.posted_contents.target_icon.icon_path}
+                url={makePostUrl(postItem.user_profile, postItem.sort_key)}
+                title={postItem.posted_contents.title}
+                fontSize={16}
+                marginBottom={0}
+                tagList={postItem.posted_contents.tag_list}
+              />
+            </Box>
+          </Paper>
           {postItem.payments.length <= 0 ? (
-            <p>まだレビューを購入していません</p>
+            <Box mt={1}>
+              <p>まだレビューを購入していません</p>
+            </Box>
           ) : (
             <TableContainer>
               <Table>
