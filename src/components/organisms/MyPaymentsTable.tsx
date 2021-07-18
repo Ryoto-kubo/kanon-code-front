@@ -30,41 +30,49 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
     <>
       {props.posts.map((postItem: PostsTypes) => (
         <Box key={uuidv4()}>
-          <Box mb={0.5}>
-            <Paper>
-              <Box p={1}>
-                <PostedTitle
-                  imgWidth="40px"
-                  imgHeight="40px"
-                  iconSrc={postItem.posted_contents.target_icon.icon_path}
-                  url={makePostUrl(postItem.user_profile, postItem.sort_key)}
-                  title={postItem.posted_contents.title}
-                  fontSize={16}
-                  marginBottom={0}
-                  tagList={postItem.posted_contents.tag_list}
-                />
-              </Box>
-            </Paper>
-          </Box>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">値段</TableCell>
-                  <TableCell align="left" style={{ minWidth: 150 }}>
-                    レビュータイトル
-                  </TableCell>
-                  <TableCell align="left">レビュワー</TableCell>
-                  <TableCell align="left">購入日</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {postItem.payments.length <= 0 ? (
-                  <p>まだレビューを購入していません</p>
-                ) : (
-                  postItem.payments.map((paymentItem) => (
+          <Paper>
+            <Box p={1}>
+              <PostedTitle
+                imgWidth="40px"
+                imgHeight="40px"
+                iconSrc={postItem.posted_contents.target_icon.icon_path}
+                url={makePostUrl(postItem.user_profile, postItem.sort_key)}
+                title={postItem.posted_contents.title}
+                fontSize={16}
+                marginBottom={0}
+                tagList={postItem.posted_contents.tag_list}
+              />
+            </Box>
+          </Paper>
+          {postItem.payments.length <= 0 ? (
+            <Box mt={1}>
+              <p>まだレビューを購入していません</p>
+            </Box>
+          ) : (
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      align="left"
+                      style={{ width: 100, maxWidth: 100 }}
+                    >
+                      値段
+                    </TableCell>
+                    <TableCell align="left" style={{ minWidth: 150 }}>
+                      レビュータイトル
+                    </TableCell>
+                    <TableCell align="left">レビュワー</TableCell>
+                    <TableCell align="left">購入日</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {postItem.payments.map((paymentItem) => (
                     <TableRow key={uuidv4()}>
-                      <TableCell align="left">
+                      <TableCell
+                        align="left"
+                        style={{ width: 100, maxWidth: 100 }}
+                      >
                         <Price
                           color={"#EC576B"}
                           text={`¥${paymentItem.price}`}
@@ -100,11 +108,11 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                       </TableCell>
                       <TableCell align="left">{postItem.date}</TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </Box>
       ))}
     </>
