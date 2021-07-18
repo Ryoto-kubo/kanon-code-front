@@ -179,7 +179,11 @@ export type PostsTypes = {
   posted_contents: ContentTypes;
   user_profile: UserProfileTypes;
   post_status: number;
+  url: string;
   date: string;
+};
+
+export type PostsTypesInPayments = PostsTypes & {
   payments: PaymentedTypes[];
 };
 
@@ -198,5 +202,6 @@ export type ReviewsTypes = {
   sort_key: string;
   posted_user_profile: UserProfileTypes;
   posted_contents: ContentTypes;
+  url: string;
   date: string;
 };

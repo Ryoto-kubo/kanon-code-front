@@ -20,5 +20,6 @@ export const useMyContents = () => {
     revalidateOnFocus: false,
     focusThrottleInterval: 5000,
   });
+
   return { data, isValidating };
 };
