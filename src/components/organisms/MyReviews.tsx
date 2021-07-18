@@ -1,13 +1,9 @@
 import { SolidLink } from "@/components/atoms/SolidLink";
-// import { PaymentedReview } from '@/components/molecules/PaymentedReview';
-// import { PostedTitle } from '@/components/molecules/PostedTitle';
 import { Post } from "@/components/organisms/Post";
 import { NonArticleIllustration } from "@/components/parts/illustrations/non-article";
-// import { NonPaymentIllustration } from "@/components/parts/illustrations/non-payment";
 import { NonWorkingIllustration } from "@/components/parts/illustrations/non-working";
 import { PostsTypes, ReviewsTypes } from "@/types/global";
 import Box from "@material-ui/core/Box";
-// import { PaymentedTypes, PostsTypes } from "@/types/global";
 import Grid from "@material-ui/core/Grid";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
@@ -31,10 +27,6 @@ const StyledTab = styled(Tab)`
     color: #202020;
   }
 `;
-// const StyledBoxPaymentWrapper = styled(Box)`
-//   padding: 12px;
-//   width: 100%;
-// `
 
 const TabPanel = (props: {
   value: number;
@@ -54,11 +46,7 @@ const TabPanel = (props: {
     </div>
   );
 };
-const makePostUrl = (profile: any, postId: string) => {
-  const displayName = profile.display_name;
-  const splitedPostId = postId.split("_").pop();
-  return `${displayName}/post/${splitedPostId}`;
-};
+
 const splitPostsByPostStatus = (posts: PostsTypes[]) => {
   let acceptPosts = [];
   let reviewedPosts = [];
@@ -123,7 +111,7 @@ export const MyReviews: React.FC<Props> = (props) => {
                 <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                   <Post
                     title={post.posted_contents.title}
-                    postUrl={makePostUrl(post.user_profile, post.sort_key)}
+                    postUrl={post.url}
                     iconPath={post.posted_contents.target_icon.icon_path}
                     name={post.user_profile.display_name}
                     date={post.date}
@@ -151,10 +139,7 @@ export const MyReviews: React.FC<Props> = (props) => {
                   <Post
                     key={uuidv4()}
                     title={review.posted_contents.title}
-                    postUrl={makePostUrl(
-                      review.posted_user_profile,
-                      review.partition_key
-                    )}
+                    postUrl={review.url}
                     iconPath={review.posted_contents.target_icon.icon_path}
                     name={review.posted_user_profile.display_name}
                     date={review.date}
@@ -167,73 +152,6 @@ export const MyReviews: React.FC<Props> = (props) => {
           </Grid>
         </Box>
       </TabPanel>
-      {/* <TabPanel value={value} index={2}>
-        <Box mb={4}>
-          <Grid spacing={3} container>
-            {props.posts.length === 0 ? (
-              <NonPaymentIllustration marginBottom={2}>
-              </NonPaymentIllustration>
-            ) : (
-                props.posts.map((post: PostsTypes) => (
-                  <StyledBoxPaymentWrapper key={uuidv4()}>
-                    {post.payments.length > 0 ? (
-                      <>
-                      <Box mb={1}>
-                        <PostedTitle
-                          imgWidth="40px"
-                          imgHeight="40px"
-                          iconSrc={post.posted_contents.target_icon.icon_path}
-                          url={makePostUrl(post.user_profile, post.sort_key)}
-                          title={post.posted_contents.title}
-                          fontSize={16}
-                          marginBottom={0}
-                          tagList={post.posted_contents.tag_list}
-                        />
-                      </Box>
-                      <Grid spacing={3} container>
-                        {
-                          post.payments.map((payment: PaymentedTypes) =>
-                            <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                              <PaymentedReview
-                                key={uuidv4()}
-                                reviwerName={payment.reviewer_user_profile.display_name}
-                                date={payment.date}
-                                userIcon={payment.reviewer_user_profile.icon_src}
-                                price={payment.price}
-                                title={payment.reviewed_contents.review.title}
-                                fontSize={16}
-                                marginBottom={0}
-                              />
-                            </Grid>
-                          )
-                        }
-                      </Grid>
-                    </>
-                  ) : (
-                    <>
-                      <Box mb={1}>
-                        <PostedTitle
-                          imgWidth="40px"
-                          imgHeight="40px"
-                          iconSrc={post.posted_contents.target_icon.icon_path}
-                          url={makePostUrl(post.user_profile, post.sort_key)}
-                          title={post.posted_contents.title}
-                          fontSize={16}
-                          marginBottom={0}
-                          tagList={post.posted_contents.tag_list}
-                        />
-                      </Box>
-                      <p>
-                        まだレビューを購入していません。
-                      </p>
-                    </>
-                  )}
-                </StyledBoxPaymentWrapper>
-              ))
-            )}
-          </Grid>
-        </Box>
-      </TabPanel> */}
     </>
   );
 };

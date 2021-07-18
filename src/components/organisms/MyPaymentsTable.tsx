@@ -1,8 +1,15 @@
 import { CircleElement } from "@/components/atoms/Circle";
 import { Price } from "@/components/atoms/Price";
 import { PostedTitle } from "@/components/molecules/PostedTitle";
-import { PostsTypes } from "@/types/global";
+import { ReviewContentsDialog } from "@/components/parts/reviewContentsDialog";
+import {
+  PaymentedTypes,
+  PostsTypesInPayments,
+  ReviewContentsTypes,
+  UserProfileTypes,
+} from "@/types/global";
 import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
@@ -11,24 +18,77 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 
 type Props = {
-  posts: PostsTypes[];
+  posts: PostsTypesInPayments[];
   imgWidth: string;
   imgHeight: string;
 };
-const makePostUrl = (profile: any, postId: string) => {
-  const displayName = profile.display_name;
-  const splitedPostId = postId.split("_").pop();
-  return `${displayName}/post/${splitedPostId}`;
+
+const createContents = () => {
+  return {
+    review: {
+      title: "",
+      value: "",
+      body_html: "",
+      display_body_html: "",
+    },
+  };
+};
+const createProfile = () => {
+  return {
+    display_name: "",
+    github_name: "",
+    icon_src: "",
+    introduction: "",
+    position_type: 0,
+    price: 0,
+    skils: [
+      {
+        language: "",
+        years_experiences: 0,
+      },
+    ],
+    twitter_name: "",
+    web_site: "",
+  };
 };
 
 export const MyPaymentsTable: React.FC<Props> = (props) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [review, setReview] = useState<{
+    contents: ReviewContentsTypes;
+    profile: UserProfileTypes;
+    date: string;
+  }>({
+    contents: createContents(),
+    profile: createProfile(),
+    date: "",
+  });
+
+  const showContentsDialog = (
+    contents: ReviewContentsTypes,
+    profile: UserProfileTypes,
+    date: string
+  ) => {
+    setIsOpen(true);
+    setReview({
+      ...review,
+      contents: contents,
+      profile: profile,
+      date: date,
+    });
+  };
+
+  const closeDialog = () => {
+    setIsOpen(false);
+  };
+
   return (
     <>
-      {props.posts.map((postItem: PostsTypes) => (
+      {props.posts.map((postItem: PostsTypesInPayments) => (
         <Box key={uuidv4()}>
           <Paper>
             <Box p={1}>
@@ -36,7 +96,7 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                 imgWidth="40px"
                 imgHeight="40px"
                 iconSrc={postItem.posted_contents.target_icon.icon_path}
-                url={makePostUrl(postItem.user_profile, postItem.sort_key)}
+                url={postItem.url}
                 title={postItem.posted_contents.title}
                 fontSize={16}
                 marginBottom={0}
@@ -67,7 +127,7 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {postItem.payments.map((paymentItem) => (
+                  {postItem.payments.map((paymentItem: PaymentedTypes) => (
                     <TableRow key={uuidv4()}>
                       <TableCell
                         align="left"
@@ -82,7 +142,17 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                         align="left"
                         style={{ wordBreak: "break-word", minWidth: 150 }}
                       >
-                        {paymentItem.reviewed_contents.review.title}
+                        <Button
+                          onClick={() =>
+                            showContentsDialog(
+                              paymentItem.reviewed_contents,
+                              paymentItem.reviewer_user_profile,
+                              paymentItem.date
+                            )
+                          }
+                        >
+                          {paymentItem.reviewed_contents.review.title}
+                        </Button>
                       </TableCell>
                       <TableCell align="left">
                         <CircleElement
@@ -115,6 +185,13 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
           )}
         </Box>
       ))}
+      <ReviewContentsDialog
+        contents={review.contents}
+        profile={review.profile}
+        date={review.date}
+        isOpen={isOpen}
+        closeDialog={closeDialog}
+      />
     </>
   );
 };
