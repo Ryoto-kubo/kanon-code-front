@@ -30,7 +30,7 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
     <>
       {props.posts.map((postItem: PostsTypes) => (
         <Box key={uuidv4()}>
-          <Box mb={0.5}>
+          <Box mb={1}>
             <Paper>
               <Box p={1}>
                 <PostedTitle
