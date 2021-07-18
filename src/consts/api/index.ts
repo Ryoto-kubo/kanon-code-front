@@ -6,6 +6,7 @@ export const apis = {
   USER_CONTENTS: "/api/userContents",
   MY_CONTENTS: "/api/myContents",
   MY_PAYMENTS: "/api/myPayments",
+  MY_BOOKMARKS: "/api/myBookmarks",
   CONTENTS: "/api/contents",
   CONTENT: "/api/content",
   PAGES_URL: "/api/pagesUrl",
