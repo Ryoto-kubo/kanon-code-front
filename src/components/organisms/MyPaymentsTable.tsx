@@ -53,7 +53,12 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell align="left">値段</TableCell>
+                    <TableCell
+                      align="left"
+                      style={{ width: 100, maxWidth: 100 }}
+                    >
+                      値段
+                    </TableCell>
                     <TableCell align="left" style={{ minWidth: 150 }}>
                       レビュータイトル
                     </TableCell>
@@ -64,7 +69,10 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                 <TableBody>
                   {postItem.payments.map((paymentItem) => (
                     <TableRow key={uuidv4()}>
-                      <TableCell align="left">
+                      <TableCell
+                        align="left"
+                        style={{ width: 100, maxWidth: 100 }}
+                      >
                         <Price
                           color={"#EC576B"}
                           text={`¥${paymentItem.price}`}
