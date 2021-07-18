@@ -192,3 +192,11 @@ export type PaymentedTypes = {
   price: number;
   date: string;
 };
+
+export type ReviewsTypes = {
+  partition_key: string;
+  sort_key: string;
+  posted_user_profile: UserProfileTypes;
+  posted_contents: ContentTypes;
+  date: string;
+};

@@ -9,7 +9,6 @@ import Box from "@material-ui/core/Box";
 import React from "react";
 
 type Props = {
-  title: string;
   authUser: any;
   currentUser: UserTypes | null;
 };
@@ -17,8 +16,6 @@ type Props = {
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser || !props.currentUser) return <></>;
   const { data, isValidating } = useMyContents();
-  console.log(data, "data");
-
   const status = data?.data.status;
   if (status === false) {
     return (
