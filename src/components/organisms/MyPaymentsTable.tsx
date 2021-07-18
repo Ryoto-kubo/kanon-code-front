@@ -2,12 +2,7 @@ import { CircleElement } from "@/components/atoms/Circle";
 import { Price } from "@/components/atoms/Price";
 import { PostedTitle } from "@/components/molecules/PostedTitle";
 import { ReviewContentsDialog } from "@/components/parts/reviewContentsDialog";
-import {
-  PaymentedTypes,
-  PostsTypesInPayments,
-  ReviewContentsTypes,
-  UserProfileTypes,
-} from "@/types/global";
+import { PaymentedTypes, PostsTypesInPayments, ReviewContentsTypes, UserProfileTypes } from "@/types/global";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Paper from "@material-ui/core/Paper";
@@ -15,7 +10,7 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
+// import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Link from "next/link";
 import React, { useState } from "react";
@@ -89,8 +84,8 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
   return (
     <>
       {props.posts.map((postItem: PostsTypesInPayments) => (
-        <Box key={uuidv4()}>
-          <Paper>
+        <Box key={uuidv4()} mb={5}>
+          <Paper elevation={1}>
             <Box p={1}>
               <PostedTitle
                 imgWidth="40px"
@@ -111,7 +106,7 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
           ) : (
             <TableContainer>
               <Table>
-                <TableHead>
+                {/* <TableHead>
                   <TableRow>
                     <TableCell
                       align="left"
@@ -125,7 +120,7 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                     <TableCell align="left">レビュワー</TableCell>
                     <TableCell align="left">購入日</TableCell>
                   </TableRow>
-                </TableHead>
+                </TableHead> */}
                 <TableBody>
                   {postItem.payments.map((paymentItem: PaymentedTypes) => (
                     <TableRow key={uuidv4()}>
@@ -140,7 +135,7 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                       </TableCell>
                       <TableCell
                         align="left"
-                        style={{ wordBreak: "break-word", minWidth: 150 }}
+                        style={{ wordBreak: "break-word",width: 450, minWidth: 150, maxWidth: 450 }}
                       >
                         <Button
                           onClick={() =>
