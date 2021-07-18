@@ -1,12 +1,13 @@
 import { SolidLink } from "@/components/atoms/SolidLink";
-import { PaymentedReview } from '@/components/molecules/PaymentedReview';
-import { PostedTitle } from '@/components/molecules/PostedTitle';
+// import { PaymentedReview } from '@/components/molecules/PaymentedReview';
+// import { PostedTitle } from '@/components/molecules/PostedTitle';
 import { Post } from "@/components/organisms/Post";
 import { NonArticleIllustration } from "@/components/parts/illustrations/non-article";
-import { NonPaymentIllustration } from "@/components/parts/illustrations/non-payment";
+// import { NonPaymentIllustration } from "@/components/parts/illustrations/non-payment";
 import { NonWorkingIllustration } from "@/components/parts/illustrations/non-working";
-import { PaymentedTypes, PostsTypes } from "@/types/global";
+import { PostsTypes, ReviewsTypes } from "@/types/global";
 import Box from "@material-ui/core/Box";
+// import { PaymentedTypes, PostsTypes } from "@/types/global";
 import Grid from "@material-ui/core/Grid";
 import Tab from "@material-ui/core/Tab";
 import Tabs from "@material-ui/core/Tabs";
@@ -15,7 +16,7 @@ import styled from "styled-components";
 import { v4 as uuidv4 } from "uuid";
 type Props = {
   posts: PostsTypes[];
-  reviews: any[];
+  reviews: ReviewsTypes[];
 };
 
 const StyledTabs = styled(Tabs)`
@@ -30,10 +31,10 @@ const StyledTab = styled(Tab)`
     color: #202020;
   }
 `;
-const StyledBoxPaymentWrapper = styled(Box)`
-  padding: 12px;
-  width: 100%;
-`
+// const StyledBoxPaymentWrapper = styled(Box)`
+//   padding: 12px;
+//   width: 100%;
+// `
 
 const TabPanel = (props: {
   value: number;
@@ -105,7 +106,7 @@ export const MyReviews: React.FC<Props> = (props) => {
         >
           <StyledTab label="レビュー依頼中" disableRipple={true} />
           <StyledTab label="レビューをした投稿" disableRipple={true} />
-          <StyledTab label="開封したレビュー" disableRipple={true} />
+          {/* <StyledTab label="開封したレビュー" disableRipple={true} /> */}
         </StyledTabs>
       </Box>
       <TabPanel value={value} index={0}>
@@ -146,9 +147,9 @@ export const MyReviews: React.FC<Props> = (props) => {
               </NonArticleIllustration>
             ) : (
               <Grid item xs={12} sm={6} md={6} lg={4} >
-              {props.reviews.map((review: any) => (
-                <Post
-                key={uuidv4()}
+                {props.reviews.map((review: ReviewsTypes) => (
+                  <Post
+                    key={uuidv4()}
                     title={review.posted_contents.title}
                     postUrl={makePostUrl(
                       review.posted_user_profile,
@@ -156,22 +157,21 @@ export const MyReviews: React.FC<Props> = (props) => {
                     )}
                     iconPath={review.posted_contents.target_icon.icon_path}
                     name={review.posted_user_profile.display_name}
-                    date={`${review.create_year}/${review.create_month}/${review.create_day}`}
+                    date={review.date}
                     tagArray={review.posted_contents.tag_list}
                     userIcon={review.posted_user_profile.icon_src}
                   />
-              ))}
-                </Grid>
+                ))}
+              </Grid>
             )}
           </Grid>
         </Box>
       </TabPanel>
-      <TabPanel value={value} index={2}>
+      {/* <TabPanel value={value} index={2}>
         <Box mb={4}>
           <Grid spacing={3} container>
             {props.posts.length === 0 ? (
               <NonPaymentIllustration marginBottom={2}>
-                {/*  */}
               </NonPaymentIllustration>
             ) : (
                 props.posts.map((post: PostsTypes) => (
@@ -233,7 +233,7 @@ export const MyReviews: React.FC<Props> = (props) => {
             )}
           </Grid>
         </Box>
-      </TabPanel>
+      </TabPanel> */}
     </>
   );
 };
