@@ -20,9 +20,9 @@ export const menus = [
     href: '/dashboard/payments_history',
   },
   {
-    name: 'Library',
+    name: 'Bookmarks',
     icon: <LocalLibraryOutlinedIcon />,
-    href: '/dashboard/library',
+    href: '/dashboard/bookmarks',
   },
   {
     name: 'Sales',

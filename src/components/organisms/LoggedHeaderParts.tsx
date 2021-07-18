@@ -16,6 +16,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import MenuItem from "@material-ui/core/MenuItem";
 import CodeOutlinedIcon from "@material-ui/icons/CodeOutlined";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import LocalLibraryOutlinedIcon from '@material-ui/icons/LocalLibraryOutlined';
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import SpeedOutlinedIcon from "@material-ui/icons/SpeedOutlined";
@@ -190,12 +191,18 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
             </StyledListItemIcon>
             <ListItemText secondary="レビュー依頼" />
           </MenuItem>
-          <Divider />
           <MenuItem onClick={() => toPage("/dashboard/reviews")}>
             <StyledListItemIcon>
               <SpeedOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
             <ListItemText secondary="ダッシュボード" />
+          </MenuItem>
+          <Divider />
+          <MenuItem onClick={() => toPage("/dashboard/bookmarks")}>
+            <StyledListItemIcon>
+              <LocalLibraryOutlinedIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="ブックマーク" />
           </MenuItem>
           <Divider />
           <MenuItem onClick={() => toPage("/settings/profile")}>
