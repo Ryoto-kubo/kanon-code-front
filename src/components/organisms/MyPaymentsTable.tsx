@@ -46,23 +46,23 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
               </Box>
             </Paper>
           </Box>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell align="left">値段</TableCell>
-                  <TableCell align="left" style={{ minWidth: 150 }}>
-                    レビュータイトル
-                  </TableCell>
-                  <TableCell align="left">レビュワー</TableCell>
-                  <TableCell align="left">購入日</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {postItem.payments.length <= 0 ? (
-                  <p>まだレビューを購入していません</p>
-                ) : (
-                  postItem.payments.map((paymentItem) => (
+          {postItem.payments.length <= 0 ? (
+            <p>まだレビューを購入していません</p>
+          ) : (
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell align="left">値段</TableCell>
+                    <TableCell align="left" style={{ minWidth: 150 }}>
+                      レビュータイトル
+                    </TableCell>
+                    <TableCell align="left">レビュワー</TableCell>
+                    <TableCell align="left">購入日</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {postItem.payments.map((paymentItem) => (
                     <TableRow key={uuidv4()}>
                       <TableCell align="left">
                         <Price
@@ -100,11 +100,11 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                       </TableCell>
                       <TableCell align="left">{postItem.date}</TableCell>
                     </TableRow>
-                  ))
-                )}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </Box>
       ))}
     </>
