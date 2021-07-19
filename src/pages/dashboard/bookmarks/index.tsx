@@ -1,25 +1,24 @@
-import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
-import { ErrorView } from "@/components/common/error";
-import { CustomLoader } from "@/components/common/loader";
-import { Post } from "@/components/organisms/Post";
-import { useMyBookmarks } from "@/hooks/useMyBookmarks";
-import { LayoutDashboard } from "@/layouts/dashboard";
-import { PostsTypes, UserTypes } from "@/types/global";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import React from "react";
-import { v4 as uuidv4 } from "uuid";
+import { CustomHeading2 } from '@/components/atoms/CustomHeading2'
+import { ErrorView } from '@/components/common/error'
+import { CustomLoader } from '@/components/common/loader'
+import { Post } from '@/components/organisms/Post'
+import { useMyBookmarks } from '@/hooks/useMyBookmarks'
+import { LayoutDashboard } from '@/layouts/dashboard'
+import { PostsTypes, UserTypes } from '@/types/global'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import React from 'react'
+import { v4 as uuidv4 } from 'uuid'
 
 type Props = {
-  authUser: any;
-  currentUser: UserTypes | null;
-};
+  authUser: any
+  currentUser: UserTypes | null
+}
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser || !props.currentUser) return <></>;
-  const { data, isValidating } = useMyBookmarks();
-  if (!data) return <></>;
-  const status = data?.data.status;
+  if (!props.authUser || !props.currentUser) return <></>
+  const { data, isValidating } = useMyBookmarks()
+  const status = data?.data.status
   if (status === false) {
     return (
       <LayoutDashboard
@@ -28,15 +27,15 @@ const IndexPage: React.FC<Props> = (props) => {
       >
         <ErrorView />
       </LayoutDashboard>
-    );
+    )
   }
-  const posts = data.data.posts;
+  const posts = data?.data.posts
   return (
     <LayoutDashboard
       title="Kanon Code | ダッシュボード:ブックマーク"
       currentUser={props.currentUser}
     >
-      <Box width={"100%"} position="relative" minHeight="300px">
+      <Box width={'100%'} position="relative" minHeight="300px">
         <CustomHeading2 fontSize={24} marginBottom={1}>
           Bookmarks
         </CustomHeading2>
@@ -63,7 +62,7 @@ const IndexPage: React.FC<Props> = (props) => {
         )}
       </Box>
     </LayoutDashboard>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage

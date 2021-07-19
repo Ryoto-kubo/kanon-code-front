@@ -1,38 +1,39 @@
-import { SolidLink } from "@/components/atoms/SolidLink";
-import { CustomLoader } from "@/components/common/loader";
-import { NoticePaymentItem } from '@/components/molecules/NoticePaymentItem';
-import { NoticeReviewItem } from '@/components/molecules/NoticeReviewItem';
-import { NotificationsButton } from "@/components/molecules/NotificationsButton";
-import { SearchLink } from "@/components/molecules/SearchLink";
-import { UserImageButton } from "@/components/molecules/UserImageButton";
-import { DropMenu } from '@/components/parts/dropMenu/';
-import { getNotices } from '@/utils/api/get-notices';
-import Badge from '@material-ui/core/Badge';
-import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
-import Hidden from "@material-ui/core/Hidden";
-import ListItemIcon from "@material-ui/core/ListItemIcon";
-import ListItemText from "@material-ui/core/ListItemText";
-import MenuItem from "@material-ui/core/MenuItem";
-import CodeOutlinedIcon from "@material-ui/icons/CodeOutlined";
-import ExitToAppIcon from "@material-ui/icons/ExitToApp";
-import LocalLibraryOutlinedIcon from '@material-ui/icons/LocalLibraryOutlined';
-import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
-import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
-import SpeedOutlinedIcon from "@material-ui/icons/SpeedOutlined";
-import { Auth } from "aws-amplify";
+import { SolidLink } from '@/components/atoms/SolidLink'
+import { CustomLoader } from '@/components/common/loader'
+import { NoticePaymentItem } from '@/components/molecules/NoticePaymentItem'
+import { NoticeReviewItem } from '@/components/molecules/NoticeReviewItem'
+import { NotificationsButton } from '@/components/molecules/NotificationsButton'
+import { SearchLink } from '@/components/molecules/SearchLink'
+import { UserImageButton } from '@/components/molecules/UserImageButton'
+import { DropMenu } from '@/components/parts/dropMenu/'
+import { getNotices } from '@/utils/api/get-notices'
+import Badge from '@material-ui/core/Badge'
+import Box from '@material-ui/core/Box'
+import Divider from '@material-ui/core/Divider'
+import Hidden from '@material-ui/core/Hidden'
+import ListItemIcon from '@material-ui/core/ListItemIcon'
+import ListItemText from '@material-ui/core/ListItemText'
+import MenuItem from '@material-ui/core/MenuItem'
+import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import LocalLibraryOutlinedIcon from '@material-ui/icons/LocalLibraryOutlined'
+import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined'
+import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
+import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined'
+import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined'
+import { Auth } from 'aws-amplify'
 // import Link from "next/link";
-import { useRouter } from "next/router";
-import { destroyCookie } from 'nookies';
-import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import { v4 as uuidv4 } from 'uuid';
+import { useRouter } from 'next/router'
+import { destroyCookie } from 'nookies'
+import React, { useEffect, useState } from 'react'
+import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
 
 interface Props {
-  picture: string;
-  displayName: string;
-  func: React.MouseEventHandler;
-  formFunc: React.FormEventHandler;
+  picture: string
+  displayName: string
+  func: React.MouseEventHandler
+  formFunc: React.FormEventHandler
 }
 
 const StyledUseMr = styled.span`
@@ -40,24 +41,24 @@ const StyledUseMr = styled.span`
   &:not(:last-child) {
     margin-right: 24px;
   }
-`;
+`
 const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
-`;
+`
 const StyledBoxNoticeWrapper = styled(Box)`
   position: relative;
   width: 24px;
-`;
+`
 
 export const LoggedHeaderParts: React.FC<Props> = (props) => {
-  const router = useRouter();
+  const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   const [anchorNoticeEl, setAnchorNoticeEl] = useState<null | HTMLElement>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [notices, setNotices] = useState<any>(null)
 
   useEffect(() => {
-    (async () => {
+    ;(async () => {
       try {
         const response = await getNotices()
         setNotices(response.data)
@@ -67,31 +68,31 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
       }
     })()
   }, [])
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl)
   const noticeOpen = Boolean(anchorNoticeEl)
   const handleMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleNotice = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorNoticeEl(event.currentTarget);
-  };
+    setAnchorNoticeEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
   const handleCloseNotice = () => {
-    setAnchorNoticeEl(null);
-  };
+    setAnchorNoticeEl(null)
+  }
   const toPage = (path: string) => {
-    router.push(path);
-  };
+    router.push(path)
+  }
   const signOut = async () => {
     try {
       destroyCookie(null, 'idToken')
-      await Auth.signOut();
+      await Auth.signOut()
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  };
+  }
 
   return (
     <>
@@ -104,16 +105,22 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
             {notices.Items.length > 0 ? (
               <>
                 <Badge badgeContent={notices.count} color="secondary">
-                  <NotificationsButton disableRipple={true} func={handleNotice} />
+                  <NotificationsButton
+                    disableRipple={true}
+                    func={handleNotice}
+                  />
                 </Badge>
                 <DropMenu
                   anchorEl={anchorNoticeEl}
                   isOpen={noticeOpen}
                   onClose={handleCloseNotice}
                 >
-                  {notices.Items.map((el: any) => (
-                    el.type === "review" ? (
-                      <MenuItem key={uuidv4()} className={el.is_read ? '' : 'non-read'}>
+                  {notices.Items.map((el: any) =>
+                    el.type === 'review' ? (
+                      <MenuItem
+                        key={uuidv4()}
+                        className={el.is_read ? '' : 'non-read'}
+                      >
                         <NoticeReviewItem
                           title={el.title}
                           reviewerName={el.profile.display_name}
@@ -121,39 +128,38 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
                           iconSrc={el.profile.icon_src}
                           partitionKey={el.partition_key}
                           sortKey={el.sort_key}
-                          isRead={
-                            el.is_read
-                          }
+                          isRead={el.is_read}
                           date={el.date}
                           width={'35px'}
                           height={'35px'}
                         />
                       </MenuItem>
                     ) : (
-                      el.type === "payment" && (
-                        <MenuItem key={uuidv4()} className={el.is_read ? '' : 'non-read'}>
+                      el.type === 'payment' && (
+                        <MenuItem
+                          key={uuidv4()}
+                          className={el.is_read ? '' : 'non-read'}
+                        >
                           <NoticePaymentItem
                             title={el.title}
                             paymentedName={el.profile.display_name}
-                              iconSrc={el.profile.icon_src}
-                              partitionKey={el.partition_key}
-                              sortKey={el.sort_key}
-                            isRead={
-                              el.is_read
-                            }
+                            iconSrc={el.profile.icon_src}
+                            partitionKey={el.partition_key}
+                            sortKey={el.sort_key}
+                            isRead={el.is_read}
                             date={el.date}
                             width={'35px'}
                             height={'35px'}
                           />
                         </MenuItem>
                       )
-                    )
-                  ))}
+                    ),
+                  )}
                 </DropMenu>
               </>
-              ) : (
-                <NotificationsButton disableRipple={true} func={handleNotice} />
-              )}
+            ) : (
+              <NotificationsButton disableRipple={true} func={handleNotice} />
+            )}
           </>
         ) : (
           <StyledBoxNoticeWrapper>
@@ -174,38 +180,40 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
           disableRipple={true}
           func={handleMenu}
         />
-        <DropMenu
-          anchorEl={anchorEl}
-          isOpen={open}
-          onClose={handleClose}
-        >
+        <DropMenu anchorEl={anchorEl} isOpen={open} onClose={handleClose}>
           <MenuItem onClick={() => toPage(`/${props.displayName}`)}>
             <StyledListItemIcon>
               <PersonOutlineOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
             <ListItemText secondary="マイページ" />
           </MenuItem>
-          <MenuItem onClick={() => toPage("/post/new")}>
+          <MenuItem onClick={() => toPage('/post/new')}>
             <StyledListItemIcon>
               <CodeOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
             <ListItemText secondary="レビュー依頼" />
           </MenuItem>
-          <MenuItem onClick={() => toPage("/dashboard/reviews")}>
+          <MenuItem onClick={() => toPage('/dashboard/reviews')}>
             <StyledListItemIcon>
               <SpeedOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
             <ListItemText secondary="ダッシュボード" />
           </MenuItem>
           <Divider />
-          <MenuItem onClick={() => toPage("/dashboard/bookmarks")}>
+          <MenuItem onClick={() => toPage('/dashboard/bookmarks')}>
             <StyledListItemIcon>
               <LocalLibraryOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
             <ListItemText secondary="ブックマーク" />
           </MenuItem>
+          <MenuItem onClick={() => toPage('/dashboard/sales')}>
+            <StyledListItemIcon>
+              <MonetizationOnOutlinedIcon fontSize="small" />
+            </StyledListItemIcon>
+            <ListItemText secondary="売り上げ" />
+          </MenuItem>
           <Divider />
-          <MenuItem onClick={() => toPage("/settings/profile")}>
+          <MenuItem onClick={() => toPage('/settings/profile')}>
             <StyledListItemIcon>
               <SettingsOutlinedIcon fontSize="small" />
             </StyledListItemIcon>
@@ -220,5 +228,5 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
         </DropMenu>
       </StyledUseMr>
     </>
-  );
-};
+  )
+}
