@@ -103,11 +103,11 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
           <p>まだレビューを購入していません</p>
         </Box>
       ) : (
-        props.posts.map((postItem: PostsTypesInPayments) => (
-          <TableContainer>
-            <Table>
-              <TableBody>
-                {postItem.payments.map((paymentItem: PaymentedTypes) => (
+        <TableContainer>
+          <Table>
+            <TableBody>
+              {props.posts.map((postItem: PostsTypesInPayments) =>
+                postItem.payments.map((paymentItem: PaymentedTypes) => (
                   <TableRow key={uuidv4()}>
                     <TableCell
                       align="left"
@@ -164,11 +164,11 @@ export const MyPaymentsTable: React.FC<Props> = (props) => {
                       <Price color={'#EC576B'} text={`¥${paymentItem.price}`} />
                     </TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        ))
+                )),
+              )}
+            </TableBody>
+          </Table>
+        </TableContainer>
       )}
       <ReviewContentsDialog
         contents={review.contents}

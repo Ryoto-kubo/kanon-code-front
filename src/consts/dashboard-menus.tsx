@@ -15,14 +15,14 @@ export const menus = [
   //   href: '/dashboard/review_requests',
   // },
   {
-    name: 'Payments',
-    icon: <ShoppingCartOutlinedIcon />,
-    href: '/dashboard/payments_history',
-  },
-  {
     name: 'Bookmarks',
     icon: <LocalLibraryOutlinedIcon />,
     href: '/dashboard/bookmarks',
+  },
+  {
+    name: 'Payments',
+    icon: <ShoppingCartOutlinedIcon />,
+    href: '/dashboard/payments_history',
   },
   {
     name: 'Sales',
