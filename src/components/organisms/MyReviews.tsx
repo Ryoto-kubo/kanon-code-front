@@ -1,24 +1,24 @@
-import { SolidLink } from "@/components/atoms/SolidLink";
-import { Post } from "@/components/organisms/Post";
-import { NonArticleIllustration } from "@/components/parts/illustrations/non-article";
-import { NonWorkingIllustration } from "@/components/parts/illustrations/non-working";
-import { PostsTypes, ReviewsTypes } from "@/types/global";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import Tab from "@material-ui/core/Tab";
-import Tabs from "@material-ui/core/Tabs";
-import React, { ReactNode } from "react";
-import styled from "styled-components";
-import { v4 as uuidv4 } from "uuid";
+import { SolidLink } from '@/components/atoms/SolidLink'
+import { Post } from '@/components/organisms/Post'
+import { NonArticleIllustration } from '@/components/parts/illustrations/non-article'
+import { NonWorkingIllustration } from '@/components/parts/illustrations/non-working'
+import { PostsTypes, ReviewsTypes } from '@/types/global'
+import Box from '@material-ui/core/Box'
+import Grid from '@material-ui/core/Grid'
+import Tab from '@material-ui/core/Tab'
+import Tabs from '@material-ui/core/Tabs'
+import React, { ReactNode } from 'react'
+import styled from 'styled-components'
+import { v4 as uuidv4 } from 'uuid'
 type Props = {
-  posts: PostsTypes[];
-  reviews: ReviewsTypes[];
-};
+  posts: PostsTypes[]
+  reviews: ReviewsTypes[]
+}
 
 const StyledTabs = styled(Tabs)`
   border-bottom: 1px solid #e8e8e8;
   margin-top: 16px;
-`;
+`
 const StyledTab = styled(Tab)`
   min-width: 100px;
   font-size: 15px;
@@ -26,14 +26,14 @@ const StyledTab = styled(Tab)`
   &:hover {
     color: #202020;
   }
-`;
+`
 
 const TabPanel = (props: {
-  value: number;
-  index: number;
-  children: ReactNode;
+  value: number
+  index: number
+  children: ReactNode
 }) => {
-  const { children, value, index, ...other } = props;
+  const { children, value, index, ...other } = props
   return (
     <div
       role="tabpanel"
@@ -44,43 +44,43 @@ const TabPanel = (props: {
     >
       {value === index && <Box>{children}</Box>}
     </div>
-  );
-};
+  )
+}
 
 const splitPostsByPostStatus = (posts: PostsTypes[]) => {
-  let acceptPosts = [];
-  let reviewedPosts = [];
-  let paymentedPosts = [];
-  const ACCEPTING = 0;
-  const REVIEWED = 1;
-  const PAYMENTED = 2;
+  let acceptPosts = []
+  let reviewedPosts = []
+  let paymentedPosts = []
+  const ACCEPTING = 0
+  const REVIEWED = 1
+  const PAYMENTED = 2
   for (const item of posts) {
     switch (item.post_status) {
       case ACCEPTING:
-        acceptPosts.push(item);
-        break;
+        acceptPosts.push(item)
+        break
       case REVIEWED:
-        reviewedPosts.push(item);
-        break;
+        reviewedPosts.push(item)
+        break
       case PAYMENTED:
-        paymentedPosts.push(item);
-        break;
+        paymentedPosts.push(item)
+        break
     }
   }
   return {
     acceptPosts,
     reviewedPosts,
     paymentedPosts,
-  };
-};
+  }
+}
 
 export const MyReviews: React.FC<Props> = (props) => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(0)
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    event.preventDefault();
-    setValue(newValue);
-  };
-  const { acceptPosts } = splitPostsByPostStatus(props.posts);
+    event.preventDefault()
+    setValue(newValue)
+  }
+  const { acceptPosts } = splitPostsByPostStatus(props.posts)
 
   return (
     <>
@@ -134,8 +134,8 @@ export const MyReviews: React.FC<Props> = (props) => {
                 </SolidLink>
               </NonArticleIllustration>
             ) : (
-              <Grid item xs={12} sm={6} md={6} lg={4} >
-                {props.reviews.map((review: ReviewsTypes) => (
+              props.reviews.map((review: ReviewsTypes) => (
+                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                   <Post
                     key={uuidv4()}
                     title={review.posted_contents.title}
@@ -146,12 +146,12 @@ export const MyReviews: React.FC<Props> = (props) => {
                     tagArray={review.posted_contents.tag_list}
                     userIcon={review.posted_user_profile.icon_src}
                   />
-                ))}
-              </Grid>
+                </Grid>
+              ))
             )}
           </Grid>
         </Box>
       </TabPanel>
     </>
-  );
-};
+  )
+}
