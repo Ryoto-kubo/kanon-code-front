@@ -12,6 +12,7 @@ const StyledBoxFlex = styled(Box)`
   justify-content: space-between;
 `
 const StyledBoxPriceWrapper = styled(Box)`
+  border-radius: 4px;
   background: rgba(92, 107, 192, 0.05);
   padding: 12px;
   width: calc((100% - 50px) / 3);
