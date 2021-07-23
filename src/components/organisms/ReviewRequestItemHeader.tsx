@@ -68,10 +68,7 @@ export const ReviewRequestItemHeader: React.FC<Props> = (props) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
   if (props.myUserId !== '') {
-    var { hasBookmark, setHasBookmark } = useGetBookmark(
-      props.myUserId,
-      props.postId,
-    )
+    var { hasBookmark, setHasBookmark } = useGetBookmark(props.postId)
   }
   const iconSrc = props.contents.target_icon.icon_path
   const title = props.contents.title

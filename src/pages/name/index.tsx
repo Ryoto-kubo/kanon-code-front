@@ -1,142 +1,144 @@
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { BaseTextField } from "@/components/atoms/TextField";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
-import { SettingForm } from "@/components/organisms/SettingForm";
-import * as CONSTS from "@/consts/const";
-import { errorMessages, validMessages } from "@/consts/error-messages";
-import { messages } from "@/consts/messages";
-import { SettingLayout } from "@/layouts/setting-form";
-import theme from "@/styles/theme";
-import { UserTypes } from "@/types/global";
-import { postUserProfile } from "@/utils/api/post-user-profile";
-import { UserProfile } from "@/utils/user-profile";
-import Box from "@material-ui/core/Box";
-import Snackbar from "@material-ui/core/Snackbar";
-import Typography from "@material-ui/core/Typography";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { CustomSolidButton } from '@/components/atoms/SolidButton'
+import { BaseTextField } from '@/components/atoms/TextField'
+import { ValidMessage } from '@/components/molecules/ValidMessage'
+import { SettingForm } from '@/components/organisms/SettingForm'
+import * as CONSTS from '@/consts/const'
+import { errorMessages, validMessages } from '@/consts/error-messages'
+import { messages } from '@/consts/messages'
+import { SettingLayout } from '@/layouts/setting-form'
+import theme from '@/styles/theme'
+import { UserTypes } from '@/types/global'
+import { postUserProfile } from '@/utils/api/post-user-profile'
+import { UserProfile } from '@/utils/user-profile'
+import Box from '@material-ui/core/Box'
+import Snackbar from '@material-ui/core/Snackbar'
+import Typography from '@material-ui/core/Typography'
+import React, { useState } from 'react'
+import styled from 'styled-components'
 
 type Props = {
-  authUser: any;
-  currentUser: UserTypes;
-};
+  authUser: any
+  currentUser: UserTypes
+}
 
 const StyledButtonWrapper = styled(Box)`
   text-align: center;
-`;
+`
 const StyledBoxTextFieldWrapper = styled(Box)`
   margin: auto;
   margin-bottom: 32px;
   width: 100%;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${(props) => props.theme.breakpoints.up('sm')} {
     width: 70%;
   }
-`;
-const StyledPUrlWrapper = styled("div")`
+`
+const StyledPUrlWrapper = styled('div')`
   margin: auto;
   margin-bottom: 8px;
   text-align: left;
   width: 100%;
   padding: 2px;
   border-bottom: 2px solid ${theme.palette.primary.main};
-`;
+`
 
 const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
-  const [isOpen, setIsOpen] = useState(false);
-  const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [user, setUser] = useState<UserTypes>(props.currentUser);
-  const [validText, setIsValidText] = useState<string>("");
-  const [isDisabled, setIsDidabled] = useState<boolean>(true);
-  const [isValidName, setIsValidName] = useState<boolean>(true);
-  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
-  const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
-  const profile = props.currentUser.user_profile;
+  if (!props.authUser) return <></>
+  const [isOpen, setIsOpen] = useState(false)
+  const [updatingMessage, setUpdatingMessage] = useState('更新中...')
+  const [displayName, setDisplayName] = useState<string>(
+    props.currentUser.user_profile.display_name,
+  )
+  const [validText, setIsValidText] = useState<string>('')
+  const [isDisabled, setIsDidabled] = useState<boolean>(true)
+  const [isValidName, setIsValidName] = useState<boolean>(true)
+  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT
+  const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH
+  const profile = props.currentUser.user_profile
+  const user = props.currentUser
 
   const resetValid = () => {
-    setIsValidName(true);
-    setIsValidText("");
-  };
+    setIsValidName(true)
+    setIsValidText('')
+  }
+
+  const createParams = () => {
+    return {
+      userProfile: { ...profile, display_name: displayName },
+    }
+  }
 
   const updateProfile = async () => {
-    const isValid = validName(profile.display_name);
-    if (!isValid) return;
-    setIsOpen(true);
-    setIsDidabled(true);
-    const err = new Error();
-    const params = {
-      userProfile: profile,
-    };
+    const isValid = validName(displayName)
+    if (!isValid) return
+    setIsOpen(true)
+    setIsDidabled(true)
+    const err = new Error()
+    const params = createParams()
     try {
-      const response = await postUserProfile(params);
-      const result = response.data;
+      const response = await postUserProfile(params)
+      const result = response.data
       if (!result.status) {
         if (result.status_code === 1001) {
-          alert(errorMessages.EXISTED_NAME);
-          return;
+          alert(errorMessages.EXISTED_NAME)
+          setIsOpen(false)
+          setIsDidabled(false)
+          return
         }
-        throw err;
+        throw err
       }
-      setUpdatingMessage(messages.UPDATED_MESSAGE);
-      setIsDidabled(false);
-      setUser({
-        ...user!,
-        user_profile: profile,
-      });
+      profile.display_name = displayName
+      setUpdatingMessage(messages.UPDATED_MESSAGE)
+      setIsDidabled(false)
     } catch (error) {
-      alert(errorMessages.SYSTEM_ERROR);
-      setIsOpen(false);
-      setIsDidabled(false);
+      alert(errorMessages.SYSTEM_ERROR)
+      setIsOpen(false)
+      setIsDidabled(false)
     }
-  };
+  }
 
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-    const isValid = validName(value);
+    const value = event.target.value
+    const isValid = validName(value)
     if (isValid) {
-      setIsDidabled(false);
-      resetValid();
+      setIsDidabled(false)
+      resetValid()
     } else {
-      if (value === "") resetValid();
-      setIsDidabled(true);
+      if (value === '') resetValid()
+      setIsDidabled(true)
     }
-    user.user_profile.display_name = value;
-    setUser({
-      ...user!,
-      user_profile: user.user_profile,
-    });
-  };
+    setDisplayName(value)
+  }
 
   const validName = (value: string): boolean => {
     const isValidMaxLength = UserProfile.validMaxLength(
       value.length,
-      MAX_NAME_LENGTH
-    );
-    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value);
+      MAX_NAME_LENGTH,
+    )
+    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value)
     const isValidOnlySingleByteAndUnderScore = UserProfile.validOnlySingleByteAndUnderScore(
-      value
-    );
+      value,
+    )
     if (!isValidMaxLength) {
-      setIsValidName(false);
-      setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`);
-      return isValidMaxLength;
+      setIsValidName(false)
+      setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`)
+      return isValidMaxLength
     }
     if (!isValidFirstAndLastChara) {
-      setIsValidName(false);
-      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA);
-      return isValidFirstAndLastChara;
+      setIsValidName(false)
+      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA)
+      return isValidFirstAndLastChara
     }
     if (!isValidOnlySingleByteAndUnderScore) {
-      setIsValidName(false);
-      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE);
-      return isValidOnlySingleByteAndUnderScore;
+      setIsValidName(false)
+      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE)
+      return isValidOnlySingleByteAndUnderScore
     }
     return (
       isValidMaxLength &&
       isValidFirstAndLastChara &&
       isValidOnlySingleByteAndUnderScore
-    );
-  };
+    )
+  }
 
   return (
     <SettingLayout title="Kanon Code | 名前設定" currentUser={user}>
@@ -153,7 +155,7 @@ const IndexPage: React.FC<Props> = (props) => {
             <BaseTextField
               id="name"
               type="text"
-              value={profile.display_name}
+              value={displayName}
               label="名前"
               placeholder="kanon code"
               rows={0}
@@ -163,7 +165,7 @@ const IndexPage: React.FC<Props> = (props) => {
           <StyledPUrlWrapper>
             <Typography>
               {domain}
-              {profile.display_name}
+              {displayName}
             </Typography>
           </StyledPUrlWrapper>
           {!isValidName && <ValidMessage validText={validText} />}
@@ -179,15 +181,15 @@ const IndexPage: React.FC<Props> = (props) => {
         </StyledButtonWrapper>
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
+            vertical: 'bottom',
+            horizontal: 'right',
           }}
           open={isOpen}
           message={updatingMessage}
         />
       </SettingForm>
     </SettingLayout>
-  );
-};
+  )
+}
 
-export default IndexPage;
+export default IndexPage

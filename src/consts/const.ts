@@ -19,8 +19,9 @@ export const MAX_FILE_SIZE = 10_000_000 // 10MB
 export const MAX_PRICE = 100_000 // 10MB
 export const PAYMENT_FREE = 0
 export const PAYMENT_FEE = 1
-export const USER_PREFIX = 'user_'
-export const REVIEW_PREFIX = 'review_'
+export const USER_PREFIX = 'USER'
+export const POST_PREFIX = 'POST'
+export const REVIEW_PREFIX = 'REVIEW'
 export const ALLOW_POSITION_TYPE_LIST = [0, 1, 2, 3, 4]
 export const ALLOW_FILE_EXTENTION_LIST = [
   'jpeg',

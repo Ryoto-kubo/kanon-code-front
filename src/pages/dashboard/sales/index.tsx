@@ -17,8 +17,6 @@ type Props = {
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser || !props.currentUser) return <></>
   const { data, isValidating } = useSales()
-  console.log(data, 'data')
-
   const status = data?.data.status
   if (status === false) {
     return (
