@@ -15,7 +15,7 @@ const StyledBoxPriceWrapper = styled(Box)`
   border-radius: 4px;
   background: rgba(92, 107, 192, 0.05);
   padding: 12px;
-  width: calc((100% - 50px) / 3);
+  width: calc((100% - 20px) / 2);
   text-align: center;
 `
 const StyledBoxPrice = styled(Box)`
@@ -28,12 +28,11 @@ export const SalesArea: React.FC<Props> = (props) => {
   return (
     <StyledBoxFlex>
       <StyledBoxPriceWrapper>
+        <Box>売上総額</Box>
         <StyledBoxPrice>¥{props.totalPrice}</StyledBoxPrice>
       </StyledBoxPriceWrapper>
       <StyledBoxPriceWrapper>
-        <StyledBoxPrice>¥{props.totalPrice}</StyledBoxPrice>
-      </StyledBoxPriceWrapper>
-      <StyledBoxPriceWrapper>
+        <Box>今月の売り上げ</Box>
         <StyledBoxPrice>¥{props.totalPrice}</StyledBoxPrice>
       </StyledBoxPriceWrapper>
     </StyledBoxFlex>
