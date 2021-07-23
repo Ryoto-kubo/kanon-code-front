@@ -4,7 +4,8 @@ import React from 'react'
 import styled from 'styled-components'
 
 type Props = {
-  totalPrice: number
+  totalSales: number
+  currentTotalSales: number
 }
 
 const StyledBoxFlex = styled(Box)`
@@ -29,11 +30,11 @@ export const SalesArea: React.FC<Props> = (props) => {
     <StyledBoxFlex>
       <StyledBoxPriceWrapper>
         <Box>売上総額</Box>
-        <StyledBoxPrice>¥{props.totalPrice}</StyledBoxPrice>
+        <StyledBoxPrice>¥{props.totalSales}</StyledBoxPrice>
       </StyledBoxPriceWrapper>
       <StyledBoxPriceWrapper>
         <Box>今月の売り上げ</Box>
-        <StyledBoxPrice>¥{props.totalPrice}</StyledBoxPrice>
+        <StyledBoxPrice>¥{props.currentTotalSales}</StyledBoxPrice>
       </StyledBoxPriceWrapper>
     </StyledBoxFlex>
   )

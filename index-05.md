@@ -4,12 +4,12 @@ src/pages/twitter_name/index.tsx
 ```javascript
 async getPayments() {
   // 自分のレビューデータを取得
-  let totalPrice = 0;
+  let totalSales = 0;
   const resultSales = [];
   const metadata = await this.getMetadata(this.userId);
-  if (metadata.Items.length <= 1) return { resultSales, totalPrice };
+  if (metadata.Items.length <= 1) return { resultSales, totalSales };
   const reviews = this.filtering(metadata.Items, "review");
-  if (reviews.length <= 0) return { resultSales, totalPrice };
+  if (reviews.length <= 0) return { resultSales, totalSales };
   this.sortItems(reviews);
   // レビューに紐づく課金データを取得
   for (const reviewItem of reviews) {
@@ -28,10 +28,10 @@ async getPayments() {
   }
 
   if (resultSales.length <= 0) {
-    return { resultSales, totalPrice };
+    return { resultSales, totalSales };
   }
 
-  totalPrice = this.totalPrice(resultSales);
-  return { resultSales, totalPrice };
+  totalSales = this.totalSales(resultSales);
+  return { resultSales, totalSales };
 }
 ```

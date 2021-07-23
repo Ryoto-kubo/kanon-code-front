@@ -130,6 +130,7 @@ export const LoggedHeaderParts: React.FC<Props> = (props) => {
                           sortKey={el.sort_key}
                           isRead={el.is_read}
                           date={el.date}
+                          url={el.url}
                           width={'35px'}
                           height={'35px'}
                         />

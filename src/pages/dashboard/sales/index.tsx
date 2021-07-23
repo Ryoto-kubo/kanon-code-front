@@ -29,7 +29,8 @@ const IndexPage: React.FC<Props> = (props) => {
     )
   }
   const sales = data?.data.sales
-  const totalPrice = data?.data.totalPrice
+  const totalSales = data?.data.totalSales
+  const currentTotalSales = data?.data.currentTotalSales
   return (
     <LayoutDashboard
       title="Kanon Code | ダッシュボード:売り上げ"
@@ -46,7 +47,10 @@ const IndexPage: React.FC<Props> = (props) => {
             <Box mb={2}>
               <MySales sales={sales} imgWidth="40px" imgHeight="40px" />
             </Box>
-            <SalesArea totalPrice={totalPrice} />
+            <SalesArea
+              totalSales={totalSales}
+              currentTotalSales={currentTotalSales}
+            />
           </Box>
         )}
       </Box>
