@@ -100,10 +100,11 @@ const validPrice = (price: number) => {
   return price > 0 && price <= MAX_PRICE
 }
 
-const validNumber = (price: number) => {
+const validNumber = (price: string) => {
   const regExp = new RegExp(/^[0-9]*$/)
   return regExp.test(price)
 }
+
 export const ReviewSettingDialog: React.FC<Props> = (props) => {
   const excludeTags = ['', '<ul>', '</ul>']
   const BEGIN_CODE_TAG = '<pre>'
@@ -153,11 +154,11 @@ export const ReviewSettingDialog: React.FC<Props> = (props) => {
     setPaymentType(value)
   }
   const changePrice = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = Number(event.target.value)
-    const isValidNumber = validNumber(value)
+    const isValidNumber = validNumber(event.target.value)
     if (!isValidNumber) {
       return
     }
+    const value = Number(event.target.value)
     const isValid = validPrice(value)
     if (!isValid) {
       setIsValidPrice(
