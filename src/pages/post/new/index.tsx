@@ -80,7 +80,6 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>
-  const userProfile = props.currentUser!.user_profile
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
       isValid: defaultValue,
@@ -133,8 +132,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const [uuid] = useState(uuidv4())
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
-    console.log(isPosted, 'isPosted');
-    console.log(isValidExistData, 'isValidExistData');
+    console.log(isPosted, 'isPosted')
+    console.log(isValidExistData, 'isValidExistData')
     if (isValidExistData && !isPosted) {
       if (confirm('データが入力されています。保存せずに終了しますか？')) {
         history.back()
@@ -162,7 +161,6 @@ const IndexPage: React.FC<Props> = (props) => {
   const createParams = (key: string) => {
     return {
       uuid: uuid,
-      userProfile: userProfile,
       postType: key,
       contents: {
         title: title,
