@@ -16,9 +16,7 @@ type Props = {
   authUser: any;
   currentUser: UserTypes;
 };
-type EmailNoticesKeyTypes = Readonly<
-  "is_opened_review" | "is_requested_review"
->;
+type EmailNoticesKeyTypes = Readonly<"is_opened_review" | "is_posted_review">;
 
 const IndexPage: React.FC<Props> = (props) => {
   if (!props.authUser) return <></>;
@@ -69,10 +67,10 @@ const IndexPage: React.FC<Props> = (props) => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const isChecked = event.currentTarget.checked;
-    setEmailNotices({ ...emailNotices, is_requested_review: isChecked });
+    setEmailNotices({ ...emailNotices, is_posted_review: isChecked });
     resetUpdatingMessage();
     setIsOpen(true);
-    updateEmailNotices("is_requested_review", isChecked);
+    updateEmailNotices("is_posted_review", isChecked);
   };
 
   return (
@@ -86,23 +84,23 @@ const IndexPage: React.FC<Props> = (props) => {
             marginBottom={1}
           />
           <ProfileContentCheck
-            label="レビューが開封された時"
+            label="レビューが投稿された時"
+            value={emailNotices.is_posted_review ? "ON" : "OFF"}
+            isDivider={true}
+          >
+            <CustomSwitch
+              onChange={changeRequestedReview}
+              checked={emailNotices.is_posted_review}
+            />
+          </ProfileContentCheck>
+          <ProfileContentCheck
+            label="レビューが購入された時"
             value={emailNotices.is_opened_review ? "ON" : "OFF"}
             isDivider={false}
           >
             <CustomSwitch
               onChange={changeOpenedReview}
               checked={emailNotices.is_opened_review}
-            />
-          </ProfileContentCheck>
-          <ProfileContentCheck
-            label="レビューリクエストを受け取ったとき"
-            value={emailNotices.is_requested_review ? "ON" : "OFF"}
-            isDivider={true}
-          >
-            <CustomSwitch
-              onChange={changeRequestedReview}
-              checked={emailNotices.is_requested_review}
             />
           </ProfileContentCheck>
         </ContentWrapper>
