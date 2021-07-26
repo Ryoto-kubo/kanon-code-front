@@ -1,5 +1,6 @@
 import { Auth } from "aws-amplify";
 import baseAxios, { AxiosRequestConfig } from "axios";
+import { setCookie } from "nookies";
 
 export const axios = baseAxios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -8,7 +9,7 @@ export const axios = baseAxios.create({
 axios.interceptors.request.use((config: AxiosRequestConfig) => {
   return Auth.currentSession()
     .then((session) => {
-      session.getIdToken().getJwtToken();
+      setCookie(null, "idToken", session.getIdToken().getJwtToken());
       config.headers.Authorization = session.getIdToken().getJwtToken();
       return Promise.resolve(config);
     })
