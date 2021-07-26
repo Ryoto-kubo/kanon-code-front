@@ -25,4 +25,5 @@ export const apis = {
   REGISTER_PAYMENT: 'api/registerPayment',
   NOTICES: 'api/notices',
   SALES: 'api/sales',
+  REACTION: 'api/reaction',
 }
