@@ -214,7 +214,9 @@ const Wrapper: React.FC<Props> = ({
             />
           </div>
         </Box>
-        {!isSelfReviewItem && !isPaymentFree && <Reaction postId={postId} />}
+        {!isSelfReviewItem && !isPaymentFree && paymentedList![sortKey] && (
+          <Reaction postId={postId} />
+        )}
         {!isSelfReviewItem && !isPaymentFree && !paymentedList![sortKey] && (
           <AnnounceOpenReview
             title={title}
