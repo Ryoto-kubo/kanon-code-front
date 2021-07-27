@@ -1,4 +1,3 @@
-// import React, { useEffect, useState } from "react";
 import { ReviewEditor } from "@/components/organisms/ReviewEditor";
 import { ReviewList } from "@/components/organisms/ReviewList";
 import { ReviewRequestContents } from "@/components/organisms/ReviewRequestContents";
@@ -9,7 +8,6 @@ import { UserTypes } from "@/types/global";
 import { PostContentsTypes, ReviewTypes } from "@/types/global/";
 import { getContent } from "@/utils/api/get-content";
 import Box from "@material-ui/core/Box";
-// import { getPagesUrl } from "@/utils/api/get-pages-url";
 import Container from "@material-ui/core/Container";
 import React from "react";
 import styled from "styled-components";
@@ -40,8 +38,6 @@ const StyledContainer = styled(Container)`
 `;
 
 const IndexPage: React.FC<Props> = (props) => {
-  console.log(props);
-
   const post = props.post;
   const contents = props.post.contents;
   const title = contents.title;

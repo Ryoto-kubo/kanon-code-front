@@ -215,7 +215,12 @@ const Wrapper: React.FC<Props> = ({
           </div>
         </Box>
         {!isSelfReviewItem && !isPaymentFree && paymentedList![sortKey] && (
-          <Reaction postId={postId} />
+          <Reaction
+            sortKey={sortKey}
+            postId={postId}
+            reactionUserIcons={el.reaction_user_icons}
+            userIcon={userProfile!.icon_src}
+          />
         )}
         {!isSelfReviewItem && !isPaymentFree && !paymentedList![sortKey] && (
           <AnnounceOpenReview
