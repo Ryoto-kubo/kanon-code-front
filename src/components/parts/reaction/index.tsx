@@ -1,3 +1,4 @@
+import { errorMessages } from "@/consts/error-messages";
 import theme from "@/styles/theme";
 import { postReaction } from "@/utils/api/post-reaction";
 import Avatar from "@material-ui/core/Avatar";
@@ -5,11 +6,14 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import SentimentSatisfiedOutlinedIcon from "@material-ui/icons/SentimentSatisfiedOutlined";
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
+  sortKey: string;
   postId: string;
+  reactionUserIcons: string[];
+  userIcon: string;
 };
 
 const StyledBoxWrapper = styled(Box)`
@@ -51,13 +55,26 @@ const StyledButton = styled(Button)`
 }
 `;
 
-export const Reaction: React.FC<Props> = ({ postId }) => {
+export const Reaction: React.FC<Props> = ({
+  sortKey,
+  postId,
+  reactionUserIcons,
+  userIcon,
+}) => {
+  const [userIcons, setUserIcons] = useState<string[]>(reactionUserIcons);
   const post = async () => {
-    const err = new Error();
     try {
-      await postReaction({ postId });
+      const result = await postReaction({ sortKey, postId });
+      const action = result.data.resultAction;
+      if (action === "put") {
+        setUserIcons([...userIcons, userIcon]);
+      } else {
+        const slicedUserIcons = userIcons.slice();
+        const newUserIcons = slicedUserIcons.filter((el) => el !== userIcon);
+        setUserIcons(newUserIcons);
+      }
     } catch {
-      console.error(err);
+      alert(errorMessages.SYSTEM_ERROR);
     }
   };
   return (
@@ -75,56 +92,13 @@ export const Reaction: React.FC<Props> = ({ postId }) => {
           オススメする
         </StyledButton>
       </Box>
-      <AvatarGroup max={8}>
-        <Avatar
-          alt="Remy Sharp"
-          src="https://lh3.googleusercontent.com/a-/AOh14GjgGU-zizRNT4PH4sStws_dh1kfEmXmhNtaTxGD=s96-c"
-        />
-        <Avatar
-          alt="Travis Howard"
-          src="https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/e3ea491d-e04a-4a81-b988-115393a82e24.jpeg"
-        />
-        <Avatar
-          alt="Remy Sharp"
-          src="https://lh3.googleusercontent.com/a-/AOh14GjgGU-zizRNT4PH4sStws_dh1kfEmXmhNtaTxGD=s96-c"
-        />
-        <Avatar
-          alt="Travis Howard"
-          src="https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/e3ea491d-e04a-4a81-b988-115393a82e24.jpeg"
-        />
-        <Avatar
-          alt="Remy Sharp"
-          src="https://lh3.googleusercontent.com/a-/AOh14GjgGU-zizRNT4PH4sStws_dh1kfEmXmhNtaTxGD=s96-c"
-        />
-        <Avatar
-          alt="Travis Howard"
-          src="https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/e3ea491d-e04a-4a81-b988-115393a82e24.jpeg"
-        />
-        <Avatar
-          alt="Remy Sharp"
-          src="https://lh3.googleusercontent.com/a-/AOh14GjgGU-zizRNT4PH4sStws_dh1kfEmXmhNtaTxGD=s96-c"
-        />
-        <Avatar
-          alt="Travis Howard"
-          src="https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/e3ea491d-e04a-4a81-b988-115393a82e24.jpeg"
-        />
-        <Avatar
-          alt="Remy Sharp"
-          src="https://lh3.googleusercontent.com/a-/AOh14GjgGU-zizRNT4PH4sStws_dh1kfEmXmhNtaTxGD=s96-c"
-        />
-        <Avatar
-          alt="Travis Howard"
-          src="https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/e3ea491d-e04a-4a81-b988-115393a82e24.jpeg"
-        />
-        <Avatar
-          alt="Remy Sharp"
-          src="https://lh3.googleusercontent.com/a-/AOh14GjgGU-zizRNT4PH4sStws_dh1kfEmXmhNtaTxGD=s96-c"
-        />
-        <Avatar
-          alt="Travis Howard"
-          src="https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/upload/e3ea491d-e04a-4a81-b988-115393a82e24.jpeg"
-        />
-      </AvatarGroup>
+      {userIcons.length > 0 && (
+        <AvatarGroup max={8}>
+          {userIcons.map((userIcon, index) => (
+            <Avatar key={index} src={userIcon} />
+          ))}
+        </AvatarGroup>
+      )}
     </StyledBoxWrapper>
   );
 };
