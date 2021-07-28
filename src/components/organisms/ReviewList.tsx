@@ -218,7 +218,8 @@ const Wrapper: React.FC<Props> = ({
           <Reaction
             sortKey={sortKey}
             postId={postId}
-            reactionUserIcons={el.reaction_user_icons}
+            reactionUsers={el.reaction_users}
+            displayName={userProfile!.display_name}
             userIcon={userProfile!.icon_src}
           />
         )}
