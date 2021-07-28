@@ -1,3 +1,4 @@
+import { ReactionUsersDialog } from "@/components/parts/reactionUsersDialog";
 import { errorMessages } from "@/consts/error-messages";
 import theme from "@/styles/theme";
 import { postReaction } from "@/utils/api/post-reaction";
@@ -8,11 +9,14 @@ import SentimentSatisfiedOutlinedIcon from "@material-ui/icons/SentimentSatisfie
 import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import React, { useState } from "react";
 import styled from "styled-components";
-
 type Props = {
   sortKey: string;
   postId: string;
-  reactionUserIcons: string[];
+  reactionUsers: {
+    display_name: string;
+    icon_src: string;
+  }[];
+  displayName: string;
   userIcon: string;
 };
 
@@ -55,23 +59,46 @@ const StyledButton = styled(Button)`
 }
 `;
 
+const StyledButtonAvatarWrapper = styled(Button)`
+background-color: #ffffff;
+  &:hover {
+    background-color: #ffffff;
+  }
+}
+`;
+
 export const Reaction: React.FC<Props> = ({
   sortKey,
   postId,
-  reactionUserIcons,
+  reactionUsers,
+  displayName,
   userIcon,
 }) => {
-  const [userIcons, setUserIcons] = useState<string[]>(reactionUserIcons);
+  const [isOpen, setIsOpen] = useState(false);
+  const [users, setUsers] = useState<
+    { display_name: string; icon_src: string }[]
+  >(reactionUsers);
+
+  const closeDialog = () => {
+    setIsOpen(false);
+  };
+
   const post = async () => {
     try {
       const result = await postReaction({ sortKey, postId });
       const action = result.data.resultAction;
       if (action === "put") {
-        setUserIcons([...userIcons, userIcon]);
+        setUsers([
+          ...users,
+          {
+            display_name: displayName,
+            icon_src: userIcon,
+          },
+        ]);
       } else {
-        const slicedUserIcons = userIcons.slice();
-        const newUserIcons = slicedUserIcons.filter((el) => el !== userIcon);
-        setUserIcons(newUserIcons);
+        const slicedUsers = users.slice();
+        const newUsers = slicedUsers.filter((el) => el.icon_src !== userIcon);
+        setUsers(newUsers);
       }
     } catch {
       alert(errorMessages.SYSTEM_ERROR);
@@ -92,13 +119,23 @@ export const Reaction: React.FC<Props> = ({
           オススメする
         </StyledButton>
       </Box>
-      {userIcons.length > 0 && (
-        <AvatarGroup max={8}>
-          {userIcons.map((userIcon, index) => (
-            <Avatar key={index} src={userIcon} />
-          ))}
-        </AvatarGroup>
+      {users.length > 0 && (
+        <StyledButtonAvatarWrapper
+          onClick={() => setIsOpen(true)}
+          disableRipple
+        >
+          <AvatarGroup max={8}>
+            {users.map((user, index) => (
+              <Avatar key={index} src={user.icon_src} />
+            ))}
+          </AvatarGroup>
+        </StyledButtonAvatarWrapper>
       )}
+      <ReactionUsersDialog
+        users={users}
+        isOpen={isOpen}
+        closeDialog={closeDialog}
+      />
     </StyledBoxWrapper>
   );
 };

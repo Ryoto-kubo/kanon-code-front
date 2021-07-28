@@ -40,7 +40,10 @@ export type ReviewTypes = {
   user_id: string;
   user_profile: UserProfileTypes;
   price: number;
-  reaction_user_icons: string[];
+  reaction_users: {
+    display_name: string;
+    icon_src: string;
+  }[];
   payment_area: number;
   payment_type: number;
   create_year: number;
@@ -145,7 +148,10 @@ export type CustomReviewTypes = {
   user_id: string;
   user_profile: UserProfileTypes;
   price: number;
-  reaction_user_icons: string[];
+  reaction_users: {
+    display_name: string;
+    icon_src: string;
+  }[];
   payment_area: number;
   payment_type: number;
   create_year: number;
