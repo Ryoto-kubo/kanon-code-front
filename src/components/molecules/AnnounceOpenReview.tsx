@@ -1,18 +1,17 @@
-// import { CircleElement } from '@/components/atoms/Circle'
 import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import theme from "@/styles/theme";
-import { UserProfileTypes } from "@/types/global";
+import { ReactionUsers } from "@/components/molecules/ReactionUsers";
+import { ReactionUsersDialog } from "@/components/parts/reactionUsersDialog";
 import Box from "@material-ui/core/Box";
-import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
 type Props = {
   title: string;
-  profile: UserProfileTypes;
   price: number;
-  width: string;
-  height: string;
+  reactionUsers: {
+    display_name: string;
+    icon_src: string;
+  }[];
   showToggleDialog: (
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
@@ -50,30 +49,18 @@ const StyledBoxTitleWrapper = styled(Box)`
   font-size: 16px;
   margin-bottom: 8px;
   display: inline-block;
-  // border-bottom: 1px dashed #a8abb1;
-`;
-const StyledAnchor = styled(`a`)`
-  color: ${theme.palette.text.primary};
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-  }
-`;
-const StyledBoxFlex = styled(Box)`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 8px;
 `;
 
 export const AnnounceOpenReview: React.FC<Props> = ({
   title,
-  profile,
   price,
-  width,
-  height,
+  reactionUsers,
   showToggleDialog,
 }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const closeDialog = () => {
+    setIsOpen(false);
+  };
   return (
     <>
       <StyledBoxShowMessage>
@@ -81,29 +68,12 @@ export const AnnounceOpenReview: React.FC<Props> = ({
       </StyledBoxShowMessage>
       <Box textAlign="center">レビューを購入する</Box>
       <StyledBoxReviewInfo>
-        <StyledBoxFlex>
-          <Link href={`/${profile.display_name}`} passHref>
-            <Box component="a" height={`${height}`}>
-              <img
-                src={profile.icon_src}
-                style={{
-                  borderRadius: "50px",
-                  width: `${width}`,
-                  height: `${height}`,
-                  marginRight: "8px",
-                }}
-              />
-            </Box>
-          </Link>
-          <Link href={`/${profile.display_name}`} passHref>
-            <StyledAnchor>
-              <Box component="p">{profile.display_name}</Box>
-            </StyledAnchor>
-          </Link>
-        </StyledBoxFlex>
         <Box mb={1}>
           <StyledBoxTitleWrapper>{title}</StyledBoxTitleWrapper>
         </Box>
+        {reactionUsers.length > 0 && (
+          <ReactionUsers reactionUsers={reactionUsers} setIsOpen={setIsOpen} />
+        )}
         <CustomSolidButton
           sizing="medium"
           onClick={showToggleDialog}
@@ -112,6 +82,11 @@ export const AnnounceOpenReview: React.FC<Props> = ({
           ¥{price}でレビューを購入する
         </CustomSolidButton>
       </StyledBoxReviewInfo>
+      <ReactionUsersDialog
+        users={reactionUsers}
+        isOpen={isOpen}
+        closeDialog={closeDialog}
+      />
     </>
   );
 };

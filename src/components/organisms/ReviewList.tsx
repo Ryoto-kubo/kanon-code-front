@@ -33,7 +33,7 @@ type Props = {
   postId: string;
   isReviewsLoading: boolean;
   userProfile: UserProfileTypes | null;
-  paymentedList: { [key: string]: boolean } | null;
+  paymentedList: { [key: string]: boolean };
   setPaymentedList: React.Dispatch<
     React.SetStateAction<{ [key: string]: boolean } | null>
   >;
@@ -181,6 +181,7 @@ const Wrapper: React.FC<Props> = ({
     const isPaymentFree = el.payment_type === PAYMENT_FREE;
     const sortKey = el.sort_key;
     const reviewerId = el.user_id;
+    const isPaymented = paymentedList[sortKey];
     return (
       <Box key={index} component="section" mb={7}>
         <StyledBoxFlex mb={2}>
@@ -193,7 +194,7 @@ const Wrapper: React.FC<Props> = ({
           />
           {isSelfReviewItem ? (
             <Price color="#5C6BC0" text="自身のレビュー" />
-          ) : paymentedList![sortKey] ? (
+          ) : isPaymented ? (
             <Price color="#EC576B" text="購入済み" />
           ) : (
             <Price
@@ -214,22 +215,21 @@ const Wrapper: React.FC<Props> = ({
             />
           </div>
         </Box>
-        {!isSelfReviewItem && !isPaymentFree && paymentedList![sortKey] && (
+        {!isSelfReviewItem && !isPaymentFree && isPaymented && (
           <Reaction
             sortKey={sortKey}
             postId={postId}
+            isReaction={el.is_reaction}
             reactionUsers={el.reaction_users}
             displayName={userProfile!.display_name}
             userIcon={userProfile!.icon_src}
           />
         )}
-        {!isSelfReviewItem && !isPaymentFree && !paymentedList![sortKey] && (
+        {!isSelfReviewItem && !isPaymentFree && !isPaymented && (
           <AnnounceOpenReview
             title={title}
-            profile={el.user_profile}
-            width={"40px"}
-            height={"40px"}
             price={price}
+            reactionUsers={el.reaction_users}
             showToggleDialog={() =>
               showToggleDialog(sortKey, title, name, iconSrc, price, reviewerId)
             }
