@@ -115,7 +115,7 @@ const IndexPage: React.FC<Props> = (props) => {
               postId={postId}
               isReviewsLoading={isLoading}
               userProfile={userProfile}
-              paymentedList={paymentedList}
+              paymentedList={paymentedList!}
               setPaymentedList={setPaymentedList}
             />
           </StyledBoxBgWhite>

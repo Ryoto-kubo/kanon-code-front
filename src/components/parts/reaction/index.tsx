@@ -1,14 +1,14 @@
+import { ReactionUsers } from "@/components/molecules/ReactionUsers";
 import { ReactionUsersDialog } from "@/components/parts/reactionUsersDialog";
 import { errorMessages } from "@/consts/error-messages";
 import theme from "@/styles/theme";
 import { postReaction } from "@/utils/api/post-reaction";
-import Avatar from "@material-ui/core/Avatar";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import SentimentSatisfiedOutlinedIcon from "@material-ui/icons/SentimentSatisfiedOutlined";
-import AvatarGroup from "@material-ui/lab/AvatarGroup";
 import React, { useState } from "react";
 import styled from "styled-components";
+
 type Props = {
   sortKey: string;
   postId: string;
@@ -57,13 +57,6 @@ const StyledButton = styled(Button)`
   padding-left: 40px;
   padding-right: 40px;
   font-weight: bold;
-}
-`;
-const StyledButtonAvatarWrapper = styled(Button)`
-  background-color: #ffffff;
-  &:hover {
-    background-color: #ffffff;
-  }
 }
 `;
 const StyledBoxButtonWrapper = styled(Box)`
@@ -129,16 +122,7 @@ export const Reaction: React.FC<Props> = ({
         </StyledButton>
       </StyledBoxButtonWrapper>
       {users.length > 0 && (
-        <StyledButtonAvatarWrapper
-          onClick={() => setIsOpen(true)}
-          disableRipple
-        >
-          <AvatarGroup max={8}>
-            {users.map((user, index) => (
-              <Avatar key={index} src={user.icon_src} />
-            ))}
-          </AvatarGroup>
-        </StyledButtonAvatarWrapper>
+        <ReactionUsers reactionUsers={users} setIsOpen={setIsOpen} />
       )}
       <ReactionUsersDialog
         users={users}
