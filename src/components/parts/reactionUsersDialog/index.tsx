@@ -28,12 +28,13 @@ const StyledBoxContentWrapper = styled(Box)`
   padding-top: 24px;
 `;
 const StyledBoxBorder = styled(Box)`
+  margin-bottom: 16px;
   border-bottom: 1px solid #dddddd;
   padding: 0 8px 8px 8px;
+  text-align: left;
 `;
 const StyledAnchor = styled(`a`)`
-  display: flex;
-  align-items: center;
+  display: inline-block;
   font-weight: bold;
   color: ${theme.palette.text.primary};
   text-decoration: none;
@@ -41,6 +42,10 @@ const StyledAnchor = styled(`a`)`
     text-decoration: underline;
     cursor: pointer;
   }
+`;
+const StyledBoxAnchorWrapper = styled(Box)`
+  display: flex;
+  align-items: center;
 `;
 
 const Transition = React.forwardRef(function Transition(
@@ -73,10 +78,12 @@ export const ReactionUsersDialog: React.FC<Props> = (props) => {
             <StyledBoxBorder>
               <Link href={`/${user.display_name}`}>
                 <StyledAnchor>
-                  <Box mr={1}>
-                    <Avatar key={index} src={user.icon_src} />
-                  </Box>
-                  <span>{user.display_name}</span>
+                  <StyledBoxAnchorWrapper>
+                    <Box mr={1}>
+                      <Avatar key={index} src={user.icon_src} />
+                    </Box>
+                    <span>{user.display_name}</span>
+                  </StyledBoxAnchorWrapper>
                 </StyledAnchor>
               </Link>
             </StyledBoxBorder>

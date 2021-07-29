@@ -12,6 +12,7 @@ import styled from "styled-components";
 type Props = {
   sortKey: string;
   postId: string;
+  isReaction: boolean;
   reactionUsers: {
     display_name: string;
     icon_src: string;
@@ -52,29 +53,34 @@ const StyledBoxTitleWrapper = styled(Box)`
   z-index: 3;
 }
 `;
-
 const StyledButton = styled(Button)`
   padding-left: 40px;
   padding-right: 40px;
+  font-weight: bold;
 }
 `;
-
 const StyledButtonAvatarWrapper = styled(Button)`
-background-color: #ffffff;
+  background-color: #ffffff;
   &:hover {
     background-color: #ffffff;
   }
 }
 `;
+const StyledBoxButtonWrapper = styled(Box)`
+  margin-bottom: 16px;
+  min-height: 36px;
+`;
 
 export const Reaction: React.FC<Props> = ({
   sortKey,
   postId,
+  isReaction,
   reactionUsers,
   displayName,
   userIcon,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMyReaction, setIsMyReaction] = useState(isReaction);
   const [users, setUsers] = useState<
     { display_name: string; icon_src: string }[]
   >(reactionUsers);
@@ -89,16 +95,18 @@ export const Reaction: React.FC<Props> = ({
       const action = result.data.resultAction;
       if (action === "put") {
         setUsers([
-          ...users,
           {
             display_name: displayName,
             icon_src: userIcon,
           },
+          ...users,
         ]);
+        setIsMyReaction(true);
       } else {
         const slicedUsers = users.slice();
         const newUsers = slicedUsers.filter((el) => el.icon_src !== userIcon);
         setUsers(newUsers);
+        setIsMyReaction(false);
       }
     } catch {
       alert(errorMessages.SYSTEM_ERROR);
@@ -109,16 +117,17 @@ export const Reaction: React.FC<Props> = ({
       <StyledBoxTitleWrapper component="span">
         このレビューをみんなにもオススメしますか？
       </StyledBoxTitleWrapper>
-      <Box mb={2}>
+      <StyledBoxButtonWrapper>
         <StyledButton
-          variant="outlined"
+          disableElevation={isMyReaction}
+          variant={isMyReaction ? "contained" : "outlined"}
           color="primary"
           startIcon={<SentimentSatisfiedOutlinedIcon />}
           onClick={() => post()}
         >
-          オススメする
+          {isMyReaction ? "このレビューをオススメ中" : "オススメする"}
         </StyledButton>
-      </Box>
+      </StyledBoxButtonWrapper>
       {users.length > 0 && (
         <StyledButtonAvatarWrapper
           onClick={() => setIsOpen(true)}
