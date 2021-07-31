@@ -1,4 +1,6 @@
 import { CustomSnackbar } from '@/components/atoms/CustomSnackbar';
+import { NotAuth403View } from '@/components/common/403/';
+import { CustomLoader } from '@/components/common/loader';
 import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox';
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper';
@@ -7,7 +9,8 @@ import { PostSettingDialog } from '@/components/parts/postSettingDialog';
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { targetLanguages } from '@/consts/target-languages';
-import LayoutPost from '@/layouts/post';
+import { useEditPost } from '@/hooks/useEditPost';
+import LayoutPostEdit from '@/layouts/postEdit';
 import { UserTypes } from '@/types/global';
 import { postContent } from '@/utils/api/post-content';
 import * as S3 from '@/utils/api/s3';
@@ -25,16 +28,14 @@ import './style.scss';
 
 type Props = {
   authUser: any;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes;
 };
 type ProgrammingIcon = {
   id: number;
   value: string;
   iconPath: string;
 };
-type ButtonText = Readonly<
-  '投稿設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
->;
+type ButtonText = Readonly<'編集設定' | '保存中...' | '保存済み ✔︎'>;
 type ValidObject = {
   isValid: boolean;
   message: string;
@@ -78,39 +79,46 @@ const StyledBoxCordEditorWrapper = styled(Box)`
   }
 `;
 
+const getPostIdFromPathName = () => {
+  const postIdIndex = 3;
+  return location.pathname.split('/')[postIdIndex];
+};
+
 const IndexPage: React.FC<Props> = props => {
   if (!props.authUser) return <></>;
+  const postId = getPostIdFromPathName();
+  const {
+    isLoading,
+    authorId,
+    title,
+    setTitle,
+    isSuccessed,
+    setIsSuccessed,
+    tagList,
+    setTagList,
+    description,
+    setDescription,
+    sourceCode,
+    setSourceCode,
+    inputFileNameLists,
+    setInputFileNameLists,
+    targetLanguageValue,
+    setTargetLanguageValue,
+    programmingIcon,
+    setProgrammingIcon,
+  } = useEditPost(postId);
+  const isMyItem = props.authUser['cognito:username'] === authorId;
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
       isValid: defaultValue,
       message: defaultMessage,
     };
   }, []);
-  const [title, setTitle] = useState('');
-  const [isSuccessed, setIsSuccessed] = useState(false);
-  const [tagList, setTagList] = useState<string[]>([]);
-  const [description, setDescription] = useState('');
-  const [sourceCode, setSourceCode] = useState('```\n\n```');
-  const [inputFileNameLists, setInputFileNameLists] = useState([
-    {
-      key: uuidv4(),
-      fileName: '',
-      sourceCode: '```\n\n```',
-      bodyHtml: '',
-      isValid: true,
-    },
-  ]);
-  const [targetLanguageValue, setTargetLanguageValue] = useState(0);
-  const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
-    id: 0,
-    value: '',
-    iconPath: '',
-  });
   const [activeStep, setActiveStep] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPosted, setIsPosted] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [buttonText, setButtonText] = useState<ButtonText>('下書き保存');
+  const [buttonText, setButtonText] = useState<ButtonText>('編集設定');
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, '')
   );
@@ -132,8 +140,6 @@ const IndexPage: React.FC<Props> = props => {
   const [uuid] = useState(uuidv4());
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
-    console.log(isPosted, 'isPosted');
-    console.log(isValidExistData, 'isValidExistData');
     if (isValidExistData && !isPosted) {
       if (confirm('データが入力されています。保存せずに終了しますか？')) {
         history.back();
@@ -223,10 +229,10 @@ const IndexPage: React.FC<Props> = props => {
     isValidSourceCodeObject,
   ]);
 
-  const validFalseIncluded = useCallback(() => {
-    const validList = inputFileNameLists.map(el => el.isValid);
-    return validList.includes(false);
-  }, [inputFileNameLists]);
+  // const validFalseIncluded = useCallback(() => {
+  //   const validList = inputFileNameLists.map(el => el.isValid);
+  //   return validList.includes(false);
+  // }, [inputFileNameLists]);
 
   const updateButtonText = useCallback((value: ButtonText) => {
     setButtonText(value);
@@ -285,39 +291,9 @@ const IndexPage: React.FC<Props> = props => {
       setIsPosted(true);
       setIsSuccessed(true);
     } catch {
-      console.error(err);
       alert(errorMessages.SYSTEM_ERROR);
     }
   };
-
-  const draftContent = useCallback(async () => {
-    if (!isValidTitleObject.isValid) {
-      updateCanPublish(false, isValidTitleObject.message);
-      return;
-    }
-    if (!(description.length <= CONSTS.MAX_DESCRIPTION_LENGTH)) {
-      updateCanPublish(false, validMessages.OVER_LENGTH_DESCRIPION);
-      return;
-    }
-    if (!(sourceCode.length <= CONSTS.MAX_SOURCE_CODE_LENGTH)) {
-      updateCanPublish(false, validMessages.OVER_LENGTH_SOURCE_CODE);
-      return;
-    }
-    const isValidFalseIncluded = validFalseIncluded();
-    if (isValidFalseIncluded) return;
-    const err = new Error();
-    const params = createParams('draft');
-    updateButtonText('保存中...');
-    try {
-      const result = await postContent(params);
-      if (result.status !== 200) throw err;
-      setIsPosted(true);
-      updateButtonText('保存済み ✔︎');
-    } catch {
-      console.error(err);
-      alert(errorMessages.SYSTEM_ERROR);
-    }
-  }, [title, description, inputFileNameLists]);
 
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -517,101 +493,113 @@ const IndexPage: React.FC<Props> = props => {
     });
   };
 
+  if (!isLoading && !isMyItem) {
+    return <NotAuth403View />;
+  }
+
   return (
-    <LayoutPost
-      title='Kanon Code | レビュー依頼'
+    <LayoutPostEdit
+      title='Kanon Code | 編集'
       currentUser={props.currentUser}
       prepareValidRegister={prepareValidRegister}
-      draftContent={draftContent}
       previousPage={previousPage}
       updateButtonText={updateButtonText}
       buttonText={buttonText}
     >
       <StyledContainer>
-        <Box component='section'>
-          <Box mb={3} className='title-wrapper'>
-            <InputPostTitleWrapper
-              title={title}
-              onChange={changeTitle}
-              placeholder='Title'
-            />
-          </Box>
-          <Box mb={3} className='tag-list-wrapper'>
-            <InputTagWrapper
-              changeTagList={changeTagList}
-              // suggestList={suggestList!}
-            />
-          </Box>
-          <Box mb={5} className='description-wrapper'>
-            <Editor
-              id='editor'
-              isFullDisplayButton={true}
-              headerText='Description'
-              onChange={changeDescritption}
-              changeActiveStep={changeActiveStep}
-              value={description}
-              activeStep={activeStep}
-              isValid={validLength(description, CONSTS.MAX_DESCRIPTION_LENGTH)}
-              updateCanPublish={updateCanPublish}
-              uploadImageToS3={S3.uploadImageToS3}
-              MAX_LENGTH={CONSTS.MAX_DESCRIPTION_LENGTH}
-            />
-          </Box>
-          <Box mb={3} className='source-code-wrapper'>
-            <StyledBoxFlex>
-              <StyledBoxInputGroupWrapper>
-                <Box className='github-wrapper' mb={1}>
-                  <Box mb={1}>
-                    <LinkGithubButton onClick={linkOnGithub} />
+        {isLoading ? (
+          <CustomLoader width={30} height={30} />
+        ) : (
+          <Box component='section'>
+            <Box mb={3} className='title-wrapper'>
+              <InputPostTitleWrapper
+                title={title}
+                onChange={changeTitle}
+                placeholder='Title'
+              />
+            </Box>
+            <Box mb={3} className='tag-list-wrapper'>
+              <InputTagWrapper
+                changeTagList={changeTagList}
+                tagList={tagList}
+              />
+            </Box>
+            <Box mb={5} className='description-wrapper'>
+              <Editor
+                id='editor'
+                isFullDisplayButton={true}
+                headerText='Description'
+                onChange={changeDescritption}
+                changeActiveStep={changeActiveStep}
+                value={description}
+                activeStep={activeStep}
+                isValid={validLength(
+                  description,
+                  CONSTS.MAX_DESCRIPTION_LENGTH
+                )}
+                updateCanPublish={updateCanPublish}
+                uploadImageToS3={S3.uploadImageToS3}
+                MAX_LENGTH={CONSTS.MAX_DESCRIPTION_LENGTH}
+              />
+            </Box>
+            <Box mb={3} className='source-code-wrapper'>
+              <StyledBoxFlex>
+                <StyledBoxInputGroupWrapper>
+                  <Box className='github-wrapper' mb={1}>
+                    <Box mb={1}>
+                      <LinkGithubButton onClick={linkOnGithub} />
+                    </Box>
+                    <p className='notification'>
+                      ※
+                      Githubに連携するとディレクトリ構成の中からファイルを選択できるようになります。
+                    </p>
                   </Box>
-                  <p className='notification'>
-                    ※
-                    Githubに連携するとディレクトリ構成の中からファイルを選択できるようになります。
-                  </p>
-                </Box>
-                <Box className='input-wrapper'>
-                  {inputFileNameLists.map((el, index) => (
-                    <StyledBoxInputWrapper mb={1.5} key={el.key}>
-                      <TextFieldWithCheckBox
-                        index={index}
-                        listLength={inputFileNameLists.length}
-                        value={el.fileName}
-                        variant='outlined'
-                        size='small'
-                        placeholder='some/path/file.ext'
-                        onClick={() => addListsItem()}
-                        onDelete={() => deleteListsItem(el.key, index)}
-                        onCnangeFileName={event => cnangeFileName(event, index)}
-                        onFocusGetIndex={() => onFocusGetIndex(index)}
-                      />
-                    </StyledBoxInputWrapper>
-                  ))}
-                </Box>
-              </StyledBoxInputGroupWrapper>
-              <StyledBoxCordEditorWrapper>
-                <Editor
-                  id='cord-editor'
-                  isFullDisplayButton={false}
-                  headerText='Source Code'
-                  onChange={changeSourceCode}
-                  changeActiveStep={changeActiveStep}
-                  value={sourceCode}
-                  activeStep={activeStep}
-                  isValid={validLength(
-                    sourceCode,
-                    CONSTS.MAX_DESCRIPTION_LENGTH
-                  )}
-                  updateCanPublish={updateCanPublish}
-                  uploadImageToS3={S3.uploadImageToS3}
-                  currentIndex={currentIndex}
-                  handleTabChange={handleTabChange}
-                  inputFileNameLists={inputFileNameLists}
-                  MAX_LENGTH={CONSTS.MAX_SOURCE_CODE_LENGTH}
-                />
-              </StyledBoxCordEditorWrapper>
-            </StyledBoxFlex>
+                  <Box className='input-wrapper'>
+                    {inputFileNameLists.map((el, index) => (
+                      <StyledBoxInputWrapper mb={1.5} key={el.key}>
+                        <TextFieldWithCheckBox
+                          index={index}
+                          listLength={inputFileNameLists.length}
+                          value={el.fileName}
+                          variant='outlined'
+                          size='small'
+                          placeholder='some/path/file.ext'
+                          onClick={() => addListsItem()}
+                          onDelete={() => deleteListsItem(el.key, index)}
+                          onCnangeFileName={event =>
+                            cnangeFileName(event, index)
+                          }
+                          onFocusGetIndex={() => onFocusGetIndex(index)}
+                        />
+                      </StyledBoxInputWrapper>
+                    ))}
+                  </Box>
+                </StyledBoxInputGroupWrapper>
+                <StyledBoxCordEditorWrapper>
+                  <Editor
+                    id='cord-editor'
+                    isFullDisplayButton={false}
+                    headerText='Source Code'
+                    onChange={changeSourceCode}
+                    changeActiveStep={changeActiveStep}
+                    value={sourceCode}
+                    activeStep={activeStep}
+                    isValid={validLength(
+                      sourceCode,
+                      CONSTS.MAX_DESCRIPTION_LENGTH
+                    )}
+                    updateCanPublish={updateCanPublish}
+                    uploadImageToS3={S3.uploadImageToS3}
+                    currentIndex={currentIndex}
+                    handleTabChange={handleTabChange}
+                    inputFileNameLists={inputFileNameLists}
+                    MAX_LENGTH={CONSTS.MAX_SOURCE_CODE_LENGTH}
+                  />
+                </StyledBoxCordEditorWrapper>
+              </StyledBoxFlex>
+            </Box>
           </Box>
-        </Box>
+        )}
       </StyledContainer>
       <PostSettingDialog
         title='PostSetting'
@@ -631,7 +619,7 @@ const IndexPage: React.FC<Props> = props => {
       >
         <Box fontWeight='bold'>{canPublish.message}</Box>
       </CustomSnackbar>
-    </LayoutPost>
+    </LayoutPostEdit>
   );
 };
 export default IndexPage;
