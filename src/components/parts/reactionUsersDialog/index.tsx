@@ -1,14 +1,14 @@
-import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
-import theme from "@/styles/theme";
-import Avatar from "@material-ui/core/Avatar";
-import Box from "@material-ui/core/Box";
-import Dialog from "@material-ui/core/Dialog";
-import DialogContent from "@material-ui/core/DialogContent";
-import Slide from "@material-ui/core/Slide";
-import { TransitionProps } from "@material-ui/core/transitions";
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
+import theme from '@/styles/theme';
+import Avatar from '@material-ui/core/Avatar';
+import Box from '@material-ui/core/Box';
+import Dialog from '@material-ui/core/Dialog';
+import DialogContent from '@material-ui/core/DialogContent';
+import Slide from '@material-ui/core/Slide';
+import { TransitionProps } from '@material-ui/core/transitions';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   users: {
@@ -52,20 +52,20 @@ const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
   ref: React.Ref<unknown>
 ) {
-  return <Slide direction="up" ref={ref} {...props} />;
+  return <Slide direction='up' ref={ref} {...props} />;
 });
 
-export const ReactionUsersDialog: React.FC<Props> = (props) => {
+export const ReactionUsersDialog: React.FC<Props> = props => {
   return (
     <Dialog
       open={props.isOpen}
       TransitionComponent={Transition}
       keepMounted
       fullWidth
-      maxWidth={"xs"}
+      maxWidth={'xs'}
       onClose={props.closeDialog}
-      aria-labelledby="alert-dialog-slide-title"
-      aria-describedby="alert-dialog-slide-description"
+      aria-labelledby='alert-dialog-slide-title'
+      aria-describedby='alert-dialog-slide-description'
     >
       <StyledBoxWrapper>
         <CustomHeading2 fontSize={20} marginBottom={0}>
@@ -75,7 +75,7 @@ export const ReactionUsersDialog: React.FC<Props> = (props) => {
       <StyledBoxContentWrapper>
         <DialogContent>
           {props.users.map((user, index) => (
-            <StyledBoxBorder>
+            <StyledBoxBorder key={index}>
               <Link href={`/${user.display_name}`}>
                 <StyledAnchor>
                   <StyledBoxAnchorWrapper>

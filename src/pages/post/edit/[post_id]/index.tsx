@@ -1,4 +1,6 @@
 import { CustomSnackbar } from '@/components/atoms/CustomSnackbar';
+import { NotAuth403View } from '@/components/common/403/';
+import { CustomLoader } from '@/components/common/loader';
 import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox';
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper';
@@ -7,9 +9,10 @@ import { PostSettingDialog } from '@/components/parts/postSettingDialog';
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { targetLanguages } from '@/consts/target-languages';
-import LayoutPost from '@/layouts/post';
+import { useEditPost } from '@/hooks/useEditPost';
+import LayoutPostEdit from '@/layouts/postEdit';
 import { UserTypes } from '@/types/global';
-import { postContent } from '@/utils/api/post-content';
+import { putContent } from '@/utils/api/put-content';
 import * as S3 from '@/utils/api/s3';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
 import { validLength } from '@/utils/valid';
@@ -25,7 +28,7 @@ import './style.scss';
 
 type Props = {
   authUser: any;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes;
 };
 type ProgrammingIcon = {
   id: number;
@@ -78,62 +81,64 @@ const StyledBoxCordEditorWrapper = styled(Box)`
   }
 `;
 
+const getPostIdFromPathName = () => {
+  const postIdIndex = 3;
+  return location.pathname.split('/')[postIdIndex];
+};
+
+const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
+  return {
+    isValid: defaultValue,
+    message: defaultMessage,
+  };
+};
+
 const IndexPage: React.FC<Props> = props => {
   if (!props.authUser) return <></>;
-  const createValidObject = useCallback((defaultValue, defaultMessage) => {
-    return {
-      isValid: defaultValue,
-      message: defaultMessage,
-    };
-  }, []);
-  const [title, setTitle] = useState('');
-  const [isSuccessed, setIsSuccessed] = useState(false);
-  const [tagList, setTagList] = useState<string[]>([]);
-  const [description, setDescription] = useState('');
-  const [sourceCode, setSourceCode] = useState('```\n\n```');
-  const [inputFileNameLists, setInputFileNameLists] = useState([
-    {
-      key: uuidv4(),
-      fileName: '',
-      sourceCode: '```\n\n```',
-      bodyHtml: '',
-      isValid: true,
-    },
-  ]);
-  const [targetLanguageValue, setTargetLanguageValue] = useState(0);
-  const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
-    id: 0,
-    value: '',
-    iconPath: '',
-  });
+  const postId = getPostIdFromPathName();
+  const {
+    isLoading,
+    authorId,
+    keys,
+    type,
+    title,
+    setTitle,
+    isSuccessed,
+    setIsSuccessed,
+    tagList,
+    setTagList,
+    description,
+    setDescription,
+    sourceCode,
+    setSourceCode,
+    inputFileNameLists,
+    setInputFileNameLists,
+    targetLanguageValue,
+    setTargetLanguageValue,
+    programmingIcon,
+    setProgrammingIcon,
+    isValidTitleObject,
+    setIsValidTitleObject,
+    isValidTagsObject,
+    setIsValidTagsObject,
+    isValidDescriptionObject,
+    setIsValidDescriptionObject,
+    isValidFileNameObject,
+    setIsValidFileNameObject,
+    isValidSourceCodeObject,
+    setIsValidSourceCodeObject,
+  } = useEditPost(postId);
+  const isMyItem = props.authUser['cognito:username'] === authorId;
   const [activeStep, setActiveStep] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPosted, setIsPosted] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [buttonText, setButtonText] = useState<ButtonText>('下書き保存');
+  const [buttonText, setButtonText] = useState<ButtonText>('編集設定');
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, '')
   );
-  const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
-    createValidObject(false, validMessages.REQUIRED_TITLE)
-  );
-  const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
-    createValidObject(false, validMessages.REQUIRED_TAGS)
-  );
-  const [isValidDescriptionObject, setIsValidDescriptionObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION));
-  const [isValidFileNameObject, setIsValidFileNameObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_FILE_NAME));
-  const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE));
-  const [uuid] = useState(uuidv4());
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
-    console.log(isPosted, 'isPosted');
-    console.log(isValidExistData, 'isValidExistData');
     if (isValidExistData && !isPosted) {
       if (confirm('データが入力されています。保存せずに終了しますか？')) {
         history.back();
@@ -163,7 +168,8 @@ const IndexPage: React.FC<Props> = props => {
 
   const createParams = (key: string) => {
     return {
-      uuid: uuid,
+      partitionKey: keys.partition_key,
+      sortKey: keys.sort_key,
       postType: key,
       contents: {
         title: title,
@@ -247,7 +253,7 @@ const IndexPage: React.FC<Props> = props => {
     [sourceCode, inputFileNameLists]
   );
 
-  const prepareValidRegister = useCallback(() => {
+  const prepareValidRegister = () => {
     if (!isValidTitleObject.isValid) {
       updateCanPublish(false, isValidTitleObject.message);
       return;
@@ -270,7 +276,7 @@ const IndexPage: React.FC<Props> = props => {
     }
     initCanPublish();
     setIsOpenDialog(true);
-  }, [title, tagList, description, inputFileNameLists]);
+  };
 
   const registerContent = async () => {
     if (programmingIcon.value === '') {
@@ -280,7 +286,7 @@ const IndexPage: React.FC<Props> = props => {
     const err = new Error();
     const params = createParams('published');
     try {
-      const result = await postContent(params);
+      const result = await putContent(params);
       if (result.status !== 200) throw err;
       setIsPosted(true);
       setIsSuccessed(true);
@@ -308,7 +314,7 @@ const IndexPage: React.FC<Props> = props => {
     const params = createParams('draft');
     updateButtonText('保存中...');
     try {
-      const result = await postContent(params);
+      const result = await putContent(params);
       if (result.status !== 200) throw err;
       setIsPosted(true);
       updateButtonText('保存済み ✔︎');
@@ -515,15 +521,23 @@ const IndexPage: React.FC<Props> = props => {
     });
   };
 
+  if (isLoading) {
+    return <CustomLoader width={30} height={30} />;
+  }
+
+  if (!isLoading && !isMyItem) {
+    return <NotAuth403View />;
+  }
+
   return (
-    <LayoutPost
-      title='Kanon Code | レビュー依頼'
-      currentUser={props.currentUser}
+    <LayoutPostEdit
+      title='Kanon Code | 編集'
       prepareValidRegister={prepareValidRegister}
       draftContent={draftContent}
       previousPage={previousPage}
       updateButtonText={updateButtonText}
       buttonText={buttonText}
+      postType={type}
     >
       <StyledContainer>
         <Box component='section'>
@@ -535,10 +549,7 @@ const IndexPage: React.FC<Props> = props => {
             />
           </Box>
           <Box mb={3} className='tag-list-wrapper'>
-            <InputTagWrapper
-              changeTagList={changeTagList}
-              // suggestList={suggestList!}
-            />
+            <InputTagWrapper changeTagList={changeTagList} tagList={tagList} />
           </Box>
           <Box mb={5} className='description-wrapper'>
             <Editor
@@ -629,7 +640,7 @@ const IndexPage: React.FC<Props> = props => {
       >
         <Box fontWeight='bold'>{canPublish.message}</Box>
       </CustomSnackbar>
-    </LayoutPost>
+    </LayoutPostEdit>
   );
 };
 export default IndexPage;

@@ -19,7 +19,7 @@ export type PostContentsTypes = {
   update_month: number;
   partition_key: string;
   is_delete: boolean;
-  contents: ContentTypes;
+  contents: CamelContentTypes;
   sort_key: string;
   user_id: string;
   post_status: number;
@@ -29,6 +29,15 @@ export type PostContentsTypes = {
   create_day: number;
   create_month: number;
   type: string;
+  [key: string]: any;
+};
+
+export type GetContentsTypes = {
+  partition_key: string;
+  sort_key: string;
+  contents: CamelContentTypes;
+  user_profile: UserProfileTypes;
+  type: 'post_published' | 'post_draft';
   [key: string]: any;
 };
 
@@ -75,6 +84,30 @@ export type ContentTypes = {
     source_code: string;
   }[];
   target_language: number;
+  source_tree: SourceTreeTypes[];
+  node_ids: string[];
+  title: string;
+};
+
+export type CamelContentTypes = {
+  tagList: string[];
+  targetIcon: {
+    iconPath: string;
+    id: number;
+    value: string;
+  };
+  description: {
+    bodyHtml: string;
+    value: string;
+  };
+  inputFileNameLists: {
+    bodyHtml: string;
+    fileName: string;
+    isValid: boolean;
+    key: string;
+    sourceCode: string;
+  }[];
+  targetLanguage: number;
   source_tree: SourceTreeTypes[];
   node_ids: string[];
   title: string;
