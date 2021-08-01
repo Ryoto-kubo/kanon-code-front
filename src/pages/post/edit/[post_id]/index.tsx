@@ -12,7 +12,7 @@ import { targetLanguages } from '@/consts/target-languages';
 import { useEditPost } from '@/hooks/useEditPost';
 import LayoutPostEdit from '@/layouts/postEdit';
 import { UserTypes } from '@/types/global';
-import { postContent } from '@/utils/api/post-content';
+import { putContent } from '@/utils/api/put-content';
 import * as S3 from '@/utils/api/s3';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
 import { validLength } from '@/utils/valid';
@@ -86,12 +86,20 @@ const getPostIdFromPathName = () => {
   return location.pathname.split('/')[postIdIndex];
 };
 
+const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
+  return {
+    isValid: defaultValue,
+    message: defaultMessage,
+  };
+};
+
 const IndexPage: React.FC<Props> = props => {
   if (!props.authUser) return <></>;
   const postId = getPostIdFromPathName();
   const {
     isLoading,
     authorId,
+    keys,
     type,
     title,
     setTitle,
@@ -109,14 +117,18 @@ const IndexPage: React.FC<Props> = props => {
     setTargetLanguageValue,
     programmingIcon,
     setProgrammingIcon,
+    isValidTitleObject,
+    setIsValidTitleObject,
+    isValidTagsObject,
+    setIsValidTagsObject,
+    isValidDescriptionObject,
+    setIsValidDescriptionObject,
+    isValidFileNameObject,
+    setIsValidFileNameObject,
+    isValidSourceCodeObject,
+    setIsValidSourceCodeObject,
   } = useEditPost(postId);
   const isMyItem = props.authUser['cognito:username'] === authorId;
-  const createValidObject = useCallback((defaultValue, defaultMessage) => {
-    return {
-      isValid: defaultValue,
-      message: defaultMessage,
-    };
-  }, []);
   const [activeStep, setActiveStep] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPosted, setIsPosted] = useState(false);
@@ -125,22 +137,6 @@ const IndexPage: React.FC<Props> = props => {
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, '')
   );
-  const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
-    createValidObject(false, validMessages.REQUIRED_TITLE)
-  );
-  const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
-    createValidObject(false, validMessages.REQUIRED_TAGS)
-  );
-  const [isValidDescriptionObject, setIsValidDescriptionObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION));
-  const [isValidFileNameObject, setIsValidFileNameObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_FILE_NAME));
-  const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE));
-  const [uuid] = useState(uuidv4());
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
     if (isValidExistData && !isPosted) {
@@ -172,7 +168,8 @@ const IndexPage: React.FC<Props> = props => {
 
   const createParams = (key: string) => {
     return {
-      uuid: uuid,
+      partitionKey: keys.partition_key,
+      sortKey: keys.sort_key,
       postType: key,
       contents: {
         title: title,
@@ -256,7 +253,7 @@ const IndexPage: React.FC<Props> = props => {
     [sourceCode, inputFileNameLists]
   );
 
-  const prepareValidRegister = useCallback(() => {
+  const prepareValidRegister = () => {
     if (!isValidTitleObject.isValid) {
       updateCanPublish(false, isValidTitleObject.message);
       return;
@@ -279,7 +276,7 @@ const IndexPage: React.FC<Props> = props => {
     }
     initCanPublish();
     setIsOpenDialog(true);
-  }, [title, tagList, description, inputFileNameLists]);
+  };
 
   const registerContent = async () => {
     if (programmingIcon.value === '') {
@@ -287,9 +284,9 @@ const IndexPage: React.FC<Props> = props => {
       return;
     }
     const err = new Error();
-    const params = createParams('regist');
+    const params = createParams('published');
     try {
-      const result = await postContent(params);
+      const result = await putContent(params);
       if (result.status !== 200) throw err;
       setIsPosted(true);
       setIsSuccessed(true);
@@ -317,7 +314,7 @@ const IndexPage: React.FC<Props> = props => {
     const params = createParams('draft');
     updateButtonText('保存中...');
     try {
-      const result = await postContent(params);
+      const result = await putContent(params);
       if (result.status !== 200) throw err;
       setIsPosted(true);
       updateButtonText('保存済み ✔︎');
