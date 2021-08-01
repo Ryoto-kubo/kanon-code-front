@@ -8,7 +8,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 type ButtonText = Readonly<
-  '投稿設定' | '編集設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
+  '投稿設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
 >;
 type Props = {
   prepareValidRegister: () => void;

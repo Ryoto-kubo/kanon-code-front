@@ -278,14 +278,13 @@ const IndexPage: React.FC<Props> = props => {
       return;
     }
     const err = new Error();
-    const params = createParams('regist');
+    const params = createParams('published');
     try {
       const result = await postContent(params);
       if (result.status !== 200) throw err;
       setIsPosted(true);
       setIsSuccessed(true);
     } catch {
-      console.error(err);
       alert(errorMessages.SYSTEM_ERROR);
     }
   };
@@ -314,7 +313,6 @@ const IndexPage: React.FC<Props> = props => {
       setIsPosted(true);
       updateButtonText('保存済み ✔︎');
     } catch {
-      console.error(err);
       alert(errorMessages.SYSTEM_ERROR);
     }
   }, [title, description, inputFileNameLists]);

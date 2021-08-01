@@ -13,7 +13,7 @@ import styled from 'styled-components';
 
 type Props = {
   changeTagList: any;
-  tagList: string[];
+  tagList?: string[];
 };
 const Tag = (props: any) => {
   const { label, onDelete, ...other } = props;
