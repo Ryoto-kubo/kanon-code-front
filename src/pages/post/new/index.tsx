@@ -33,7 +33,7 @@ type ProgrammingIcon = {
   iconPath: string;
 };
 type ButtonText = Readonly<
-  '投稿設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
+  '投稿設定' | '編集設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
 >;
 type ValidObject = {
   isValid: boolean;

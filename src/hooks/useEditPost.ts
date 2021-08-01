@@ -17,6 +17,7 @@ const getAuthorId = (partitionKey: string) => {
 export const useEditPost = (postId: string) => {
   const [authorId, setAurhorId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [type, setType] = useState<'post_published' | 'post_draft' | ''>('');
   const [title, setTitle] = useState('');
   const [isSuccessed, setIsSuccessed] = useState(false);
   const [tagList, setTagList] = useState<string[]>([]);
@@ -44,6 +45,7 @@ export const useEditPost = (postId: string) => {
         const result = await getContent({ postId });
         const post = result.data.post;
         setAurhorId(getAuthorId(post.partition_key));
+        setType(post.type);
         setTitle(post.contents.title);
         setTagList(post.contents.tagList);
         setDescription(post.contents.description.value);
@@ -61,6 +63,7 @@ export const useEditPost = (postId: string) => {
   return {
     isLoading,
     authorId,
+    type,
     title,
     setTitle,
     isSuccessed,

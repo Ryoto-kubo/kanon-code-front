@@ -37,6 +37,7 @@ export type GetContentsTypes = {
   sort_key: string;
   contents: CamelContentTypes;
   user_profile: UserProfileTypes;
+  type: 'post_published' | 'post_draft';
   [key: string]: any;
 };
 

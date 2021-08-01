@@ -5,7 +5,9 @@ import { Box } from '@material-ui/core/';
 import React from 'react';
 import styled from 'styled-components';
 
-type ButtonText = Readonly<'編集設定' | '保存中...' | '保存済み ✔︎'>;
+type ButtonText = Readonly<
+  '投稿設定' | '編集設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
+>;
 type Props = {
   prepareValidRegister: () => void;
   previousPage: () => void;
