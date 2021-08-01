@@ -33,6 +33,13 @@ export type PostContentsTypes = {
 };
 
 export type GetContentsTypes = {
+  contents: ContentTypes;
+  user_profile: UserProfileTypes;
+  date: string;
+  post_url: string;
+};
+
+export type GetContentTypes = {
   partition_key: string;
   sort_key: string;
   contents: CamelContentTypes;

@@ -1,7 +1,7 @@
-import { GetContentsTypes } from '@/types/global';
+import { GetContentTypes } from '@/types/global';
 
 export type ResponseContentTypes = {
-  post: GetContentsTypes;
+  post: GetContentTypes;
   status: boolean;
   status_code: number;
   status_message: string;

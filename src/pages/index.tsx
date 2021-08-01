@@ -5,7 +5,7 @@ import { Post } from '@/components/organisms/Post';
 import Layout from '@/layouts/standard';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
-import { PostContentsTypes } from '@/types/global/';
+import { GetContentsTypes } from '@/types/global/';
 import { getContents } from '@/utils/api/get-contents';
 import { Box, Container, Grid } from '@material-ui/core/';
 import React from 'react';
@@ -17,9 +17,9 @@ type Props = {
   currentUser: UserTypes | null;
   data: {
     Count: number;
-    frontPosts: PostContentsTypes[];
-    backPosts: PostContentsTypes[];
-    otherPosts: PostContentsTypes[];
+    frontPosts: GetContentsTypes[];
+    backPosts: GetContentsTypes[];
+    otherPosts: GetContentsTypes[];
     ScannedCount: number;
   };
 };
@@ -30,6 +30,8 @@ const StyledBoxWidthBorder = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  console.log(props.data);
+
   const frontPosts = props.data.frontPosts;
   const backPosts = props.data.backPosts;
   const otherPosts = props.data.otherPosts;
@@ -53,10 +55,10 @@ const IndexPage: React.FC<Props> = props => {
                   <Post
                     title={el.contents.title}
                     postUrl={el.post_url}
-                    iconPath={el.contents.targetIcon.iconPath}
+                    iconPath={el.contents.target_icon.icon_path}
                     name={el.user_profile.display_name}
-                    date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                    tagArray={el.contents.tagList}
+                    date={el.date}
+                    tagArray={el.contents.tag_list}
                     userIcon={el.user_profile.icon_src}
                   />
                 </Grid>
@@ -77,10 +79,10 @@ const IndexPage: React.FC<Props> = props => {
                   <Post
                     title={el.contents.title}
                     postUrl={el.post_url}
-                    iconPath={el.contents.targetIcon.iconPath}
+                    iconPath={el.contents.target_icon.icon_path}
                     name={el.user_profile.display_name}
-                    date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                    tagArray={el.contents.tagList}
+                    date={el.date}
+                    tagArray={el.contents.tag_list}
                     userIcon={el.user_profile.icon_src}
                   />
                 </Grid>
@@ -101,10 +103,10 @@ const IndexPage: React.FC<Props> = props => {
                   <Post
                     title={el.contents.title}
                     postUrl={el.post_url}
-                    iconPath={el.contents.targetIcon.iconPath}
+                    iconPath={el.contents.target_icon.icon_path}
                     name={el.user_profile.display_name}
-                    date={`${el.create_year}/${el.create_month}/${el.create_day}`}
-                    tagArray={el.contents.tagList}
+                    date={el.date}
+                    tagArray={el.contents.tag_list}
                     userIcon={el.user_profile.icon_src}
                   />
                 </Grid>

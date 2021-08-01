@@ -1,30 +1,39 @@
-import { ProfileArea } from "@/components/organisms/ProfileArea";
-import { Reviews } from "@/components/organisms/Reviews";
-import { SkilsArea } from "@/components/organisms/SkilsArea";
-import Layout from "@/layouts/standard";
-import { UserTypes } from "@/types/global";
-import { PostContentsTypes } from "@/types/global/index";
-import { getUserContents } from "@/utils/api/get-user-contents";
-import { Container } from "@material-ui/core/";
-import Box from "@material-ui/core/Box";
+import { ProfileArea } from '@/components/organisms/ProfileArea';
+import { Reviews } from '@/components/organisms/Reviews';
+import { SkilsArea } from '@/components/organisms/SkilsArea';
+import Layout from '@/layouts/standard';
+import {
+  PostsTypes,
+  ReviewsTypes,
+  UserProfileTypes,
+  UserTypes,
+} from '@/types/global';
+import { getUserContents } from '@/utils/api/get-user-contents';
+import { Container } from '@material-ui/core/';
+import Box from '@material-ui/core/Box';
 // import { GetServerSidePropsContext } from "next";
-import { GetStaticPropsContext } from "next";
-import React from "react";
+import { GetStaticPropsContext } from 'next';
+import React from 'react';
 
 type Props = {
   authUser: any;
   currentUser: null | UserTypes;
   data: {
-    user: UserTypes;
-    posts: PostContentsTypes[];
+    user: {
+      profile: UserProfileTypes;
+      userId: string;
+    };
+    profile: UserProfileTypes;
+    posts: PostsTypes[];
+    reviews: ReviewsTypes[];
   };
 };
 
-const IndexPage: React.FC<Props> = (props) => {
-  const userProfile = props.data.user.user_profile;
+const IndexPage: React.FC<Props> = props => {
+  const userProfile = props.data.user.profile;
   const displayName = userProfile.display_name;
-  const userId = props.data.user.user_id;
-  const cognitoId = props.authUser ? `user_${props.authUser.username}` : null;
+  const userId = props.data.user.userId;
+  const cognitoId = props.authUser ? props.authUser.username : null;
   const isMe = cognitoId === userId;
 
   return (
@@ -47,13 +56,14 @@ const IndexPage: React.FC<Props> = (props) => {
               isMe={isMe}
             />
           </Box>
-          <Box mb={3} component="section">
+          <Box mb={3} component='section'>
             <SkilsArea skils={userProfile.skils} />
           </Box>
-          <Box mb={3} component="section">
+          <Box mb={3} component='section'>
             <Reviews
               user={props.authUser}
               posts={props.data.posts}
+              reviews={props.data.reviews}
               isMe={isMe}
             />
           </Box>
