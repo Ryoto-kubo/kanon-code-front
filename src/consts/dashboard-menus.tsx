@@ -1,7 +1,8 @@
-import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
-import LocalLibraryOutlinedIcon from '@material-ui/icons/LocalLibraryOutlined'
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined'
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
+import BookmarksOutlinedIcon from '@material-ui/icons/BookmarksOutlined';
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import InboxOutlinedIcon from '@material-ui/icons/InboxOutlined';
+import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
+import NoteOutlinedIcon from '@material-ui/icons/NoteOutlined';
 
 export const menus = [
   {
@@ -9,19 +10,19 @@ export const menus = [
     icon: <CreateOutlinedIcon />,
     href: '/dashboard/reviews',
   },
-  // {
-  //   name: 'Review request',
-  //   icon: <RateReviewOutlinedIcon />,
-  //   href: '/dashboard/review_requests',
-  // },
+  {
+    name: 'Review request',
+    icon: <NoteOutlinedIcon />,
+    href: '/dashboard/drafts',
+  },
   {
     name: 'Bookmarks',
-    icon: <LocalLibraryOutlinedIcon />,
+    icon: <BookmarksOutlinedIcon />,
     href: '/dashboard/bookmarks',
   },
   {
     name: 'Payments',
-    icon: <ShoppingCartOutlinedIcon />,
+    icon: <InboxOutlinedIcon />,
     href: '/dashboard/payments_history',
   },
   {
@@ -34,4 +35,4 @@ export const menus = [
   //   icon: <IconGithub fontSize="small" />,
   //   href: '/dashboard/github',
   // },
-]
+];
