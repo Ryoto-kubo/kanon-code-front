@@ -5,6 +5,7 @@ export const apis = {
   USERS: '/api/users',
   USER_CONTENTS: '/api/userContents',
   MY_CONTENTS: '/api/myContents',
+  MY_DTAFTS: '/api/myDrafts',
   MY_PAYMENTS: '/api/myPayments',
   MY_BOOKMARKS: '/api/myBookmarks',
   CONTENTS: '/api/contents',
@@ -26,4 +27,4 @@ export const apis = {
   NOTICES: 'api/notices',
   SALES: 'api/sales',
   REACTION: 'api/reaction',
-}
+};

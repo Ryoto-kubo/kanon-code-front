@@ -233,6 +233,15 @@ export type PostsTypes = {
   date: string;
 };
 
+export type DraftsTypes = {
+  partition_key: string;
+  sort_key: string;
+  contents: ContentTypes;
+  post_status: number;
+  url: string;
+  date: string;
+};
+
 export type PostsTypesInPayments = PostsTypes & {
   payments: PaymentedTypes[];
 };
