@@ -6,27 +6,27 @@ import NoteOutlinedIcon from '@material-ui/icons/NoteOutlined';
 
 export const menus = [
   {
-    name: 'Reviews',
+    name: 'レビュー一覧',
     icon: <CreateOutlinedIcon />,
     href: '/dashboard/reviews',
   },
   {
-    name: 'Review request',
+    name: '下書き一覧',
     icon: <NoteOutlinedIcon />,
     href: '/dashboard/drafts',
   },
   {
-    name: 'Bookmarks',
+    name: 'ブックマーク',
     icon: <BookmarksOutlinedIcon />,
     href: '/dashboard/bookmarks',
   },
   {
-    name: 'Payments',
+    name: '購入履歴',
     icon: <InboxOutlinedIcon />,
     href: '/dashboard/payments_history',
   },
   {
-    name: 'Sales',
+    name: '売り上げ',
     icon: <MonetizationOnOutlinedIcon />,
     href: '/dashboard/sales',
   },

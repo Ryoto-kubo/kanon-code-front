@@ -24,7 +24,6 @@ import PersonOutlineOutlinedIcon from '@material-ui/icons/PersonOutlineOutlined'
 import SettingsOutlinedIcon from '@material-ui/icons/SettingsOutlined';
 import SpeedOutlinedIcon from '@material-ui/icons/SpeedOutlined';
 import { Auth } from 'aws-amplify';
-// import Link from "next/link";
 import { useRouter } from 'next/router';
 import { destroyCookie } from 'nookies';
 import React, { useEffect, useState } from 'react';
