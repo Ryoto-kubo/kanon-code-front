@@ -1,28 +1,29 @@
-import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
-import { ErrorView } from "@/components/common/error";
-import { CustomLoader } from "@/components/common/loader";
-import { MySales } from "@/components/organisms/MySales";
-import { SalesArea } from "@/components/organisms/SalesArea";
-import { SalesChart } from "@/components/organisms/SalesChart";
-import { useSales } from "@/hooks/useSales";
-import { LayoutDashboard } from "@/layouts/dashboard";
-import { UserTypes } from "@/types/global";
-import Box from "@material-ui/core/Box";
-import React from "react";
+import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { ErrorView } from '@/components/common/error';
+import { CustomLoader } from '@/components/common/loader';
+import { MySales } from '@/components/organisms/MySales';
+import { SalesArea } from '@/components/organisms/SalesArea';
+import { SalesChart } from '@/components/organisms/SalesChart';
+import { useSales } from '@/hooks/useSales';
+import { LayoutDashboard } from '@/layouts/dashboard';
+import { UserTypes } from '@/types/global';
+import Box from '@material-ui/core/Box';
+import React from 'react';
 
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
 };
 
-const IndexPage: React.FC<Props> = (props) => {
+const IndexPage: React.FC<Props> = props => {
   if (!props.authUser || !props.currentUser) return <></>;
   const { data, isValidating } = useSales();
   const status = data?.data.status;
   if (status === false) {
     return (
       <LayoutDashboard
-        title="Kanon Code | ダッシュボード:売り上げ"
+        title='Kanon Code | ダッシュボード:売り上げ'
         currentUser={props.currentUser}
       >
         <ErrorView />
@@ -37,10 +38,10 @@ const IndexPage: React.FC<Props> = (props) => {
   const backGrounds = data?.data.backGrounds;
   return (
     <LayoutDashboard
-      title="Kanon Code | ダッシュボード:売り上げ"
+      title='Kanon Code | ダッシュボード:売り上げ'
       currentUser={props.currentUser}
     >
-      <Box width={"100%"} position="relative" minHeight="300px">
+      <Box width={'100%'} position='relative' minHeight='300px'>
         <CustomHeading2 fontSize={24} marginBottom={1}>
           Sales
         </CustomHeading2>
@@ -48,8 +49,17 @@ const IndexPage: React.FC<Props> = (props) => {
           <CustomLoader width={30} height={30} />
         ) : (
           <Box my={3}>
-            <Box mb={2}>
-              <MySales sales={sales} imgWidth="40px" imgHeight="40px" />
+            <Box mb={2} textAlign='right'>
+              <CustomSolidButton
+                sizing='small'
+                color='primary'
+                onClick={() => console.log('hoge')}
+              >
+                出金申請
+              </CustomSolidButton>
+            </Box>
+            <Box mb={5}>
+              <MySales sales={sales} imgWidth='40px' imgHeight='40px' />
             </Box>
             <Box mb={2}>
               <SalesArea
