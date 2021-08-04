@@ -1,7 +1,7 @@
-import Box from "@material-ui/core/Box";
+import Box from '@material-ui/core/Box';
 // import "chartjs-plugin-datalabels";
-import React from "react";
-import { Bar } from "react-chartjs-2";
+import React from 'react';
+import { Bar } from 'react-chartjs-2';
 
 type Props = {
   labels: string[];
@@ -34,7 +34,7 @@ const options = {
       {
         scaleLabel: {
           display: true,
-          labelString: "売り上げ(¥)",
+          labelString: '売り上げ(¥)',
         },
         ticks: {
           beginAtZero: true,
@@ -47,29 +47,27 @@ const options = {
   },
 };
 
-export const SalesChart: React.FC<Props> = ({
-  labels,
-  salesList,
-  backGrounds,
-}) => {
-  const data = {
-    labels: labels,
-    datasets: [
-      {
-        label: "売り上げ",
-        data: salesList,
-        backgroundColor: backGrounds,
-        borderColor: backGrounds,
-        borderWidth: 1,
-      },
-    ],
-  };
+export const SalesChart: React.FC<Props> = React.memo(
+  ({ labels, salesList, backGrounds }) => {
+    const data = {
+      labels: labels,
+      datasets: [
+        {
+          label: '売り上げ',
+          data: salesList,
+          backgroundColor: backGrounds,
+          borderColor: backGrounds,
+          borderWidth: 1,
+        },
+      ],
+    };
 
-  return (
-    // 100%にするとレスポンシブが効かないため99%に設定
-    <Box style={{ position: "relative", height: "500px", width: "99%" }}>
-      {/* <Box className="chart-wrapper"> */}
-      <Bar data={data} options={options} />
-    </Box>
-  );
-};
+    return (
+      // 100%にするとレスポンシブが効かないため99%に設定
+      <Box style={{ position: 'relative', height: '500px', width: '99%' }}>
+        {/* <Box className="chart-wrapper"> */}
+        <Bar data={data} options={options} />
+      </Box>
+    );
+  }
+);

@@ -1,7 +1,7 @@
-import theme from "@/styles/theme";
-import Box from "@material-ui/core/Box";
-import React from "react";
-import styled from "styled-components";
+import theme from '@/styles/theme';
+import Box from '@material-ui/core/Box';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   totalSales: number;
@@ -9,7 +9,7 @@ type Props = {
 };
 
 const StyledBoxFlex = styled(Box)`
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     display: flex;
     justify-content: space-between;
   }
@@ -21,7 +21,7 @@ const StyledBoxPriceWrapper = styled(Box)`
   width: 100%;
   text-align: center;
   margin-bottom: 16px;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     width: calc((100% - 20px) / 2);
   }
 `;
@@ -31,7 +31,7 @@ const StyledBoxPrice = styled(Box)`
   font-size: 24px;
 `;
 
-export const SalesArea: React.FC<Props> = (props) => {
+export const SalesArea: React.FC<Props> = props => {
   return (
     <StyledBoxFlex>
       <StyledBoxPriceWrapper>
