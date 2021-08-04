@@ -5,11 +5,12 @@ import { CustomLoader } from '@/components/common/loader';
 import { MySales } from '@/components/organisms/MySales';
 import { SalesArea } from '@/components/organisms/SalesArea';
 import { SalesChart } from '@/components/organisms/SalesChart';
+import { DepositDialog } from '@/components/parts/depositDialog';
 import { useSales } from '@/hooks/useSales';
 import { LayoutDashboard } from '@/layouts/dashboard';
 import { UserTypes } from '@/types/global';
 import Box from '@material-ui/core/Box';
-import React from 'react';
+import React, { useState } from 'react';
 
 type Props = {
   authUser: any;
@@ -18,6 +19,7 @@ type Props = {
 
 const IndexPage: React.FC<Props> = props => {
   if (!props.authUser || !props.currentUser) return <></>;
+  const [isOpen, setIsOpen] = useState(false);
   const { data, isValidating } = useSales();
   const status = data?.data.status;
   if (status === false) {
@@ -36,6 +38,7 @@ const IndexPage: React.FC<Props> = props => {
   const labels = data?.data.labels;
   const salesList = data?.data.salesList;
   const backGrounds = data?.data.backGrounds;
+  const closeDialog = () => setIsOpen(false);
   return (
     <LayoutDashboard
       title='Kanon Code | ダッシュボード:売り上げ'
@@ -53,7 +56,7 @@ const IndexPage: React.FC<Props> = props => {
               <CustomSolidButton
                 sizing='small'
                 color='primary'
-                onClick={() => console.log('hoge')}
+                onClick={() => setIsOpen(true)}
               >
                 出金申請
               </CustomSolidButton>
@@ -75,6 +78,11 @@ const IndexPage: React.FC<Props> = props => {
           </Box>
         )}
       </Box>
+      <DepositDialog
+        isOpenDialog={isOpen}
+        closeDialog={closeDialog}
+        totalSales={totalSales}
+      />
     </LayoutDashboard>
   );
 };

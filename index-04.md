@@ -8,3 +8,8 @@
 - これはリストの 2 行目です。
 
 Markdown のまとめ: [README.md ファイル。マークダウン記法まとめ | codechord](http://codechord.com/2012/01/readme-markdown/)
+
+| hoge | foo |
+| ---- | --- |
+| 1    | 2   |
+| 2    | 3   |

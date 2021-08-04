@@ -27,4 +27,5 @@ export const apis = {
   NOTICES: 'api/notices',
   SALES: 'api/sales',
   REACTION: 'api/reaction',
+  DEPOSIT: 'api/deposit',
 };
