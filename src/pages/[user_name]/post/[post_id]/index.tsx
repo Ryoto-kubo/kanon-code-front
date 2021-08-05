@@ -1,16 +1,16 @@
-import { ReviewEditor } from "@/components/organisms/ReviewEditor";
-import { ReviewList } from "@/components/organisms/ReviewList";
-import { ReviewRequestContents } from "@/components/organisms/ReviewRequestContents";
-import { ReviewRequestItemHeader } from "@/components/organisms/ReviewRequestItemHeader";
-import { useReviews } from "@/hooks/useReviews";
-import Layout from "@/layouts/standard";
-import { UserTypes } from "@/types/global";
-import { PostContentsTypes, ReviewTypes } from "@/types/global/";
-import { getContent } from "@/utils/api/get-content";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import React from "react";
-import styled from "styled-components";
+import { ReviewEditor } from '@/components/organisms/ReviewEditor';
+import { ReviewList } from '@/components/organisms/ReviewList';
+import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
+import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader';
+import { useReviews } from '@/hooks/useReviews';
+import Layout from '@/layouts/standard';
+import { UserTypes } from '@/types/global';
+import { PostContentsTypes, ReviewTypes } from '@/types/global/';
+import { getContent } from '@/utils/api/get-content';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   authUser: any;
@@ -20,7 +20,7 @@ type Props = {
 
 const StyledBoxBgGray = styled(Box)`
   padding: 40px 0px;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     background: #fafafa;
     padding: 40px 16px;
   }
@@ -28,7 +28,7 @@ const StyledBoxBgGray = styled(Box)`
 const StyledBoxBgWhite = styled(Box)`
   padding: 0px;
   border-radius: 4px;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     background: #ffffff;
     padding: 24px;
   }
@@ -37,16 +37,16 @@ const StyledContainer = styled(Container)`
   padding-top: 24px;
 `;
 
-const IndexPage: React.FC<Props> = (props) => {
+const IndexPage: React.FC<Props> = props => {
   const post = props.post;
   const contents = props.post.contents;
   const title = contents.title;
   const postId = post.sort_key;
   const userProfile = props.currentUser ? props.currentUser.user_profile : null;
-  const myUserId = props.currentUser ? props.currentUser.partition_key : "";
+  const myUserId = props.currentUser ? props.currentUser.partition_key : '';
   const contributorId = post.partition_key;
   const isMe = myUserId === contributorId;
-  const authUserName = props.authUser ? props.authUser["cognito:username"] : "";
+  const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
   const {
     creditResponse,
     reviewsResponse,
@@ -73,7 +73,7 @@ const IndexPage: React.FC<Props> = (props) => {
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <StyledBoxBgGray>
-        <StyledContainer maxWidth="md">
+        <StyledContainer maxWidth='md'>
           <Box mb={5}>
             <StyledBoxBgWhite>
               <Box mb={5}>
