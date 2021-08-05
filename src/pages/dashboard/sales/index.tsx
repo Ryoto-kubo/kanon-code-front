@@ -42,7 +42,6 @@ const IndexPage: React.FC<Props> = props => {
   const labels = data?.data.labels;
   const salesList = data?.data.salesList;
   const backGrounds = data?.data.backGrounds;
-  const closeDialog = () => setIsOpen(false);
   return (
     <LayoutDashboard
       title='Kanon Code | ダッシュボード:売り上げ'
@@ -84,7 +83,7 @@ const IndexPage: React.FC<Props> = props => {
       </Box>
       <DepositDialog
         isOpenDialog={isOpen}
-        closeDialog={closeDialog}
+        closeDialog={() => setIsOpen(false)}
         totalSales={totalSales}
       />
     </LayoutDashboard>

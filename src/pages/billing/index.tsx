@@ -2,6 +2,7 @@ import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { CustomLoader } from '@/components/common/loader';
 import { ValidMessage } from '@/components/molecules/ValidMessage';
 import { SettingForm } from '@/components/organisms/SettingForm';
+import { MovePageDialog } from '@/components/parts/movePageDialog';
 import { messages } from '@/consts/messages';
 import { useCredit } from '@/hooks/useCredit';
 import { SettingLayout } from '@/layouts/setting-form';
@@ -61,6 +62,8 @@ const Wrapper = ({
   const stripe = useStripe();
   const elements = useElements();
   const [isOpen, setIsOpen] = useState(false);
+  const [isOpenMovePage, setIsOpenMovePage] = useState(false);
+  const [href, setHref] = useState('');
   const [updatingMessage, setUpdatingMessage] = useState('更新中...');
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [isValid, setIsValid] = useState<boolean>(true);
@@ -91,6 +94,16 @@ const Wrapper = ({
       );
     }
     return isResult;
+  };
+
+  const movePageToSalesIfNeeded = () => {
+    const query = location.search;
+    const findIndex = query.indexOf('redirect_uri');
+    if (findIndex !== -1) {
+      const redirectUri = query.replace('?redirect_uri=', '');
+      setHref(redirectUri);
+      setIsOpenMovePage(true);
+    }
   };
 
   const update = async () => {
@@ -140,6 +153,7 @@ const Wrapper = ({
       if (!result.status) throw err;
       setUpdatingMessage(messages.UPDATED_MESSAGE);
       setIsDidabled(false);
+      movePageToSalesIfNeeded();
     } catch {
       setIsOpen(false);
     }
@@ -216,6 +230,12 @@ const Wrapper = ({
           </Box>
         )}
       </SettingForm>
+      <MovePageDialog
+        text='クレジット情報の登録が完了しました'
+        href={href}
+        isOpenDialog={isOpenMovePage}
+        closeDialog={() => setIsOpenMovePage(false)}
+      />
     </SettingLayout>
   );
 };

@@ -1,26 +1,26 @@
-import { Price } from "@/components/atoms/Price";
-import { ErrorView } from "@/components/common/error";
-import { CustomLoader } from "@/components/common/loader";
-import { AnnounceOpenReview } from "@/components/molecules/AnnounceOpenReview";
-import { RequestItemUser } from "@/components/molecules/RequestItemUser";
-import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
-import { RelaxIllustration } from "@/components/parts/illustrations/relax";
-import { PaymentDialog } from "@/components/parts/paymentDialog";
-import { Reaction } from "@/components/parts/reaction";
-import { RegistCreditAnnounceDialog } from "@/components/parts/registCreditAnnounceDialog";
-import { SigninDialog } from "@/components/parts/signinDialog";
-import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from "@/consts/const";
-import theme from "@/styles/theme";
-import { CustomReviewTypes } from "@/types/global";
-import { CreditTypes, UserProfileTypes } from "@/types/global/";
-import { postPayment } from "@/utils/api/post-payment";
-import { postRegisterPayment } from "@/utils/api/post-register-payment";
-import { getStripe } from "@/utils/stripe";
-import Box from "@material-ui/core/Box";
-import { Elements, useStripe } from "@stripe/react-stripe-js";
-import marked from "marked";
-import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+import { Price } from '@/components/atoms/Price';
+import { ErrorView } from '@/components/common/error';
+import { CustomLoader } from '@/components/common/loader';
+import { AnnounceOpenReview } from '@/components/molecules/AnnounceOpenReview';
+import { RequestItemUser } from '@/components/molecules/RequestItemUser';
+import { RightBorderTitle } from '@/components/molecules/RightBorderTitle';
+import { RelaxIllustration } from '@/components/parts/illustrations/relax';
+import { PaymentDialog } from '@/components/parts/paymentDialog';
+import { Reaction } from '@/components/parts/reaction';
+import { RegistCreditAnnounceDialog } from '@/components/parts/registCreditAnnounceDialog';
+import { SigninDialog } from '@/components/parts/signinDialog';
+import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from '@/consts/const';
+import theme from '@/styles/theme';
+import { CustomReviewTypes } from '@/types/global';
+import { CreditTypes, UserProfileTypes } from '@/types/global/';
+import { postPayment } from '@/utils/api/post-payment';
+import { postRegisterPayment } from '@/utils/api/post-register-payment';
+import { getStripe } from '@/utils/stripe';
+import Box from '@material-ui/core/Box';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
+import marked from 'marked';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   status: boolean;
@@ -70,16 +70,17 @@ const Wrapper: React.FC<Props> = ({
 }) => {
   const partitionKey = `${USER_PREFIX}#${authUserName}`; // my user id
   const myReviewId = `${postId}#${REVIEW_PREFIX}#${authUserName}`;
+  const redirectUri = location.pathname;
   const [isOpenPayment, setIsOpenPayment] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isOpenCreditAnnounce, setIsOpenCreditAnnounce] = useState(false);
   const [isOpenSignin, setIsOpenSignin] = useState(false);
-  const [title, setTitle] = useState("");
-  const [name, setName] = useState("");
-  const [iconSrc, setIconSrc] = useState("");
+  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
+  const [iconSrc, setIconSrc] = useState('');
   const [price, setPrice] = useState(0);
-  const [reviewId, setReviewId] = useState("");
-  const [reviewerId, setReviewerId] = useState("");
+  const [reviewId, setReviewId] = useState('');
+  const [reviewerId, setReviewerId] = useState('');
   const [isSucceeded, setIsSucceeded] = useState(false);
   const stripe = useStripe();
   const showToggleDialog = (
@@ -90,7 +91,7 @@ const Wrapper: React.FC<Props> = ({
     argPrice: number,
     argReviewerId: string
   ) => {
-    if (authUserName === "") {
+    if (authUserName === '') {
       setIsOpenSignin(true);
       return;
     }
@@ -142,7 +143,7 @@ const Wrapper: React.FC<Props> = ({
       const clientSecret = response.data.client_secret;
       if (!stripe || !clientSecret) return;
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
-      if (paymentResult.paymentIntent?.status !== "succeeded") throw err;
+      if (paymentResult.paymentIntent?.status !== 'succeeded') throw err;
       const registerResult = await postRegisterPayment(registerParams);
       const newReviews = reviews!.slice();
       for (const item of newReviews) {
@@ -160,15 +161,7 @@ const Wrapper: React.FC<Props> = ({
       setIsDisabled(false);
     }
   };
-  const closeSigninDialog = useCallback(() => {
-    setIsOpenSignin(false);
-  }, []);
-  const closePaymentDialog = useCallback(() => {
-    setIsOpenPayment(false);
-  }, []);
-  const closeCreditDialog = useCallback(() => {
-    setIsOpenCreditAnnounce(false);
-  }, []);
+
   const renderReviewedItem = (el: CustomReviewTypes, index: number) => {
     const name = el.user_profile.display_name;
     const iconSrc = el.user_profile.icon_src;
@@ -183,23 +176,23 @@ const Wrapper: React.FC<Props> = ({
     const reviewerId = el.user_id;
     const isPaymented = paymentedList[sortKey];
     return (
-      <Box key={index} component="section" mb={7}>
+      <Box key={index} component='section' mb={7}>
         <StyledBoxFlex mb={2}>
           <RequestItemUser
             name={name}
             date={date}
             userIcon={iconSrc}
-            width={"32px"}
-            height={"32px"}
+            width={'32px'}
+            height={'32px'}
           />
           {isSelfReviewItem ? (
-            <Price color="#5C6BC0" text="自身のレビュー" />
+            <Price color='#5C6BC0' text='自身のレビュー' />
           ) : isPaymented ? (
-            <Price color="#EC576B" text="購入済み" />
+            <Price color='#EC576B' text='購入済み' />
           ) : (
             <Price
-              color={isPaymentFree ? "#5C6BC0" : "#EC576B"}
-              text={isPaymentFree ? "FREE!!" : `¥${price}`}
+              color={isPaymentFree ? '#5C6BC0' : '#EC576B'}
+              text={isPaymentFree ? 'FREE!!' : `¥${price}`}
             />
           )}
         </StyledBoxFlex>
@@ -207,7 +200,7 @@ const Wrapper: React.FC<Props> = ({
           <h1>{title}</h1>
         </StyledBoxTitleWrapper>
         <Box mb={5}>
-          <div className="review-item-wrapper">
+          <div className='review-item-wrapper'>
             <span
               dangerouslySetInnerHTML={{
                 __html: marked(displayBodyHtml),
@@ -239,18 +232,17 @@ const Wrapper: React.FC<Props> = ({
       </Box>
     );
   };
-
   return (
     <>
       {isLoading ? (
-        <Box position="relative" padding={2}>
+        <Box position='relative' padding={2}>
           <CustomLoader width={30} height={30} />
         </Box>
       ) : status ? (
         reviews.length > 0 ? (
           reviews.map((el, index) => renderReviewedItem(el, index))
         ) : isMe ? (
-          <RelaxIllustration secondText="リラックスして少し休憩しませんか？" />
+          <RelaxIllustration secondText='リラックスして少し休憩しませんか？' />
         ) : (
           <RelaxIllustration />
         )
@@ -264,19 +256,20 @@ const Wrapper: React.FC<Props> = ({
         price={price}
         isSucceeded={isSucceeded}
         isDisabled={isDisabled}
-        width={"30px"}
-        height={"30px"}
+        width={'30px'}
+        height={'30px'}
         isOpenDialog={isOpenPayment}
-        closeDialog={closePaymentDialog}
+        closeDialog={() => setIsOpenPayment(false)}
         payment={payment}
       />
       <RegistCreditAnnounceDialog
+        redirectUri={redirectUri}
         isOpenDialog={isOpenCreditAnnounce}
-        showToggleDialog={closeCreditDialog}
+        showToggleDialog={() => setIsOpenCreditAnnounce(false)}
       />
       <SigninDialog
         isOpenDialog={isOpenSignin}
-        closeDialog={closeSigninDialog}
+        closeDialog={() => setIsOpenSignin(false)}
       />
     </>
   );
@@ -287,9 +280,9 @@ export const ReviewList = (props: Props) => {
 
   return (
     <Elements stripe={promiseStripe}>
-      <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
+      <RightBorderTitle text='Review List' fontSize={20} marginBottom={0} />
       {props.isReviewsLoading ? (
-        <Box position="relative" padding={2}>
+        <Box position='relative' padding={2}>
           <CustomLoader width={30} height={30} />
         </Box>
       ) : (
