@@ -1,14 +1,18 @@
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { SolidLink } from '@/components/atoms/SolidLink';
 import { CustomLoader } from '@/components/common/loader';
 import { useDeposit } from '@/hooks/useDeposit';
 import Box from '@material-ui/core/Box';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
+import InputAdornment from '@material-ui/core/InputAdornment';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import { TransitionProps } from '@material-ui/core/transitions';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+// const NumberEasing = require('react-number-easing');
+
 type Props = {
   isOpenDialog: boolean;
   closeDialog: () => void;
@@ -17,11 +21,11 @@ type Props = {
 
 const StyledBoxContentWrapper = styled(Box)`
   text-align: center;
-  padding-bottom: 32px;
   padding-top: 24px;
+  padding-bottom: 16px;
 `;
 const StyledBoxMessageWrapper = styled(Box)`
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
   margin-bottom: 24px;
 `;
@@ -44,7 +48,7 @@ const renderMoveAnnounce = () => {
   );
 };
 
-const renderForm = (
+const renderTextField = (
   withdrawableBalance: number,
   value: number,
   changeValue: (
@@ -56,20 +60,42 @@ const renderForm = (
       <StyledBoxMessageWrapper mb={2}>
         残高：¥{withdrawableBalance}
       </StyledBoxMessageWrapper>
-      <TextField label='引き出し額' onChange={changeValue} />
+      <TextField
+        label='引き出し額'
+        value={value}
+        onChange={changeValue}
+        InputProps={{
+          startAdornment: <InputAdornment position='start'>¥</InputAdornment>,
+        }}
+      />
     </>
   );
 };
+
 export const DepositDialog: React.FC<Props> = props => {
   const [value, setValue] = useState(0);
+  const [withdrawableBalance, setWithdrawableBalance] = useState(10000);
   const { data, isValidating } = useDeposit();
   const hasBank = data?.data.hasBank;
-  const withdrawableBalance = props.totalSales - data?.data.deposit;
+  const baseWithdrawableBalance = 10000;
+
+  const validNumber = (price: string) => {
+    const regExp = new RegExp(/^[0-9]*$/);
+    return regExp.test(price);
+  };
+
   const changeValue = (
-    event: (
-      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void
-  ) => {};
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const isValidNumber = validNumber(event.target.value);
+    if (!isValidNumber) {
+      return;
+    }
+    const value = Number(event.target.value);
+    setValue(value);
+    setWithdrawableBalance(baseWithdrawableBalance - value);
+  };
+
   return (
     <Dialog
       open={props.isOpenDialog}
@@ -88,7 +114,19 @@ export const DepositDialog: React.FC<Props> = props => {
           ) : !hasBank ? (
             renderMoveAnnounce()
           ) : (
-            renderForm(withdrawableBalance, value, changeValue)
+            <>
+              <Box mb={4}>
+                {renderTextField(withdrawableBalance, value, changeValue)}
+              </Box>
+              <Box textAlign='right'>
+                <CustomSolidButton
+                  sizing='small'
+                  onClick={() => console.log('hoge')}
+                >
+                  出金する
+                </CustomSolidButton>
+              </Box>
+            </>
           )}
         </DialogContent>
       </StyledBoxContentWrapper>
