@@ -1,12 +1,12 @@
-import { CircleGrid } from "@/components/molecules/CircleGrid";
-import { SearchField } from "@/components/molecules/SearchField";
-import { CircleGrids } from "@/components/organisms/CircleGrids";
-import { icons } from "@/components/svg/programing/Icons";
-import Layout from "@/layouts/standard";
-import { UserTypes } from "@/types/global";
-import { Container } from "@material-ui/core/";
-import { useRouter } from "next/router";
-import React, { MouseEvent, useState } from "react";
+import { CircleGrid } from '@/components/molecules/CircleGrid';
+import { SearchField } from '@/components/molecules/SearchField';
+import { CircleGrids } from '@/components/organisms/CircleGrids';
+import { icons } from '@/components/svg/programing/Icons';
+import Layout from '@/layouts/standard';
+import { UserTypes } from '@/types/global';
+import { Container } from '@material-ui/core/';
+import { useRouter } from 'next/router';
+import React, { MouseEvent, useState } from 'react';
 
 type Props = {
   title: string;
@@ -14,7 +14,7 @@ type Props = {
 };
 
 const formFunc = (e: React.FormEvent) => {
-  console.log("enterを押した検索");
+  console.log('enterを押した検索');
   e.preventDefault();
 };
 
@@ -25,7 +25,7 @@ const formFunc = (e: React.FormEvent) => {
 //   },
 // });
 
-const IndexPage: React.FC<Props> = (props) => {
+const IndexPage: React.FC<Props> = props => {
   const router = useRouter();
 
   const initIconComponents = () => {
@@ -43,8 +43,8 @@ const IndexPage: React.FC<Props> = (props) => {
   const filterdIcons = (e: React.ChangeEvent<HTMLInputElement>): void => {
     // To identify the dots
     const searchStr =
-      e.target.value.toLowerCase() === "."
-        ? "\\."
+      e.target.value.toLowerCase() === '.'
+        ? '\\.'
         : e.target.value.toLowerCase();
     const updateList = initIconComponents().filter((item: any) => {
       return item.props.text.toLowerCase().search(searchStr) !== -1;
@@ -54,17 +54,16 @@ const IndexPage: React.FC<Props> = (props) => {
 
   const iconClick = (e: MouseEvent) => {
     const searchStr = e.currentTarget.children[1].textContent;
-    console.log(searchStr);
     router.push({
-      pathname: "/search",
+      pathname: '/search',
       query: { keyword: searchStr },
     });
   };
   const [renderIcons, setRenderIcons] = useState(initIconComponents);
 
   return (
-    <Layout title="Kanon Code | 検索" currentUser={props.currentUser}>
-      <Container maxWidth="md">
+    <Layout title='Kanon Code | 検索' currentUser={props.currentUser}>
+      <Container maxWidth='md'>
         <SearchField
           formFunc={formFunc}
           func={iconClick}

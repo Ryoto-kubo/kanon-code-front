@@ -9,6 +9,7 @@ import { DepositDialog } from '@/components/parts/depositDialog';
 import { useSales } from '@/hooks/useSales';
 import { LayoutDashboard } from '@/layouts/dashboard';
 import { UserTypes } from '@/types/global';
+import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import React, { useState } from 'react';
 
@@ -18,7 +19,10 @@ type Props = {
 };
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser || !props.currentUser) return <></>;
+  if (!props.authUser || !props.currentUser) {
+    moveToTop();
+    return <></>;
+  }
   const [isOpen, setIsOpen] = useState(false);
   const { data, isValidating } = useSales();
   const status = data?.data.status;

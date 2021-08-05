@@ -1,33 +1,34 @@
-import { CustomSolidButton } from '@/components/atoms/SolidButton'
-import { CustomLoader } from '@/components/common/loader'
-import { ValidMessage } from '@/components/molecules/ValidMessage'
-import { SettingForm } from '@/components/organisms/SettingForm'
-import { messages } from '@/consts/messages'
-import { useCredit } from '@/hooks/useCredit'
-import { SettingLayout } from '@/layouts/setting-form'
-import { UserTypes } from '@/types/global'
-import { postCredit } from '@/utils/api/post-credit'
-import { postRegisterCustomer } from '@/utils/api/post-register-customer'
-import { getStripe } from '@/utils/stripe'
-import Box from '@material-ui/core/Box'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import Snackbar from '@material-ui/core/Snackbar'
-import { fade } from '@material-ui/core/styles'
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { CustomLoader } from '@/components/common/loader';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
+import { SettingForm } from '@/components/organisms/SettingForm';
+import { messages } from '@/consts/messages';
+import { useCredit } from '@/hooks/useCredit';
+import { SettingLayout } from '@/layouts/setting-form';
+import { UserTypes } from '@/types/global';
+import { postCredit } from '@/utils/api/post-credit';
+import { postRegisterCustomer } from '@/utils/api/post-register-customer';
+import { moveToTop } from '@/utils/move-page';
+import { getStripe } from '@/utils/stripe';
+import Box from '@material-ui/core/Box';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Snackbar from '@material-ui/core/Snackbar';
+import { fade } from '@material-ui/core/styles';
 import {
   CardElement,
   Elements,
   useElements,
   useStripe,
-} from '@stripe/react-stripe-js'
-import stripeJs from '@stripe/stripe-js'
-import React, { useState } from 'react'
-import styled from 'styled-components'
+} from '@stripe/react-stripe-js';
+import stripeJs from '@stripe/stripe-js';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
-  authUser: any
-  currentUser: UserTypes
-}
+  authUser: any;
+  currentUser: UserTypes;
+};
 
 const StyledBox = styled(Box)(
   ({ theme }) => `
@@ -37,80 +38,83 @@ const StyledBox = styled(Box)(
     max-width: 600px;
     padding: 16px;
     background: ${fade(theme.palette.primary.main, 0.1)};
-  `,
-)
+  `
+);
 const StyledBoxBgColorWhite = styled(Box)`
   background: #ffffff;
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 8px;
-`
+`;
 
 const Wrapper = ({
   authUser,
   currentUser,
 }: {
-  authUser: any
-  currentUser: UserTypes
+  authUser: any;
+  currentUser: UserTypes;
 }) => {
-  if (!authUser) return <></>
-  const stripe = useStripe()
-  const elements = useElements()
-  const [isOpen, setIsOpen] = useState(false)
-  const [updatingMessage, setUpdatingMessage] = useState('更新中...')
-  const [isDisabled, setIsDidabled] = useState<boolean>(true)
-  const [isValid, setIsValid] = useState<boolean>(true)
-  const userId = currentUser!.partition_key
-  const { credit, isLoading } = useCredit()
+  if (!authUser) {
+    moveToTop();
+    return <></>;
+  }
+  const stripe = useStripe();
+  const elements = useElements();
+  const [isOpen, setIsOpen] = useState(false);
+  const [updatingMessage, setUpdatingMessage] = useState('更新中...');
+  const [isDisabled, setIsDidabled] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState<boolean>(true);
+  const userId = currentUser!.partition_key;
+  const { credit, isLoading } = useCredit();
   const changeNumber = (event: stripeJs.StripeCardElementChangeEvent) => {
-    const empty = event.empty
-    const complete = event.complete
+    const empty = event.empty;
+    const complete = event.complete;
     if (empty) {
-      setIsDidabled(true)
-      setIsValid(true)
-      return
+      setIsDidabled(true);
+      setIsValid(true);
+      return;
     }
     if (complete) {
-      setIsDidabled(false)
-      setIsValid(true)
+      setIsDidabled(false);
+      setIsValid(true);
     } else {
-      setIsDidabled(true)
-      setIsValid(false)
+      setIsDidabled(true);
+      setIsValid(false);
     }
-  }
+  };
 
   const postConfirm = () => {
-    let isResult = true
+    let isResult = true;
     if (credit) {
       isResult = confirm(
-        '登録されているカード情報は上書きされます。よろしいですか？',
-      )
+        '登録されているカード情報は上書きされます。よろしいですか？'
+      );
     }
-    return isResult
-  }
+    return isResult;
+  };
 
   const update = async () => {
-    if (!isValid) return
-    if (!stripe || !elements) return
-    const cardElement = elements.getElement(CardElement)
-    const { token, error } = await stripe.createToken(cardElement!)
+    if (!isValid) return;
+    if (!stripe || !elements) return;
+    const cardElement = elements.getElement(CardElement);
+    const { token, error } = await stripe.createToken(cardElement!);
     if (error || !token) {
-      setIsDidabled(true)
-      setIsValid(false)
-      return
+      setIsDidabled(true);
+      setIsValid(false);
+      return;
     }
-    const isConfirm = postConfirm()
-    if (!isConfirm) return
-    setIsDidabled(true)
-    setIsOpen(true)
-    const err = new Error()
-    const last4Chara = token.card!.last4
+    const isConfirm = postConfirm();
+    if (!isConfirm) return;
+    setIsDidabled(true);
+    setIsOpen(true);
+    const err = new Error();
+    const last4Chara = token.card!.last4;
     try {
-      const responseCustomer = await postRegisterCustomer()
-      if (!responseCustomer.data.status) throw err
-      const customerId = responseCustomer.data.customer
-      const clientSecret = responseCustomer.data.client_secret
-      if (!clientSecret) return
+      const responseCustomer = await postRegisterCustomer();
+      if (!responseCustomer.data.status) throw err;
+      const customerId = responseCustomer.data.customer;
+      const clientSecret = responseCustomer.data.client_secret;
+      if (!clientSecret) return;
       const resultSetup = await stripe.confirmCardSetup(clientSecret, {
         payment_method: {
           card: cardElement!,
@@ -118,11 +122,11 @@ const Wrapper = ({
             name: userId,
           },
         },
-      })
-      if (resultSetup.setupIntent?.status !== 'succeeded') throw err
-      const setUpClientSecret = resultSetup.setupIntent?.client_secret!
-      const setUpId = resultSetup.setupIntent?.id
-      const setUpMethod = resultSetup.setupIntent?.payment_method!
+      });
+      if (resultSetup.setupIntent?.status !== 'succeeded') throw err;
+      const setUpClientSecret = resultSetup.setupIntent?.client_secret!;
+      const setUpId = resultSetup.setupIntent?.id;
+      const setUpMethod = resultSetup.setupIntent?.payment_method!;
       const params = {
         userId,
         customerId,
@@ -130,34 +134,34 @@ const Wrapper = ({
         setUpClientSecret,
         setUpId,
         setUpMethod,
-      }
-      const response = await postCredit(params)
-      const result = response.data
-      if (!result.status) throw err
-      setUpdatingMessage(messages.UPDATED_MESSAGE)
-      setIsDidabled(false)
+      };
+      const response = await postCredit(params);
+      const result = response.data;
+      if (!result.status) throw err;
+      setUpdatingMessage(messages.UPDATED_MESSAGE);
+      setIsDidabled(false);
     } catch {
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  }
+  };
 
   return (
     <SettingLayout
-      title="Kanon Code | カード情報設定"
+      title='Kanon Code | カード情報設定'
       currentUser={currentUser}
     >
       <SettingForm
-        linkText="Credit"
-        href="/settings/billing"
-        fontSize="default"
-        color="inherit"
+        linkText='Credit'
+        href='/settings/billing'
+        fontSize='default'
+        color='inherit'
         headingFontSize={24}
         marginBottom={0}
       >
         {isLoading ? (
           <CustomLoader width={30} height={30} />
         ) : (
-          <Box textAlign="center">
+          <Box textAlign='center'>
             <StyledBox>
               <StyledBoxBgColorWhite>
                 <CardElement
@@ -180,7 +184,7 @@ const Wrapper = ({
                 />
               </StyledBoxBgColorWhite>
               {!isValid && (
-                <ValidMessage validText="入力された番号は無効です" />
+                <ValidMessage validText='入力された番号は無効です' />
               )}
               <List disablePadding>
                 <ListItem disableGutters dense>
@@ -195,7 +199,7 @@ const Wrapper = ({
               </List>
             </StyledBox>
             <CustomSolidButton
-              sizing="small"
+              sizing='small'
               onClick={update}
               disabled={isDisabled}
             >
@@ -213,17 +217,17 @@ const Wrapper = ({
         )}
       </SettingForm>
     </SettingLayout>
-  )
-}
+  );
+};
 
 const IndexPage = (props: Props) => {
-  const promiseStripe = getStripe()
+  const promiseStripe = getStripe();
 
   return (
     <Elements stripe={promiseStripe}>
       <Wrapper {...props} />
     </Elements>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;

@@ -11,6 +11,7 @@ import LayoutPost from '@/layouts/post';
 import { UserTypes } from '@/types/global';
 import { postContent } from '@/utils/api/post-content';
 import * as S3 from '@/utils/api/s3';
+import { moveToTop } from '@/utils/move-page';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
 import { validLength } from '@/utils/valid';
 import Box from '@material-ui/core/Box';
@@ -79,7 +80,10 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser) return <></>;
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
       isValid: defaultValue,

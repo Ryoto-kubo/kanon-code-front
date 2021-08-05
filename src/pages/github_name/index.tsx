@@ -1,18 +1,19 @@
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { BaseTextField } from "@/components/atoms/TextField";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
-import { SettingForm } from "@/components/organisms/SettingForm";
-import * as CONSTS from "@/consts/const";
-import { errorMessages, validMessages } from "@/consts/error-messages";
-import { messages } from "@/consts/messages";
-import { SettingLayout } from "@/layouts/setting-form";
-import { UserTypes } from "@/types/global";
-import { postUserProfile } from "@/utils/api/post-user-profile";
-import { UserProfile } from "@/utils/user-profile";
-import Box from "@material-ui/core/Box";
-import Snackbar from "@material-ui/core/Snackbar";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { BaseTextField } from '@/components/atoms/TextField';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
+import { SettingForm } from '@/components/organisms/SettingForm';
+import * as CONSTS from '@/consts/const';
+import { errorMessages, validMessages } from '@/consts/error-messages';
+import { messages } from '@/consts/messages';
+import { SettingLayout } from '@/layouts/setting-form';
+import { UserTypes } from '@/types/global';
+import { postUserProfile } from '@/utils/api/post-user-profile';
+import { moveToTop } from '@/utils/move-page';
+import { UserProfile } from '@/utils/user-profile';
+import Box from '@material-ui/core/Box';
+import Snackbar from '@material-ui/core/Snackbar';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   title: string;
@@ -27,16 +28,19 @@ const StyledBoxTextFieldWrapper = styled(Box)`
   margin: auto;
   margin-bottom: 32px;
   width: 100%;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     width: 70%;
   }
 `;
 
-const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
+const IndexPage: React.FC<Props> = props => {
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const [isOpen, setIsOpen] = useState(false);
-  const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [validText, setIsValidText] = useState<string>("");
+  const [updatingMessage, setUpdatingMessage] = useState('更新中...');
+  const [validText, setIsValidText] = useState<string>('');
   const [isDisabled, setIsDidabled] = useState<boolean>(true);
   const [isValidName, setIsValidName] = useState<boolean>(true);
   const [user, setUser] = useState<UserTypes>(props.currentUser);
@@ -45,7 +49,7 @@ const IndexPage: React.FC<Props> = (props) => {
 
   const resetValid = () => {
     setIsValidName(true);
-    setIsValidText("");
+    setIsValidText('');
   };
 
   const updateProfile = async () => {
@@ -83,7 +87,7 @@ const IndexPage: React.FC<Props> = (props) => {
       setIsDidabled(false);
       resetValid();
     } else {
-      if (value === "") resetValid();
+      if (value === '') resetValid();
       setIsDidabled(true);
     }
     user.user_profile.github_name = value;
@@ -116,25 +120,25 @@ const IndexPage: React.FC<Props> = (props) => {
 
   return (
     <SettingLayout
-      title="Kanon Code | Github設定"
+      title='Kanon Code | Github設定'
       currentUser={props.currentUser}
     >
       <SettingForm
-        linkText="Github UserName"
-        href="/settings/profile"
-        fontSize="default"
-        color="inherit"
+        linkText='Github UserName'
+        href='/settings/profile'
+        fontSize='default'
+        color='inherit'
         headingFontSize={24}
         marginBottom={0}
       >
         <StyledBoxTextFieldWrapper mb={4}>
           <Box mb={2}>
             <BaseTextField
-              id="name"
-              type="text"
+              id='name'
+              type='text'
               value={profile.github_name}
-              label="Githubユーザーネーム"
-              placeholder="kanon code"
+              label='Githubユーザーネーム'
+              placeholder='kanon code'
               rows={0}
               onChange={changeName}
             />
@@ -143,7 +147,7 @@ const IndexPage: React.FC<Props> = (props) => {
         </StyledBoxTextFieldWrapper>
         <StyledButtonWrapper>
           <CustomSolidButton
-            sizing="small"
+            sizing='small'
             onClick={updateProfile}
             disabled={isDisabled}
           >
@@ -152,8 +156,8 @@ const IndexPage: React.FC<Props> = (props) => {
         </StyledButtonWrapper>
         <Snackbar
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
+            vertical: 'bottom',
+            horizontal: 'right',
           }}
           open={isOpen}
           message={updatingMessage}

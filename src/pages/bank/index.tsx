@@ -14,6 +14,7 @@ import theme from '@/styles/theme';
 import { BankTypes, UserTypes } from '@/types/global';
 import { getBank } from '@/utils/api/get-bank';
 import { postBank } from '@/utils/api/post-bank';
+import { moveToTop } from '@/utils/move-page';
 import { UserProfile } from '@/utils/user-profile';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -83,7 +84,10 @@ const StyledButtonWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser) return <></>;
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMovePage, setIsOpenMovePage] = useState(false);
   const [isDisabled, setIsDidabled] = useState<boolean>(true);

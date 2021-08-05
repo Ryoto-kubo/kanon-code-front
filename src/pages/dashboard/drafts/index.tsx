@@ -5,6 +5,7 @@ import { MyDrafts } from '@/components/organisms/MyDrafts';
 import { useMyDrafts } from '@/hooks/useMyDrafts';
 import { LayoutDashboard } from '@/layouts/dashboard';
 import { UserTypes } from '@/types/global';
+import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import React from 'react';
 
@@ -14,7 +15,10 @@ type Props = {
 };
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser || !props.currentUser) return <></>;
+  if (!props.authUser || !props.currentUser) {
+    moveToTop();
+    return <></>;
+  }
   const { data, isValidating } = useMyDrafts();
   const status = data?.data.status;
   if (status === false) {

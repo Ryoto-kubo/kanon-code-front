@@ -1,37 +1,41 @@
-import { CustomSwitch } from "@/components/atoms/CustomSwitch";
-import { ContentHeader } from "@/components/molecules/ContentHeader";
-import { LinkGithubButton } from "@/components/molecules/LinkGithubButton";
-import { ProfileContentCheck } from "@/components/molecules/ProfileContentCheck";
-import { ContentWrapper } from "@/components/organisms/ContentWrapper";
-import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
-import { errorMessages } from "@/consts/error-messages";
-import { messages } from "@/consts/messages";
-import { SettingLayout } from "@/layouts/setting/";
-import { EmailNoticesTypes, UserTypes } from "@/types/global";
-import { postEmailNotices } from "@/utils/api/post-email-notices";
-import Snackbar from "@material-ui/core/Snackbar";
-import React, { useState } from "react";
+import { CustomSwitch } from '@/components/atoms/CustomSwitch';
+import { ContentHeader } from '@/components/molecules/ContentHeader';
+import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
+import { ProfileContentCheck } from '@/components/molecules/ProfileContentCheck';
+import { ContentWrapper } from '@/components/organisms/ContentWrapper';
+import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
+import { errorMessages } from '@/consts/error-messages';
+import { messages } from '@/consts/messages';
+import { SettingLayout } from '@/layouts/setting/';
+import { EmailNoticesTypes, UserTypes } from '@/types/global';
+import { postEmailNotices } from '@/utils/api/post-email-notices';
+import { moveToTop } from '@/utils/move-page';
+import Snackbar from '@material-ui/core/Snackbar';
+import React, { useState } from 'react';
 
 type Props = {
   authUser: any;
   currentUser: UserTypes;
 };
-type EmailNoticesKeyTypes = Readonly<"is_opened_review" | "is_posted_review">;
+type EmailNoticesKeyTypes = Readonly<'is_opened_review' | 'is_posted_review'>;
 
-const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
+const IndexPage: React.FC<Props> = props => {
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const [emailNotices, setEmailNotices] = useState<EmailNoticesTypes>(
     props.currentUser!.email_notices
   );
   const [isOpen, setIsOpen] = useState(false);
-  const [updatingMessage, setUpdatingMessage] = useState("更新中...");
+  const [updatingMessage, setUpdatingMessage] = useState('更新中...');
   const user = props.currentUser;
   const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
     console.log(event);
   };
 
   const resetUpdatingMessage = () => {
-    setUpdatingMessage("更新中...");
+    setUpdatingMessage('更新中...');
   };
 
   const updateEmailNotices = async (
@@ -60,7 +64,7 @@ const IndexPage: React.FC<Props> = (props) => {
     setEmailNotices({ ...emailNotices, is_opened_review: isChecked });
     resetUpdatingMessage();
     setIsOpen(true);
-    updateEmailNotices("is_opened_review", isChecked);
+    updateEmailNotices('is_opened_review', isChecked);
   };
 
   const changeRequestedReview = (
@@ -70,7 +74,7 @@ const IndexPage: React.FC<Props> = (props) => {
     setEmailNotices({ ...emailNotices, is_posted_review: isChecked });
     resetUpdatingMessage();
     setIsOpen(true);
-    updateEmailNotices("is_posted_review", isChecked);
+    updateEmailNotices('is_posted_review', isChecked);
   };
 
   return (
@@ -78,14 +82,14 @@ const IndexPage: React.FC<Props> = (props) => {
       <section>
         <ContentWrapper>
           <ContentHeader
-            title="Email Notice"
-            description="ONにすることによってKanon Codeをより使いやすく設定できます。"
+            title='Email Notice'
+            description='ONにすることによってKanon Codeをより使いやすく設定できます。'
             fontSize={20}
             marginBottom={1}
           />
           <ProfileContentCheck
-            label="レビューが投稿された時"
-            value={emailNotices.is_posted_review ? "ON" : "OFF"}
+            label='レビューが投稿された時'
+            value={emailNotices.is_posted_review ? 'ON' : 'OFF'}
             isDivider={true}
           >
             <CustomSwitch
@@ -94,8 +98,8 @@ const IndexPage: React.FC<Props> = (props) => {
             />
           </ProfileContentCheck>
           <ProfileContentCheck
-            label="レビューが購入された時"
-            value={emailNotices.is_opened_review ? "ON" : "OFF"}
+            label='レビューが購入された時'
+            value={emailNotices.is_opened_review ? 'ON' : 'OFF'}
             isDivider={false}
           >
             <CustomSwitch
@@ -106,14 +110,14 @@ const IndexPage: React.FC<Props> = (props) => {
         </ContentWrapper>
         <ContentWrapper>
           <ContentHeader
-            title="Link"
-            description="Github連携を行うことでKanon Codeをより使いやすく設定できます。"
+            title='Link'
+            description='Github連携を行うことでKanon Codeをより使いやすく設定できます。'
             fontSize={20}
             marginBottom={1}
           />
           <ProfileContentCheck
-            label="Github連携"
-            value={false ? "ON" : "OFF"}
+            label='Github連携'
+            value={false ? 'ON' : 'OFF'}
             isDivider={false}
           >
             <LinkGithubButton onClick={linkOnGithub} />
@@ -121,24 +125,24 @@ const IndexPage: React.FC<Props> = (props) => {
         </ContentWrapper>
         <ContentWrapper>
           <ContentHeader
-            title="Delete Account"
-            description="アカウントが不要になった場合は削除できます。"
+            title='Delete Account'
+            description='アカウントが不要になった場合は削除できます。'
             fontSize={20}
             marginBottom={1}
           />
           <ProfileContentCheck
-            label="アカウント削除"
-            value=""
+            label='アカウント削除'
+            value=''
             isDivider={false}
           >
-            <IconArrowNext fontSize="large" color="action" />
+            <IconArrowNext fontSize='large' color='action' />
           </ProfileContentCheck>
         </ContentWrapper>
       </section>
       <Snackbar
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
+          vertical: 'bottom',
+          horizontal: 'right',
         }}
         open={isOpen}
         message={updatingMessage}

@@ -1,13 +1,13 @@
-import { ReactionUsers } from "@/components/molecules/ReactionUsers";
-import { ReactionUsersDialog } from "@/components/parts/reactionUsersDialog";
-import { errorMessages } from "@/consts/error-messages";
-import theme from "@/styles/theme";
-import { postReaction } from "@/utils/api/post-reaction";
-import Box from "@material-ui/core/Box";
-import Button from "@material-ui/core/Button";
-import SentimentSatisfiedOutlinedIcon from "@material-ui/icons/SentimentSatisfiedOutlined";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { ReactionUsers } from '@/components/molecules/ReactionUsers';
+import { ReactionUsersDialog } from '@/components/parts/reactionUsersDialog';
+import { errorMessages } from '@/consts/error-messages';
+import theme from '@/styles/theme';
+import { postReaction } from '@/utils/api/post-reaction';
+import Box from '@material-ui/core/Box';
+import Button from '@material-ui/core/Button';
+import SentimentSatisfiedOutlinedIcon from '@material-ui/icons/SentimentSatisfiedOutlined';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   sortKey: string;
@@ -37,7 +37,7 @@ const StyledBoxWrapper = styled(Box)`
     border: 2px solid ${theme.palette.primary.main};
     border-radius: 4px;
     width: 100%;
-    content: "";
+    content: '';
   }
 `;
 
@@ -86,7 +86,7 @@ export const Reaction: React.FC<Props> = ({
     try {
       const result = await postReaction({ sortKey, postId });
       const action = result.data.resultAction;
-      if (action === "put") {
+      if (action === 'put') {
         setUsers([
           {
             display_name: displayName,
@@ -97,7 +97,7 @@ export const Reaction: React.FC<Props> = ({
         setIsMyReaction(true);
       } else {
         const slicedUsers = users.slice();
-        const newUsers = slicedUsers.filter((el) => el.icon_src !== userIcon);
+        const newUsers = slicedUsers.filter(el => el.icon_src !== userIcon);
         setUsers(newUsers);
         setIsMyReaction(false);
       }
@@ -107,18 +107,18 @@ export const Reaction: React.FC<Props> = ({
   };
   return (
     <StyledBoxWrapper>
-      <StyledBoxTitleWrapper component="span">
+      <StyledBoxTitleWrapper component='span'>
         このレビューをみんなにもオススメしますか？
       </StyledBoxTitleWrapper>
       <StyledBoxButtonWrapper>
         <StyledButton
           disableElevation={isMyReaction}
-          variant={isMyReaction ? "contained" : "outlined"}
-          color="primary"
+          variant={isMyReaction ? 'contained' : 'outlined'}
+          color='primary'
           startIcon={<SentimentSatisfiedOutlinedIcon />}
           onClick={() => post()}
         >
-          {isMyReaction ? "このレビューをオススメ中" : "オススメする"}
+          {isMyReaction ? 'このレビューをオススメ中' : 'オススメする'}
         </StyledButton>
       </StyledBoxButtonWrapper>
       {users.length > 0 && (
