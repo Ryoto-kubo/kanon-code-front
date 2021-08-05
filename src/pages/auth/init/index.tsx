@@ -1,17 +1,17 @@
-import { CustomLoader } from "@/components/common/loader";
-import { errorMessages } from "@/consts/error-messages";
-import { getUser } from "@/utils/api/get-user";
+import { CustomLoader } from '@/components/common/loader';
+import { errorMessages } from '@/consts/error-messages';
+import { getUser } from '@/utils/api/get-user';
 import { postRegist } from '@/utils/api/post-register';
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 
 const IndexPage: React.FC = () => {
   const router = useRouter();
   const moveToRegister = () => {
-    router.push("/register");
+    router.push('/register');
   };
   const moveToTop = () => {
-    router.push("/");
+    router.push('/');
   };
 
   useEffect(() => {
@@ -28,7 +28,7 @@ const IndexPage: React.FC = () => {
           moveToRegister();
         } else {
           // ユーザーとして登録済み
-          if (item.user_profile.display_name === "") {
+          if (item.user_profile.display_name === '') {
             moveToRegister();
           } else {
             moveToTop();

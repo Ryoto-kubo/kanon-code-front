@@ -14,6 +14,7 @@ import LayoutPostEdit from '@/layouts/postEdit';
 import { UserTypes } from '@/types/global';
 import { putContent } from '@/utils/api/put-content';
 import * as S3 from '@/utils/api/s3';
+import { moveToTop } from '@/utils/move-page';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
 import { validLength } from '@/utils/valid';
 import Box from '@material-ui/core/Box';
@@ -94,7 +95,10 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser) return <></>;
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const postId = getPostIdFromPathName();
   const {
     isLoading,

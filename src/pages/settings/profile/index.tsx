@@ -1,20 +1,21 @@
-import { CustomSnackbar } from "@/components/atoms/CustomSnackbar";
-import { ContentHeader } from "@/components/molecules/ContentHeader";
-import { FileExChange } from "@/components/molecules/FileExChange";
-import { ProfileContentFile } from "@/components/molecules/ProfileContentFile";
-import { ProfileContentLink } from "@/components/molecules/ProfileContentLink";
-import { ContentWrapper } from "@/components/organisms/ContentWrapper";
-import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
-import { errorMessages, validMessages } from "@/consts/error-messages";
-import { POSITIONS } from "@/consts/positions";
-import { SettingLayout } from "@/layouts/setting/";
-import { UserTypes } from "@/types/global";
-import { getPreSignedUrl } from "@/utils/api/get-presigned-url";
-import { postUserProfile } from "@/utils/api/post-user-profile";
-import * as S3 from "@/utils/api/s3";
-import { PrepareImageBeforePost } from "@/utils/prepare-image-before-post";
-import Box from "@material-ui/core/Box";
-import React, { useCallback, useState } from "react";
+import { CustomSnackbar } from '@/components/atoms/CustomSnackbar';
+import { ContentHeader } from '@/components/molecules/ContentHeader';
+import { FileExChange } from '@/components/molecules/FileExChange';
+import { ProfileContentFile } from '@/components/molecules/ProfileContentFile';
+import { ProfileContentLink } from '@/components/molecules/ProfileContentLink';
+import { ContentWrapper } from '@/components/organisms/ContentWrapper';
+import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
+import { errorMessages, validMessages } from '@/consts/error-messages';
+import { POSITIONS } from '@/consts/positions';
+import { SettingLayout } from '@/layouts/setting/';
+import { UserTypes } from '@/types/global';
+import { getPreSignedUrl } from '@/utils/api/get-presigned-url';
+import { postUserProfile } from '@/utils/api/post-user-profile';
+import * as S3 from '@/utils/api/s3';
+import { moveToTop } from '@/utils/move-page';
+import { PrepareImageBeforePost } from '@/utils/prepare-image-before-post';
+import Box from '@material-ui/core/Box';
+import React, { useCallback, useState } from 'react';
 
 type Props = {
   authUser: any;
@@ -25,8 +26,11 @@ type ValidObject = {
   message: string;
 };
 
-const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
+const IndexPage: React.FC<Props> = props => {
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const [user, setUser] = useState<UserTypes>(props.currentUser);
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {
@@ -36,11 +40,11 @@ const IndexPage: React.FC<Props> = (props) => {
   }, []);
   const [isUploading, setIsUploading] = useState<boolean>(false);
   const [canPublish, setCanPUblish] = useState<ValidObject>(
-    createValidObject(true, "")
+    createValidObject(true, '')
   );
   const profile = props.currentUser.user_profile;
 
-  const updateCanPublish = useCallback((isValid: boolean, message = "") => {
+  const updateCanPublish = useCallback((isValid: boolean, message = '') => {
     setCanPUblish({
       ...canPublish,
       isValid: isValid,
@@ -125,75 +129,75 @@ const IndexPage: React.FC<Props> = (props) => {
         <section>
           <ContentWrapper>
             <ContentHeader
-              title="Profile"
-              description="Kanon Codeを利用する全てのユーザーに公開されます。"
+              title='Profile'
+              description='Kanon Codeを利用する全てのユーザーに公開されます。'
               fontSize={20}
               marginBottom={1}
             />
             <ProfileContentFile
-              label="アイコン"
-              description="写真を追加することでアカウントをカスタマイズできます"
+              label='アイコン'
+              description='写真を追加することでアカウントをカスタマイズできます'
               isDivider={false}
-              htmlFor="avatar"
+              htmlFor='avatar'
             >
               <FileExChange
-                htmlFor="avatar"
+                htmlFor='avatar'
                 picture={profile.icon_src}
                 changeIcon={changeIcon}
                 isUploading={isUploading}
               />
             </ProfileContentFile>
             <ProfileContentLink
-              label="名前"
+              label='名前'
               value={profile.display_name}
               isDivider={true}
-              href="/name"
+              href='/name'
             >
-              <IconArrowNext fontSize="large" color="action" />
+              <IconArrowNext fontSize='large' color='action' />
             </ProfileContentLink>
             <ProfileContentLink
-              label="紹介文"
+              label='紹介文'
               value={profile.introduction}
               isDivider={true}
-              href="/introduction"
+              href='/introduction'
             >
-              <IconArrowNext fontSize="large" color="action" />
+              <IconArrowNext fontSize='large' color='action' />
             </ProfileContentLink>
 
             <ProfileContentLink
-              label="ポジション"
+              label='ポジション'
               value={POSITIONS[profile.position_type].label}
               isDivider={true}
-              href="/position"
+              href='/position'
             >
-              <IconArrowNext fontSize="large" color="action" />
+              <IconArrowNext fontSize='large' color='action' />
             </ProfileContentLink>
 
             <ProfileContentLink
-              label="Githubユーザーネーム"
+              label='Githubユーザーネーム'
               value={profile.github_name}
               isDivider={true}
-              href="/github_name"
+              href='/github_name'
             >
-              <IconArrowNext fontSize="large" color="action" />
+              <IconArrowNext fontSize='large' color='action' />
             </ProfileContentLink>
 
             <ProfileContentLink
-              label="Twitterユーザーネーム"
+              label='Twitterユーザーネーム'
               value={profile.twitter_name}
               isDivider={true}
-              href="/twitter_name"
+              href='/twitter_name'
             >
-              <IconArrowNext fontSize="large" color="action" />
+              <IconArrowNext fontSize='large' color='action' />
             </ProfileContentLink>
 
             <ProfileContentLink
-              label="webサイト"
+              label='webサイト'
               value={profile.web_site}
               isDivider={true}
-              href="/web_site"
+              href='/web_site'
             >
-              <IconArrowNext fontSize="large" color="action" />
+              <IconArrowNext fontSize='large' color='action' />
             </ProfileContentLink>
           </ContentWrapper>
         </section>
@@ -201,7 +205,7 @@ const IndexPage: React.FC<Props> = (props) => {
           isOpen={!canPublish.isValid}
           closeSnackBar={closeSnackBar}
         >
-          <Box fontWeight="bold">{canPublish.message}</Box>
+          <Box fontWeight='bold'>{canPublish.message}</Box>
         </CustomSnackbar>
       </>
     </SettingLayout>
