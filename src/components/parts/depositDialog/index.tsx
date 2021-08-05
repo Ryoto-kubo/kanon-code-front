@@ -74,7 +74,9 @@ const renderTextField = (
 
 export const DepositDialog: React.FC<Props> = props => {
   const [value, setValue] = useState(0);
-  const [withdrawableBalance, setWithdrawableBalance] = useState(10000);
+  const [withdrawableBalance, setWithdrawableBalance] = useState(
+    props.totalSales
+  );
   const { data, isValidating } = useDeposit();
   const hasBank = data?.data.hasBank;
   const baseWithdrawableBalance = 10000;
@@ -113,6 +115,8 @@ export const DepositDialog: React.FC<Props> = props => {
             <CustomLoader width={30} height={30} />
           ) : !hasBank ? (
             renderMoveAnnounce()
+          ) : withdrawableBalance <= 0 ? (
+            <Box mb={'16px'}>残高がありません</Box>
           ) : (
             <>
               <Box mb={4}>
