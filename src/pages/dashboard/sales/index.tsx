@@ -54,38 +54,40 @@ const IndexPage: React.FC<Props> = props => {
         {isValidating ? (
           <CustomLoader width={30} height={30} />
         ) : (
-          <Box my={3}>
-            <Box mb={2} textAlign='right'>
-              <CustomSolidButton
-                sizing='small'
-                color='primary'
-                onClick={() => setIsOpen(true)}
-              >
-                出金申請
-              </CustomSolidButton>
-            </Box>
-            <Box mb={5}>
-              <MySales sales={sales} imgWidth='40px' imgHeight='40px' />
-            </Box>
-            <Box mb={2}>
-              <SalesArea
-                totalSales={totalSales}
-                currentTotalSales={currentTotalSales}
+          <>
+            <Box my={3}>
+              <Box mb={2} textAlign='right'>
+                <CustomSolidButton
+                  sizing='small'
+                  color='primary'
+                  onClick={() => setIsOpen(true)}
+                >
+                  出金申請
+                </CustomSolidButton>
+              </Box>
+              <Box mb={5}>
+                <MySales sales={sales} imgWidth='40px' imgHeight='40px' />
+              </Box>
+              <Box mb={2}>
+                <SalesArea
+                  totalSales={totalSales}
+                  currentTotalSales={currentTotalSales}
+                />
+              </Box>
+              <SalesChart
+                labels={labels}
+                salesList={salesList}
+                backGrounds={backGrounds}
               />
             </Box>
-            <SalesChart
-              labels={labels}
-              salesList={salesList}
-              backGrounds={backGrounds}
+            <DepositDialog
+              isOpenDialog={isOpen}
+              closeDialog={() => setIsOpen(false)}
+              totalSales={totalSales}
             />
-          </Box>
+          </>
         )}
       </Box>
-      <DepositDialog
-        isOpenDialog={isOpen}
-        closeDialog={() => setIsOpen(false)}
-        totalSales={totalSales}
-      />
     </LayoutDashboard>
   );
 };
