@@ -76,11 +76,7 @@ export const Reaction: React.FC<Props> = ({
   const [isMyReaction, setIsMyReaction] = useState(isReaction);
   const [users, setUsers] = useState<
     { display_name: string; icon_src: string }[]
-  >(reactionUsers);
-
-  const closeDialog = () => {
-    setIsOpen(false);
-  };
+  >(reactionUsers || []);
 
   const post = async () => {
     try {
@@ -127,7 +123,7 @@ export const Reaction: React.FC<Props> = ({
       <ReactionUsersDialog
         users={users}
         isOpen={isOpen}
-        closeDialog={closeDialog}
+        closeDialog={() => setIsOpen(false)}
       />
     </StyledBoxWrapper>
   );

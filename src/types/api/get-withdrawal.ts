@@ -1,5 +1,5 @@
-export type ResponseDepositType = {
-  deposit: number;
+export type ResponseWithdrawalType = {
+  totalWithdrawal: number;
   hasBank: boolean;
   status: boolean;
   status_code: number;
