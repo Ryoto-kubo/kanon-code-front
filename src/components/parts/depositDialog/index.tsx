@@ -2,8 +2,8 @@ import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { SolidLink } from '@/components/atoms/SolidLink';
 import { CustomLoader } from '@/components/common/loader';
 import { errorMessages } from '@/consts/error-messages';
-import { useDeposit } from '@/hooks/useDeposit';
-import { postDeposit } from '@/utils/api/post-deposit';
+import { useWithdrawal } from '@/hooks/useWithdrawal';
+import { postWithdrawal } from '@/utils/api/post-withdrawal';
 import Box from '@material-ui/core/Box';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -13,7 +13,6 @@ import TextField from '@material-ui/core/TextField';
 import { TransitionProps } from '@material-ui/core/transitions';
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-// const NumberEasing = require('react-number-easing');
 
 type Props = {
   isOpenDialog: boolean;
@@ -75,7 +74,7 @@ const renderTextField = (
 };
 
 export const DepositDialog: React.FC<Props> = props => {
-  const { data, isValidating } = useDeposit();
+  const { data, isValidating } = useWithdrawal();
   const [value, setValue] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
   const [displayWithdrawableBalance, setDisplaytWithdrawableBalance] = useState(
@@ -87,8 +86,10 @@ export const DepositDialog: React.FC<Props> = props => {
   );
   const hasBank = data?.data.hasBank;
   useEffect(() => {
-    setDisplaytWithdrawableBalance(props.totalSales - data?.data.deposit);
-    setBaseWithdrawableBalance(props.totalSales - data?.data.deposit);
+    setDisplaytWithdrawableBalance(
+      props.totalSales - data?.data.totalWithdrawal
+    );
+    setBaseWithdrawableBalance(props.totalSales - data?.data.totalWithdrawal);
   }, [data]);
 
   const validNumber = (value: string) => {
@@ -122,7 +123,7 @@ export const DepositDialog: React.FC<Props> = props => {
     setButtonText('出金依頼中...');
     setIsDisabled(true);
     try {
-      await postDeposit({ value });
+      await postWithdrawal({ value });
       setBaseWithdrawableBalance(baseWithdrawableBalance - value);
       setValue(0);
       setButtonText('出金する');

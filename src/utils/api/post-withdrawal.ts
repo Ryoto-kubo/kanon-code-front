@@ -5,6 +5,6 @@ type Props = {
   value: number;
 };
 
-export const postDeposit = async (params: Props) => {
-  return await axios.post(apis.DEPOSIT, params);
+export const postWithdrawal = async (params: Props) => {
+  return await axios.post(apis.WITHDRAWAL, params);
 };
