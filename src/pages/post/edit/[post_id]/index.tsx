@@ -105,6 +105,8 @@ const IndexPage: React.FC<Props> = props => {
     authorId,
     keys,
     type,
+    buttonText,
+    setButtonText,
     title,
     setTitle,
     isSuccessed,
@@ -132,16 +134,11 @@ const IndexPage: React.FC<Props> = props => {
     isValidSourceCodeObject,
     setIsValidSourceCodeObject,
   } = useEditPost(postId);
-  console.log(isValidTitleObject, 'isValidTitleObject');
-
   const isMyItem = props.authUser['cognito:username'] === authorId;
   const [activeStep, setActiveStep] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPosted, setIsPosted] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [buttonText, setButtonText] = useState<ButtonText>(
-    type === 'post_published' ? '編集設定' : '下書き保存'
-  );
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, '')
   );

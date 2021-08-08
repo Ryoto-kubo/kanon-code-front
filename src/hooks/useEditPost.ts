@@ -12,6 +12,9 @@ type ValidObject = {
   isValid: boolean;
   message: string;
 };
+type ButtonText = Readonly<
+  '投稿設定' | '編集設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
+>;
 
 const getAuthorId = (partitionKey: string) => {
   const userIdIndex = 1;
@@ -29,6 +32,9 @@ export const useEditPost = (postId: string) => {
   const [authorId, setAurhorId] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [type, setType] = useState<'post_published' | 'post_draft' | ''>('');
+  const [buttonText, setButtonText] = useState<ButtonText>(
+    type === 'post_published' ? '編集設定' : '下書き保存'
+  );
   const [keys, setKeys] = useState<{
     partition_key: string;
     sort_key: string;
@@ -86,6 +92,9 @@ export const useEditPost = (postId: string) => {
           sort_key: post.sort_key,
         });
         setType(post.type);
+        setButtonText(
+          post.type === 'post_published' ? '編集設定' : '下書き保存'
+        );
         setTitle(post.contents.title);
         setTagList(post.contents.tagList);
         setDescription(post.contents.description.value);
@@ -144,6 +153,8 @@ export const useEditPost = (postId: string) => {
     authorId,
     keys,
     type,
+    buttonText,
+    setButtonText,
     title,
     setTitle,
     isSuccessed,
