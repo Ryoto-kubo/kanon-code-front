@@ -4,6 +4,7 @@ import { CustomLoader } from '@/components/common/loader';
 import { errorMessages } from '@/consts/error-messages';
 import { useWithdrawal } from '@/hooks/useWithdrawal';
 import { postWithdrawal } from '@/utils/api/post-withdrawal';
+import { Player } from '@lottiefiles/react-lottie-player';
 import Box from '@material-ui/core/Box';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -29,6 +30,13 @@ const StyledBoxMessageWrapper = styled(Box)`
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 24px;
+`;
+const StyledBoxAbsolute = styled(Box)`
+  width: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 
 const Transition = React.forwardRef(function Transition(
@@ -73,9 +81,42 @@ const renderTextField = (
   );
 };
 
+const successAnimation = () => {
+  const SUCCESS_ANIMATION_SRC =
+    'https://assets7.lottiefiles.com/packages/lf20_yom6uvgj.json';
+  return (
+    <Box height={300} position='relative'>
+      <StyledBoxAbsolute>
+        <Box mb={1}>
+          <Player
+            autoplay
+            keepLastFrame
+            src={SUCCESS_ANIMATION_SRC}
+            controls={true}
+            style={{ height: '100px', width: '100px' }}
+          />
+        </Box>
+        <StyledBoxMessageWrapper>
+          <Box>出金依頼を受け付けました。</Box>
+        </StyledBoxMessageWrapper>
+        <Box lineHeight={1.7}>
+          一週間以内にご登録口座へお振り込みいたします。
+          <br />
+          キャンセルされる場合や、一週間経っても振り込まれない場合は、
+          <br />
+          お手数ですが下記までご連絡お願いいたします。
+          <br />
+          info@kanon-code.com
+        </Box>
+      </StyledBoxAbsolute>
+    </Box>
+  );
+};
+
 export const DepositDialog: React.FC<Props> = props => {
   const { data, isValidating } = useWithdrawal();
   const [value, setValue] = useState(0);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [displayWithdrawableBalance, setDisplaytWithdrawableBalance] = useState(
     0
@@ -124,6 +165,7 @@ export const DepositDialog: React.FC<Props> = props => {
     setIsDisabled(true);
     try {
       await postWithdrawal({ value });
+      setShowSuccess(true);
       setBaseWithdrawableBalance(baseWithdrawableBalance - value);
       setValue(0);
       setButtonText('出金する');
@@ -152,6 +194,8 @@ export const DepositDialog: React.FC<Props> = props => {
             <CustomLoader width={30} height={30} />
           ) : !hasBank ? (
             renderMoveAnnounce()
+          ) : showSuccess ? (
+            successAnimation()
           ) : baseWithdrawableBalance <= 0 ? (
             <Box mb={'16px'}>残高がありません</Box>
           ) : (
