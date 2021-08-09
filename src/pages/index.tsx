@@ -30,8 +30,6 @@ const StyledBoxWidthBorder = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  console.log(props.data);
-
   const frontPosts = props.data.frontPosts;
   const backPosts = props.data.backPosts;
   const otherPosts = props.data.otherPosts;
