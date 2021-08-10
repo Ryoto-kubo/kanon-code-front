@@ -1,4 +1,5 @@
 // import { AboutFirstView } from '@/components/parts/aboutFirstView';
+import { SolidLink } from '@/components/atoms/SolidLink';
 import { SendIllustration } from '@/components/parts/illustrations/mail-send';
 import { ReviewIllustration } from '@/components/parts/illustrations/other-reviews';
 import { SellIllustration } from '@/components/parts/illustrations/sell-reviews';
@@ -7,8 +8,14 @@ import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { Box, Container, Divider } from '@material-ui/core/';
 import { fade } from '@material-ui/core/styles';
+import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
+import TermsSvg from '../../assets/illustration/Accept-terms.svg';
+import QuestionsSvg from '../../assets/illustration/Questions.svg';
+import SecuritySvg from '../../assets/illustration/Security-pana.svg';
+import SourceCodeSvg from '../../assets/illustration/Source-code.svg';
+import KanonCodeSvg from '../../assets/logo/kanon-code.svg';
 
 type Props = {
   authUser: any;
@@ -45,7 +52,7 @@ const StyledBoxAboutTitleWrapper = styled(Box)`
 const StyledBoxAboutTitle = styled(Box)`
   font-size: 32px;
   ${props => props.theme.breakpoints.up('sm')} {
-    font-size: 48px;
+    font-size: 56px;
   }
 `;
 const StyledBoxMessage = styled(Box)`
@@ -82,6 +89,112 @@ const StyledBoxWidth = styled(Box)`
   ${props => props.theme.breakpoints.up('sm')} {
     width: calc((100% - 50px) / 2);
   }
+`;
+const StyledBoxPhilosophyTitle = styled(Box)`
+  margin-bottom: 8px;
+  font-size: 32px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    font-size: 56px;
+  }
+`;
+const StyledUl = styled('ul')`
+  list-style-type: none;
+  padding: 0;
+`;
+const StyledLl = styled('li')`
+  margin-bottom: 16px;
+`;
+const StyledBoxListFlex = styled(Box)`
+  display: flex;
+  align-items: center;
+`;
+const StyledBoxSubTitle = styled(Box)`
+  margin-right: 24px;
+  font-weight: bold;
+  font-size: 24px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    font-size: 48px;
+  }
+  span {
+    color: ${theme.palette.primary.main};
+  }
+`;
+const StyledBoxTrans = styled(Box)`
+  color: ${theme.palette.primary.main};
+  font-weight: bold;
+`;
+const StyledBoxSignin = styled(Box)`
+  padding: 30px;
+  text-align: center;
+`;
+const StyledLogo = styled(KanonCodeSvg)`
+  width: 80%;
+  ${props => props.theme.breakpoints.up('sm')} {
+    width: 80%;
+  }
+  ${props => props.theme.breakpoints.up('md')} {
+    width: 500px;
+  }
+`;
+const StyledBoxSinginTitle = styled(Box)`
+  font-size: 24px;
+  margin-bottom: 8px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+`;
+const StyledBoxLearnMoreTitle = styled(Box)`
+  font-size: 24px;
+  margin-bottom: 16px;
+  text-align: center;
+  ${props => props.theme.breakpoints.up('sm')} {
+    text-align: left;
+    font-size: 32px;
+    margin-bottom: 24px;
+  }
+`;
+const StyledBoxBlock = styled(Box)`
+  margin-bottom: 24px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    margin-bottom: 24px;
+  }
+  &:hover {
+    cursor: pointer;
+  }
+`;
+const StyledBoxCircle = styled(Box)`
+  margin: auto;
+  border-radius: 4px;
+  width: 100%;
+  height: 270px;
+  background: ${fade(theme.palette.primary.main, 0.1)};
+  margin-bottom: 16px;
+  position: relative;
+  ${props => props.theme.breakpoints.up('sm')} {
+    margin-bottom: 24px;
+    width: 200px;
+    height: 200px;
+  }
+`;
+const StyledBoxAbsolute = styled(Box)`
+  width: 85%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
+const StyledQuestionsSvg = styled(QuestionsSvg)`
+  width: 100%;
+`;
+const StyledTermsSvg = styled(TermsSvg)`
+  width: 100%;
+`;
+const StyledCodeSvg = styled(SourceCodeSvg)`
+  width: 100%;
+`;
+const StyledSecuritySvg = styled(SecuritySvg)`
+  width: 100%;
 `;
 
 const RequestReview = () => {
@@ -150,6 +263,17 @@ const OtherReviews = () => {
   );
 };
 
+const CircleInSvg = (svg: any, text: string) => {
+  return (
+    <StyledBoxBlock>
+      <StyledBoxCircle>
+        <StyledBoxAbsolute>{svg}</StyledBoxAbsolute>
+      </StyledBoxCircle>
+      <Box textAlign='center'>{text}</Box>
+    </StyledBoxBlock>
+  );
+};
+
 const IndexPage: React.FC<Props> = props => {
   return (
     <Layout
@@ -157,7 +281,7 @@ const IndexPage: React.FC<Props> = props => {
       currentUser={props.currentUser}
     >
       <Container maxWidth='md'>
-        <Box mt={10}>
+        <Box mt={10} component='section'>
           <StyledBoxAboutTitleWrapper mb={5}>
             <StyledBoxAboutTitle component='h1' mb={2}>
               Bringing code review
@@ -176,12 +300,83 @@ const IndexPage: React.FC<Props> = props => {
           <Box mb={5}>
             <Divider />
           </Box>
-          {RequestReview()}
-          {SellReviews()}
-          {OtherReviews()}
-          {/* <StyledBoxFirstView>
-            <AboutFirstView width={50} height={50} />
-          </StyledBoxFirstView> */}
+          <Box mb={5}>
+            {RequestReview()}
+            {SellReviews()}
+            {OtherReviews()}
+          </Box>
+          <Box mb={5}>
+            <StyledBoxPhilosophyTitle component='h2'>
+              Philosophy
+            </StyledBoxPhilosophyTitle>
+            <StyledUl>
+              <StyledLl>
+                <StyledBoxListFlex>
+                  <StyledBoxSubTitle>
+                    <span>H</span>umility
+                  </StyledBoxSubTitle>
+                  <StyledBoxTrans>謙虚</StyledBoxTrans>
+                </StyledBoxListFlex>
+                <Box pl={0.5}>
+                  謙虚な姿勢でレビューを受け取りましょう。全ては自分の成長の糧になります。
+                </Box>
+              </StyledLl>
+              <StyledLl>
+                <StyledBoxListFlex>
+                  <StyledBoxSubTitle>
+                    <span>R</span>espect
+                  </StyledBoxSubTitle>
+                  <StyledBoxTrans>尊敬</StyledBoxTrans>
+                </StyledBoxListFlex>
+                <Box pl={0.5}>
+                  レビュイー・レビュワーともに尊敬を忘れず対人であることを忘れないようにしましょう。
+                </Box>
+              </StyledLl>
+              <StyledLl>
+                <StyledBoxListFlex>
+                  <StyledBoxSubTitle>
+                    <span>T</span>rust
+                  </StyledBoxSubTitle>
+                  <StyledBoxTrans>信頼</StyledBoxTrans>
+                </StyledBoxListFlex>
+                <Box pl={0.5}>
+                  相手のことを信頼し思いやり健全なコミュニケーションを忘れないようにしましょう。
+                </Box>
+              </StyledLl>
+            </StyledUl>
+          </Box>
+          <Box mb={5}>
+            <StyledBoxSignin>
+              <StyledBoxSinginTitle component='h2'>
+                さぁ、Kanon Codeへ
+              </StyledBoxSinginTitle>
+              <Box mb={3}>
+                <StyledLogo />
+              </Box>
+              <SolidLink href='/signin' borderRadius={4}>
+                サインイン
+              </SolidLink>
+            </StyledBoxSignin>
+          </Box>
+          <Box mb={5}>
+            <StyledBoxLearnMoreTitle component='h2'>
+              Learn more
+            </StyledBoxLearnMoreTitle>
+            <StyledBoxFlexWrapper>
+              <Link href='/faq'>
+                {CircleInSvg(<StyledQuestionsSvg />, 'よくある質問')}
+              </Link>
+              <Link href='/source-code'>
+                {CircleInSvg(<StyledCodeSvg />, 'ソースコード')}
+              </Link>
+              <Link href='/terms'>
+                {CircleInSvg(<StyledTermsSvg />, '利用規約')}
+              </Link>
+              <Link href='/privacy-policy'>
+                {CircleInSvg(<StyledSecuritySvg />, 'プライバシーポリシー')}
+              </Link>
+            </StyledBoxFlexWrapper>
+          </Box>
         </Box>
       </Container>
     </Layout>

@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import SendSvg from '../../../assets/illustration/send.svg';
 
 const StyledSendSvg = styled(SendSvg)`
-  width: 100%;
+  width: 90%;
 `;
 
 export const SendIllustration = () => {
