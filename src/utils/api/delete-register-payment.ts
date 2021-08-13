@@ -1,6 +1,6 @@
 import { apis } from '@/consts/api/';
 import { SuccessTypes } from '@/types/api/success';
-import { ReviewContentsTypes, UserProfileTypes } from '@/types/global/';
+import { UserProfileTypes } from '@/types/global/';
 import { axios } from '@/utils/axios';
 import { AxiosResponse } from 'axios';
 
@@ -12,12 +12,8 @@ type ParamsType = {
   price: number;
 };
 
-type CustomResponseTypes = SuccessTypes & {
-  contents: ReviewContentsTypes;
-};
-
-export const postRegisterPayment = async (
+export const deleteRegisterPayment = async (
   params: ParamsType
-): Promise<AxiosResponse<CustomResponseTypes>> => {
-  return await axios.post(apis.REGISTER_PAYMENT, params);
+): Promise<AxiosResponse<SuccessTypes>> => {
+  return await axios.delete(apis.REGISTER_PAYMENT, { params });
 };
