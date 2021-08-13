@@ -10,9 +10,11 @@ import { Reaction } from '@/components/parts/reaction';
 import { RegistCreditAnnounceDialog } from '@/components/parts/registCreditAnnounceDialog';
 import { SigninDialog } from '@/components/parts/signinDialog';
 import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from '@/consts/const';
+import { errorMessages } from '@/consts/error-messages';
 import theme from '@/styles/theme';
 import { CustomReviewTypes } from '@/types/global';
 import { CreditTypes, UserProfileTypes } from '@/types/global/';
+import { deleteRegisterPayment } from '@/utils/api/delete-register-payment';
 import { postPayment } from '@/utils/api/post-payment';
 import { postRegisterPayment } from '@/utils/api/post-register-payment';
 import { getStripe } from '@/utils/stripe';
@@ -123,7 +125,6 @@ const Wrapper: React.FC<Props> = ({
   const createRegisterPaymentParams = () => {
     const profile = userProfile!;
     return {
-      userId: partitionKey,
       reviewId,
       reviewerId,
       postId,
@@ -138,13 +139,13 @@ const Wrapper: React.FC<Props> = ({
     const registerParams = createRegisterPaymentParams();
     setIsDisabled(true);
     try {
+      const registerResult = await postRegisterPayment(registerParams);
       const response = await postPayment(params);
       if (!response.data.status) throw err;
       const clientSecret = response.data.client_secret;
       if (!stripe || !clientSecret) return;
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
       if (paymentResult.paymentIntent?.status !== 'succeeded') throw err;
-      const registerResult = await postRegisterPayment(registerParams);
       const newReviews = reviews!.slice();
       for (const item of newReviews) {
         if (item.sort_key === reviewId) {
@@ -156,8 +157,9 @@ const Wrapper: React.FC<Props> = ({
       setPaymentedList({ ...paymentedList, [reviewId]: true });
       setIsSucceeded(true);
       setIsDisabled(false);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      await deleteRegisterPayment(registerParams);
+      alert(errorMessages.PAYMENT_ERROR);
       setIsDisabled(false);
     }
   };

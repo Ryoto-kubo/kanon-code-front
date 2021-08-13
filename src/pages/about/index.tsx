@@ -14,7 +14,6 @@ import styled from 'styled-components';
 import TermsSvg from '../../assets/illustration/Accept-terms.svg';
 import QuestionsSvg from '../../assets/illustration/Questions.svg';
 import SecuritySvg from '../../assets/illustration/Security-pana.svg';
-import SourceCodeSvg from '../../assets/illustration/Source-code.svg';
 import KanonCodeSvg from '../../assets/logo/kanon-code.svg';
 
 type Props = {
@@ -163,7 +162,7 @@ const StyledBoxBlock = styled(Box)`
     cursor: pointer;
   }
 `;
-const StyledBoxCircle = styled(Box)`
+const StyledBoxSqure = styled(Box)`
   margin: auto;
   border-radius: 4px;
   width: 100%;
@@ -173,7 +172,7 @@ const StyledBoxCircle = styled(Box)`
   position: relative;
   ${props => props.theme.breakpoints.up('sm')} {
     margin-bottom: 24px;
-    width: 200px;
+    width: 250px;
     height: 200px;
   }
 `;
@@ -188,9 +187,6 @@ const StyledQuestionsSvg = styled(QuestionsSvg)`
   width: 100%;
 `;
 const StyledTermsSvg = styled(TermsSvg)`
-  width: 100%;
-`;
-const StyledCodeSvg = styled(SourceCodeSvg)`
   width: 100%;
 `;
 const StyledSecuritySvg = styled(SecuritySvg)`
@@ -266,9 +262,9 @@ const OtherReviews = () => {
 const CircleInSvg = (svg: any, text: string) => {
   return (
     <StyledBoxBlock>
-      <StyledBoxCircle>
+      <StyledBoxSqure>
         <StyledBoxAbsolute>{svg}</StyledBoxAbsolute>
-      </StyledBoxCircle>
+      </StyledBoxSqure>
       <Box textAlign='center'>{text}</Box>
     </StyledBoxBlock>
   );
@@ -365,9 +361,6 @@ const IndexPage: React.FC<Props> = props => {
             <StyledBoxFlexWrapper>
               <Link href='/faq'>
                 {CircleInSvg(<StyledQuestionsSvg />, 'よくある質問')}
-              </Link>
-              <Link href='/source-code'>
-                {CircleInSvg(<StyledCodeSvg />, 'ソースコード')}
               </Link>
               <Link href='/terms'>
                 {CircleInSvg(<StyledTermsSvg />, '利用規約')}

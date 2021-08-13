@@ -1,7 +1,7 @@
-import Box from "@material-ui/core/Box";
-import React from "react";
-import styled from "styled-components";
-import RelaxSvg from "../../../assets/illustration/relaxing.svg";
+import Box from '@material-ui/core/Box';
+import React from 'react';
+import styled from 'styled-components';
+import RelaxSvg from '../../../assets/illustration/relaxing.svg';
 
 type Props = {
   secondText?: string;
@@ -9,10 +9,10 @@ type Props = {
 
 const StyledRelaxSvg = styled(RelaxSvg)`
   width: 100%;
-  ${(props) => props.theme.breakpoints.up("sm")} {
-    width: 80%;
+  ${props => props.theme.breakpoints.up('sm')} {
+    width: 60%;
   }
-  ${(props) => props.theme.breakpoints.up("md")} {
+  ${props => props.theme.breakpoints.up('md')} {
     width: 350px;
   }
 `;

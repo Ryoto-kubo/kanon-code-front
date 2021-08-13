@@ -13,7 +13,7 @@ type Props = {
 
 const StyledBoxPageTitle = styled(Box)`
   font-size: 24px;
-  margin-bottom: 8px;
+  margin-bottom: 24px;
 `;
 const StyledBoxTitle = styled(Box)`
   font-size: 18px;

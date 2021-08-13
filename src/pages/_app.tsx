@@ -26,10 +26,10 @@ const StyledWrapper = styled.div`
   background: #ffffff;
   position: relative;
   min-height: 100vh;
-  padding-bottom: 572px;
+  padding-bottom: 390px;
   box-sizing: border-box;
   ${props => props.theme.breakpoints.up('sm')} {
-    padding-bottom: 223px;
+    padding-bottom: 165px;
   }
 `;
 
