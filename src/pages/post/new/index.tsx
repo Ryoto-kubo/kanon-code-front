@@ -1,9 +1,11 @@
 import { CustomSnackbar } from '@/components/atoms/CustomSnackbar';
-import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
+import { CustomWhiteOutButton } from '@/components/atoms/WhiteOutButton';
+// import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox';
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper';
 import { InputTagWrapper } from '@/components/organisms/InputTagWrapper';
 import { PostSettingDialog } from '@/components/parts/postSettingDialog';
+import { TreeObjectDialog } from '@/components/parts/treeObjectDialog';
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { targetLanguages } from '@/consts/target-languages';
@@ -114,6 +116,7 @@ const IndexPage: React.FC<Props> = props => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPosted, setIsPosted] = useState(false);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [isOpenTreeDialog, setIsOpenTreeDialog] = useState(false);
   const [buttonText, setButtonText] = useState<ButtonText>('下書き保存');
   const [canPublish, setCanPUblish] = useState<ValidObject>(
     createValidObject(true, '')
@@ -493,12 +496,12 @@ const IndexPage: React.FC<Props> = props => {
     [sourceCode, inputFileNameLists]
   );
 
-  const linkOnGithub = useCallback(
-    (event: React.MouseEvent<HTMLButtonElement>) => {
-      console.log(event);
-    },
-    []
-  );
+  // const linkOnGithub = useCallback(
+  //   (event: React.MouseEvent<HTMLButtonElement>) => {
+  //     console.log(event);
+  //   },
+  //   []
+  // );
 
   const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
@@ -539,10 +542,7 @@ const IndexPage: React.FC<Props> = props => {
             />
           </Box>
           <Box mb={3} className='tag-list-wrapper'>
-            <InputTagWrapper
-              changeTagList={changeTagList}
-              // suggestList={suggestList!}
-            />
+            <InputTagWrapper changeTagList={changeTagList} />
           </Box>
           <Box mb={5} className='description-wrapper'>
             <Editor
@@ -562,14 +562,20 @@ const IndexPage: React.FC<Props> = props => {
           <Box mb={3} className='source-code-wrapper'>
             <StyledBoxFlex>
               <StyledBoxInputGroupWrapper>
-                <Box className='github-wrapper' mb={1}>
-                  <Box mb={1}>
+                <Box mb={1}>
+                  <CustomWhiteOutButton
+                    sizing='small'
+                    onClick={() => setIsOpenTreeDialog(true)}
+                  >
+                    パスの入力について
+                  </CustomWhiteOutButton>
+                  {/* <Box mb={1}>
                     <LinkGithubButton onClick={linkOnGithub} />
                   </Box>
                   <p className='notification'>
                     ※
                     Githubに連携するとディレクトリ構成の中からファイルを選択できるようになります。
-                  </p>
+                  </p> */}
                 </Box>
                 <Box className='input-wrapper'>
                   {inputFileNameLists.map((el, index) => (
@@ -626,6 +632,10 @@ const IndexPage: React.FC<Props> = props => {
         selectTargetLanguage={selectTargetLanguage}
         selectProgrammingIcon={selectProgrammingIcon}
         registerContent={registerContent}
+      />
+      <TreeObjectDialog
+        isOpenDialog={isOpenTreeDialog}
+        closeDialog={() => setIsOpenTreeDialog(false)}
       />
       <CustomSnackbar
         isOpen={!canPublish.isValid}
