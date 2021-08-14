@@ -29,9 +29,7 @@ export const List: React.FC<Props> = props => {
       {props.listArray.map(el => (
         <StyledList key={el.id}>
           <Link href={el.href} passHref>
-            <StyledAnchor target='_brank' rel='noopener'>
-              {el.value}
-            </StyledAnchor>
+            <StyledAnchor>{el.value}</StyledAnchor>
           </Link>
         </StyledList>
       ))}

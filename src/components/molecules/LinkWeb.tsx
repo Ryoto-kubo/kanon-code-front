@@ -1,12 +1,12 @@
-import { IconWeb } from "@/components/svg/materialIcons/IconWeb";
-import theme from "@/styles/theme";
-import Link from "@material-ui/core/Link";
-import React from "react";
-import styled from "styled-components";
+import { IconWeb } from '@/components/svg/materialIcons/IconWeb';
+import theme from '@/styles/theme';
+import Link from '@material-ui/core/Link';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   webSite: string;
-  fontSize: "small" | "inherit" | "default" | "large" | undefined;
+  fontSize: 'small' | 'inherit' | 'default' | 'large' | undefined;
 };
 const StyledLinkWeb = styled(Link)`
   color: #707070;
@@ -15,9 +15,9 @@ const StyledLinkWeb = styled(Link)`
   }
 `;
 
-export const LinkWeb: React.FC<Props> = (props) => {
+export const LinkWeb: React.FC<Props> = props => {
   return (
-    <StyledLinkWeb href={props.webSite} target="_blank">
+    <StyledLinkWeb href={props.webSite} target='_blank' rel='noopener'>
       <IconWeb fontSize={props.fontSize} />
     </StyledLinkWeb>
   );
