@@ -6,6 +6,7 @@ import styled from 'styled-components';
 type Props = {
   totalSales: number;
   currentTotalSales: number;
+  confirmedSales: number;
 };
 
 const StyledBoxFlex = styled(Box)`
@@ -22,7 +23,7 @@ const StyledBoxPriceWrapper = styled(Box)`
   text-align: center;
   margin-bottom: 16px;
   ${props => props.theme.breakpoints.up('sm')} {
-    width: calc((100% - 20px) / 2);
+    width: calc((100% - 40px) / 3);
   }
 `;
 const StyledBoxPrice = styled(Box)`
@@ -41,6 +42,10 @@ export const SalesArea: React.FC<Props> = props => {
       <StyledBoxPriceWrapper>
         <Box>今月の売り上げ</Box>
         <StyledBoxPrice>¥{props.currentTotalSales}</StyledBoxPrice>
+      </StyledBoxPriceWrapper>
+      <StyledBoxPriceWrapper>
+        <Box>確定金額</Box>
+        <StyledBoxPrice>¥{props.confirmedSales}</StyledBoxPrice>
       </StyledBoxPriceWrapper>
     </StyledBoxFlex>
   );

@@ -1,6 +1,6 @@
-import { BankTypes } from "@/types/global";
-import { getBank } from "@/utils/api/get-bank";
-import { useEffect, useState } from "react";
+import { BankTypes } from '@/types/global';
+import { getBank } from '@/utils/api/get-bank';
+import { useEffect, useState } from 'react';
 
 export const useBank = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -11,8 +11,6 @@ export const useBank = () => {
       try {
         const response = await getBank();
         const result = response.data;
-        console.log(result, "result");
-
         if (!result.status) throw (err.message = result.status_message);
         setBank(result.Item ? result.Item.bank : null);
         setIsLoading(false);

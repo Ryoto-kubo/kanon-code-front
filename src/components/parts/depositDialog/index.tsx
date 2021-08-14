@@ -2,7 +2,8 @@ import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { SolidLink } from '@/components/atoms/SolidLink';
 import { CustomLoader } from '@/components/common/loader';
 import { errorMessages } from '@/consts/error-messages';
-import { useWithdrawal } from '@/hooks/useWithdrawal';
+import { useBank } from '@/hooks/useBank';
+import theme from '@/styles/theme';
 import { postWithdrawal } from '@/utils/api/post-withdrawal';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Box from '@material-ui/core/Box';
@@ -12,13 +13,17 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import { TransitionProps } from '@material-ui/core/transitions';
-import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
   isOpenDialog: boolean;
   closeDialog: () => void;
-  totalSales: number;
+  displayConfirmedSales: number;
+  setDisplayConfirmedSales: React.Dispatch<React.SetStateAction<number>>;
+  baseWithdrawableBalance: number;
+  setBaseWithdrawalBalance: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const StyledBoxContentWrapper = styled(Box)`
@@ -38,6 +43,9 @@ const StyledBoxAbsolute = styled(Box)`
   left: 50%;
   transform: translate(-50%, -50%);
 `;
+const StyledAnchor = styled(`a`)`
+  color: ${theme.palette.primary.main};
+`;
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -49,7 +57,7 @@ const Transition = React.forwardRef(function Transition(
 const renderMoveAnnounce = () => {
   return (
     <>
-      <Box mb={2}>出金申請をするには口座登録が必要です</Box>
+      <Box mb={2}>振り込み申請をするには口座登録が必要です</Box>
       <SolidLink href='/bank?redirect_uri=sales' borderRadius={4}>
         口座を登録する
       </SolidLink>
@@ -81,7 +89,7 @@ const renderTextField = (
   );
 };
 
-const successAnimation = () => {
+const successApplication = () => {
   const SUCCESS_ANIMATION_SRC =
     'https://assets7.lottiefiles.com/packages/lf20_yom6uvgj.json';
   return (
@@ -97,16 +105,20 @@ const successAnimation = () => {
           />
         </Box>
         <StyledBoxMessageWrapper>
-          <Box>出金依頼を受け付けました。</Box>
+          <Box>振り込み申請を受け付けました。</Box>
         </StyledBoxMessageWrapper>
         <Box lineHeight={1.7}>
           一週間以内にご登録口座へお振り込みいたします。
           <br />
           キャンセルされる場合や、一週間経っても振り込まれない場合は、
           <br />
-          お手数ですが下記までご連絡お願いいたします。
+          お手数ですが下記のフォームからお問い合わせください。
           <br />
-          info@kanon-code.com
+          <Link href='https://forms.gle/rrKhLEXspvqCcuCAA' passHref>
+            <StyledAnchor target='_brank' rel='noopener'>
+              振り込み申請に関するお問い合わせ
+            </StyledAnchor>
+          </Link>
         </Box>
       </StyledBoxAbsolute>
     </Box>
@@ -114,24 +126,14 @@ const successAnimation = () => {
 };
 
 export const DepositDialog: React.FC<Props> = props => {
-  const { data, isValidating } = useWithdrawal();
   const [value, setValue] = useState(0);
   const [showSuccess, setShowSuccess] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
-  const [displayWithdrawableBalance, setDisplaytWithdrawableBalance] = useState(
-    0
-  );
-  const [baseWithdrawableBalance, setBaseWithdrawableBalance] = useState(0);
-  const [buttonText, setButtonText] = useState<'出金する' | '出金依頼中...'>(
-    '出金する'
-  );
-  const hasBank = data?.data.hasBank;
-  useEffect(() => {
-    setDisplaytWithdrawableBalance(
-      props.totalSales - data?.data.totalWithdrawal
-    );
-    setBaseWithdrawableBalance(props.totalSales - data?.data.totalWithdrawal);
-  }, [data]);
+  const [buttonText, setButtonText] = useState<
+    '振り込みする' | '振り込み申請中...'
+  >('振り込みする');
+  const { bank, isLoading } = useBank();
+  const hasBank = !!bank;
 
   const validNumber = (value: string) => {
     const regExp = new RegExp(/^[0-9]*$/);
@@ -139,7 +141,7 @@ export const DepositDialog: React.FC<Props> = props => {
   };
 
   const validLimit = (value: number) => {
-    return value <= baseWithdrawableBalance;
+    return value <= props.baseWithdrawableBalance;
   };
 
   const changeValue = (
@@ -152,7 +154,7 @@ export const DepositDialog: React.FC<Props> = props => {
     if (!isValidLimit) return;
     setValue(value);
     setIsDisabled(false);
-    setDisplaytWithdrawableBalance(baseWithdrawableBalance - value);
+    props.setDisplayConfirmedSales(props.baseWithdrawableBalance - value);
     if (value <= 0) {
       setIsDisabled(true);
     }
@@ -161,18 +163,18 @@ export const DepositDialog: React.FC<Props> = props => {
   const post = async () => {
     const isValidLimit = validLimit(value);
     if (!isValidLimit) return;
-    setButtonText('出金依頼中...');
+    setButtonText('振り込み申請中...');
     setIsDisabled(true);
     try {
       await postWithdrawal({ value });
       setShowSuccess(true);
-      setBaseWithdrawableBalance(baseWithdrawableBalance - value);
+      props.setBaseWithdrawalBalance(props.baseWithdrawableBalance - value);
       setValue(0);
-      setButtonText('出金する');
+      setButtonText('振り込みする');
       setIsDisabled(false);
     } catch {
       alert(errorMessages.SYSTEM_ERROR);
-      setButtonText('出金する');
+      setButtonText('振り込みする');
       setIsDisabled(false);
     }
   };
@@ -190,19 +192,19 @@ export const DepositDialog: React.FC<Props> = props => {
     >
       <StyledBoxContentWrapper>
         <DialogContent>
-          {isValidating ? (
+          {isLoading ? (
             <CustomLoader width={30} height={30} />
           ) : !hasBank ? (
             renderMoveAnnounce()
           ) : showSuccess ? (
-            successAnimation()
-          ) : baseWithdrawableBalance <= 0 ? (
+            successApplication()
+          ) : props.baseWithdrawableBalance <= 0 ? (
             <Box mb={'16px'}>残高がありません</Box>
           ) : (
             <>
               <Box mb={4}>
                 {renderTextField(
-                  displayWithdrawableBalance,
+                  props.displayConfirmedSales,
                   value,
                   changeValue
                 )}

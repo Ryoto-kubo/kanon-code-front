@@ -11,7 +11,7 @@ import { LayoutDashboard } from '@/layouts/dashboard';
 import { UserTypes } from '@/types/global';
 import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
   authUser: any;
@@ -24,7 +24,15 @@ const IndexPage: React.FC<Props> = props => {
     return <></>;
   }
   const [isOpen, setIsOpen] = useState(false);
+  // DepositDialog内で表示する金額。入力内容に応じて表示が変わる
+  const [displaytConfirmedSales, setDisplayConfirmedSales] = useState(0);
+  // 振り込み申請後に変更される金額。
+  const [baseWithdrawableBalance, setBaseWithdrawalBalance] = useState(0);
   const { data, isValidating } = useSales();
+  useEffect(() => {
+    setDisplayConfirmedSales(data?.data.confirmedSales);
+    setBaseWithdrawalBalance(data?.data.confirmedSales);
+  }, [data]);
   const status = data?.data.status;
   if (status === false) {
     return (
@@ -62,7 +70,7 @@ const IndexPage: React.FC<Props> = props => {
                   color='primary'
                   onClick={() => setIsOpen(true)}
                 >
-                  出金申請
+                  振り込み申請
                 </CustomSolidButton>
               </Box>
               <Box mb={5}>
@@ -72,6 +80,7 @@ const IndexPage: React.FC<Props> = props => {
                 <SalesArea
                   totalSales={totalSales}
                   currentTotalSales={currentTotalSales}
+                  confirmedSales={baseWithdrawableBalance}
                 />
               </Box>
               <SalesChart
@@ -83,7 +92,10 @@ const IndexPage: React.FC<Props> = props => {
             <DepositDialog
               isOpenDialog={isOpen}
               closeDialog={() => setIsOpen(false)}
-              totalSales={totalSales}
+              displayConfirmedSales={displaytConfirmedSales}
+              setDisplayConfirmedSales={setDisplayConfirmedSales}
+              baseWithdrawableBalance={baseWithdrawableBalance}
+              setBaseWithdrawalBalance={setBaseWithdrawalBalance}
             />
           </>
         )}
