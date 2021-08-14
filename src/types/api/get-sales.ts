@@ -1,9 +1,10 @@
-import { SaleTypes } from "@/types/global";
+import { SaleTypes } from '@/types/global';
 
 export type SalesTypes = {
   sales: SaleTypes[];
   totalSales: number;
   currentTotalSales: number;
+  confirmedSales: number;
   labels: string[];
   salesList: number[];
   backGrounds: string[];
