@@ -1,11 +1,11 @@
-import { IconTwitter } from "@/components/svg/materialIcons/IconTwitter";
-import Link from "@material-ui/core/Link";
-import React from "react";
-import styled from "styled-components";
+import { IconTwitter } from '@/components/svg/materialIcons/IconTwitter';
+import Link from '@material-ui/core/Link';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   twitterName: string;
-  fontSize: "small" | "inherit" | "default" | "large" | undefined;
+  fontSize: 'small' | 'inherit' | 'default' | 'large' | undefined;
 };
 const StyledLinkTwitter = styled(Link)`
   color: #707070;
@@ -14,11 +14,12 @@ const StyledLinkTwitter = styled(Link)`
   }
 `;
 
-export const LinkTwitter: React.FC<Props> = (props) => {
+export const LinkTwitter: React.FC<Props> = props => {
   return (
     <StyledLinkTwitter
       href={`https://twitter.com/${props.twitterName}`}
-      target="_blank"
+      target='_blank'
+      rel='noopener'
     >
       <IconTwitter fontSize={props.fontSize} />
     </StyledLinkTwitter>

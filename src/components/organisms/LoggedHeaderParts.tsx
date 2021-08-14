@@ -16,6 +16,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MenuItem from '@material-ui/core/MenuItem';
 import BookmarksOutlinedIcon from '@material-ui/icons/BookmarksOutlined';
 import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
+import ContactMailOutlinedIcon from '@material-ui/icons/ContactMailOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import InboxOutlinedIcon from '@material-ui/icons/InboxOutlined';
 import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
@@ -49,6 +50,9 @@ const StyledListItemIcon = styled(ListItemIcon)`
 const StyledBoxNoticeWrapper = styled(Box)`
   position: relative;
   width: 24px;
+`;
+const StyledDropMenu = styled(DropMenu)`
+  max-height: 300px;
 `;
 
 export const LoggedHeaderParts: React.FC<Props> = props => {
@@ -113,7 +117,7 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                     func={handleNotice}
                   />
                 </Badge>
-                <DropMenu
+                <StyledDropMenu
                   anchorEl={anchorNoticeEl}
                   isOpen={noticeOpen}
                   onClose={handleCloseNotice}
@@ -159,7 +163,7 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                       )
                     )
                   )}
-                </DropMenu>
+                </StyledDropMenu>
               </>
             ) : (
               <NotificationsButton disableRipple={true} func={handleNotice} />
@@ -234,6 +238,12 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
               <SettingsOutlinedIcon fontSize='small' />
             </StyledListItemIcon>
             <ListItemText secondary='設定' />
+          </MenuItem>
+          <MenuItem onClick={() => toPage('/contact-us')}>
+            <StyledListItemIcon>
+              <ContactMailOutlinedIcon fontSize='small' />
+            </StyledListItemIcon>
+            <ListItemText secondary='各種お問い合わせ' />
           </MenuItem>
           <MenuItem onClick={() => signOut()}>
             <StyledListItemIcon>

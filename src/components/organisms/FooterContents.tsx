@@ -37,8 +37,8 @@ const rules = [
 const forms = [
   {
     id: uuidv4(),
-    href: 'https://forms.gle/G5XBqS8RAmRJJ9616',
-    value: 'お問い合わせ',
+    href: '/contact-us',
+    value: '各種お問い合わせ',
   },
   // {
   //   id: uuidv4(),

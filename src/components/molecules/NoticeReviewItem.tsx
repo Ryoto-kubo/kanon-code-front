@@ -1,29 +1,29 @@
-import { CircleElement } from '@/components/atoms/Circle'
-import theme from '@/styles/theme'
-import { postNotices } from '@/utils/api/post-notices'
-import Box from '@material-ui/core/Box'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import React from 'react'
-import styled from 'styled-components'
+import { CircleElement } from '@/components/atoms/Circle';
+import theme from '@/styles/theme';
+import { postNotices } from '@/utils/api/post-notices';
+import Box from '@material-ui/core/Box';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
-  title: string
-  reviewerName: string
-  name: string
-  iconSrc: string
-  partitionKey: string
-  sortKey: string
-  isRead: boolean
-  date: string
-  url: string
-  width: string
-  height: string
-}
+  title: string;
+  reviewerName: string;
+  name: string;
+  iconSrc: string;
+  partitionKey: string;
+  sortKey: string;
+  isRead: boolean;
+  date: string;
+  url: string;
+  width: string;
+  height: string;
+};
 
 const StyledWrapper = styled(Box)`
   display: felx;
-`
+`;
 const StyledAnchor = styled(`a`)`
   display: inline-block;
   font-weight: bold;
@@ -33,7 +33,7 @@ const StyledAnchor = styled(`a`)`
     text-decoration: underline;
     color: ${theme.palette.text.primary};
   }
-`
+`;
 const StyledMessageWrapper = styled(Box)`
   width: 200px;
   white-space: pre-wrap;
@@ -41,10 +41,10 @@ const StyledMessageWrapper = styled(Box)`
   margin-left: 8px;
   line-height: 1.7;
   font-size: 13px;
-`
+`;
 const StyledBoxDate = styled(Box)`
   font-size: 12px;
-`
+`;
 const StyledButton = styled('button')`
   outline: none;
   border: none;
@@ -55,29 +55,29 @@ const StyledButton = styled('button')`
     text-decoration: underline;
     cursor: pointer;
   }
-`
+`;
 
-export const NoticeReviewItem: React.FC<Props> = (props) => {
-  const router = useRouter()
+export const NoticeReviewItem: React.FC<Props> = props => {
+  const router = useRouter();
 
   const movePage = async (
     partitionKey: string,
     sortKey: string,
     isRead: boolean,
-    url: string,
+    url: string
   ) => {
-    const err = new Error()
+    const err = new Error();
     if (isRead) {
-      router.push(url)
-      return
+      router.push(url);
+      return;
     }
     try {
-      await postNotices({ partitionKey, sortKey })
-      router.push(url)
+      await postNotices({ partitionKey, sortKey });
+      router.push(url);
     } catch {
-      console.error(err)
+      console.error(err);
     }
-  }
+  };
   return (
     <StyledWrapper>
       <CircleElement width={`${props.width}`} height={`${props.height}`}>
@@ -106,20 +106,16 @@ export const NoticeReviewItem: React.FC<Props> = (props) => {
                 props.partitionKey,
                 props.sortKey,
                 props.isRead,
-                props.url,
+                props.url
               )
             }
           >
             「{props.title}」
           </StyledButton>
           にレビューしました。
-          {/* <Link href={`/${props.name}/post/${postId}`} passHref>
-            <StyledAnchor>「{props.title}」</StyledAnchor>
-          </Link>
-          にレビューしました。 */}
         </Box>
         <StyledBoxDate>{props.date}</StyledBoxDate>
       </StyledMessageWrapper>
     </StyledWrapper>
-  )
-}
+  );
+};
