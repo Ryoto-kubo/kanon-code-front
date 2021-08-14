@@ -101,7 +101,7 @@ const Wrapper = ({
     const findIndex = query.indexOf('redirect_uri');
     if (findIndex !== -1) {
       const redirectUri = query.replace('?redirect_uri=', '');
-      setHref(redirectUri);
+      setHref(decodeURIComponent(redirectUri));
       setIsOpenMovePage(true);
     }
   };

@@ -58,20 +58,10 @@ const contained = {
   background: theme.palette.primary.main,
   color: '#ffffff',
 };
-const StyledBoxFlex = styled(Box)`
-  ${props => props.theme.breakpoints.up('sm')} {
-    display: flex;
-    align-items: flex-start;
-  }
-`;
+const StyledBoxWrapper = styled(Box)``;
 const StyledBoxLabel = styled(Box)`
   font-weight: bold;
   margin-bottom: 16px;
-  ${props => props.theme.breakpoints.up('sm')} {
-    flex-shrink: 0;
-    flex-basis: 180px;
-    margin-bottom: 0px;
-  }
 `;
 const StyledButtonBank = styled(Button)`
   font-size: 12px;
@@ -324,7 +314,7 @@ const IndexPage: React.FC<Props> = props => {
         ) : (
           <>
             <Box mb={5}>
-              <StyledBoxFlex mb={4}>
+              <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>銀行コード(半角数字)</StyledBoxLabel>
                 <Box>
                   <Box mb={1}>
@@ -362,8 +352,8 @@ const IndexPage: React.FC<Props> = props => {
                     ))}
                   </Box>
                 </Box>
-              </StyledBoxFlex>
-              <StyledBoxFlex mb={4}>
+              </StyledBoxWrapper>
+              <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>銀行名</StyledBoxLabel>
                 <Box mb={1}>
                   <Box mb={0.5} minWidth={343} maxWidth={343}>
@@ -382,8 +372,8 @@ const IndexPage: React.FC<Props> = props => {
                     <ValidMessage validText='32文字以下で入力してください' />
                   )}
                 </Box>
-              </StyledBoxFlex>
-              <StyledBoxFlex mb={4}>
+              </StyledBoxWrapper>
+              <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>支店コード(半角数字)</StyledBoxLabel>
                 <Box mb={1}>
                   <Box mb={0.5} minWidth={343} maxWidth={343}>
@@ -403,8 +393,8 @@ const IndexPage: React.FC<Props> = props => {
                     <ValidMessage validText='3桁以下の半角数字で入力してください' />
                   )}
                 </Box>
-              </StyledBoxFlex>
-              <StyledBoxFlex mb={4}>
+              </StyledBoxWrapper>
+              <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>支店名</StyledBoxLabel>
                 <Box mb={1}>
                   <Box mb={0.5} minWidth={343} maxWidth={343}>
@@ -423,8 +413,8 @@ const IndexPage: React.FC<Props> = props => {
                     <ValidMessage validText='32文字以下で入力してください' />
                   )}
                 </Box>
-              </StyledBoxFlex>
-              <StyledBoxFlex mb={4}>
+              </StyledBoxWrapper>
+              <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>預金種類</StyledBoxLabel>
                 <Box>
                   {DEPOSIT_TYPES.map((el, index) => (
@@ -445,8 +435,8 @@ const IndexPage: React.FC<Props> = props => {
                 {!stateValid.isDepositType && (
                   <ValidMessage validText='預金種類を選択してください' />
                 )}
-              </StyledBoxFlex>
-              <StyledBoxFlex mb={4}>
+              </StyledBoxWrapper>
+              <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>口座番号(半角数字)</StyledBoxLabel>
                 <Box mb={1}>
                   <Box mb={0.5} minWidth={343} maxWidth={343}>
@@ -466,8 +456,8 @@ const IndexPage: React.FC<Props> = props => {
                     <ValidMessage validText='7~8桁の半角数字で入力してください' />
                   )}
                 </Box>
-              </StyledBoxFlex>
-              <StyledBoxFlex mb={4}>
+              </StyledBoxWrapper>
+              <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>口座名義カナ(全角)</StyledBoxLabel>
                 <Box mb={1}>
                   <Box mb={0.5} minWidth={343} maxWidth={343}>
@@ -486,7 +476,7 @@ const IndexPage: React.FC<Props> = props => {
                     <ValidMessage validText='32文字以下で入力してください' />
                   )}
                 </Box>
-              </StyledBoxFlex>
+              </StyledBoxWrapper>
               <StyledButtonWrapper>
                 <CustomSolidButton
                   sizing='small'
