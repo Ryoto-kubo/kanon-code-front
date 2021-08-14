@@ -1,6 +1,7 @@
 import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { SolidLink } from '@/components/atoms/SolidLink';
 import { CustomLoader } from '@/components/common/loader';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
 import { errorMessages } from '@/consts/error-messages';
 import { useBank } from '@/hooks/useBank';
 import theme from '@/styles/theme';
@@ -25,6 +26,7 @@ type Props = {
   baseWithdrawableBalance: number;
   setBaseWithdrawalBalance: React.Dispatch<React.SetStateAction<number>>;
 };
+const DEPOSIT_CHARGE_PRICE = 350;
 
 const StyledBoxContentWrapper = styled(Box)`
   text-align: center;
@@ -77,14 +79,22 @@ const renderTextField = (
       <StyledBoxMessageWrapper mb={2}>
         残高：¥{displayWithdrawableBalance}
       </StyledBoxMessageWrapper>
-      <TextField
-        label='引き出し額'
-        value={value}
-        onChange={changeValue}
-        InputProps={{
-          startAdornment: <InputAdornment position='start'>¥</InputAdornment>,
-        }}
-      />
+      <Box mb={1}>
+        <TextField
+          label='引き出し額'
+          value={value}
+          onChange={changeValue}
+          InputProps={{
+            startAdornment: <InputAdornment position='start'>¥</InputAdornment>,
+          }}
+        />
+      </Box>
+      <Box textAlign='center'>
+        <ValidMessage
+          validText='振り込み手数料¥350を引いたものが振り込まれます。'
+          justifyContent='center'
+        />
+      </Box>
     </>
   );
 };
@@ -130,8 +140,8 @@ export const DepositDialog: React.FC<Props> = props => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [isDisabled, setIsDisabled] = useState(true);
   const [buttonText, setButtonText] = useState<
-    '振り込みする' | '振り込み申請中...'
-  >('振り込みする');
+    '振り込み申請を行う' | '振り込み申請中...'
+  >('振り込み申請を行う');
   const { bank, isLoading } = useBank();
   const hasBank = !!bank;
 
@@ -153,10 +163,11 @@ export const DepositDialog: React.FC<Props> = props => {
     const isValidLimit = validLimit(value);
     if (!isValidLimit) return;
     setValue(value);
-    setIsDisabled(false);
     props.setDisplayConfirmedSales(props.baseWithdrawableBalance - value);
-    if (value <= 0) {
+    if (value <= DEPOSIT_CHARGE_PRICE) {
       setIsDisabled(true);
+    } else {
+      setIsDisabled(false);
     }
   };
 
@@ -170,11 +181,11 @@ export const DepositDialog: React.FC<Props> = props => {
       setShowSuccess(true);
       props.setBaseWithdrawalBalance(props.baseWithdrawableBalance - value);
       setValue(0);
-      setButtonText('振り込みする');
+      setButtonText('振り込み申請を行う');
       setIsDisabled(false);
     } catch {
       alert(errorMessages.SYSTEM_ERROR);
-      setButtonText('振り込みする');
+      setButtonText('振り込み申請を行う');
       setIsDisabled(false);
     }
   };
