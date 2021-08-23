@@ -1,8 +1,7 @@
-import { TheFooter } from "@/components/common/footer/index";
-import { CommonHead } from "@/components/common/head/index";
-import Box from "@material-ui/core/Box";
-import React, { ReactNode } from "react";
-import styled from "styled-components";
+import { CommonHead } from '@/components/common/head/index';
+import Box from '@material-ui/core/Box';
+import React, { ReactNode } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   children: ReactNode;
@@ -18,10 +17,9 @@ const LayoutRegister = ({ children, title }: Props) => {
   return (
     <>
       <CommonHead title={title} />
-      <StyleBoxMain mt={4} component="main">
+      <StyleBoxMain pt={4} component='main'>
         {children}
       </StyleBoxMain>
-      <TheFooter />
     </>
   );
 };

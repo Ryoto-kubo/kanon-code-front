@@ -1,63 +1,63 @@
-import { CustomSolidButton } from '@/components/atoms/SolidButton'
-import { TypoHeading1 } from '@/components/atoms/TypoHeading1'
-import { CustomLoader } from '@/components/common/loader'
-import { ValidMessage } from '@/components/molecules/ValidMessage'
-import { RegisteredDialog } from '@/components/parts/registeredDialog'
-import { apis } from '@/consts/api/'
-import * as CONSTS from '@/consts/const'
-import { errorMessages, validMessages } from '@/consts/error-messages'
-import LayoutRegister from '@/layouts/register'
-import theme from '@/styles/theme'
-import { getUser } from '@/utils/api/get-user'
-import { axios } from '@/utils/axios'
-import { UserProfile } from '@/utils/user-profile'
-import Box from '@material-ui/core/Box'
-import Container from '@material-ui/core/Container'
-import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
-import { Auth } from 'aws-amplify'
-import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import styled from 'styled-components'
-import WelcomSvg from '../../assets/illustration/welcome.svg'
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { TypoHeading1 } from '@/components/atoms/TypoHeading1';
+import { CustomLoader } from '@/components/common/loader';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
+import { RegisteredDialog } from '@/components/parts/registeredDialog';
+import { apis } from '@/consts/api/';
+import * as CONSTS from '@/consts/const';
+import { errorMessages, validMessages } from '@/consts/error-messages';
+import LayoutRegister from '@/layouts/register';
+import theme from '@/styles/theme';
+import { getUser } from '@/utils/api/get-user';
+import { axios } from '@/utils/axios';
+import { UserProfile } from '@/utils/user-profile';
+import Box from '@material-ui/core/Box';
+import Container from '@material-ui/core/Container';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import { Auth } from 'aws-amplify';
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import WelcomSvg from '../../assets/illustration/welcome.svg';
 
 type Props = {
-  authUser: any
-}
+  authUser: any;
+};
 
 const StyledContainer = styled(Container)`
   width: 100%;
   text-align: center;
   margin-bottom: 40px;
   max-width: 620px;
-`
+`;
 const StyledWelcomSvg = styled(WelcomSvg)`
   width: 100%;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     width: 80%;
   }
-  ${(props) => props.theme.breakpoints.up('md')} {
+  ${props => props.theme.breakpoints.up('md')} {
     width: 450px;
   }
-`
+`;
 const StyledBoxWrapper = styled(Box)`
   width: 100%;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     width: 70%;
     margin: auto;
   }
-`
+`;
 const StyledBoxTextWrapper = styled(Box)`
   margin-bottom: 16px;
   font-size: 14px;
   font-weight: bold;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     font-size: 16px;
   }
-`
+`;
 const StyledBoxInputWrapper = styled(Box)`
   margin-bottom: 24px;
-`
+`;
 const StyledPUrlWrapper = styled('div')`
   margin: auto;
   margin-bottom: 16px;
@@ -65,110 +65,112 @@ const StyledPUrlWrapper = styled('div')`
   width: 100%;
   padding: 2px;
   border-bottom: 2px solid ${theme.palette.primary.main};
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     width: 70%;
   }
-`
+`;
 
-const IndexPage: React.FC<Props> = (props) => {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState<boolean>(true)
-  const [showModal, setShowModal] = useState<boolean>(false)
-  const [isDisabled, setIsDidabled] = useState<boolean>(true)
-  const [isValidName, setIsValidName] = useState<boolean>(true)
-  const [validText, setIsValidText] = useState<string>('')
-  const [name, setUserName] = useState<string>('')
-  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT
-  const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH
+const IndexPage: React.FC<Props> = props => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [isDisabled, setIsDidabled] = useState<boolean>(true);
+  const [isValidName, setIsValidName] = useState<boolean>(true);
+  const [validText, setIsValidText] = useState<string>('');
+  const [name, setUserName] = useState<string>('');
+  const domain = process.env.NEXT_PUBLIC_REDIRECT_SIGN_OUT;
+  const MAX_NAME_LENGTH = CONSTS.MAX_NAME_LENGTH;
   useEffect(() => {
-    const err = new Error()
-    ;(async () => {
+    const err = new Error();
+    (async () => {
       try {
-        await Auth.currentAuthenticatedUser()
-        const result = await getUser()
-        if (result.status !== 200) throw err
-        const item = result.data.Item
-        const userProfile = item.user_profile
+        await Auth.currentAuthenticatedUser();
+        const result = await getUser();
+        if (result.status !== 200) throw err;
+        const item = result.data.Item;
+        const userProfile = item.user_profile;
         if (userProfile.display_name === '') {
-          setIsLoading(false)
+          setIsLoading(false);
         } else {
-          router.push('/')
+          router.push('/');
         }
       } catch (error) {
-        console.error(error)
-        router.push('/')
+        console.error(error);
+        router.push('/');
       }
-    })()
-  }, [])
+    })();
+  }, []);
 
   const createParams = () => {
     return {
       displayName: name,
-    }
-  }
+    };
+  };
   const resetValid = () => {
-    setIsValidName(true)
-    setIsValidText('')
-  }
+    setIsValidName(true);
+    setIsValidText('');
+  };
   const validName = (value: string): boolean => {
     const isValidMaxLength = UserProfile.validMaxLength(
       value.length,
-      MAX_NAME_LENGTH,
-    )
-    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value)
+      MAX_NAME_LENGTH
+    );
+    const isValidFirstAndLastChara = UserProfile.validFirstAndLastChara(value);
     const isValidOnlySingleByteAndUnderScore = UserProfile.validOnlySingleByteAndUnderScore(
-      value,
-    )
+      value
+    );
     if (!isValidMaxLength) {
-      setIsValidName(false)
-      setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`)
-      return isValidMaxLength
+      setIsValidName(false);
+      setIsValidText(`${MAX_NAME_LENGTH}文字以下で入力してください`);
+      return isValidMaxLength;
     }
     if (!isValidFirstAndLastChara) {
-      setIsValidName(false)
-      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA)
-      return isValidFirstAndLastChara
+      setIsValidName(false);
+      setIsValidText(validMessages.NOT_UNDERSCORE_FOR_FIRST_LAST_CHARA);
+      return isValidFirstAndLastChara;
     }
     if (!isValidOnlySingleByteAndUnderScore) {
-      setIsValidName(false)
-      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE)
-      return isValidOnlySingleByteAndUnderScore
+      setIsValidName(false);
+      setIsValidText(validMessages.ONLY_SINGLEBYTE_AND_UNDERSCORE);
+      return isValidOnlySingleByteAndUnderScore;
     }
     return (
       isValidMaxLength &&
       isValidFirstAndLastChara &&
       isValidOnlySingleByteAndUnderScore
-    )
-  }
+    );
+  };
   const changeName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value
-    const isValid = validName(value)
+    const value = event.target.value;
+    const isValid = validName(value);
     if (isValid) {
-      setIsDidabled(false)
-      resetValid()
+      setIsDidabled(false);
+      resetValid();
     } else {
-      if (value === '') resetValid()
-      setIsDidabled(true)
+      if (value === '') resetValid();
+      setIsDidabled(true);
     }
-    setUserName(value)
-  }
+    setUserName(value);
+  };
   const registerDisplayName = async () => {
-    const err = new Error()
-    if (isDisabled || !isValidName) return
-    const params = createParams()
+    const err = new Error();
+    if (isDisabled || !isValidName) return;
+    const params = createParams();
+    setIsDidabled(true);
     try {
-      const result = await axios.post(apis.DISPLAY_NAME, params)
-      if (!result.data.status) throw err
+      const result = await axios.post(apis.DISPLAY_NAME, params);
+      if (!result.data.status) throw err;
       if (result.data.isSuccess) {
-        setShowModal(true)
+        setShowModal(true);
       } else {
-        alert(errorMessages.EXISTED_NAME)
+        alert(errorMessages.EXISTED_NAME);
+        setIsDidabled(false);
       }
     } catch (error) {
-      console.error(error)
-      alert(errorMessages.SYSTEM_ERROR)
+      alert(errorMessages.SYSTEM_ERROR);
+      setIsDidabled(false);
     }
-  }
+  };
 
   return (
     <>
@@ -176,12 +178,12 @@ const IndexPage: React.FC<Props> = (props) => {
         <CustomLoader />
       ) : (
         <LayoutRegister
-          title="Kanon Code | ユーザーネーム登録"
+          title='Kanon Code | ユーザーネーム登録'
           authUser={props.authUser}
         >
           <StyledContainer>
             <Box mb={2}>
-              <TypoHeading1 color="primary">
+              <TypoHeading1 color='primary'>
                 Welcome!!
                 <br />
                 Kanon Code
@@ -194,12 +196,12 @@ const IndexPage: React.FC<Props> = (props) => {
               </StyledBoxTextWrapper>
               <StyledBoxInputWrapper>
                 <TextField
-                  id="name"
-                  type="text"
+                  id='name'
+                  type='text'
                   value={name}
                   fullWidth
-                  label="name"
-                  placeholder="user name"
+                  label='name'
+                  placeholder='user name'
                   onChange={changeName}
                   rows={0}
                 />
@@ -215,7 +217,7 @@ const IndexPage: React.FC<Props> = (props) => {
               {!isValidName && <ValidMessage validText={validText} />}
             </StyledBoxWrapper>
             <CustomSolidButton
-              sizing="small"
+              sizing='small'
               onClick={registerDisplayName}
               disabled={isDisabled}
             >
@@ -226,7 +228,7 @@ const IndexPage: React.FC<Props> = (props) => {
         </LayoutRegister>
       )}
     </>
-  )
-}
+  );
+};
 
-export default IndexPage
+export default IndexPage;
