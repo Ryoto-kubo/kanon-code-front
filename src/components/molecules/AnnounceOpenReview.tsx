@@ -1,13 +1,14 @@
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { ReactionUsers } from "@/components/molecules/ReactionUsers";
-import { ReactionUsersDialog } from "@/components/parts/reactionUsersDialog";
-import Box from "@material-ui/core/Box";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { ReactionUsers } from '@/components/molecules/ReactionUsers';
+import { ReactionUsersDialog } from '@/components/parts/reactionUsersDialog';
+import Box from '@material-ui/core/Box';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   title: string;
   price: number;
+  remainingLength: number;
   reactionUsers: {
     display_name: string;
     icon_src: string;
@@ -19,14 +20,14 @@ type Props = {
 
 const StyledBoxShowMessage = styled(Box)`
   text-align: center;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
   &:after {
     border-top: 1px dashed #a8abb1;
     display: block;
     width: 100%;
     height: 1px;
     margin-top: -12px;
-    content: "";
+    content: '';
   }
 `;
 const StyledBoxBg = styled(Box)`
@@ -54,6 +55,7 @@ const StyledBoxTitleWrapper = styled(Box)`
 export const AnnounceOpenReview: React.FC<Props> = ({
   title,
   price,
+  remainingLength,
   reactionUsers,
   showToggleDialog,
 }) => {
@@ -66,7 +68,10 @@ export const AnnounceOpenReview: React.FC<Props> = ({
       <StyledBoxShowMessage>
         <StyledBoxBg>レビューの続きを見るには</StyledBoxBg>
       </StyledBoxShowMessage>
-      <Box textAlign="center">レビューを購入する</Box>
+      <Box textAlign='center' color='#6f7372' mb={3}>
+        残り{remainingLength}文字
+      </Box>
+      <Box textAlign='center'>レビューを購入する</Box>
       <StyledBoxReviewInfo>
         <Box mb={1}>
           <StyledBoxTitleWrapper>{title}</StyledBoxTitleWrapper>
@@ -75,9 +80,9 @@ export const AnnounceOpenReview: React.FC<Props> = ({
           <ReactionUsers reactionUsers={reactionUsers} setIsOpen={setIsOpen} />
         )}
         <CustomSolidButton
-          sizing="medium"
+          sizing='medium'
           onClick={showToggleDialog}
-          color="secondary"
+          color='secondary'
         >
           ¥{price}でレビューを購入する
         </CustomSolidButton>
