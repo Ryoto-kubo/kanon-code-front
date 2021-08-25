@@ -21,6 +21,7 @@ import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components';
 import './editor.scss';
+import { MentenanceView } from './mentenance';
 import './style.scss';
 const StyledWrapper = styled.div`
   background: #ffffff;
@@ -34,6 +35,9 @@ const StyledWrapper = styled.div`
 `;
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
+  if (process.env.NEXT_PUBLIC_MENTENANCE_MODE === 'MENTENANCE')
+    return <MentenanceView />;
+
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
@@ -44,7 +48,6 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       jssStyles.parentNode.removeChild(jssStyles);
     }
     (async () => {
-      console.log('_app.tsx async');
       try {
         const err = new Error();
         const cognitoUser = await Auth.currentAuthenticatedUser();
@@ -64,13 +67,10 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
           await Auth.signOut();
           return;
         }
-        // if (router.pathname === "/" || router.pathname === "/signin") return;
-        // router.push("/");
         setisFetch(true);
       }
     })();
   }, []);
-
   if (!isFetch) return <></>;
   return (
     <RecoilRoot>
