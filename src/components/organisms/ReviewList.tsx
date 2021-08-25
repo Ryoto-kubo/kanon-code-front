@@ -172,6 +172,7 @@ const Wrapper: React.FC<Props> = ({
     const title = contents.review.title;
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`;
     const displayBodyHtml = contents.review.display_body_html;
+    const remainingLength = el.remaining_length;
     const isSelfReviewItem = el.sort_key === myReviewId;
     const isPaymentFree = el.payment_type === PAYMENT_FREE;
     const sortKey = el.sort_key;
@@ -224,6 +225,7 @@ const Wrapper: React.FC<Props> = ({
           <AnnounceOpenReview
             title={title}
             price={price}
+            remainingLength={remainingLength}
             reactionUsers={el.reaction_users}
             showToggleDialog={() =>
               showToggleDialog(sortKey, title, name, iconSrc, price, reviewerId)

@@ -178,7 +178,6 @@ export type ReviewContentsTypes = {
     value: string;
     body_html: string;
     display_body_html: string;
-    remaining_length: number;
   };
 };
 
@@ -195,6 +194,7 @@ export type CustomReviewTypes = {
     display_name: string;
     icon_src: string;
   }[];
+  remaining_length: number;
   payment_area: number;
   payment_type: number;
   create_year: number;

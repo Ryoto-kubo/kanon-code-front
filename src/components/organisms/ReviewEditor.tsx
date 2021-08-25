@@ -165,10 +165,10 @@ export const ReviewEditor: React.FC<Props> = React.memo(props => {
           value: review,
           body_html: marked(review),
           display_body_html: displayBodyHtml,
-          remaining_length: remainingLength,
         },
       },
-      paymentType: paymentType,
+      remainingLength,
+      paymentType,
       paymentArea: beginPaymentArea,
       price,
     };
