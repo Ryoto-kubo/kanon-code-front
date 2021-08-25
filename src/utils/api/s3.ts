@@ -1,5 +1,5 @@
-import { axios } from '@/utils/axios'
+import axios from "axios";
 
 export const uploadImageToS3 = async (presignedUrl: string, file: File) => {
-  await axios.put(presignedUrl, file)
-}
+  await axios.put(presignedUrl, file);
+};

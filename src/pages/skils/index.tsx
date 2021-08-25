@@ -1,27 +1,25 @@
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { CustomLoader } from "@/components/common/loader";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
-import { SettingForm } from "@/components/organisms/SettingForm";
-import * as CONSTS from "@/consts/const";
-import { errorMessages } from "@/consts/error-messages";
-import { messages } from "@/consts/messages";
-import { YEARS_EXPERIENCES } from "@/consts/years-experiences";
-import { useUser } from "@/hooks/useUser";
-import { SettingLayout } from "@/layouts/setting-form";
-import { UserTypes } from "@/types/global";
-import { postUserProfile } from "@/utils/api/post-user-profile";
-import { UserProfile } from "@/utils/user-profile";
-import Box from "@material-ui/core/Box";
-import MenuItem from "@material-ui/core/MenuItem";
-import Snackbar from "@material-ui/core/Snackbar";
-import TextField from "@material-ui/core/TextField";
-import React, { useCallback, useState } from "react";
-import styled from "styled-components";
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
+import { SettingForm } from '@/components/organisms/SettingForm';
+import * as CONSTS from '@/consts/const';
+import { errorMessages } from '@/consts/error-messages';
+import { messages } from '@/consts/messages';
+import { YEARS_EXPERIENCES } from '@/consts/years-experiences';
+import { SettingLayout } from '@/layouts/setting-form';
+import { UserTypes } from '@/types/global';
+import { postUserProfile } from '@/utils/api/post-user-profile';
+import { moveToTop } from '@/utils/move-page';
+import { UserProfile } from '@/utils/user-profile';
+import Box from '@material-ui/core/Box';
+import MenuItem from '@material-ui/core/MenuItem';
+import Snackbar from '@material-ui/core/Snackbar';
+import TextField from '@material-ui/core/TextField';
+import React, { useCallback, useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes;
 };
 type TypeParams = {
   language: string;
@@ -42,21 +40,22 @@ const StyledButtonWrapper = styled(Box)`
 `;
 
 const renderOptions = (): JSX.Element[] => {
-  return YEARS_EXPERIENCES.map((option) => (
+  return YEARS_EXPERIENCES.map(option => (
     <MenuItem key={option.value} value={option.value}>
       {option.label}
     </MenuItem>
   ));
 };
 
-const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
-  const userId = props.authUser.username;
-  const MAX_LANG_LENGTH = CONSTS.MAX_LANG_LENGTH;
+const IndexPage: React.FC<Props> = props => {
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const [skilParams] = useState<TypeParams>(CONSTS.INITIAL_SKILS);
   const [isOpen, setIsOpen] = useState(false);
-  const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [validText, setIsValidText] = useState<string>("");
+  const [updatingMessage, setUpdatingMessage] = useState('更新中...');
+  const [validText, setIsValidText] = useState<string>('');
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
   const [validList, setValidList] = useState<boolean[]>([
     true,
@@ -65,8 +64,9 @@ const IndexPage: React.FC<Props> = (props) => {
     true,
     true,
   ]);
-  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
-  const profile = user.user_profile;
+  const [user, setUser] = useState<UserTypes>(props.currentUser);
+  const MAX_LANG_LENGTH = CONSTS.MAX_LANG_LENGTH;
+  const profile = props.currentUser.user_profile;
 
   const update = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -75,7 +75,6 @@ const IndexPage: React.FC<Props> = (props) => {
       setIsDidabled(true);
       const err = new Error();
       const params = {
-        userId: userId,
         userProfile: profile,
       };
       try {
@@ -122,7 +121,7 @@ const IndexPage: React.FC<Props> = (props) => {
       updateValidList(index, true);
       setIsDidabled(false);
     }
-    setValue<string>(value, index, "language");
+    setValue<string>(value, index, 'language');
   };
 
   const changeYearsExperiences = (
@@ -130,7 +129,7 @@ const IndexPage: React.FC<Props> = (props) => {
     index: number
   ) => {
     const value = Number(event.target.value);
-    setValue<number>(value, index, "years_experiences");
+    setValue<number>(value, index, 'years_experiences');
   };
 
   const setValue = useCallback(
@@ -156,27 +155,27 @@ const IndexPage: React.FC<Props> = (props) => {
       <Box key={index} mb={3}>
         <StyledBoxFieldWrapper>
           <StyledTextFieldService
-            type="text"
-            style={{ display: "block" }}
+            type='text'
+            style={{ display: 'block' }}
             value={profile.skils[index]?.language}
-            placeholder="例：php"
-            label="プログラミング言語"
+            placeholder='例：php'
+            label='プログラミング言語'
             fullWidth={true}
-            variant="outlined"
-            onChange={(event) => changeLanguage(event, index)}
+            variant='outlined'
+            onChange={event => changeLanguage(event, index)}
             InputLabelProps={{
               shrink: true,
             }}
           />
           <StyledTextFieldService
             select
-            style={{ display: "block" }}
+            style={{ display: 'block' }}
             defaultValue={elemet.value}
             value={profile.skils[index]?.years_experiences}
-            label="経験年数"
+            label='経験年数'
             fullWidth={true}
-            variant="outlined"
-            onChange={(event) => changeYearsExperiences(event, index)}
+            variant='outlined'
+            onChange={event => changeYearsExperiences(event, index)}
             InputLabelProps={{
               shrink: true,
             }}
@@ -191,41 +190,35 @@ const IndexPage: React.FC<Props> = (props) => {
 
   return (
     <SettingLayout
-      title="Kanon Code | スキル設定"
+      title='Kanon Code | スキル設定'
       currentUser={props.currentUser}
     >
       <SettingForm
-        linkText="Skil"
-        href="/settings/skil"
-        fontSize="default"
-        color="inherit"
+        linkText='Skil'
+        href='/settings/skil'
+        fontSize='default'
+        color='inherit'
         headingFontSize={24}
         marginBottom={0}
       >
-        {isLoading ? (
-          <CustomLoader width={40} height={40} />
-        ) : (
-          <>
-            {renderTextFields()}
-            <StyledButtonWrapper>
-              <CustomSolidButton
-                sizing="small"
-                onClick={update}
-                disabled={isDisabled}
-              >
-                登録
-              </CustomSolidButton>
-            </StyledButtonWrapper>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              open={isOpen}
-              message={updatingMessage}
-            />
-          </>
-        )}
+        {renderTextFields()}
+        <StyledButtonWrapper>
+          <CustomSolidButton
+            sizing='small'
+            onClick={update}
+            disabled={isDisabled}
+          >
+            登録
+          </CustomSolidButton>
+        </StyledButtonWrapper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          open={isOpen}
+          message={updatingMessage}
+        />
       </SettingForm>
     </SettingLayout>
   );

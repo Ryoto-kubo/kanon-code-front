@@ -1,35 +1,52 @@
-import { Price } from "@/components/atoms/Price";
-import { CustomLoader } from "@/components/common/loader";
-import { AnnounceOpenReview } from "@/components/molecules/AnnounceOpenReview";
-import { RequestItemUser } from "@/components/molecules/RequestItemUser";
-import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
-import { PaymentDialog } from "@/components/parts/paymentDialog";
-import { RegistCreditAnnounceDialog } from "@/components/parts/registCreditAnnounceDialog";
-import { SigninDialog } from "@/components/parts/signinDialog";
-import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from "@/consts/const";
-import { useCredit } from "@/hooks/useCredit";
-import theme from "@/styles/theme";
-import { ReviewTypes } from "@/types/global/";
-import { postPayment } from "@/utils/api/post-payment";
-import { getStripe } from "@/utils/stripe";
-import Box from "@material-ui/core/Box";
-import { Elements, useStripe } from "@stripe/react-stripe-js";
-import marked from "marked";
-import React, { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
+import { Price } from '@/components/atoms/Price';
+import { ErrorView } from '@/components/common/error';
+import { CustomLoader } from '@/components/common/loader';
+import { AnnounceOpenReview } from '@/components/molecules/AnnounceOpenReview';
+import { RequestItemUser } from '@/components/molecules/RequestItemUser';
+import { RightBorderTitle } from '@/components/molecules/RightBorderTitle';
+import { RelaxIllustration } from '@/components/parts/illustrations/relax';
+import { PaymentDialog } from '@/components/parts/paymentDialog';
+import { Reaction } from '@/components/parts/reaction';
+import { RegistCreditAnnounceDialog } from '@/components/parts/registCreditAnnounceDialog';
+import { SigninDialog } from '@/components/parts/signinDialog';
+import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from '@/consts/const';
+import { errorMessages } from '@/consts/error-messages';
+import theme from '@/styles/theme';
+import { CustomReviewTypes } from '@/types/global';
+import { CreditTypes, UserProfileTypes } from '@/types/global/';
+import { deleteRegisterPayment } from '@/utils/api/delete-register-payment';
+import { postPayment } from '@/utils/api/post-payment';
+import { postRegisterPayment } from '@/utils/api/post-register-payment';
+import { getStripe } from '@/utils/stripe';
+import Box from '@material-ui/core/Box';
+import { Elements, useStripe } from '@stripe/react-stripe-js';
+import marked from 'marked';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
-  reviews: ReviewTypes[];
-  authUserId: string;
+  status: boolean;
+  credit: CreditTypes;
+  reviews: CustomReviewTypes[];
+  setReviews: React.Dispatch<React.SetStateAction<CustomReviewTypes[] | null>>;
+  isMe: boolean;
+  isLoading: boolean;
+  authUserName: string;
   postId: string;
+  isReviewsLoading: boolean;
+  userProfile: UserProfileTypes | null;
+  paymentedList: { [key: string]: boolean };
+  setPaymentedList: React.Dispatch<
+    React.SetStateAction<{ [key: string]: boolean } | null>
+  >;
 };
 
 const StyledBoxTitleWrapper = styled(Box)`
-  margin-bottom: 8px;
+  margin-bottom: 24px;
   border-bottom: 3px solid ${theme.palette.primary.main};
 `;
 const StyledBoxBorder = styled(Box)`
-  border: 1px dashed #dddddd;
+  // border: 1px dashed #dddddd;
   // border: 1px solid ${theme.palette.primary.main};
   width: 100%;
   margin: 8px 0;
@@ -40,48 +57,47 @@ const StyledBoxFlex = styled(Box)`
   align-items: center;
 `;
 
-const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
-  const stripe = useStripe();
-  console.log(reviews, "reviews");
-  const [paymentedList, setPaymentedList] = useState<{
-    [key: string]: boolean;
-  }>({});
+const Wrapper: React.FC<Props> = ({
+  status,
+  credit,
+  reviews,
+  setReviews,
+  isMe,
+  isLoading,
+  authUserName,
+  postId,
+  userProfile,
+  paymentedList,
+  setPaymentedList,
+}) => {
+  const partitionKey = `${USER_PREFIX}#${authUserName}`; // my user id
+  const myReviewId = `${postId}#${REVIEW_PREFIX}#${authUserName}`;
+  const redirectUri = encodeURIComponent(location.pathname);
   const [isOpenPayment, setIsOpenPayment] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isOpenCreditAnnounce, setIsOpenCreditAnnounce] = useState(false);
   const [isOpenSignin, setIsOpenSignin] = useState(false);
-  const [title, setTitle] = useState("");
-  const [name, setName] = useState("");
-  const [iconSrc, setIconSrc] = useState("");
+  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
+  const [iconSrc, setIconSrc] = useState('');
   const [price, setPrice] = useState(0);
-  const [reviewId, setReviewId] = useState("");
-  const { credit, isLoading } = useCredit(authUserId);
+  const [reviewId, setReviewId] = useState('');
+  const [reviewerId, setReviewerId] = useState('');
   const [isSucceeded, setIsSucceeded] = useState(false);
-
-  const partitionKey = `${USER_PREFIX}${authUserId}`; // my user id
-  const myReviewId = `${REVIEW_PREFIX}${USER_PREFIX}${authUserId}`;
-  useEffect(() => {
-    const reviewIdList = reviews.map((el) => el.sort_key);
-    const paymentedList: { [key: string]: boolean } = {};
-    for (const reviewId of reviewIdList) {
-      paymentedList[reviewId] = false;
-    }
-    setPaymentedList(paymentedList);
-  }, []);
-  console.log(paymentedList);
-
+  const stripe = useStripe();
   const showToggleDialog = (
     argReviewId: string,
     argTitle: string,
     argName: string,
     argIconSrc: string,
-    argPrice: number
+    argPrice: number,
+    argReviewerId: string
   ) => {
-    if (authUserId === "") {
+    if (authUserName === '') {
       setIsOpenSignin(true);
       return;
     }
-    if (credit === null) {
+    if (!credit) {
       setIsOpenCreditAnnounce(true);
       return;
     }
@@ -92,6 +108,7 @@ const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
     setName(argName);
     setIconSrc(argIconSrc);
     setPrice(argPrice);
+    setReviewerId(argReviewerId);
     setIsOpenPayment(true);
   };
   const createParams = () => {
@@ -105,92 +122,113 @@ const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
       customerId: credit!.customer_id,
     };
   };
+  const createRegisterPaymentParams = () => {
+    const profile = userProfile!;
+    return {
+      reviewId,
+      reviewerId,
+      postId,
+      profile,
+      price,
+    };
+  };
   const payment = async () => {
     if (!credit) return;
     const err = new Error();
     const params = createParams();
+    const registerParams = createRegisterPaymentParams();
     setIsDisabled(true);
     try {
+      const registerResult = await postRegisterPayment(registerParams);
       const response = await postPayment(params);
       if (!response.data.status) throw err;
       const clientSecret = response.data.client_secret;
-      console.log(response, "response");
       if (!stripe || !clientSecret) return;
       const paymentResult = await stripe.confirmCardPayment(clientSecret);
-      console.log(paymentResult, "paymentResult");
-      if (paymentResult.paymentIntent?.status !== "succeeded") throw err;
-      setPaymentedList({
-        ...paymentedList,
-        [reviewId]: true,
-      });
+      if (paymentResult.paymentIntent?.status !== 'succeeded') throw err;
+      const newReviews = reviews!.slice();
+      for (const item of newReviews) {
+        if (item.sort_key === reviewId) {
+          item.contents.review.display_body_html =
+            registerResult.data.contents.review.body_html;
+        }
+      }
+      setReviews(newReviews);
+      setPaymentedList({ ...paymentedList, [reviewId]: true });
       setIsSucceeded(true);
       setIsDisabled(false);
-      console.log(params);
-    } catch (error) {
-      console.error(error);
+    } catch {
+      await deleteRegisterPayment(registerParams);
+      alert(errorMessages.PAYMENT_ERROR);
       setIsDisabled(false);
     }
   };
-  const closeSigninDialog = useCallback(() => {
-    setIsOpenSignin(false);
-  }, []);
-  const closePaymentDialog = useCallback(() => {
-    setIsOpenPayment(false);
-  }, []);
-  const closeCreditDialog = useCallback(() => {
-    setIsOpenCreditAnnounce(false);
-  }, []);
-  const renderReviewedItem = (el: ReviewTypes, index: number) => {
+
+  const renderReviewedItem = (el: CustomReviewTypes, index: number) => {
     const name = el.user_profile.display_name;
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
-    const title = el.contents.review.title;
+    const contents = el.contents;
+    const title = contents.review.title;
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`;
-    const bodyHtml = el.contents.review.body_html;
-    const displayBodyHtml = el.contents.review.display_body_html;
+    const displayBodyHtml = contents.review.display_body_html;
+    const remainingLength = el.remaining_length;
     const isSelfReviewItem = el.sort_key === myReviewId;
     const isPaymentFree = el.payment_type === PAYMENT_FREE;
     const sortKey = el.sort_key;
+    const reviewerId = el.user_id;
+    const isPaymented = paymentedList[sortKey];
     return (
-      <Box key={index} component="section" mb={7}>
+      <Box key={index} component='section' mb={7}>
         <StyledBoxFlex mb={2}>
           <RequestItemUser
             name={name}
             date={date}
             userIcon={iconSrc}
-            width={"32px"}
-            height={"32px"}
+            width={'32px'}
+            height={'32px'}
           />
-          {!isSelfReviewItem && (
+          {isSelfReviewItem ? (
+            <Price color='#5C6BC0' text='自身のレビュー' />
+          ) : isPaymented ? (
+            <Price color='#EC576B' text='購入済み' />
+          ) : (
             <Price
-              color={isPaymentFree ? "#5C6BC0" : "#EC576B"}
-              text={isPaymentFree ? "FREE" : `¥${price}`}
+              color={isPaymentFree ? '#5C6BC0' : '#EC576B'}
+              text={isPaymentFree ? 'FREE!!' : `¥${price}`}
             />
           )}
         </StyledBoxFlex>
         <StyledBoxTitleWrapper>
           <h1>{title}</h1>
         </StyledBoxTitleWrapper>
-        <div className="review-item-wrapper">
-          <span
-            dangerouslySetInnerHTML={{
-              __html: marked(
-                isSelfReviewItem || isPaymentFree || paymentedList[sortKey]
-                  ? bodyHtml
-                  : displayBodyHtml
-              ),
-            }}
+        <Box mb={5}>
+          <div className='review-item-wrapper'>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: marked(displayBodyHtml),
+              }}
+            />
+          </div>
+        </Box>
+        {(isSelfReviewItem || isPaymented) && (
+          <Reaction
+            sortKey={sortKey}
+            postId={postId}
+            isReaction={el.is_reaction}
+            reactionUsers={el.reaction_users}
+            displayName={userProfile!.display_name}
+            userIcon={userProfile!.icon_src}
           />
-        </div>
-        {!isSelfReviewItem && !isPaymentFree && !paymentedList[sortKey] && (
+        )}
+        {!isSelfReviewItem && !isPaymentFree && !isPaymented && (
           <AnnounceOpenReview
             title={title}
-            profile={el.user_profile}
-            width={"40px"}
-            height={"40px"}
             price={price}
+            remainingLength={remainingLength}
+            reactionUsers={el.reaction_users}
             showToggleDialog={() =>
-              showToggleDialog(sortKey, title, name, iconSrc, price)
+              showToggleDialog(sortKey, title, name, iconSrc, price, reviewerId)
             }
           />
         )}
@@ -198,16 +236,22 @@ const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
       </Box>
     );
   };
-
   return (
     <>
-      <RightBorderTitle text="Review List" fontSize={20} marginBottom={0} />
       {isLoading ? (
-        <Box position="relative" padding={2}>
-          <CustomLoader width={40} height={40} />
+        <Box position='relative' padding={2}>
+          <CustomLoader width={30} height={30} />
         </Box>
+      ) : status ? (
+        reviews.length > 0 ? (
+          reviews.map((el, index) => renderReviewedItem(el, index))
+        ) : isMe ? (
+          <RelaxIllustration secondText='リラックスして少し休憩しませんか？' />
+        ) : (
+          <RelaxIllustration />
+        )
       ) : (
-        reviews.map((el, index) => renderReviewedItem(el, index))
+        <ErrorView />
       )}
       <PaymentDialog
         title={title}
@@ -216,19 +260,20 @@ const Wrapper: React.FC<Props> = ({ reviews, authUserId, postId }) => {
         price={price}
         isSucceeded={isSucceeded}
         isDisabled={isDisabled}
-        width={"30px"}
-        height={"30px"}
+        width={'30px'}
+        height={'30px'}
         isOpenDialog={isOpenPayment}
-        closeDialog={closePaymentDialog}
+        closeDialog={() => setIsOpenPayment(false)}
         payment={payment}
       />
       <RegistCreditAnnounceDialog
+        redirectUri={redirectUri}
         isOpenDialog={isOpenCreditAnnounce}
-        showToggleDialog={closeCreditDialog}
+        showToggleDialog={() => setIsOpenCreditAnnounce(false)}
       />
       <SigninDialog
         isOpenDialog={isOpenSignin}
-        closeDialog={closeSigninDialog}
+        closeDialog={() => setIsOpenSignin(false)}
       />
     </>
   );
@@ -239,7 +284,14 @@ export const ReviewList = (props: Props) => {
 
   return (
     <Elements stripe={promiseStripe}>
-      <Wrapper {...props} />
+      <RightBorderTitle text='Review List' fontSize={20} marginBottom={0} />
+      {props.isReviewsLoading ? (
+        <Box position='relative' padding={2}>
+          <CustomLoader width={30} height={30} />
+        </Box>
+      ) : (
+        <Wrapper {...props} />
+      )}
     </Elements>
   );
 };

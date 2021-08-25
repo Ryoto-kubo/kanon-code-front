@@ -3,7 +3,6 @@ import { UserProfileTypes } from "@/types/global";
 import { axios } from "@/utils/axios";
 
 type PramsProps = {
-  userId: string;
   userProfile: UserProfileTypes;
 };
 

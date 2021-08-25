@@ -1,28 +1,26 @@
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { CustomLoader } from "@/components/common/loader";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
-import { SettingForm } from "@/components/organisms/SettingForm";
-import * as CONSTS from "@/consts/const";
-import { errorMessages } from "@/consts/error-messages";
-import { messages } from "@/consts/messages";
-import { POSITIONS } from "@/consts/positions";
-import { useUser } from "@/hooks/useUser";
-import { SettingLayout } from "@/layouts/setting-form";
-import { UserTypes } from "@/types/global";
-import { postUserProfile } from "@/utils/api/post-user-profile";
-import { UserProfile } from "@/utils/user-profile";
-import Box from "@material-ui/core/Box";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Snackbar from "@material-ui/core/Snackbar";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
+import { SettingForm } from '@/components/organisms/SettingForm';
+import * as CONSTS from '@/consts/const';
+import { errorMessages } from '@/consts/error-messages';
+import { messages } from '@/consts/messages';
+import { POSITIONS } from '@/consts/positions';
+import { SettingLayout } from '@/layouts/setting-form';
+import { UserTypes } from '@/types/global';
+import { postUserProfile } from '@/utils/api/post-user-profile';
+import { moveToTop } from '@/utils/move-page';
+import { UserProfile } from '@/utils/user-profile';
+import Box from '@material-ui/core/Box';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import Snackbar from '@material-ui/core/Snackbar';
+import React, { useState } from 'react';
+import styled from 'styled-components';
 
 type Props = {
-  title: string;
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
 };
 
 const StyledButtonWrapper = styled(Box)`
@@ -32,7 +30,7 @@ const StyledBoxWrapper = styled(Box)`
   margin: auto;
   margin-bottom: 32px;
   width: 100%;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     width: 70%;
   }
 `;
@@ -44,17 +42,19 @@ const StyledFormControlLabel = styled(FormControlLabel)`
   margin: auto;
 `;
 
-const IndexPage: React.FC<Props> = (props) => {
-  if (!props.authUser) return <></>;
+const IndexPage: React.FC<Props> = props => {
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const [isOpen, setIsOpen] = useState(false);
-  const [updatingMessage, setUpdatingMessage] = useState("更新中...");
-  const [validText, setIsValidText] = useState<string>("");
+  const [updatingMessage, setUpdatingMessage] = useState('更新中...');
+  const [validText, setIsValidText] = useState<string>('');
   const [isDisabled, setIsDidabled] = useState<boolean>(false);
-  const [userId] = useState(props.authUser.username);
   const [isValid, setIsValid] = useState<boolean>(true);
-  const { user, setUser, isLoading } = useUser(userId, props.currentUser);
+  const [user, setUser] = useState<UserTypes>(props.currentUser);
   const ALLOW_POSITION_TYPE_LIST = CONSTS.ALLOW_POSITION_TYPE_LIST;
-  const profile = user.user_profile;
+  const profile = props.currentUser.user_profile;
 
   const changePosition = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
@@ -72,7 +72,6 @@ const IndexPage: React.FC<Props> = (props) => {
     setIsDidabled(true);
     const err = new Error();
     const params = {
-      userId: userId,
       userProfile: profile,
     };
     try {
@@ -109,62 +108,56 @@ const IndexPage: React.FC<Props> = (props) => {
 
   return (
     <SettingLayout
-      title="Kanon Code | ポジション設定"
+      title='Kanon Code | ポジション設定'
       currentUser={props.currentUser}
     >
       <SettingForm
-        linkText="Position"
-        href="/settings/profile"
-        fontSize="default"
-        color="inherit"
+        linkText='Position'
+        href='/settings/profile'
+        fontSize='default'
+        color='inherit'
         headingFontSize={24}
         marginBottom={0}
       >
-        {isLoading ? (
-          <CustomLoader width={40} height={40} />
-        ) : (
-          <>
-            <StyledBoxWrapper mb={4}>
-              <Box mb={2}>
-                <RadioGroup
-                  aria-label="position"
-                  name="position"
-                  value={profile.position_type}
-                  onChange={changePosition}
-                >
-                  <Box>
-                    {POSITIONS.map((el) => (
-                      <StyledFormControlLabel
-                        key={el.value}
-                        value={el.value}
-                        control={<Radio color="primary" />}
-                        label={el.label}
-                      />
-                    ))}
-                  </Box>
-                </RadioGroup>
+        <StyledBoxWrapper mb={4}>
+          <Box mb={2}>
+            <RadioGroup
+              aria-label='position'
+              name='position'
+              value={profile.position_type}
+              onChange={changePosition}
+            >
+              <Box>
+                {POSITIONS.map(el => (
+                  <StyledFormControlLabel
+                    key={el.value}
+                    value={el.value}
+                    control={<Radio color='primary' />}
+                    label={el.label}
+                  />
+                ))}
               </Box>
-              {!isValid && <ValidMessage validText={validText} />}
-            </StyledBoxWrapper>
-            <StyledButtonWrapper>
-              <CustomSolidButton
-                sizing="small"
-                onClick={updateProfile}
-                disabled={isDisabled}
-              >
-                登録
-              </CustomSolidButton>
-            </StyledButtonWrapper>
-            <Snackbar
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              open={isOpen}
-              message={updatingMessage}
-            />
-          </>
-        )}
+            </RadioGroup>
+          </Box>
+          {!isValid && <ValidMessage validText={validText} />}
+        </StyledBoxWrapper>
+        <StyledButtonWrapper>
+          <CustomSolidButton
+            sizing='small'
+            onClick={updateProfile}
+            disabled={isDisabled}
+          >
+            登録
+          </CustomSolidButton>
+        </StyledButtonWrapper>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}
+          open={isOpen}
+          message={updatingMessage}
+        />
       </SettingForm>
     </SettingLayout>
   );

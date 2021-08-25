@@ -1,15 +1,21 @@
-import { IconErrorRounded } from "@/components/svg/materialIcons/IconErrorRounded";
-import theme from "@/styles/theme";
-import Box from "@material-ui/core/Box";
-import React from "react";
+import { IconErrorRounded } from '@/components/svg/materialIcons/IconErrorRounded';
+import theme from '@/styles/theme';
+import Box from '@material-ui/core/Box';
+import React from 'react';
 
 type Props = {
   validText: string;
+  justifyContent?: string;
 };
 
-export const ValidMessage: React.FC<Props> = (props) => {
+export const ValidMessage: React.FC<Props> = props => {
   return (
-    <Box display="flex" alignItems="center" mb={1}>
+    <Box
+      display='flex'
+      alignItems='center'
+      justifyContent={props.justifyContent}
+      mb={1}
+    >
       <Box mr={0.5} height={20}>
         <IconErrorRounded />
       </Box>

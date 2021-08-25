@@ -1,38 +1,38 @@
-import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined'
-import LocalLibraryOutlinedIcon from '@material-ui/icons/LocalLibraryOutlined'
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined'
-import RateReviewOutlinedIcon from '@material-ui/icons/RateReviewOutlined'
-import ShoppingCartOutlinedIcon from '@material-ui/icons/ShoppingCartOutlined'
+import BookmarksOutlinedIcon from '@material-ui/icons/BookmarksOutlined';
+import CreateOutlinedIcon from '@material-ui/icons/CreateOutlined';
+import InboxOutlinedIcon from '@material-ui/icons/InboxOutlined';
+import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
+import NoteOutlinedIcon from '@material-ui/icons/NoteOutlined';
 
 export const menus = [
   {
-    name: 'Reviews',
+    name: 'レビュー一覧',
     icon: <CreateOutlinedIcon />,
     href: '/dashboard/reviews',
   },
   {
-    name: 'Review request',
-    icon: <RateReviewOutlinedIcon />,
-    href: '/dashboard/review_requests',
+    name: '下書き一覧',
+    icon: <NoteOutlinedIcon />,
+    href: '/dashboard/drafts',
   },
   {
-    name: 'Payments',
-    icon: <ShoppingCartOutlinedIcon />,
+    name: 'ブックマーク',
+    icon: <BookmarksOutlinedIcon />,
+    href: '/dashboard/bookmarks',
+  },
+  {
+    name: '購入履歴',
+    icon: <InboxOutlinedIcon />,
     href: '/dashboard/payments_history',
   },
   {
-    name: 'Library',
-    icon: <LocalLibraryOutlinedIcon />,
-    href: '/dashboard/library',
-  },
-  {
-    name: 'Salse',
+    name: '売り上げ',
     icon: <MonetizationOnOutlinedIcon />,
-    href: '/dashboard/salse',
+    href: '/dashboard/sales',
   },
   // {
   //   name: 'Github',
   //   icon: <IconGithub fontSize="small" />,
   //   href: '/dashboard/github',
   // },
-]
+];

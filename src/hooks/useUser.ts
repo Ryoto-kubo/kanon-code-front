@@ -2,17 +2,14 @@ import { UserTypes } from "@/types/global";
 import { getUser } from "@/utils/api/get-user";
 import { useEffect, useState } from "react";
 
-export const useUser = (userId: string, currentUser: UserTypes | null) => {
+export const useUser = (currentUser: UserTypes | null) => {
   const [isLoading, setIsLoading] = useState(true);
-  const [user, setUser] = useState<UserTypes>(currentUser!);
-  const params = {
-    userId: userId,
-  };
+  const [user, setUser] = useState<UserTypes | null>(currentUser!);
   useEffect(() => {
     const err = new Error();
     (async () => {
       try {
-        const response = await getUser(params);
+        const response = await getUser();
         const result = response.data;
         if (!result.status) {
           err.message = result.status_message;

@@ -1,23 +1,23 @@
-import { Heading3 } from '@/components/atoms/Heading3'
-import { List } from '@/components/atoms/List'
-import theme from '@/styles/theme'
-import React from 'react'
-import styled from 'styled-components'
+import { Heading3 } from '@/components/atoms/Heading3';
+import { List } from '@/components/atoms/List';
+import theme from '@/styles/theme';
+import React from 'react';
+import styled from 'styled-components';
 
 interface Props {
-  text: string
-  listArray: Array<string>
-  color?: string
+  text: string;
+  listArray: { id: string; href: string; value: string }[];
+  color?: string;
 }
 
 const StyledNav = styled.nav`
   margin-bottom: 24px;
-  ${(props) => props.theme.breakpoints.up('sm')} {
+  ${props => props.theme.breakpoints.up('sm')} {
     margin-bottom: 0;
   }
-`
+`;
 
-export const FooterContent: React.FC<Props> = (props) => {
+export const FooterContent: React.FC<Props> = props => {
   return (
     <StyledNav>
       <Heading3
@@ -29,5 +29,5 @@ export const FooterContent: React.FC<Props> = (props) => {
       </Heading3>
       <List fontSize={14} listArray={props.listArray} />
     </StyledNav>
-  )
-}
+  );
+};

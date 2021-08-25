@@ -1,8 +1,8 @@
-import * as CONSTS from '@/consts/const'
+import * as CONSTS from '@/consts/const';
 export type ErrorMessages =
   | '  SYSTEM_ERROR'
   | '  EXISTED_NAME'
-  | '  IMAGE_COMPRESSION_ERROR'
+  | '  IMAGE_COMPRESSION_ERROR';
 export type ValidMessages =
   | 'REQUIRED_TITLE'
   | 'REQUIRED_TAGS'
@@ -14,10 +14,12 @@ export type ValidMessages =
   | 'OVER_LENGTH_TITLE'
   | 'OVER_LENGTH_DESCRIPION'
   | 'OVER_LENGTH_FILE_NAME'
-  | 'OVER_LENGTH_SOURCE_CODE'
+  | 'OVER_LENGTH_SOURCE_CODE';
 export const errorMessages = {
   SYSTEM_ERROR:
     'システムエラーが発生しました。しばらく時間をおいてやり直してください。',
+  PAYMENT_ERROR:
+    '購入処理に失敗しました。しばらく時間をおいてやり直してください。',
   BOOKMARK_ERROR:
     'ブックマークの登録又は解除に失敗しました。しばらく時間をおいてやり直してください。',
   REVIEW_ERROR:
@@ -25,7 +27,7 @@ export const errorMessages = {
   EXISTED_NAME: '既に使用されている名前です。',
   IMAGE_COMPRESSION_ERROR: '画像の圧縮に失敗しました',
   INVAILD_VALUE: '不正な値です',
-}
+};
 export const validMessages = {
   REQUIRED_TITLE: 'タイトルを入力してください',
   REQUIRED_TAGS: 'タグを一つ以上入力してください',
@@ -47,4 +49,4 @@ export const validMessages = {
   OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.MAX_SOURCE_CODE_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_PRICE: `${CONSTS.MAX_PRICE_LENGTH}桁以下の数値を入力してください`,
   ZERO_UNDER_OVER_MAX_PRICE: '¥0~¥100,000以上の金額を入力してください',
-}
+};
