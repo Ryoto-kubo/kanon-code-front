@@ -1,27 +1,27 @@
-import { CustomSolidButton } from "@/components/atoms/SolidButton";
-import { CustomLoader } from "@/components/common/loader";
-import { Reviewed } from "@/components/common/reviewed";
-import { RightBorderTitle } from "@/components/molecules/RightBorderTitle";
-import { ValidMessage } from "@/components/molecules/ValidMessage";
-import { InputPostTitleWrapper } from "@/components/organisms/InputPostTitleWrapper";
-import { ReviewSettingDialog } from "@/components/parts/reviewSettingDialog";
-import { SigninDialog } from "@/components/parts/signinDialog";
-import * as CONSTS from "@/consts/const";
-import { errorMessages, validMessages } from "@/consts/error-messages";
-import { ReviewTypes } from "@/types/global/";
-import { postReview } from "@/utils/api/post-review";
-import * as S3 from "@/utils/api/s3";
-import { PrepareContentBeforePost } from "@/utils/prepare-content-before-post";
-import { validLength } from "@/utils/valid";
-import Box from "@material-ui/core/Box";
-import Snackbar from "@material-ui/core/Snackbar";
-import marked from "marked";
-import dynamic from "next/dynamic";
-import React, { useCallback, useState } from "react";
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { CustomLoader } from '@/components/common/loader';
+import { Reviewed } from '@/components/common/reviewed';
+import { RightBorderTitle } from '@/components/molecules/RightBorderTitle';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
+import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper';
+import { ReviewSettingDialog } from '@/components/parts/reviewSettingDialog';
+import { SigninDialog } from '@/components/parts/signinDialog';
+import * as CONSTS from '@/consts/const';
+import { errorMessages, validMessages } from '@/consts/error-messages';
+import { ReviewTypes } from '@/types/global/';
+import { postReview } from '@/utils/api/post-review';
+import * as S3 from '@/utils/api/s3';
+import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
+import { validLength } from '@/utils/valid';
+import Box from '@material-ui/core/Box';
+import Snackbar from '@material-ui/core/Snackbar';
+import marked from 'marked';
+import dynamic from 'next/dynamic';
+import React, { useCallback, useState } from 'react';
 
 const Editor = dynamic(
   () => {
-    const promise = import("@/components/parts/editor").then((r) => r.Editor);
+    const promise = import('@/components/parts/editor').then(r => r.Editor);
     return promise;
   },
   { ssr: false }
@@ -54,14 +54,14 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
   };
 };
 
-export const ReviewEditor: React.FC<Props> = React.memo((props) => {
+export const ReviewEditor: React.FC<Props> = React.memo(props => {
   const [isOpen, setIsOpen] = useState(false);
   const [reviewedMessage, setReviewedMessage] = useState(
-    "レビューをいただいております。"
+    'レビューをいただいております。'
   );
-  const [updatingMessage, setUpdatingMessage] = useState("レビュー保存中...");
+  const [updatingMessage, setUpdatingMessage] = useState('レビュー保存中...');
   const [isOpenSignin, setIsOpenSignin] = useState(false);
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState('');
   const [review, setReview] = useState(initReview());
   const [activeStep, setActiveStep] = useState(0);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
@@ -69,11 +69,12 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
     createValidObject(true, validMessages.REQUIRED_TITLE)
   );
   const [canPublish, setCanPUblish] = useState<ValidObject>(
-    createValidObject(true, "")
+    createValidObject(true, '')
   );
   const [isValidReviewObject, setIsValidReviewObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_DESCRIPTION)
   );
+
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
       const value = e.target.value;
@@ -97,6 +98,7 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
     },
     [title]
   );
+
   const changeReview = useCallback(
     (value: string): void => {
       const prepareContentBeforePost = new PrepareContentBeforePost(
@@ -118,23 +120,26 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
     },
     [review]
   );
+
   const changeActiveStep = useCallback(
     (value: number): void => {
       setActiveStep(value);
     },
     [activeStep]
   );
-  const updateCanPublish = useCallback((isValid: boolean, message = "") => {
+
+  const updateCanPublish = useCallback((isValid: boolean, message = '') => {
     setCanPUblish({
       ...canPublish,
       isValid: isValid,
       message: message,
     });
   }, []);
+
   const showToggleDialog = (
     _: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (title === "") {
+    if (title === '') {
       setIsValidTitleObject({
         ...isValidTitleObject,
         isValid: false,
@@ -144,11 +149,13 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
     }
     setIsOpenDialog(!isOpenDialog);
   };
+
   const createParams = (
     paymentType: number,
     beginPaymentArea: number | null,
     price: number,
-    displayBodyHtml: string
+    displayBodyHtml: string,
+    remainingLength: number
   ) => {
     return {
       postId: props.postId,
@@ -158,6 +165,7 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
           value: review,
           body_html: marked(review),
           display_body_html: displayBodyHtml,
+          remaining_length: remainingLength,
         },
       },
       paymentType: paymentType,
@@ -165,27 +173,30 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
       price,
     };
   };
+
   const registerContent = async (
     paymentType: number,
     beginPaymentArea: number | null,
     price: number,
-    displayBodyHtml: string
+    displayBodyHtml: string,
+    remainingLength: number
   ) => {
     const err = new Error();
     const params = createParams(
       paymentType,
       beginPaymentArea,
       price,
-      displayBodyHtml
+      displayBodyHtml,
+      remainingLength
     );
     setIsOpen(true);
     setIsOpenDialog(!isOpenDialog);
     try {
       const response = await postReview(params);
       if (!response.data.status) throw err;
-      setUpdatingMessage("レビューを投稿しました");
+      setUpdatingMessage('レビューを投稿しました');
       props.updateDisplay(response.data.Item);
-      setReviewedMessage("レビューを投稿しました。");
+      setReviewedMessage('レビューを投稿しました。');
     } catch (error) {
       console.error(error);
       alert(errorMessages.REVIEW_ERROR);
@@ -193,37 +204,30 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
     }
   };
 
-  const showToggleSigninDialog = () => {
-    setIsOpenSignin(true);
-  };
-  const closeSigninDialog = useCallback(() => {
-    setIsOpenSignin(false);
-  }, []);
-
   return (
     <>
-      <RightBorderTitle text="Review" fontSize={20} marginBottom={0} />
+      <RightBorderTitle text='Review' fontSize={20} marginBottom={0} />
       {props.isLoading ? (
-        <Box position="relative" padding={2}>
+        <Box position='relative' padding={2}>
           <CustomLoader width={30} height={30} />
         </Box>
       ) : props.canReview ? (
         <>
           <Box mb={2}>
-            <Box mb={3} className="title-wrapper">
+            <Box mb={3} className='title-wrapper'>
               <InputPostTitleWrapper
                 title={title}
                 onChange={changeTitle}
-                placeholder="Title"
+                placeholder='Title'
               />
               {!isValidTitleObject.isValid && (
                 <ValidMessage validText={isValidTitleObject.message} />
               )}
             </Box>
             <Editor
-              id="editor"
+              id='editor'
               isFullDisplayButton={true}
-              headerText="Review"
+              headerText='Review'
               onChange={changeReview}
               changeActiveStep={changeActiveStep}
               value={review}
@@ -234,29 +238,29 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
               MAX_LENGTH={CONSTS.MAX_REVIEW_LENGTH}
             />
           </Box>
-          <Box textAlign="right">
+          <Box textAlign='right'>
             <CustomSolidButton
-              sizing="small"
+              sizing='small'
               onClick={showToggleDialog}
-              color="secondary"
+              color='secondary'
             >
               レビュー設定
             </CustomSolidButton>
           </Box>
         </>
       ) : !props.myUserId ? (
-        <Box textAlign="center">
+        <Box textAlign='center'>
           <Box mb={1}>レビューをするにはサインインが必要です。</Box>
           <CustomSolidButton
-            sizing="small"
-            onClick={showToggleSigninDialog}
-            color="primary"
+            sizing='small'
+            onClick={() => setIsOpenSignin(true)}
+            color='primary'
           >
             サインイン
           </CustomSolidButton>
         </Box>
       ) : props.isMe ? (
-        <Box textAlign="center">
+        <Box textAlign='center'>
           <p>自身の投稿です</p>
         </Box>
       ) : (
@@ -264,7 +268,6 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
           <Reviewed text={reviewedMessage} />
         </Box>
       )}
-
       <ReviewSettingDialog
         title={title}
         review={review}
@@ -274,12 +277,12 @@ export const ReviewEditor: React.FC<Props> = React.memo((props) => {
       />
       <SigninDialog
         isOpenDialog={isOpenSignin}
-        closeDialog={closeSigninDialog}
+        closeDialog={() => setIsOpenSignin(false)}
       />
       <Snackbar
         anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "right",
+          vertical: 'bottom',
+          horizontal: 'right',
         }}
         open={isOpen}
         message={updatingMessage}

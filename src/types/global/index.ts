@@ -178,6 +178,7 @@ export type ReviewContentsTypes = {
     value: string;
     body_html: string;
     display_body_html: string;
+    remaining_length: number;
   };
 };
 
