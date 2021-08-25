@@ -36,7 +36,7 @@ const StyledWrapper = styled.div`
 `;
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
-  if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'MENTENANCE')
+  if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'MAINTENANCE')
     return <MaintenanceView />;
 
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
