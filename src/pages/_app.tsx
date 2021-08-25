@@ -1,5 +1,6 @@
 import '@/aws/cognito/config';
 import { CustomNprogress } from '@/components/common/nextNprogress';
+import { MaintenanceView } from '@/components/parts/maintenance';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { getUser } from '@/utils/api/get-user';
@@ -21,8 +22,8 @@ import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components';
 import './editor.scss';
-import { MentenanceView } from './mentenance';
 import './style.scss';
+
 const StyledWrapper = styled.div`
   background: #ffffff;
   position: relative;
@@ -35,8 +36,8 @@ const StyledWrapper = styled.div`
 `;
 
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
-  if (process.env.NEXT_PUBLIC_MENTENANCE_MODE === 'MENTENANCE')
-    return <MentenanceView />;
+  if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'MENTENANCE')
+    return <MaintenanceView />;
 
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
