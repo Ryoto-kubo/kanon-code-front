@@ -61,6 +61,7 @@ export type ReviewTypes = {
     display_name: string;
     icon_src: string;
   }[];
+  remaining_length: number;
   payment_area: number;
   payment_type: number;
   create_year: number;
