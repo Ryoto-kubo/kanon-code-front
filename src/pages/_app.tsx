@@ -36,7 +36,7 @@ const StyledWrapper = styled.div`
   }
 `;
 
-function MyApp({ Component, pageProps }: AppProps): JSX.Element {
+const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'MAINTENANCE')
     return <MaintenanceView />;
 
@@ -102,9 +102,9 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
       </StylesProvider>
     </RecoilRoot>
   );
-}
+};
 
-MyApp.getInitialProps = async (appContext: AppContext) => {
+export const getServerSideProps = async (appContext: AppContext) => {
   const { req, res } = appContext.ctx;
   if (req && res && process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH === 'true') {
     await basicAuthCheck(req, res);
