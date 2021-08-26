@@ -4,7 +4,6 @@ import { MaintenanceView } from '@/components/parts/maintenance';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { getUser } from '@/utils/api/get-user';
-import basicAuthCheck from '@/utils/basic-auth-check';
 import { CognitoUser } from '@aws-amplify/auth';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {
@@ -13,7 +12,7 @@ import {
 } from '@material-ui/styles';
 import { Auth } from 'aws-amplify';
 import 'modern-css-reset/dist/reset.min.css';
-import App, { AppContext, AppProps } from 'next/app';
+import { AppProps } from 'next/app';
 import Head from 'next/head';
 import { destroyCookie } from 'nookies';
 import 'nprogress/nprogress.css'; // バーのデフォルトスタイルのインポート
@@ -102,16 +101,6 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       </StylesProvider>
     </RecoilRoot>
   );
-};
-
-MyApp.getInitialProps = async (appContext: AppContext) => {
-  const { req, res } = appContext.ctx;
-  if (req && res && process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH === 'true') {
-    await basicAuthCheck(req, res);
-  }
-
-  const appProps = await App.getInitialProps(appContext);
-  return { ...appProps };
 };
 
 export default MyApp;
