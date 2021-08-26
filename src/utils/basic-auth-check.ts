@@ -17,7 +17,7 @@ const basicAuthCheck = async (
 
   // Workaround for major bug: If you cancel, the page loads normally. - https://github.com/jchiatt/nextjs-basic-auth/issues/4
   if (res.statusCode === 401) {
-    res.end('<html>Unauthorized</html>');
+    return;
   }
 };
 
