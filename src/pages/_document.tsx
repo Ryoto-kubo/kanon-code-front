@@ -15,7 +15,6 @@ export default class CustomDocument extends NextDocument {
   static async getInitialProps(
     ctx: DocumentContext
   ): Promise<DocumentInitialProps> {
-    const { req, res } = ctx;
     const styledComponentsSheet = new ServerStyleSheet();
     const materialUiSheets = new MaterialServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
