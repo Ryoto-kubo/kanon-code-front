@@ -1,4 +1,3 @@
-import basicAuthCheck from '@/utils/basic-auth-check';
 import { ServerStyleSheets as MaterialServerStyleSheets } from '@material-ui/core';
 import { RenderPageResult } from 'next/dist/next-server/lib/utils';
 import NextDocument, {
@@ -17,9 +16,6 @@ export default class CustomDocument extends NextDocument {
     ctx: DocumentContext
   ): Promise<DocumentInitialProps> {
     const { req, res } = ctx;
-    if (req && res && process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH === 'true') {
-      await basicAuthCheck(req, res);
-    }
     const styledComponentsSheet = new ServerStyleSheet();
     const materialUiSheets = new MaterialServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
