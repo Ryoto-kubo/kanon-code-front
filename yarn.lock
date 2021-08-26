@@ -9933,6 +9933,11 @@ next@^10.0.7:
   optionalDependencies:
     sharp "0.26.3"
 
+nextjs-basic-auth@0.1.2:
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/nextjs-basic-auth/-/nextjs-basic-auth-0.1.2.tgz#723542ca2ba273e021aaa91bd477ac1029fb2663"
+  integrity sha512-BaXvqeT+uUrRh6l0RCOlDJhB1wUsppboi4eGBBLKAh/qDbipSQ32KY7M2Y1vLvqTYjPj1zYCq3E3Q7+S0flfXw==
+
 nextjs-progressbar@^0.0.9:
   version "0.0.9"
   resolved "https://registry.yarnpkg.com/nextjs-progressbar/-/nextjs-progressbar-0.0.9.tgz#ac0ae5734cde5806f6ffd6fbc18ac90178c4ba89"
