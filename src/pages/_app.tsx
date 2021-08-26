@@ -104,7 +104,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   );
 };
 
-MyApp.getInitialProps = async (appContext: AppContext) => {
+export const getServerSideProps = async (appContext: AppContext) => {
   const { req, res } = appContext.ctx;
   console.log(
     process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH,
