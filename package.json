@@ -51,7 +51,7 @@
     "marked": "^2.0.3",
     "modern-css-reset": "^1.4.0",
     "next": "^10.0.7",
-    "nextjs-basic-auth": "0.1.2",
+    "nextjs-basic-auth": "^0.1.3",
     "node-sass": "^5.0.0",
     "react": "^16.12.0",
     "react-chartjs-2": "^3.0.4",
