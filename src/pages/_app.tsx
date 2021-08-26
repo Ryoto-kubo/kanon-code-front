@@ -104,8 +104,13 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   );
 };
 
-export const getInitialProps = async (appContext: AppContext) => {
+MyApp.getInitialProps = async (appContext: AppContext) => {
   const { req, res } = appContext.ctx;
+  console.log(
+    process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH,
+    'process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH'
+  );
+
   if (req && res && process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH === 'true') {
     await basicAuthCheck(req, res);
   }
