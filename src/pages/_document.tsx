@@ -1,5 +1,5 @@
-import { ServerStyleSheets as MaterialServerStyleSheets } from "@material-ui/core";
-import { RenderPageResult } from "next/dist/next-server/lib/utils";
+import { ServerStyleSheets as MaterialServerStyleSheets } from '@material-ui/core';
+import { RenderPageResult } from 'next/dist/next-server/lib/utils';
 import NextDocument, {
   DocumentContext,
   DocumentInitialProps,
@@ -7,9 +7,9 @@ import NextDocument, {
   Html,
   Main,
   NextScript,
-} from "next/document";
-import React from "react";
-import { ServerStyleSheet } from "styled-components";
+} from 'next/document';
+import React from 'react';
+import { ServerStyleSheet } from 'styled-components';
 
 export default class CustomDocument extends NextDocument {
   static async getInitialProps(
@@ -22,7 +22,7 @@ export default class CustomDocument extends NextDocument {
     try {
       ctx.renderPage = (): RenderPageResult | Promise<RenderPageResult> =>
         originalRenderPage({
-          enhanceApp: (App) => (
+          enhanceApp: App => (
             props
           ): React.ReactElement<{
             sheet: ServerStyleSheet;
@@ -36,7 +36,7 @@ export default class CustomDocument extends NextDocument {
       return {
         ...initialProps,
         styles: [
-          <React.Fragment key="styles">
+          <React.Fragment key='styles'>
             {initialProps.styles}
             {materialUiSheets.getStyleElement()}
             {styledComponentsSheet.getStyleElement()}
@@ -50,19 +50,19 @@ export default class CustomDocument extends NextDocument {
 
   render(): React.ReactElement {
     return (
-      <Html lang="ja-JP">
+      <Html lang='ja-JP'>
         <Head>
-          <meta charSet="utf-8" />
+          <meta charSet='utf-8' />
           <meta
-            name="description"
-            content="Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。まずは自分のコードを投稿してみましょう。"
+            name='description'
+            content='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。まずは自分のコードを投稿してみましょう。'
           />
-          <meta name="theme-color" content="#5C6BC0" key="themeColor" />
-          <link rel="icon" href="/favicon.ico" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <meta name='theme-color' content='#5C6BC0' key='themeColor' />
+          <link rel='icon' href='/favicon.ico' />
+          <link rel='preconnect' href='https://fonts.gstatic.com' />
           <link
-            href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap"
-            rel="stylesheet"
+            href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap'
+            rel='stylesheet'
           />
         </Head>
         <body>
