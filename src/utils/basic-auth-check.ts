@@ -13,9 +13,6 @@ const basicAuthCheck = async (
   res: ServerResponse
 ): Promise<void> => {
   await initializeBasicAuth({ users })(req, res);
-  console.log(res.statusCode, 'res.statusCode');
-  console.log(res, 'res');
-
   // Workaround for major bug: If you cancel, the page loads normally. - https://github.com/jchiatt/nextjs-basic-auth/issues/4
   if (res.statusCode === 401) {
     return;
