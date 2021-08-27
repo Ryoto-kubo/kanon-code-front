@@ -1,5 +1,5 @@
-const withSass = require("@zeit/next-sass");
-const withCss = require("@zeit/next-css");
+const withSass = require('@zeit/next-sass');
+const withCss = require('@zeit/next-css');
 module.exports = withCss(
   withSass({
     // async rewrites() {
@@ -10,6 +10,7 @@ module.exports = withCss(
     //     },
     //   ];
     // },
-    builds: [{ src: "*.ts", use: "@vercel/node" }],
+    builds: [{ src: '*.ts', use: '@vercel/node' }],
+    trailingSlash: true,
   })
 );
