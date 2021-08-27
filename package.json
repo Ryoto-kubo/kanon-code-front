@@ -35,6 +35,8 @@
     "@types/react-swipeable-views-utils": "^0.13.2",
     "@types/recoil": "^0.0.1",
     "@types/uuid": "^8.3.0",
+    "@zeit/next-css": "^1.0.1",
+    "@zeit/next-sass": "^1.0.1",
     "amazon-cognito-identity-js": "^4.5.11",
     "aws-amplify": "^3.3.21",
     "aws-amplify-react": "^4.2.25",
