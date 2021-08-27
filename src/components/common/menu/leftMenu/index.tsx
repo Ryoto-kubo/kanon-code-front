@@ -1,10 +1,10 @@
-import { menus } from '@/consts/dashboard-menus'
-import theme from '@/styles/theme'
-import Box from '@material-ui/core/Box'
-import Link from 'next/link'
-import React from 'react'
-import styled from 'styled-components'
-import './style.scss'
+import { menus } from '@/consts/dashboard-menus';
+import theme from '@/styles/theme';
+import Box from '@material-ui/core/Box';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
+import './style.scss';
 
 const StyledBox = styled(Box)`
   border-radius: 50px;
@@ -13,17 +13,17 @@ const StyledBox = styled(Box)`
   padding: 10px 20px;
   transition: 0.3s all;
   align-items: center;
-`
+`;
 const StyledAnchor = styled(`a`)`
   // color: ${theme.palette.text.primary};
   text-decoration: none;
   &:hover {
     text-decoration: none;
   }
-`
+`;
 
 export const LeftMenu: React.FC = () => {
-  const pathName = location.pathname
+  const pathName = location.pathname;
   return (
     <Box>
       {menus.map((el, index) => (
@@ -41,5 +41,5 @@ export const LeftMenu: React.FC = () => {
         </Link>
       ))}
     </Box>
-  )
-}
+  );
+};

@@ -8,7 +8,7 @@ import { CognitoUser } from '@aws-amplify/auth';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {
   StylesProvider,
-  ThemeProvider as MaterialUIThemeProvider,
+  ThemeProvider as MaterialUIThemeProvider
 } from '@material-ui/styles';
 import { Auth } from 'aws-amplify';
 import 'modern-css-reset/dist/reset.min.css';
@@ -19,7 +19,7 @@ import 'nprogress/nprogress.css'; // バーのデフォルトスタイルのイ�
 import React, { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
 import styled, {
-  ThemeProvider as StyledComponentsThemeProvider,
+  ThemeProvider as StyledComponentsThemeProvider
 } from 'styled-components';
 import './editor.scss';
 import './style.scss';
@@ -38,7 +38,6 @@ const StyledWrapper = styled.div`
 const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'MAINTENANCE')
     return <MaintenanceView />;
-
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
@@ -102,15 +101,5 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
     </RecoilRoot>
   );
 };
-
-// MyApp.getInitialProps = async (appContext: AppContext) => {
-//   const { req, res } = appContext.ctx;
-//   if (req && res && process.env.NEXT_PUBLIC_ENABLE_BASIC_AUTH === 'true') {
-//     await basicAuthCheck(req, res);
-//   }
-
-//   const appProps = await App.getInitialProps(appContext);
-//   return { ...appProps };
-// };
 
 export default MyApp;
