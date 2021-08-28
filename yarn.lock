@@ -9980,6 +9980,11 @@ nested-error-stacks@^2.0.0, nested-error-stacks@^2.1.0:
   resolved "https://registry.yarnpkg.com/nested-error-stacks/-/nested-error-stacks-2.1.0.tgz#0fbdcf3e13fe4994781280524f8b96b0cdff9c61"
   integrity sha512-AO81vsIO1k1sM4Zrd6Hu7regmJN1NSiAja10gc4bX3F0wd+9rQmcuHQaHVQCYIEC8iFXnE+mavh23GOt7wBgug==
 
+next-share@^0.12.1:
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/next-share/-/next-share-0.12.1.tgz#d3d02d010466bcc856f9885fef0a05590d5f1a57"
+  integrity sha512-O0AqQOmRT4ID/47vKNzmCKkC/4w69yKyLBuXzigf+iWQVgG+keBZezi8jFDE5CuUDK1ZOulqNrfZZCNXOog2XA==
+
 next@^10.0.7:
   version "10.2.3"
   resolved "https://registry.yarnpkg.com/next/-/next-10.2.3.tgz#5aa058a63626338cea91c198fda8f2715c058394"

@@ -93,6 +93,7 @@ const IndexPage: React.FC<Props> = props => {
     };
   }, []);
   const [title, setTitle] = useState('');
+  const [postId, setPostId] = useState('');
   const [isSuccessed, setIsSuccessed] = useState(false);
   const [tagList, setTagList] = useState<string[]>([]);
   const [description, setDescription] = useState('');
@@ -127,15 +128,24 @@ const IndexPage: React.FC<Props> = props => {
   const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_TAGS)
   );
-  const [isValidDescriptionObject, setIsValidDescriptionObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION));
-  const [isValidFileNameObject, setIsValidFileNameObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_FILE_NAME));
-  const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE));
+  const [
+    isValidDescriptionObject,
+    setIsValidDescriptionObject,
+  ] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_DESCRIPTION)
+  );
+  const [
+    isValidFileNameObject,
+    setIsValidFileNameObject,
+  ] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_FILE_NAME)
+  );
+  const [
+    isValidSourceCodeObject,
+    setIsValidSourceCodeObject,
+  ] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
+  );
   const [uuid] = useState(uuidv4());
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
@@ -291,6 +301,7 @@ const IndexPage: React.FC<Props> = props => {
       if (result.status !== 200) throw err;
       setIsPosted(true);
       setIsSuccessed(true);
+      setPostId(result.data.postId);
     } catch {
       alert(errorMessages.SYSTEM_ERROR);
     }
@@ -626,6 +637,9 @@ const IndexPage: React.FC<Props> = props => {
         isSuccessed={isSuccessed}
         isOpenDialog={isOpenDialog}
         closeDialog={closeDialog}
+        contentsTitle={title}
+        postId={postId}
+        displayName={props.currentUser!.user_profile.display_name}
         targetLanguages={targetLanguages}
         targetLanguageValue={targetLanguageValue}
         programmingIcon={programmingIcon}

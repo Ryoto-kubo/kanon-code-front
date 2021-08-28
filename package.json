@@ -52,6 +52,7 @@
     "marked": "^2.0.3",
     "modern-css-reset": "^1.4.0",
     "next": "^10.0.7",
+    "next-share": "^0.12.1",
     "nextjs-basic-auth": "0.1.2",
     "node-sass": "^6.0.1",
     "react": "^16.12.0",
