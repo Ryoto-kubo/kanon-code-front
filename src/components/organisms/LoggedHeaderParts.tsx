@@ -224,7 +224,7 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
             <StyledListItemIcon>
               <InboxOutlinedIcon fontSize='small' />
             </StyledListItemIcon>
-            <ListItemText secondary='購入履歴' />
+            <ListItemText secondary='購入したレビュー' />
           </MenuItem>
           <MenuItem onClick={() => toPage('/dashboard/sales')}>
             <StyledListItemIcon>
