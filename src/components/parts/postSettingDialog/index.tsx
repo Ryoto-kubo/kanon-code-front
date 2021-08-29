@@ -14,6 +14,7 @@ import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
 import { TransitionProps } from '@material-ui/core/transitions';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import { TwitterIcon, TwitterShareButton } from 'next-share';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -134,14 +135,15 @@ export const PostSettingDialog: React.FC<Props> = props => {
             <StyledBoxMessageWrapper>
               <Box>レビューを投稿しました！</Box>
             </StyledBoxMessageWrapper>
-            {/* <Box textAlign='center'>
+            <Box textAlign='center'>
               <TwitterShareButton
                 url={`${process.env.NEXT_PUBLIC_API_URL}/${props.displayName}/post/${props.postId}`}
                 title={props.contentsTitle}
+                hashtags={['#Kanon Code']}
               >
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
-            </Box> */}
+            </Box>
           </StyledBoxAbsolute>
         </Box>
       ) : (
