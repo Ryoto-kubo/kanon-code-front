@@ -15,7 +15,7 @@ import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Snackbar from '@material-ui/core/Snackbar';
-import { fade } from '@material-ui/core/styles';
+import { alpha } from '@material-ui/core/styles';
 import {
   CardElement,
   Elements,
@@ -38,7 +38,7 @@ const StyledBox = styled(Box)(
     margin-bottom: 32px;
     max-width: 600px;
     padding: 16px;
-    background: ${fade(theme.palette.primary.main, 0.1)};
+    background: ${alpha(theme.palette.primary.main, 0.1)};
   `
 );
 const StyledBoxBgColorWhite = styled(Box)`

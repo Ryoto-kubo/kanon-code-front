@@ -33,6 +33,7 @@ const IndexPage: React.FC<Props> = props => {
   const frontPosts = props.data.frontPosts;
   const backPosts = props.data.backPosts;
   const otherPosts = props.data.otherPosts;
+
   return (
     <Layout
       title='Kanon Code | コードレビュを全てのエンジニアへ'

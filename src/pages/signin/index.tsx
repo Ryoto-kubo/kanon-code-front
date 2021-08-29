@@ -1,10 +1,10 @@
-import { SignInContent } from "@/components/organisms/SignInContent";
-import { LayoutNoFooter } from "@/layouts/no-footer";
-import { CognitoHostedUIIdentityProvider } from "@aws-amplify/auth";
-import { Container } from "@material-ui/core/";
-import { Auth } from "aws-amplify";
-import React from "react";
-import styled from "styled-components";
+import { SignInContent } from '@/components/organisms/SignInContent';
+import { LayoutNoFooter } from '@/layouts/no-footer';
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth';
+import { Container } from '@material-ui/core/';
+import { Auth } from 'aws-amplify';
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledContainer = styled(Container)`
   width: 100%;
@@ -19,7 +19,7 @@ const signin = () => {
 };
 
 const IndexPage: React.FC = () => (
-  <LayoutNoFooter title="Kanon Code | サインイン">
+  <LayoutNoFooter title='Kanon Code | サインイン'>
     <StyledContainer>
       <SignInContent onClick={signin} />
     </StyledContainer>

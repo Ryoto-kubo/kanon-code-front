@@ -632,6 +632,9 @@ const IndexPage: React.FC<Props> = props => {
         isSuccessed={isSuccessed}
         isOpenDialog={isOpenDialog}
         closeDialog={closeDialog}
+        contentsTitle={title}
+        postId={postId}
+        displayName={props.currentUser.user_profile.display_name}
         targetLanguages={targetLanguages}
         targetLanguageValue={targetLanguageValue}
         programmingIcon={programmingIcon}

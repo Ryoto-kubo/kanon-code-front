@@ -8,7 +8,7 @@ import { CognitoUser } from '@aws-amplify/auth';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {
   StylesProvider,
-  ThemeProvider as MaterialUIThemeProvider
+  ThemeProvider as MaterialUIThemeProvider,
 } from '@material-ui/styles';
 import { Auth } from 'aws-amplify';
 import 'modern-css-reset/dist/reset.min.css';
@@ -19,7 +19,7 @@ import 'nprogress/nprogress.css'; // バーのデフォルトスタイルのイ�
 import React, { useEffect, useState } from 'react';
 import { RecoilRoot } from 'recoil';
 import styled, {
-  ThemeProvider as StyledComponentsThemeProvider
+  ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components';
 import './editor.scss';
 import './style.scss';
@@ -60,7 +60,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
         setCurrentUser(user);
         setisFetch(true);
       } catch (error) {
-        console.log(error.response);
+        console.log(error);
         if (error.response) {
           destroyCookie(null, 'idToken');
           alert(error.response.data.status_message);
