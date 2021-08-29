@@ -1,5 +1,7 @@
-import { apis } from "@/consts/api/";
-import { axios } from "@/utils/axios";
+import { apis } from '@/consts/api/';
+import { SuccessTypes } from '@/types/api/success';
+import { axios } from '@/utils/axios';
+import { AxiosResponse } from 'axios';
 
 type ParamsType = {
   uuid: string;
@@ -21,6 +23,12 @@ type ParamsType = {
   };
 };
 
-export const postContent = async (params: ParamsType) => {
+type CustomResponseTypes = SuccessTypes & {
+  postId: string;
+};
+
+export const postContent = async (
+  params: ParamsType
+): Promise<AxiosResponse<CustomResponseTypes>> => {
   return await axios.post(apis.REGISTER_CONTENT, params);
 };

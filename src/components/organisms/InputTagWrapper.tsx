@@ -4,7 +4,7 @@ import Box from '@material-ui/core/Box';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
-import { fade } from '@material-ui/core/styles';
+import { alpha } from '@material-ui/core/styles';
 import CheckIcon from '@material-ui/icons/Check';
 import useAutocomplete from '@material-ui/lab/useAutocomplete';
 import PropTypes from 'prop-types';
@@ -68,8 +68,8 @@ const StyledTag = styled(Tag)(
   height: 24px;
   margin: 2px;
   line-height: 22px;
-  background-color: ${fade(theme.palette.primary.main, 0.1)};
-  border: 1px solid ${fade(theme.palette.primary.main, 0.5)};
+  background-color: ${alpha(theme.palette.primary.main, 0.1)};
+  border: 1px solid ${alpha(theme.palette.primary.main, 0.5)};
   border-radius: 2px;
   box-sizing: content-box;
   padding: 0 4px 0 10px;
@@ -122,7 +122,7 @@ const StyledListbox = styled(List)(
     }
   }
   & li[data-focus='true'] {
-    background-color: ${fade(theme.palette.primary.main, 0.1)};
+    background-color: ${alpha(theme.palette.primary.main, 0.1)};
     cursor: pointer;
     & svg {
       color: currentColor;

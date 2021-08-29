@@ -7,7 +7,7 @@ import Layout from '@/layouts/standard';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { Box, Container, Divider } from '@material-ui/core/';
-import { fade } from '@material-ui/core/styles';
+import { alpha } from '@material-ui/core/styles';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
@@ -30,7 +30,7 @@ const StyledBoxAboutTitleWrapper = styled(Box)`
       width: 200px;
       height: 200px;
       border-radius: 50%;
-      background: ${fade(theme.palette.primary.main, 0.1)};
+      background: ${alpha(theme.palette.primary.main, 0.1)};
       position: absolute;
       top: -40px;
       left: -100px;
@@ -41,7 +41,7 @@ const StyledBoxAboutTitleWrapper = styled(Box)`
       width: 300px;
       height: 300px;
       border-radius: 50%;
-      background: ${fade(theme.palette.primary.main, 0.1)};
+      background: ${alpha(theme.palette.primary.main, 0.1)};
       position: absolute;
       top: 50px;
       right: -150px;
@@ -167,7 +167,7 @@ const StyledBoxSqure = styled(Box)`
   border-radius: 4px;
   width: 100%;
   height: 270px;
-  background: ${fade(theme.palette.primary.main, 0.1)};
+  background: ${alpha(theme.palette.primary.main, 0.1)};
   margin-bottom: 16px;
   position: relative;
   ${props => props.theme.breakpoints.up('sm')} {
