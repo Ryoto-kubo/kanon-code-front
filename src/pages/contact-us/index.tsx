@@ -23,6 +23,10 @@ const StyledUl = styled('ul')`
 `;
 const StyledAnchor = styled(`a`)`
   color: ${theme.palette.primary.main};
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const IndexPage: React.FC<Props> = props => {

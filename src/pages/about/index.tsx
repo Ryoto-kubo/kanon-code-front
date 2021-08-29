@@ -1,4 +1,3 @@
-// import { AboutFirstView } from '@/components/parts/aboutFirstView';
 import { SolidLink } from '@/components/atoms/SolidLink';
 import { SendIllustration } from '@/components/parts/illustrations/mail-send';
 import { ReviewIllustration } from '@/components/parts/illustrations/other-reviews';
@@ -11,6 +10,7 @@ import { alpha } from '@material-ui/core/styles';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
+import AboutKanonCodeSvg from '../../assets/illustration/about-kanoncode.svg';
 import TermsSvg from '../../assets/illustration/Accept-terms.svg';
 import QuestionsSvg from '../../assets/illustration/Questions.svg';
 import SecuritySvg from '../../assets/illustration/Security-pana.svg';
@@ -55,6 +55,7 @@ const StyledBoxAboutTitle = styled(Box)`
   }
 `;
 const StyledBoxMessage = styled(Box)`
+  margin-bottom: 24px;
   font-size: 14px;
   line-height: 1.8;
   ${props => props.theme.breakpoints.up('sm')} {
@@ -134,6 +135,10 @@ const StyledLogo = styled(KanonCodeSvg)`
   ${props => props.theme.breakpoints.up('md')} {
     width: 500px;
   }
+`;
+const StyledAboutKanonCodeSvg = styled(AboutKanonCodeSvg)`
+  width: 100%;
+  height: auto;
 `;
 const StyledBoxSinginTitle = styled(Box)`
   font-size: 24px;
@@ -292,6 +297,7 @@ const IndexPage: React.FC<Props> = props => {
               <br />
               成長したいと願い日々努力を惜しまないエンジニアのために、誰でも気軽にコードレビューをもらえるサービスを作りました。
             </StyledBoxMessage>
+            <StyledAboutKanonCodeSvg />
           </StyledBoxAboutTitleWrapper>
           <Box mb={5}>
             <Divider />

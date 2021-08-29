@@ -24,7 +24,7 @@ const IndexPage: React.FC<Props> = props => {
   if (status === false) {
     return (
       <LayoutDashboard
-        title='Kanon Code | ダッシュボード:購入履歴'
+        title='Kanon Code | ダッシュボード:購入したレビュー'
         currentUser={props.currentUser}
       >
         <ErrorView />
@@ -35,7 +35,7 @@ const IndexPage: React.FC<Props> = props => {
   const posts = data?.data.posts;
   return (
     <LayoutDashboard
-      title='Kanon Code | ダッシュボード:購入履歴'
+      title='Kanon Code | ダッシュボード:購入したレビュー'
       currentUser={props.currentUser}
     >
       <Box width={'100%'} position='relative' minHeight='300px'>

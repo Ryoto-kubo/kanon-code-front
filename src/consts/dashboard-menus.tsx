@@ -21,7 +21,7 @@ export const menus = [
     href: '/dashboard/bookmarks',
   },
   {
-    name: '購入履歴',
+    name: '購入したレビュー',
     icon: <InboxOutlinedIcon />,
     href: '/dashboard/payments_history',
   },

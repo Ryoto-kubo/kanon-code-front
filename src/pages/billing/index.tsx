@@ -6,6 +6,7 @@ import { MovePageDialog } from '@/components/parts/movePageDialog';
 import { messages } from '@/consts/messages';
 import { useCredit } from '@/hooks/useCredit';
 import { SettingLayout } from '@/layouts/setting-form';
+import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { postCredit } from '@/utils/api/post-credit';
 import { postRegisterCustomer } from '@/utils/api/post-register-customer';
@@ -46,6 +47,13 @@ const StyledBoxBgColorWhite = styled(Box)`
   padding: 10px;
   border-radius: 4px;
   margin-bottom: 8px;
+`;
+const StyledAnchor = styled(`a`)`
+  color: ${theme.palette.primary.main};
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const Wrapper = ({
@@ -180,6 +188,7 @@ const Wrapper = ({
               <StyledBoxBgColorWhite>
                 <CardElement
                   options={{
+                    hidePostalCode: true,
                     style: {
                       base: {
                         fontSize: '16px',
@@ -202,7 +211,15 @@ const Wrapper = ({
               )}
               <List disablePadding>
                 <ListItem disableGutters dense>
-                  ・カード情報をStripeにのみ送信・保存されます
+                  ・カード情報を
+                  <StyledAnchor
+                    href='https://stripe.com/jp'
+                    target='_blank'
+                    rel='noopener'
+                  >
+                    Stripe
+                  </StyledAnchor>
+                  にのみ送信・保存されます
                 </ListItem>
                 <ListItem disableGutters dense>
                   ・レビュワーのユーザー名を知ることができます

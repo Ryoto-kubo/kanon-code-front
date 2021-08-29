@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import Hidden from '@material-ui/core/Hidden';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import BookmarksOutlinedIcon from '@material-ui/icons/BookmarksOutlined';
 import CodeOutlinedIcon from '@material-ui/icons/CodeOutlined';
@@ -51,11 +52,14 @@ const StyledBoxNoticeWrapper = styled(Box)`
   position: relative;
   width: 24px;
 `;
-const StyledDropMenu = styled(DropMenu)`
-  max-height: 300px;
+const StyledMenuItem = styled(MenuItem)`
+  &:hover {
+    cursor: initial;
+  }
 `;
 
 export const LoggedHeaderParts: React.FC<Props> = props => {
+  const ITEM_HEIGHT = 120;
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [anchorNoticeEl, setAnchorNoticeEl] = useState<null | HTMLElement>(
@@ -82,12 +86,6 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
   };
   const handleNotice = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorNoticeEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-  const handleCloseNotice = () => {
-    setAnchorNoticeEl(null);
   };
   const toPage = (path: string) => {
     router.push(path);
@@ -117,14 +115,29 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                     func={handleNotice}
                   />
                 </Badge>
-                <StyledDropMenu
+                <Menu
                   anchorEl={anchorNoticeEl}
-                  isOpen={noticeOpen}
-                  onClose={handleCloseNotice}
+                  getContentAnchorEl={null}
+                  open={noticeOpen}
+                  onClose={() => setAnchorNoticeEl(null)}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  PaperProps={{
+                    style: {
+                      maxHeight: ITEM_HEIGHT * 4.5,
+                    },
+                  }}
                 >
                   {notices.Items.map((el: any) =>
                     el.type === 'review' ? (
-                      <MenuItem
+                      <StyledMenuItem
                         key={uuidv4()}
                         className={el.is_read ? '' : 'non-read'}
                       >
@@ -141,10 +154,10 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                           width={'35px'}
                           height={'35px'}
                         />
-                      </MenuItem>
+                      </StyledMenuItem>
                     ) : (
                       el.type === 'payment' && (
-                        <MenuItem
+                        <StyledMenuItem
                           key={uuidv4()}
                           className={el.is_read ? '' : 'non-read'}
                         >
@@ -159,11 +172,11 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                             width={'35px'}
                             height={'35px'}
                           />
-                        </MenuItem>
+                        </StyledMenuItem>
                       )
                     )
                   )}
-                </StyledDropMenu>
+                </Menu>
               </>
             ) : (
               <NotificationsButton disableRipple={true} func={handleNotice} />
@@ -188,7 +201,11 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
           disableRipple={true}
           func={handleMenu}
         />
-        <DropMenu anchorEl={anchorEl} isOpen={open} onClose={handleClose}>
+        <DropMenu
+          anchorEl={anchorEl}
+          isOpen={open}
+          onClose={() => setAnchorEl(null)}
+        >
           <MenuItem onClick={() => toPage(`/${props.displayName}`)}>
             <StyledListItemIcon>
               <PersonOutlineOutlinedIcon fontSize='small' />
@@ -224,7 +241,7 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
             <StyledListItemIcon>
               <InboxOutlinedIcon fontSize='small' />
             </StyledListItemIcon>
-            <ListItemText secondary='購入履歴' />
+            <ListItemText secondary='購入したレビュー' />
           </MenuItem>
           <MenuItem onClick={() => toPage('/dashboard/sales')}>
             <StyledListItemIcon>
