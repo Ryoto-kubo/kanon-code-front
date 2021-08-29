@@ -167,7 +167,7 @@ const Wrapper = ({
       <SettingForm
         linkText='Credit'
         href='/settings/billing'
-        fontSize='default'
+        fontSize='medium'
         color='inherit'
         headingFontSize={24}
         marginBottom={0}
