@@ -13,7 +13,7 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
       config.headers.Authorization = session.getIdToken().getJwtToken();
       return Promise.resolve(config);
     })
-    .catch(err => {
+    .catch(() => {
       config.headers.Authorization = '';
       return Promise.resolve(config);
     });
