@@ -23,6 +23,9 @@ type Props = {
 
 const StyledWrapper = styled(Box)`
   display: felx;
+  &:hover {
+    cursol: initial;
+  }
 `;
 const StyledAnchor = styled(`a`)`
   display: inline-block;
