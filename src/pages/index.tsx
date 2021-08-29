@@ -122,6 +122,8 @@ export const getStaticProps = async () => {
   // export const getServerSideProps = async () => {
   try {
     const response = await getContents();
+    console.log(response, 'response');
+
     return {
       props: {
         data: response.data,
