@@ -1,4 +1,3 @@
-// import { AboutFirstView } from '@/components/parts/aboutFirstView';
 import { SolidLink } from '@/components/atoms/SolidLink';
 import { SendIllustration } from '@/components/parts/illustrations/mail-send';
 import { ReviewIllustration } from '@/components/parts/illustrations/other-reviews';
