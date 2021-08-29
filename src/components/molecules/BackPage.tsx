@@ -1,19 +1,19 @@
-import { CustomHeading2 } from '@/components/atoms/CustomHeading2'
-import { IconArrowBack } from '@/components/svg/materialIcons/IconArrowBack'
-import Box from '@material-ui/core/Box'
-import Link from 'next/link'
-import React from 'react'
-import styled from 'styled-components'
+import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
+import { IconArrowBack } from '@/components/svg/materialIcons/IconArrowBack';
+import Box from '@material-ui/core/Box';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
 
 type HrefProps = {
-  href: string
-}
+  href: string;
+};
 type HeadingProps = {
-  headingFontSize: number
-  marginBottom: number
-}
+  headingFontSize: number;
+  marginBottom: number;
+};
 type IconProps = {
-  fontSize: 'small' | 'inherit' | 'default' | 'large' | undefined
+  fontSize: 'small' | 'inherit' | 'default' | 'medium' | 'large' | undefined;
   color:
     | 'inherit'
     | 'disabled'
@@ -21,8 +21,8 @@ type IconProps = {
     | 'primary'
     | 'secondary'
     | 'error'
-    | undefined
-}
+    | undefined;
+};
 
 const StyledBoxFlex = styled(Box)`
   display: flex;
@@ -30,12 +30,12 @@ const StyledBoxFlex = styled(Box)`
   &:hover {
     cursor: pointer;
   }
-`
+`;
 
-export const BackPage: React.FC<HrefProps & IconProps & HeadingProps> = (
-  props,
-) => {
-  const { href, headingFontSize, marginBottom, ...iconProps } = props
+export const BackPage: React.FC<
+  HrefProps & IconProps & HeadingProps
+> = props => {
+  const { href, headingFontSize, marginBottom, ...iconProps } = props;
   return (
     <Link href={href}>
       <StyledBoxFlex>
@@ -47,5 +47,5 @@ export const BackPage: React.FC<HrefProps & IconProps & HeadingProps> = (
         </CustomHeading2>
       </StyledBoxFlex>
     </Link>
-  )
-}
+  );
+};
