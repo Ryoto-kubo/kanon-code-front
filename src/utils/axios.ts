@@ -14,8 +14,6 @@ axios.interceptors.request.use((config: AxiosRequestConfig) => {
       return Promise.resolve(config);
     })
     .catch(err => {
-      console.log(err);
-
       config.headers.Authorization = '';
       return Promise.resolve(config);
     });
