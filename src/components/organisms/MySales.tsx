@@ -1,4 +1,3 @@
-import { CircleElement } from '@/components/atoms/Circle';
 import { Price } from '@/components/atoms/Price';
 import { ReviewContentsDialog } from '@/components/parts/reviewContentsDialog';
 import theme from '@/styles/theme';
@@ -38,6 +37,14 @@ const StyledAnchor = styled(`a`)`
   ${props => props.theme.breakpoints.up('md')} {
     display: flex;
     align-items: center;
+  }
+`;
+
+const StyledImg = styled('img')`
+  margin: auto;
+  margin-bottom: 5px;
+  ${props => props.theme.breakpoints.up('md')} {
+    margin: 0;
   }
 `;
 
@@ -149,30 +156,25 @@ export const MySales: React.FC<Props> = props => {
                     </Button>
                   </TableCell>
                   <TableCell align='left'>
-                    <CircleElement
-                      width={`${props.imgWidth}`}
-                      height={`${props.imgHeight}`}
+                    <Link
+                      href={`/${salesItem.purchaser_profile.display_name}`}
+                      passHref
                     >
-                      <Link
-                        href={`/${salesItem.purchaser_profile.display_name}`}
-                        passHref
-                      >
-                        <StyledAnchor>
-                          <img
-                            src={salesItem.purchaser_profile.icon_src}
-                            style={{
-                              borderRadius: '50px',
-                              width: `${props.imgWidth}`,
-                              height: `${props.imgHeight}`,
-                              margin: 'auto',
-                            }}
-                          />
-                          <StyledBoxNameWrapper component='span'>
-                            {salesItem.purchaser_profile.display_name}
-                          </StyledBoxNameWrapper>
-                        </StyledAnchor>
-                      </Link>
-                    </CircleElement>
+                      <StyledAnchor>
+                        <StyledImg
+                          src={salesItem.purchaser_profile.icon_src}
+                          style={{
+                            borderRadius: '50px',
+                            width: `${props.imgWidth}`,
+                            minWidth: `${props.imgWidth}`,
+                            height: `${props.imgHeight}`,
+                          }}
+                        />
+                        <StyledBoxNameWrapper component='span'>
+                          {salesItem.purchaser_profile.display_name}
+                        </StyledBoxNameWrapper>
+                      </StyledAnchor>
+                    </Link>
                   </TableCell>
                   <TableCell align='left'>{salesItem.date}</TableCell>
                   <TableCell align='left' style={{ width: 100, maxWidth: 100 }}>

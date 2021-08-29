@@ -1,4 +1,3 @@
-import { CircleElement } from '@/components/atoms/Circle';
 import { Price } from '@/components/atoms/Price';
 import { ReviewContentsDialog } from '@/components/parts/reviewContentsDialog';
 import theme from '@/styles/theme';
@@ -10,7 +9,6 @@ import {
 } from '@/types/global';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
-// import Paper from "@material-ui/core/Paper";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -39,6 +37,14 @@ const StyledAnchor = styled(`a`)`
   ${props => props.theme.breakpoints.up('md')} {
     display: flex;
     align-items: center;
+  }
+`;
+
+const StyledImg = styled('img')`
+  margin: auto;
+  margin-bottom: 5px;
+  ${props => props.theme.breakpoints.up('md')} {
+    margin: 0;
   }
 `;
 
@@ -118,7 +124,7 @@ export const MyPaymentsTable: React.FC<Props> = props => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell align='left'>レビュータイトル</TableCell>
+                <TableCell align='left'>購入したレビュー</TableCell>
                 <TableCell align='left'>レビュワー</TableCell>
                 <TableCell align='left'>日付</TableCell>
                 <TableCell align='left'>価格</TableCell>
@@ -151,30 +157,25 @@ export const MyPaymentsTable: React.FC<Props> = props => {
                       </Button>
                     </TableCell>
                     <TableCell align='left'>
-                      <CircleElement
-                        width={`${props.imgWidth}`}
-                        height={`${props.imgHeight}`}
+                      <Link
+                        href={`/${paymentItem.reviewer_user_profile.display_name}`}
+                        passHref
                       >
-                        <Link
-                          href={`/${paymentItem.reviewer_user_profile.display_name}`}
-                          passHref
-                        >
-                          <StyledAnchor>
-                            <img
-                              src={paymentItem.reviewer_user_profile.icon_src}
-                              style={{
-                                borderRadius: '50px',
-                                width: `${props.imgWidth}`,
-                                height: `${props.imgHeight}`,
-                                margin: 'auto',
-                              }}
-                            />
-                            <StyledBoxNameWrapper component='span'>
-                              {paymentItem.reviewer_user_profile.display_name}
-                            </StyledBoxNameWrapper>
-                          </StyledAnchor>
-                        </Link>
-                      </CircleElement>
+                        <StyledAnchor>
+                          <StyledImg
+                            src={paymentItem.reviewer_user_profile.icon_src}
+                            style={{
+                              borderRadius: '50px',
+                              width: `${props.imgWidth}`,
+                              minWidth: `${props.imgWidth}`,
+                              height: `${props.imgHeight}`,
+                            }}
+                          />
+                          <StyledBoxNameWrapper component='span'>
+                            {paymentItem.reviewer_user_profile.display_name}
+                          </StyledBoxNameWrapper>
+                        </StyledAnchor>
+                      </Link>
                     </TableCell>
                     <TableCell align='left'>{postItem.date}</TableCell>
                     <TableCell
