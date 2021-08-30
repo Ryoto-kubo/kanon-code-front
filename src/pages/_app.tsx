@@ -41,7 +41,6 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
-  console.log('_app.tsx');
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
