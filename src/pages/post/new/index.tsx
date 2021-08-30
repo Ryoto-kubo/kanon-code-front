@@ -3,7 +3,7 @@ import { CustomWhiteOutButton } from '@/components/atoms/WhiteOutButton';
 // import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox';
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper';
-import { InputTagWrapper } from '@/components/organisms/InputTagWrapper';
+// import { InputTagWrapper } from '@/components/organisms/InputTagWrapper';
 import { PostSettingDialog } from '@/components/parts/postSettingDialog';
 import { TreeObjectDialog } from '@/components/parts/treeObjectDialog';
 import * as CONSTS from '@/consts/const';
@@ -95,7 +95,7 @@ const IndexPage: React.FC<Props> = props => {
   const [title, setTitle] = useState('');
   const [postId, setPostId] = useState('');
   const [isSuccessed, setIsSuccessed] = useState(false);
-  const [tagList, setTagList] = useState<string[]>([]);
+  // const [tagList, setTagList] = useState<string[]>([]);
   const [description, setDescription] = useState('');
   const [sourceCode, setSourceCode] = useState('```\n\n```');
   const [inputFileNameLists, setInputFileNameLists] = useState([
@@ -125,9 +125,9 @@ const IndexPage: React.FC<Props> = props => {
   const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_TITLE)
   );
-  const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
-    createValidObject(false, validMessages.REQUIRED_TAGS)
-  );
+  // const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
+  //   createValidObject(false, validMessages.REQUIRED_TAGS)
+  // );
   const [
     isValidDescriptionObject,
     setIsValidDescriptionObject,
@@ -166,7 +166,8 @@ const IndexPage: React.FC<Props> = props => {
     // データが存在していて下書き保存されていなければ表示させる
     const isValidExistData = validExistData();
     execPreviousPageIfneeded(isValidExistData);
-  }, [title, tagList, description, inputFileNameLists, isPosted]);
+  }, [title, description, inputFileNameLists, isPosted]);
+  // }, [title, tagList, description, inputFileNameLists, isPosted]);
   const closeSnackBar = () => {
     setCanPUblish({
       ...canPublish,
@@ -184,7 +185,8 @@ const IndexPage: React.FC<Props> = props => {
       postType: key,
       contents: {
         title: title,
-        tagList: tagList,
+        tagList: [],
+        // tagList: tagList,
         description: {
           value: description,
           bodyHtml: marked(description),
@@ -221,20 +223,20 @@ const IndexPage: React.FC<Props> = props => {
 
   const validExistData = useCallback(() => {
     const isExistTitle = isValidTitleObject.isValid;
-    const isExistTagList = isValidTagsObject.isValid;
+    // const isExistTagList = isValidTagsObject.isValid;
     const isExistDescription = isValidDescriptionObject.isValid;
     const isExistFileName = isValidFileNameObject.isValid;
     const isExistSoureCode = isValidSourceCodeObject.isValid;
     return (
       isExistTitle ||
-      isExistTagList ||
+      // isExistTagList ||
       isExistDescription ||
       isExistFileName ||
       isExistSoureCode
     );
   }, [
     isValidTitleObject,
-    isValidTagsObject,
+    // isValidTagsObject,
     isValidDescriptionObject,
     isValidFileNameObject,
     isValidSourceCodeObject,
@@ -269,10 +271,10 @@ const IndexPage: React.FC<Props> = props => {
       updateCanPublish(false, isValidTitleObject.message);
       return;
     }
-    if (!isValidTagsObject.isValid) {
-      updateCanPublish(false, isValidTagsObject.message);
-      return;
-    }
+    // if (!isValidTagsObject.isValid) {
+    //   updateCanPublish(false, isValidTagsObject.message);
+    //   return;
+    // }
     if (!isValidDescriptionObject.isValid) {
       updateCanPublish(false, isValidDescriptionObject.message);
       return;
@@ -287,7 +289,8 @@ const IndexPage: React.FC<Props> = props => {
     }
     initCanPublish();
     setIsOpenDialog(true);
-  }, [title, tagList, description, inputFileNameLists]);
+  }, [title, description, inputFileNameLists]);
+  // }, [title, tagList, description, inputFileNameLists]);
 
   const registerContent = async () => {
     if (programmingIcon.value === '') {
@@ -359,24 +362,24 @@ const IndexPage: React.FC<Props> = props => {
     [title]
   );
 
-  const changeTagList = useCallback(
-    (values: string[]): void => {
-      if (values.length > CONSTS.MAX_TAGS_LENGTH) return;
-      const prepareContentBeforePost = new PrepareContentBeforePost(
-        values,
-        setIsValidTagsObject,
-        isValidTagsObject
-      );
-      const isNotValidZeroLength = prepareContentBeforePost.validZeroLength(
-        validMessages.REQUIRED_TAGS
-      );
-      if (isNotValidZeroLength) {
-        prepareContentBeforePost.successed();
-      }
-      setTagList(values);
-    },
-    [tagList]
-  );
+  // const changeTagList = useCallback(
+  //   (values: string[]): void => {
+  //     if (values.length > CONSTS.MAX_TAGS_LENGTH) return;
+  //     const prepareContentBeforePost = new PrepareContentBeforePost(
+  //       values,
+  //       setIsValidTagsObject,
+  //       isValidTagsObject
+  //     );
+  //     const isNotValidZeroLength = prepareContentBeforePost.validZeroLength(
+  //       validMessages.REQUIRED_TAGS
+  //     );
+  //     if (isNotValidZeroLength) {
+  //       prepareContentBeforePost.successed();
+  //     }
+  //     setTagList(values);
+  //   },
+  //   [tagList]
+  // );
 
   const changeDescritption = useCallback(
     (value: string): void => {
@@ -552,9 +555,9 @@ const IndexPage: React.FC<Props> = props => {
               placeholder='Title'
             />
           </Box>
-          <Box mb={3} className='tag-list-wrapper'>
+          {/* <Box mb={3} className='tag-list-wrapper'>
             <InputTagWrapper changeTagList={changeTagList} />
-          </Box>
+          </Box> */}
           <Box mb={5} className='description-wrapper'>
             <Editor
               id='editor'

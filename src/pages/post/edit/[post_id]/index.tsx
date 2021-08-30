@@ -4,7 +4,7 @@ import { CustomLoader } from '@/components/common/loader';
 import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { TextFieldWithCheckBox } from '@/components/molecules/TextFieldWithCheckBox';
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper';
-import { InputTagWrapper } from '@/components/organisms/InputTagWrapper';
+// import { InputTagWrapper } from '@/components/organisms/InputTagWrapper';
 import { PostSettingDialog } from '@/components/parts/postSettingDialog';
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
@@ -111,8 +111,8 @@ const IndexPage: React.FC<Props> = props => {
     setTitle,
     isSuccessed,
     setIsSuccessed,
-    tagList,
-    setTagList,
+    // tagList,
+    // setTagList,
     description,
     setDescription,
     sourceCode,
@@ -125,8 +125,8 @@ const IndexPage: React.FC<Props> = props => {
     setProgrammingIcon,
     isValidTitleObject,
     setIsValidTitleObject,
-    isValidTagsObject,
-    setIsValidTagsObject,
+    // isValidTagsObject,
+    // setIsValidTagsObject,
     isValidDescriptionObject,
     setIsValidDescriptionObject,
     isValidFileNameObject,
@@ -159,7 +159,8 @@ const IndexPage: React.FC<Props> = props => {
     // データが存在していて下書き保存されていなければ表示させる
     const isValidExistData = validExistData();
     execPreviousPageIfneeded(isValidExistData);
-  }, [title, tagList, description, inputFileNameLists, isPosted]);
+  }, [title, description, inputFileNameLists, isPosted]);
+  // }, [title, tagList, description, inputFileNameLists, isPosted]);
   const closeSnackBar = () => {
     setCanPUblish({
       ...canPublish,
@@ -178,7 +179,8 @@ const IndexPage: React.FC<Props> = props => {
       postType: key,
       contents: {
         title: title,
-        tagList: tagList,
+        tagList: [],
+        // tagList: tagList,
         description: {
           value: description,
           bodyHtml: marked(description),
@@ -215,20 +217,20 @@ const IndexPage: React.FC<Props> = props => {
 
   const validExistData = useCallback(() => {
     const isExistTitle = isValidTitleObject.isValid;
-    const isExistTagList = isValidTagsObject.isValid;
+    // const isExistTagList = isValidTagsObject.isValid;
     const isExistDescription = isValidDescriptionObject.isValid;
     const isExistFileName = isValidFileNameObject.isValid;
     const isExistSoureCode = isValidSourceCodeObject.isValid;
     return (
       isExistTitle ||
-      isExistTagList ||
+      // isExistTagList ||
       isExistDescription ||
       isExistFileName ||
       isExistSoureCode
     );
   }, [
     isValidTitleObject,
-    isValidTagsObject,
+    // isValidTagsObject,
     isValidDescriptionObject,
     isValidFileNameObject,
     isValidSourceCodeObject,
@@ -263,10 +265,10 @@ const IndexPage: React.FC<Props> = props => {
       updateCanPublish(false, isValidTitleObject.message);
       return;
     }
-    if (!isValidTagsObject.isValid) {
-      updateCanPublish(false, isValidTagsObject.message);
-      return;
-    }
+    // if (!isValidTagsObject.isValid) {
+    //   updateCanPublish(false, isValidTagsObject.message);
+    //   return;
+    // }
     if (!isValidDescriptionObject.isValid) {
       updateCanPublish(false, isValidDescriptionObject.message);
       return;
@@ -352,24 +354,24 @@ const IndexPage: React.FC<Props> = props => {
     [title]
   );
 
-  const changeTagList = useCallback(
-    (values: string[]): void => {
-      if (values.length > CONSTS.MAX_TAGS_LENGTH) return;
-      const prepareContentBeforePost = new PrepareContentBeforePost(
-        values,
-        setIsValidTagsObject,
-        isValidTagsObject
-      );
-      const isNotValidZeroLength = prepareContentBeforePost.validZeroLength(
-        validMessages.REQUIRED_TAGS
-      );
-      if (isNotValidZeroLength) {
-        prepareContentBeforePost.successed();
-      }
-      setTagList(values);
-    },
-    [tagList]
-  );
+  // const changeTagList = useCallback(
+  //   (values: string[]): void => {
+  //     if (values.length > CONSTS.MAX_TAGS_LENGTH) return;
+  //     const prepareContentBeforePost = new PrepareContentBeforePost(
+  //       values,
+  //       setIsValidTagsObject,
+  //       isValidTagsObject
+  //     );
+  //     const isNotValidZeroLength = prepareContentBeforePost.validZeroLength(
+  //       validMessages.REQUIRED_TAGS
+  //     );
+  //     if (isNotValidZeroLength) {
+  //       prepareContentBeforePost.successed();
+  //     }
+  //     setTagList(values);
+  //   },
+  //   [tagList]
+  // );
 
   const changeDescritption = useCallback(
     (value: string): void => {
@@ -553,9 +555,9 @@ const IndexPage: React.FC<Props> = props => {
               placeholder='Title'
             />
           </Box>
-          <Box mb={3} className='tag-list-wrapper'>
+          {/* <Box mb={3} className='tag-list-wrapper'>
             <InputTagWrapper changeTagList={changeTagList} tagList={tagList} />
-          </Box>
+          </Box> */}
           <Box mb={5} className='description-wrapper'>
             <Editor
               id='editor'

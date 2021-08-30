@@ -1,11 +1,11 @@
-import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
-import { Tags } from "@/components/atoms/Tags";
-import { TagsIcon } from "@/components/atoms/TagsIcon";
-import theme from "@/styles/theme";
-import { Box } from "@material-ui/core/";
-import Link from "next/link";
-import React from "react";
-import styled from "styled-components";
+import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
+// import { Tags } from "@/components/atoms/Tags";
+// import { TagsIcon } from "@/components/atoms/TagsIcon";
+import theme from '@/styles/theme';
+import { Box } from '@material-ui/core/';
+import Link from 'next/link';
+import React from 'react';
+import styled from 'styled-components';
 
 interface Props {
   title: string;
@@ -22,7 +22,7 @@ const StyledAnchor = styled(`a`)`
   }
 `;
 
-export const PostHeader: React.FC<Props> = (props) => {
+export const PostHeader: React.FC<Props> = props => {
   return (
     <Box>
       <Link href={`/${props.postUrl}`} passHref>
@@ -32,12 +32,12 @@ export const PostHeader: React.FC<Props> = (props) => {
           </CustomHeading2>
         </StyledAnchor>
       </Link>
-      <Box mb={1}>
+      {/* <Box mb={1}>
         <Box mr={1} component="span">
           <TagsIcon />
         </Box>
         <Tags fontSize={14} marginRight={1} tagArray={props.tagArray} />
-      </Box>
+      </Box> */}
     </Box>
   );
 };
