@@ -26,6 +26,8 @@ const formFunc = (e: React.FormEvent) => {
 // });
 
 const IndexPage: React.FC<Props> = props => {
+  location.href = '/';
+  return <></>;
   const router = useRouter();
 
   const initIconComponents = () => {

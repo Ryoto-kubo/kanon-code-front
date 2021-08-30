@@ -35,7 +35,7 @@ export const ThePostEditHeader: React.FC<Props> = React.memo(props => {
         <ArrowButton
           disableRipple={true}
           func={props.previousPage}
-          fontSize='default'
+          fontSize='medium'
           color='primary'
         />
         <Box display='flex' alignItems='center'>
