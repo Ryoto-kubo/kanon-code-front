@@ -1,9 +1,9 @@
 import { CustomSwitch } from '@/components/atoms/CustomSwitch';
 import { ContentHeader } from '@/components/molecules/ContentHeader';
-import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
+// import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { ProfileContentCheck } from '@/components/molecules/ProfileContentCheck';
 import { ContentWrapper } from '@/components/organisms/ContentWrapper';
-import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
+// import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
 import { errorMessages } from '@/consts/error-messages';
 import { messages } from '@/consts/messages';
 import { SettingLayout } from '@/layouts/setting/';
@@ -30,9 +30,9 @@ const IndexPage: React.FC<Props> = props => {
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState('更新中...');
   const user = props.currentUser;
-  const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(event);
-  };
+  // const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   console.log(event);
+  // };
 
   const resetUpdatingMessage = () => {
     setUpdatingMessage('更新中...');
@@ -108,7 +108,7 @@ const IndexPage: React.FC<Props> = props => {
             />
           </ProfileContentCheck>
         </ContentWrapper>
-        <ContentWrapper>
+        {/* <ContentWrapper>
           <ContentHeader
             title='Link'
             description='Github連携を行うことでKanon Codeをより使いやすく設定できます。'
@@ -122,8 +122,8 @@ const IndexPage: React.FC<Props> = props => {
           >
             <LinkGithubButton onClick={linkOnGithub} />
           </ProfileContentCheck>
-        </ContentWrapper>
-        <ContentWrapper>
+        </ContentWrapper> */}
+        {/* <ContentWrapper>
           <ContentHeader
             title='Delete Account'
             description='アカウントが不要になった場合は削除できます。'
@@ -137,7 +137,7 @@ const IndexPage: React.FC<Props> = props => {
           >
             <IconArrowNext fontSize='large' color='action' />
           </ProfileContentCheck>
-        </ContentWrapper>
+        </ContentWrapper> */}
       </section>
       <Snackbar
         anchorOrigin={{
