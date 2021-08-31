@@ -157,7 +157,7 @@ const Wrapper: React.FC<Props> = ({
       gtag.event({
         eventAction: 'click',
         eventCategory: 'purchase',
-        eventLabel: 'payment',
+        eventLabel: 'purchase',
         // value: authUserName,
       });
       setReviews(newReviews);
