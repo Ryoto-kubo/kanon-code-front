@@ -1,3 +1,4 @@
+import { existsGaId, GA_ID } from '@/utils/gtag';
 import { ServerStyleSheets as MaterialServerStyleSheets } from '@material-ui/core';
 import { RenderPageResult } from 'next/dist/next-server/lib/utils';
 import NextDocument, {
@@ -64,6 +65,25 @@ export default class CustomDocument extends NextDocument {
             href='https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap'
             rel='stylesheet'
           />
+          {existsGaId && (
+            <>
+              <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              />
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${GA_ID}', {
+                    page_path: window.location.pathname,
+                  });`,
+                }}
+              />
+            </>
+          )}
         </Head>
         <body>
           <Main />
