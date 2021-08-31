@@ -158,7 +158,7 @@ const Wrapper: React.FC<Props> = ({
         eventAction: 'click',
         eventCategory: 'purchase',
         eventLabel: 'payment',
-        value: authUserName,
+        // value: authUserName,
       });
       setReviews(newReviews);
       setPaymentedList({ ...paymentedList, [reviewId]: true });
