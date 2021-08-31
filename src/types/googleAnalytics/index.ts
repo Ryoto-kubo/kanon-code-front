@@ -7,7 +7,7 @@ type ContactEvent = {
 
 type ClickEvent = {
   eventAction: 'click';
-  eventCategory: 'other';
+  eventCategory: 'other' | 'purchase';
   eventLabel: string;
   value: any;
 };
