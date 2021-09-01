@@ -17,6 +17,7 @@ import { CreditTypes, UserProfileTypes } from '@/types/global/';
 import { deleteRegisterPayment } from '@/utils/api/delete-register-payment';
 import { postPayment } from '@/utils/api/post-payment';
 import { postRegisterPayment } from '@/utils/api/post-register-payment';
+import * as gtag from '@/utils/gtag';
 import { getStripe } from '@/utils/stripe';
 import Box from '@material-ui/core/Box';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
@@ -153,6 +154,12 @@ const Wrapper: React.FC<Props> = ({
             registerResult.data.contents.review.body_html;
         }
       }
+      gtag.event({
+        eventAction: 'payment',
+        eventCategory: 'purchase',
+        eventLabel: 'purchase',
+        value: authUserName,
+      });
       setReviews(newReviews);
       setPaymentedList({ ...paymentedList, [reviewId]: true });
       setIsSucceeded(true);

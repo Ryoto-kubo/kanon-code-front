@@ -1,6 +1,7 @@
 import '@/aws/cognito/config';
 import { CustomNprogress } from '@/components/common/nextNprogress';
 import { MaintenanceView } from '@/components/parts/maintenance';
+import usePageView from '@/hooks/usePageView';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { getUser } from '@/utils/api/get-user';
@@ -41,6 +42,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
+  usePageView();
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
