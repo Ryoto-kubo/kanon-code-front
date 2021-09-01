@@ -155,10 +155,10 @@ const Wrapper: React.FC<Props> = ({
         }
       }
       gtag.event({
-        eventAction: 'click',
+        eventAction: 'payment',
         eventCategory: 'purchase',
         eventLabel: 'purchase',
-        // value: authUserName,
+        value: authUserName,
       });
       setReviews(newReviews);
       setPaymentedList({ ...paymentedList, [reviewId]: true });

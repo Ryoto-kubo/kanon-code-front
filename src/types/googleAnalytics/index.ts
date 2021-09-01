@@ -7,9 +7,16 @@ type ContactEvent = {
 
 type ClickEvent = {
   eventAction: 'click';
-  eventCategory: 'other' | 'purchase';
+  eventCategory: 'other';
   eventLabel: string;
   value?: any;
 };
 
-export type Event = ContactEvent | ClickEvent;
+type PaymentEvent = {
+  eventAction: 'payment';
+  eventCategory: 'purchase';
+  eventLabel: string;
+  value?: any;
+};
+
+export type Event = ContactEvent | ClickEvent | PaymentEvent;
