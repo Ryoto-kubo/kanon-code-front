@@ -137,9 +137,9 @@ export const PostSettingDialog: React.FC<Props> = props => {
             </StyledBoxMessageWrapper>
             <Box textAlign='center'>
               <TwitterShareButton
-                url={`${process.env.NEXT_PUBLIC_API_URL}/${props.displayName}/post/${props.postId}`}
+                url={`${process.env.NEXT_PUBLIC_HOST}/${props.displayName}/post/${props.postId}`}
                 title={props.contentsTitle}
-                hashtags={['#Kanon Code']}
+                hashtags={['Kanon Code']}
               >
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
