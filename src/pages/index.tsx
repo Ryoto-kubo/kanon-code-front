@@ -41,78 +41,78 @@ const IndexPage: React.FC<Props> = props => {
     >
       <Container>
         {!props.currentUser && <FirstView />}
-        <Box component='section' mb={10}>
-          {frontPosts.length > 0 && (
+        {frontPosts.length > 0 && (
+          <Box component='section' mb={10}>
             <StyledBoxWidthBorder mb={2}>
               <TypoHeading2 color='initial'>Front-end</TypoHeading2>
             </StyledBoxWidthBorder>
-          )}
-          <Box mb={4}>
-            <Grid spacing={3} container>
-              {frontPosts.map(el => (
-                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                  <Post
-                    title={el.contents.title}
-                    postUrl={el.post_url}
-                    iconPath={el.contents.target_icon.icon_path}
-                    name={el.user_profile.display_name}
-                    date={el.date}
-                    tagArray={el.contents.tag_list}
-                    userIcon={el.user_profile.icon_src}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Box mb={4}>
+              <Grid spacing={3} container>
+                {frontPosts.map(el => (
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                    <Post
+                      title={el.contents.title}
+                      postUrl={el.post_url}
+                      iconPath={el.contents.target_icon.icon_path}
+                      name={el.user_profile.display_name}
+                      date={el.date}
+                      tagArray={el.contents.tag_list}
+                      userIcon={el.user_profile.icon_src}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Box component='section' mb={10}>
-          {backPosts.length > 0 && (
+        )}
+        {backPosts.length > 0 && (
+          <Box component='section' mb={10}>
             <StyledBoxWidthBorder mb={2}>
               <TypoHeading2 color='initial'>Back-end</TypoHeading2>
             </StyledBoxWidthBorder>
-          )}
-          <Box mb={4}>
-            <Grid spacing={3} container>
-              {backPosts.map(el => (
-                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                  <Post
-                    title={el.contents.title}
-                    postUrl={el.post_url}
-                    iconPath={el.contents.target_icon.icon_path}
-                    name={el.user_profile.display_name}
-                    date={el.date}
-                    tagArray={el.contents.tag_list}
-                    userIcon={el.user_profile.icon_src}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Box mb={4}>
+              <Grid spacing={3} container>
+                {backPosts.map(el => (
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                    <Post
+                      title={el.contents.title}
+                      postUrl={el.post_url}
+                      iconPath={el.contents.target_icon.icon_path}
+                      name={el.user_profile.display_name}
+                      date={el.date}
+                      tagArray={el.contents.tag_list}
+                      userIcon={el.user_profile.icon_src}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
           </Box>
-        </Box>
-        <Box component='section' mb={10}>
-          {otherPosts.length > 0 && (
+        )}
+        {otherPosts.length > 0 && (
+          <Box component='section' mb={10}>
             <StyledBoxWidthBorder mb={2}>
               <TypoHeading2 color='initial'>Other</TypoHeading2>
             </StyledBoxWidthBorder>
-          )}
-          <Box mb={4}>
-            <Grid spacing={3} container>
-              {otherPosts.map(el => (
-                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                  <Post
-                    title={el.contents.title}
-                    postUrl={el.post_url}
-                    iconPath={el.contents.target_icon.icon_path}
-                    name={el.user_profile.display_name}
-                    date={el.date}
-                    tagArray={el.contents.tag_list}
-                    userIcon={el.user_profile.icon_src}
-                  />
-                </Grid>
-              ))}
-            </Grid>
+            <Box mb={4}>
+              <Grid spacing={3} container>
+                {otherPosts.map(el => (
+                  <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                    <Post
+                      title={el.contents.title}
+                      postUrl={el.post_url}
+                      iconPath={el.contents.target_icon.icon_path}
+                      name={el.user_profile.display_name}
+                      date={el.date}
+                      tagArray={el.contents.tag_list}
+                      userIcon={el.user_profile.icon_src}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
           </Box>
-        </Box>
+        )}
       </Container>
     </Layout>
   );
