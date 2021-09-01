@@ -41,7 +41,7 @@ const IndexPage: React.FC<Props> = props => {
     >
       <Container>
         {!props.currentUser && <FirstView />}
-        <Box component='section' mb={5}>
+        <Box component='section' mb={10}>
           {frontPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>
               <TypoHeading2 color='initial'>Front-end</TypoHeading2>
@@ -65,7 +65,7 @@ const IndexPage: React.FC<Props> = props => {
             </Grid>
           </Box>
         </Box>
-        <Box component='section' mb={5}>
+        <Box component='section' mb={10}>
           {backPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>
               <TypoHeading2 color='initial'>Back-end</TypoHeading2>
@@ -89,7 +89,7 @@ const IndexPage: React.FC<Props> = props => {
             </Grid>
           </Box>
         </Box>
-        <Box component='section' mb={5}>
+        <Box component='section' mb={10}>
           {otherPosts.length > 0 && (
             <StyledBoxWidthBorder mb={2}>
               <TypoHeading2 color='initial'>Other</TypoHeading2>

@@ -35,6 +35,7 @@ const StyledBoxBgWhite = styled(Box)`
 `;
 const StyledContainer = styled(Container)`
   padding-top: 24px;
+  padding-bottom: 48px;
 `;
 
 const IndexPage: React.FC<Props> = props => {
