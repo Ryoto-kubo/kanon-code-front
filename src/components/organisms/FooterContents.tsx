@@ -40,11 +40,11 @@ const forms = [
     href: '/contact-us',
     value: '各種お問い合わせ',
   },
-  // {
-  //   id: uuidv4(),
-  //   href: '/mediakits',
-  //   value: 'メディアキット',
-  // },
+  {
+    id: uuidv4(),
+    href: 'https://twitter.com/kanon_code_com',
+    value: '公式Twitter',
+  },
 ];
 
 export const FooterContents: React.FC = () => {
