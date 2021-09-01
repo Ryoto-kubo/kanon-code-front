@@ -139,7 +139,7 @@ export const PostSettingDialog: React.FC<Props> = props => {
               <TwitterShareButton
                 url={`${process.env.NEXT_PUBLIC_HOST}/${props.displayName}/post/${props.postId}`}
                 title={props.contentsTitle}
-                hashtags={['Kanon Code']}
+                hashtags={['KanonCode']}
               >
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
