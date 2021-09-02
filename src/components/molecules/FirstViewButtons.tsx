@@ -1,8 +1,9 @@
-import { SolidLink } from "@/components/atoms/SolidLink";
-import { WhiteOutLink } from "@/components/atoms/WhiteOutLink";
-import { Box } from "@material-ui/core/";
-import React from "react";
-import styled from "styled-components";
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { WhiteOutLink } from '@/components/atoms/WhiteOutLink';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
+import { Box } from '@material-ui/core/';
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   display: flex;
@@ -10,18 +11,20 @@ const StyledBox = styled(Box)`
   justify-content: space-between;
   max-width: 260px;
   margin: auto;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     min-width: 300px;
   }
 `;
 
 export const FirstViewButtons: React.FC = () => {
+  const { setIsOpenSignin } = useIsOpenSignin();
+
   return (
     <StyledBox>
-      <SolidLink href="/signin" borderRadius={4}>
+      <CustomSolidButton sizing='small' onClick={() => setIsOpenSignin(true)}>
         サインイン
-      </SolidLink>
-      <WhiteOutLink href="/about">Kanon Codeとは</WhiteOutLink>
+      </CustomSolidButton>
+      <WhiteOutLink href='/about'>Kanon Codeとは</WhiteOutLink>
     </StyledBox>
   );
 };

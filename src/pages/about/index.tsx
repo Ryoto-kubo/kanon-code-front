@@ -1,8 +1,9 @@
-import { SolidLink } from '@/components/atoms/SolidLink';
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { SendIllustration } from '@/components/parts/illustrations/mail-send';
 import { ReviewIllustration } from '@/components/parts/illustrations/other-reviews';
 import { SellIllustration } from '@/components/parts/illustrations/sell-reviews';
 import Layout from '@/layouts/standard';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { Box, Container, Divider } from '@material-ui/core/';
@@ -276,6 +277,8 @@ const CircleInSvg = (svg: any, text: string) => {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  const { setIsOpenSignin } = useIsOpenSignin();
+
   return (
     <Layout
       title='Kanon Code | Kanon Codeについて'
@@ -355,9 +358,12 @@ const IndexPage: React.FC<Props> = props => {
               <Box mb={3}>
                 <StyledLogo />
               </Box>
-              <SolidLink href='/signin' borderRadius={4}>
+              <CustomSolidButton
+                sizing='small'
+                onClick={() => setIsOpenSignin(true)}
+              >
                 サインイン
-              </SolidLink>
+              </CustomSolidButton>
             </StyledBoxSignin>
           </Box>
           <Box mb={5}>
