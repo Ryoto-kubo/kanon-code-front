@@ -4,12 +4,12 @@ export class UserProfile {
   }
 
   static validOnlySingleByteAndUnderScore(value: string): boolean {
-    const reg = new RegExp(/^[a-zA-Z0-9_]+$/);
+    const reg = new RegExp(/^[a-z0-9_]+$/);
     return reg.test(value);
   }
 
   static validSingleByte(value: string) {
-    const reg = new RegExp(/^[a-zA-Z0-9!-/:-@¥[-`{-~]*$/);
+    const reg = new RegExp(/^[a-z0-9!-/:-@¥[-`{-~]*$/);
     return reg.test(value);
   }
 
