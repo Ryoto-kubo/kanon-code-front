@@ -21,6 +21,11 @@ const abouts = [
     href: '/faq',
     value: 'よくある質問',
   },
+  {
+    id: uuidv4(),
+    href: '/changelogs',
+    value: 'Change logs',
+  },
 ];
 const rules = [
   {
