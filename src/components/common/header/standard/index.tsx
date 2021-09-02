@@ -1,18 +1,19 @@
-import { LinkWrapper } from "@/components/atoms/Link";
-import { KanonCodeLogo } from "@/components/atoms/Logo";
-import { SolidLink } from "@/components/atoms/SolidLink";
-import { StandardAppBar } from "@/components/atoms/StandardAppBar";
-import { SearchLink } from "@/components/molecules/SearchLink";
-import { Box } from "@material-ui/core/";
-import React from "react";
-import styled from "styled-components";
+import { LinkWrapper } from '@/components/atoms/Link';
+import { KanonCodeLogo } from '@/components/atoms/Logo';
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { StandardAppBar } from '@/components/atoms/StandardAppBar';
+import { SearchLink } from '@/components/molecules/SearchLink';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
+import { Box } from '@material-ui/core/';
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledBox = styled(Box)`
   padding: 0 16px;
   max-width: 1280px;
   width: 100%;
   margin: auto;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     padding: 0 24px;
   }
 `;
@@ -22,23 +23,28 @@ const StyledUseMr = styled.span`
 `;
 
 export const TheStndardHeader: React.FC = () => {
+  const { setIsOpenSignin } = useIsOpenSignin();
+
   return (
     <StandardAppBar>
       <StyledBox
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
+        display='flex'
+        alignItems='center'
+        justifyContent='space-between'
       >
-        <LinkWrapper href="/">
+        <LinkWrapper href='/'>
           <KanonCodeLogo />
         </LinkWrapper>
-        <Box display="flex" alignItems="center">
+        <Box display='flex' alignItems='center'>
           <StyledUseMr>
             <SearchLink />
           </StyledUseMr>
-          <SolidLink href="/signin" borderRadius={4}>
+          <CustomSolidButton
+            sizing='small'
+            onClick={() => setIsOpenSignin(true)}
+          >
             サインイン
-          </SolidLink>
+          </CustomSolidButton>
         </Box>
       </StyledBox>
     </StandardAppBar>
