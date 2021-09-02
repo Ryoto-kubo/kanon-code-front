@@ -1,8 +1,6 @@
-import { SolidLink } from '@/components/atoms/SolidLink';
-import { SendIllustration } from '@/components/parts/illustrations/mail-send';
-import { ReviewIllustration } from '@/components/parts/illustrations/other-reviews';
-import { SellIllustration } from '@/components/parts/illustrations/sell-reviews';
+import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import Layout from '@/layouts/standard';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { Box, Container, Divider } from '@material-ui/core/';
@@ -10,7 +8,10 @@ import { alpha } from '@material-ui/core/styles';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
-import AboutKanonCodeSvg from '../../assets/illustration/about-kanoncode.svg';
+import About01Svg from '../../assets/illustration/about/about-01.svg';
+import About02Svg from '../../assets/illustration/about/about-02.svg';
+import About03Svg from '../../assets/illustration/about/about-03.svg';
+import AboutKanonCodeSvg from '../../assets/illustration/about/about-kanoncode.svg';
 import TermsSvg from '../../assets/illustration/Accept-terms.svg';
 import QuestionsSvg from '../../assets/illustration/Questions.svg';
 import SecuritySvg from '../../assets/illustration/Security-pana.svg';
@@ -55,7 +56,7 @@ const StyledBoxAboutTitle = styled(Box)`
   }
 `;
 const StyledBoxMessage = styled(Box)`
-  margin-bottom: 24px;
+  margin-bottom: 16px;
   font-size: 14px;
   line-height: 1.8;
   ${props => props.theme.breakpoints.up('sm')} {
@@ -140,6 +141,18 @@ const StyledAboutKanonCodeSvg = styled(AboutKanonCodeSvg)`
   width: 100%;
   height: auto;
 `;
+const StyledAbout01Svg = styled(About01Svg)`
+  width: 100%;
+  height: auto;
+`;
+const StyledAbout02Svg = styled(About02Svg)`
+  width: 100%;
+  height: auto;
+`;
+const StyledAbout03Svg = styled(About03Svg)`
+  width: 100%;
+  height: auto;
+`;
 const StyledBoxSinginTitle = styled(Box)`
   font-size: 24px;
   margin-bottom: 8px;
@@ -200,7 +213,7 @@ const StyledSecuritySvg = styled(SecuritySvg)`
 
 const RequestReview = () => {
   return (
-    <StyledBoxFlexWrapper mb={3}>
+    <StyledBoxFlexWrapper mb={5}>
       <StyledBoxWidth>
         <StyledBoxContentsTitle component='h2'>
           Request a review
@@ -214,7 +227,7 @@ const RequestReview = () => {
         </StyledBoxMessage>
       </StyledBoxWidth>
       <StyledBoxWidth>
-        <SendIllustration />
+        <StyledAbout01Svg />
       </StyledBoxWidth>
     </StyledBoxFlexWrapper>
   );
@@ -222,7 +235,7 @@ const RequestReview = () => {
 
 const SellReviews = () => {
   return (
-    <StyledBoxReversFlexWrapper mb={3}>
+    <StyledBoxReversFlexWrapper mb={5}>
       <StyledBoxWidth>
         <StyledBoxContentsTitle component='h2'>
           Sell reviews
@@ -236,7 +249,7 @@ const SellReviews = () => {
         </StyledBoxMessage>
       </StyledBoxWidth>
       <StyledBoxWidth>
-        <SellIllustration />
+        <StyledAbout02Svg />
       </StyledBoxWidth>
     </StyledBoxReversFlexWrapper>
   );
@@ -244,7 +257,7 @@ const SellReviews = () => {
 
 const OtherReviews = () => {
   return (
-    <StyledBoxFlexWrapper mb={3}>
+    <StyledBoxFlexWrapper mb={5}>
       <StyledBoxWidth>
         <StyledBoxContentsTitle component='h2'>
           Purchase other user’s reviews
@@ -258,7 +271,7 @@ const OtherReviews = () => {
         </StyledBoxMessage>
       </StyledBoxWidth>
       <StyledBoxWidth>
-        <ReviewIllustration />
+        <StyledAbout03Svg />
       </StyledBoxWidth>
     </StyledBoxFlexWrapper>
   );
@@ -276,6 +289,8 @@ const CircleInSvg = (svg: any, text: string) => {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  const { setIsOpenSignin } = useIsOpenSignin();
+
   return (
     <Layout
       title='Kanon Code | Kanon Codeについて'
@@ -355,9 +370,12 @@ const IndexPage: React.FC<Props> = props => {
               <Box mb={3}>
                 <StyledLogo />
               </Box>
-              <SolidLink href='/signin' borderRadius={4}>
+              <CustomSolidButton
+                sizing='small'
+                onClick={() => setIsOpenSignin(true)}
+              >
                 サインイン
-              </SolidLink>
+              </CustomSolidButton>
             </StyledBoxSignin>
           </Box>
           <Box mb={5}>

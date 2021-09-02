@@ -41,8 +41,6 @@ export const ThePostHeader: React.FC<Props> = React.memo(props => {
   const [color, setColor] = useState(disabledColor);
   const onPostOrDraft = async () => {
     if (!isPublish) {
-      console.log('下書き');
-
       await props.draftContent();
     } else {
       props.prepareValidRegister();

@@ -3,6 +3,8 @@ import { CommonHead } from '@/components/common/head/index';
 import { TheLoggedHeader } from '@/components/common/header/logged';
 import { TheRegisterHeader } from '@/components/common/header/register';
 import { TheStndardHeader } from '@/components/common/header/standard';
+import { SigninDialog } from '@/components/parts/signinDialog';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import { UserTypes } from '@/types/global';
 import Box from '@material-ui/core/Box';
 import React, { ReactNode } from 'react';
@@ -18,8 +20,9 @@ const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 
-const Layout = ({ children, title, currentUser }: Props) => {
+const Layout: React.FC<Props> = ({ children, title, currentUser }) => {
   const displayName = currentUser?.user_profile.display_name;
+  const { isOpenSignin, setIsOpenSignin } = useIsOpenSignin();
   return (
     <>
       <CommonHead title={title} />
@@ -33,6 +36,10 @@ const Layout = ({ children, title, currentUser }: Props) => {
       <StyleBoxMain mt={4} component='main'>
         {children}
       </StyleBoxMain>
+      <SigninDialog
+        isOpenDialog={isOpenSignin}
+        closeDialog={() => setIsOpenSignin(false)}
+      />
       <TheFooter />
     </>
   );
