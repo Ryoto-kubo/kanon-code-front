@@ -11,7 +11,6 @@ import { Box, Container, Grid } from '@material-ui/core/';
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
@@ -28,6 +27,25 @@ const StyledBoxWidthBorder = styled(Box)`
   border-left: 3px solid ${theme.palette.primary.main};
   padding-left: 8px;
 `;
+const StyledBoxGradation = styled(Box)`
+  width: 100%;
+  margin-bottom: 32px;
+  color: #ffffff;
+  font-size: 32px;
+  text-align: center;
+  font-weight: bold;
+  padding: 16px 0;
+  border-radius: 4px;
+  background: rgb(92, 107, 192);
+  background: linear-gradient(
+    118deg,
+    rgba(92, 107, 192, 1) 0%,
+    rgba(0, 149, 168, 1) 100%
+  );
+  &:hover {
+    cursor: pointer;
+  }
+`;
 
 const IndexPage: React.FC<Props> = props => {
   const frontPosts = props.data.frontPosts;
@@ -40,7 +58,11 @@ const IndexPage: React.FC<Props> = props => {
       currentUser={props.currentUser}
     >
       <Container>
-        {!props.currentUser && <FirstView />}
+        {!props.currentUser ? (
+          <FirstView />
+        ) : (
+          <StyledBoxGradation>How to use Kanon Code</StyledBoxGradation>
+        )}
         {frontPosts.length > 0 && (
           <Box component='section' mb={10}>
             <StyledBoxWidthBorder mb={2}>
