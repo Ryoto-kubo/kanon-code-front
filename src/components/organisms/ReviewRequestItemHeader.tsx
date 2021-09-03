@@ -4,17 +4,21 @@ import { BookmarkButton } from '@/components/molecules/BookmarkButton';
 import { RequestItemTitle } from '@/components/molecules/RequestItemTitle';
 import { RequestItemUser } from '@/components/molecules/RequestItemUser';
 import { IconDot } from '@/components/svg/materialIcons/IconDot';
+import { ACCEPT_REVIEW, STOP_REVIEW } from '@/consts/const';
 import { errorMessages } from '@/consts/error-messages';
 import { useGetBookmark } from '@/hooks/useGetBookmark';
 import theme from '@/styles/theme';
 import { CamelContentTypes, UserProfileTypes } from '@/types/global/';
 import { postBookmark } from '@/utils/api/post-bookmark';
+import { postStatus } from '@/utils/api/post-post-status';
 import Box from '@material-ui/core/Box';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import BlockOutlinedIcon from '@material-ui/icons/BlockOutlined';
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined';
+import PlayCircleFilledWhiteOutlinedIcon from '@material-ui/icons/PlayCircleFilledWhiteOutlined';
 import { useRouter } from 'next/router';
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
@@ -26,6 +30,7 @@ type Props = {
   isMe: boolean;
   myUserId: string;
   postId: string;
+  postStatus: number;
 };
 
 const StyledBoxTitle = styled(Box)`
@@ -64,12 +69,39 @@ const StyledListItemIcon = styled(ListItemIcon)`
   min-width: 36px;
 `;
 
+const ReviewOrderItem = (
+  postStatus: number,
+  updatePostStatus: () => Promise<void>
+) => {
+  return (
+    <MenuItem onClick={() => updatePostStatus()}>
+      {postStatus === ACCEPT_REVIEW ? (
+        <>
+          <StyledListItemIcon>
+            <BlockOutlinedIcon fontSize='small' />
+          </StyledListItemIcon>
+          <ListItemText secondary='レビュー依頼停止' />
+        </>
+      ) : (
+        postStatus === STOP_REVIEW && (
+          <>
+            <StyledListItemIcon>
+              <PlayCircleFilledWhiteOutlinedIcon fontSize='small' />
+            </StyledListItemIcon>
+            <ListItemText secondary='レビュー依頼再開' />
+          </>
+        )
+      )}
+    </MenuItem>
+  );
+};
+
 export const ReviewRequestItemHeader: React.FC<Props> = props => {
   const router = useRouter();
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   if (props.myUserId !== '') {
     var { hasBookmark, setHasBookmark } = useGetBookmark(props.postId);
   }
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const iconSrc = props.contents.targetIcon.iconPath;
   const title = props.contents.title;
   const tagArray = props.contents.tagList;
@@ -77,15 +109,19 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
   const userIcon = props.profile.icon_src;
   const open = Boolean(anchorEl);
   const nonPrefixPostId = props.postId.split('_')[1];
+
   const handleMenu = useCallback((event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   }, []);
+
   const handleClose = useCallback(() => {
     setAnchorEl(null);
   }, []);
+
   const toPage = useCallback((path: string) => {
     router.push(path);
   }, []);
+
   const bookmark = useCallback(async () => {
     const params = {
       myUserId: props.myUserId,
@@ -100,6 +136,18 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
       alert(errorMessages.BOOKMARK_ERROR);
     }
   }, [hasBookmark]);
+
+  const updatePostStatus = async () => {
+    const params = {
+      postId: props.postId,
+    };
+    try {
+      const result = await postStatus(params);
+      console.log(result);
+    } catch (error) {
+      alert(errorMessages.SYSTEM_ERROR);
+    }
+  };
 
   return (
     <>
@@ -136,6 +184,7 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
                       </StyledListItemIcon>
                       <ListItemText secondary='編集' />
                     </MenuItem>
+                    {ReviewOrderItem(props.postStatus, updatePostStatus)}
                   </Menu>
                 </StyledBoxButtonWrapper>
               ) : (

@@ -28,4 +28,5 @@ export const apis = {
   SALES: 'api/sales',
   REACTION: 'api/reaction',
   WITHDRAWAL: 'api/withdrawal',
+  POST_STATUS: 'api/postStatus',
 };

@@ -1,11 +1,13 @@
+import { RecruitIcon } from '@/components/atoms/RecruitIcon';
 import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader';
+import { ACCEPT_REVIEW } from '@/consts/const';
 import { useReviews } from '@/hooks/useReviews';
 import Layout from '@/layouts/standard';
-import { UserTypes } from '@/types/global';
-import { PostContentsTypes, ReviewTypes } from '@/types/global/';
+import { GetContentTypes, UserTypes } from '@/types/global';
+import { ReviewTypes } from '@/types/global/';
 import { getContent } from '@/utils/api/get-content';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
@@ -15,7 +17,7 @@ import styled from 'styled-components';
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
-  post: PostContentsTypes;
+  post: GetContentTypes;
 };
 
 const StyledBoxBgGray = styled(Box)`
@@ -48,6 +50,7 @@ const IndexPage: React.FC<Props> = props => {
   const contributorId = post.partition_key;
   const isMe = myUserId === contributorId;
   const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
+  const postStatus = post.post_status;
   const {
     creditResponse,
     reviewsResponse,
@@ -77,6 +80,7 @@ const IndexPage: React.FC<Props> = props => {
         <StyledContainer maxWidth='md'>
           <Box mb={5}>
             <StyledBoxBgWhite>
+              {postStatus === ACCEPT_REVIEW && <RecruitIcon />}
               <Box mb={5}>
                 <ReviewRequestItemHeader
                   contents={contents}
@@ -85,6 +89,7 @@ const IndexPage: React.FC<Props> = props => {
                   isMe={isMe}
                   myUserId={myUserId!}
                   postId={postId}
+                  postStatus={postStatus}
                 />
               </Box>
               <Box mb={0}>

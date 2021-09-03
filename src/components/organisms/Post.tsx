@@ -1,5 +1,7 @@
+import { RecruitIcon } from '@/components/atoms/RecruitIcon';
 import { PostFooter } from '@/components/molecules/PostFooter';
 import { PostHeader } from '@/components/molecules/PostHeader';
+import { ACCEPT_REVIEW } from '@/consts/const';
 import { Box } from '@material-ui/core/';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
@@ -27,25 +29,16 @@ const StyledBoxContent = styled(Box)`
   display: flex;
   align-items: center;
 `;
-const StyledBoxWanted = styled(Box)`
-  border-radius: 50px;
-  border: 1px solid #0095a8;
-  color: #0095a8;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 3px 8px;
-`;
 
 export const Post: React.FC<Props> = props => {
   return (
     <StyledPaper>
       <StyledBoxWraper>
-        {props.postStatus === 0 && (
-          <Box textAlign='right' mb={0.5}>
-            <StyledBoxWanted component='span'>レビュー募集中</StyledBoxWanted>
+        {props.postStatus === ACCEPT_REVIEW && (
+          <Box textAlign='right' mb={1}>
+            <RecruitIcon />
           </Box>
         )}
-
         <StyledBoxContent display='flex' alignItems='center'>
           <Box mr={2} flexShrink={0}>
             <img
