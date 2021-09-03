@@ -3,7 +3,7 @@ import { CustomLoader } from '@/components/common/loader';
 import { NoticePaymentItem } from '@/components/molecules/NoticePaymentItem';
 import { NoticeReviewItem } from '@/components/molecules/NoticeReviewItem';
 import { NotificationsButton } from '@/components/molecules/NotificationsButton';
-import { SearchLink } from '@/components/molecules/SearchLink';
+// import { SearchLink } from '@/components/molecules/SearchLink';
 import { UserImageButton } from '@/components/molecules/UserImageButton';
 import { DropMenu } from '@/components/parts/dropMenu/';
 import { getNotices } from '@/utils/api/get-notices';
@@ -101,9 +101,9 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
 
   return (
     <>
-      <StyledUseMr>
+      {/* <StyledUseMr>
         <SearchLink />
-      </StyledUseMr>
+      </StyledUseMr> */}
       <StyledUseMr>
         {isLoading ? (
           <>
