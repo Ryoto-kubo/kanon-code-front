@@ -58,11 +58,7 @@ const IndexPage: React.FC<Props> = props => {
       currentUser={props.currentUser}
     >
       <Container>
-        {!props.currentUser ? (
-          <FirstView />
-        ) : (
-          <StyledBoxGradation>How to use Kanon Code</StyledBoxGradation>
-        )}
+        {!props.currentUser && <FirstView />}
         {frontPosts.length > 0 && (
           <Box component='section' mb={10}>
             <StyledBoxWidthBorder mb={2}>
