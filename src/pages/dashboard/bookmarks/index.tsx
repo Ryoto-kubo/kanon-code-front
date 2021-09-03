@@ -59,6 +59,7 @@ const IndexPage: React.FC<Props> = props => {
                   date={item.date}
                   tagArray={item.posted_contents.tag_list}
                   userIcon={item.user_profile.icon_src}
+                  postStatus={item.post_status}
                 />
               </Grid>
             ))}
