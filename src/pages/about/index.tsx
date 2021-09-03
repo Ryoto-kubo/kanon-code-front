@@ -241,11 +241,13 @@ const SellReviews = () => {
           Sell reviews
         </StyledBoxContentsTitle>
         <StyledBoxMessage>
-          レビュー依頼を投稿しましょう。
+          レビューを販売してみましょう。
           <br />
-          自分以外の誰かにコードを見てもらうことにより、たくさんの知見が手に入ることでしょう。
+          あなたのレビューが、誰かの成長に繋がり知らないどこかで優れたプロジェクトへ形を変えることでしょう。
           <br />
-          1人では得られることができなかった知見をどんどん吸収していきましょう。
+          また、レビューは依頼者だけが成長するわけではありません。レビューする側もまた成長するのです。
+          <br />
+          もちろん無料での販売もできます。
         </StyledBoxMessage>
       </StyledBoxWidth>
       <StyledBoxWidth>
@@ -263,11 +265,11 @@ const OtherReviews = () => {
           Purchase other user’s reviews
         </StyledBoxContentsTitle>
         <StyledBoxMessage>
-          レビュー依頼を投稿しましょう。
+          自身の投稿以外のレビューも購入してみましょう。
           <br />
-          自分以外の誰かにコードを見てもらうことにより、たくさんの知見が手に入ることでしょう。
+          他の方が書いたコードを読み何をしているのかを理解し、どのような部分を問題だと思っているのかを理解することもまた、自身の成長に繋がります。
           <br />
-          1人では得られることができなかった知見をどんどん吸収していきましょう。
+          Kanon Codeを自身の成長のために思い切り利用してください。
         </StyledBoxMessage>
       </StyledBoxWidth>
       <StyledBoxWidth>

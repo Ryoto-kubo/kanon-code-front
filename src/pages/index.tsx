@@ -11,7 +11,6 @@ import { Box, Container, Grid } from '@material-ui/core/';
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
