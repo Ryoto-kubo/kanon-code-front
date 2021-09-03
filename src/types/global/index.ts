@@ -37,6 +37,7 @@ export type GetContentsTypes = {
   user_profile: UserProfileTypes;
   date: string;
   post_url: string;
+  post_status: number;
 };
 
 export type GetContentTypes = {
