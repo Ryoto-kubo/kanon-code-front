@@ -2,7 +2,7 @@ import { LinkWrapper } from '@/components/atoms/Link';
 import { KanonCodeLogo } from '@/components/atoms/Logo';
 import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { StandardAppBar } from '@/components/atoms/StandardAppBar';
-import { SearchLink } from '@/components/molecules/SearchLink';
+// import { SearchLink } from '@/components/molecules/SearchLink';
 import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import { Box } from '@material-ui/core/';
 import React from 'react';
@@ -17,10 +17,10 @@ const StyledBox = styled(Box)`
     padding: 0 24px;
   }
 `;
-const StyledUseMr = styled.span`
-  margin-right: 24px;
-  display: inherit;
-`;
+// const StyledUseMr = styled.span`
+//   margin-right: 24px;
+//   display: inherit;
+// `;
 
 export const TheStndardHeader: React.FC = () => {
   const { setIsOpenSignin } = useIsOpenSignin();
@@ -36,9 +36,9 @@ export const TheStndardHeader: React.FC = () => {
           <KanonCodeLogo />
         </LinkWrapper>
         <Box display='flex' alignItems='center'>
-          <StyledUseMr>
+          {/* <StyledUseMr>
             <SearchLink />
-          </StyledUseMr>
+          </StyledUseMr> */}
           <CustomSolidButton
             sizing='small'
             onClick={() => setIsOpenSignin(true)}
