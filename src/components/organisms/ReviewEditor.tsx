@@ -7,6 +7,7 @@ import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrap
 import { ReviewSettingDialog } from '@/components/parts/reviewSettingDialog';
 import { SigninDialog } from '@/components/parts/signinDialog';
 import * as CONSTS from '@/consts/const';
+import { STOP_REVIEW } from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { ReviewTypes } from '@/types/global/';
 import { postReview } from '@/utils/api/post-review';
@@ -34,6 +35,7 @@ type Props = {
   isLoading: boolean;
   canReview: boolean;
   updateDisplay: (responseReview: ReviewTypes) => void;
+  postStatusValue: number;
 };
 type ValidObject = {
   isValid: boolean;
@@ -258,6 +260,10 @@ export const ReviewEditor: React.FC<Props> = React.memo(props => {
           >
             サインイン
           </CustomSolidButton>
+        </Box>
+      ) : props.postStatusValue === STOP_REVIEW ? (
+        <Box textAlign='center'>
+          <p>レビューの受付は終了しています</p>
         </Box>
       ) : props.isMe ? (
         <Box textAlign='center'>

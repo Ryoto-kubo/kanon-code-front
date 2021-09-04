@@ -1,11 +1,12 @@
-import { RecruitIcon } from '@/components/atoms/RecruitIcon';
+import { AcceptReviewIcon } from '@/components/atoms/AcceptReviewIcon';
 import { PostFooter } from '@/components/molecules/PostFooter';
 import { PostHeader } from '@/components/molecules/PostHeader';
-import { ACCEPT_REVIEW } from '@/consts/const';
+import { ACCEPT_REVIEW, STOP_REVIEW } from '@/consts/const';
 import { Box } from '@material-ui/core/';
 import Paper from '@material-ui/core/Paper';
 import React from 'react';
 import styled from 'styled-components';
+import { StopReviewIcon } from '../atoms/StopReviewIcon';
 
 interface Props {
   title: string;
@@ -34,11 +35,13 @@ export const Post: React.FC<Props> = props => {
   return (
     <StyledPaper>
       <StyledBoxWraper>
-        {props.postStatus === ACCEPT_REVIEW && (
-          <Box textAlign='right' mb={1}>
-            <RecruitIcon />
-          </Box>
-        )}
+        <Box textAlign='right' mb={1}>
+          {props.postStatus === ACCEPT_REVIEW ? (
+            <AcceptReviewIcon />
+          ) : (
+            props.postStatus === STOP_REVIEW && <StopReviewIcon />
+          )}
+        </Box>
         <StyledBoxContent display='flex' alignItems='center'>
           <Box mr={2} flexShrink={0}>
             <img

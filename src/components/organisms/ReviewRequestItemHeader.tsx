@@ -7,6 +7,7 @@ import { IconDot } from '@/components/svg/materialIcons/IconDot';
 import { ACCEPT_REVIEW, STOP_REVIEW } from '@/consts/const';
 import { errorMessages } from '@/consts/error-messages';
 import { useGetBookmark } from '@/hooks/useGetBookmark';
+import { useIsReviewAccept } from '@/recoil/hooks/snackbarReviewAccept';
 import theme from '@/styles/theme';
 import { CamelContentTypes, UserProfileTypes } from '@/types/global/';
 import { postBookmark } from '@/utils/api/post-bookmark';
@@ -30,7 +31,9 @@ type Props = {
   isMe: boolean;
   myUserId: string;
   postId: string;
-  postStatus: number;
+  postStatusValue: number;
+  setPostStatusValue: React.Dispatch<React.SetStateAction<number>>;
+  setIsChanging: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const StyledBoxTitle = styled(Box)`
@@ -101,6 +104,7 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
   if (props.myUserId !== '') {
     var { hasBookmark, setHasBookmark } = useGetBookmark(props.postId);
   }
+  const { setIsReviewAccept } = useIsReviewAccept();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const iconSrc = props.contents.targetIcon.iconPath;
   const title = props.contents.title;
@@ -140,10 +144,14 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
   const updatePostStatus = async () => {
     const params = {
       postId: props.postId,
+      postStatus: props.postStatusValue,
     };
+    props.setIsChanging(true);
     try {
       const result = await postStatus(params);
-      console.log(result);
+      props.setPostStatusValue(result.data.updatedPostStatus);
+      setIsReviewAccept(true);
+      props.setIsChanging(false);
     } catch (error) {
       alert(errorMessages.SYSTEM_ERROR);
     }
@@ -184,7 +192,7 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
                       </StyledListItemIcon>
                       <ListItemText secondary='編集' />
                     </MenuItem>
-                    {ReviewOrderItem(props.postStatus, updatePostStatus)}
+                    {ReviewOrderItem(props.postStatusValue, updatePostStatus)}
                   </Menu>
                 </StyledBoxButtonWrapper>
               ) : (
