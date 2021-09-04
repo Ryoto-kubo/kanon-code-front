@@ -11,6 +11,7 @@ interface Props {
   title: string;
   postUrl: string;
   tagArray: Array<string>;
+  postStatus: number;
 }
 
 const StyledAnchor = styled(`a`)`

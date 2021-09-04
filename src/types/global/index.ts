@@ -37,6 +37,7 @@ export type GetContentsTypes = {
   user_profile: UserProfileTypes;
   date: string;
   post_url: string;
+  post_status: number;
 };
 
 export type GetContentTypes = {
@@ -45,6 +46,7 @@ export type GetContentTypes = {
   contents: CamelContentTypes;
   user_profile: UserProfileTypes;
   type: 'post_published' | 'post_draft';
+  post_status: number;
   [key: string]: any;
 };
 
@@ -265,6 +267,7 @@ export type ReviewsTypes = {
   posted_contents: ContentTypes;
   url: string;
   date: string;
+  post_status: number;
 };
 
 export type SaleTypes = {

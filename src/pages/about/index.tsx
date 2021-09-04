@@ -190,7 +190,7 @@ const StyledBoxSqure = styled(Box)`
   position: relative;
   ${props => props.theme.breakpoints.up('sm')} {
     margin-bottom: 24px;
-    width: 250px;
+    width: 220px;
     height: 200px;
   }
 `;
@@ -380,7 +380,7 @@ const IndexPage: React.FC<Props> = props => {
               </CustomSolidButton>
             </StyledBoxSignin>
           </Box>
-          <Box mb={5}>
+          <Box pb={8}>
             <StyledBoxLearnMoreTitle component='h2'>
               Learn more
             </StyledBoxLearnMoreTitle>

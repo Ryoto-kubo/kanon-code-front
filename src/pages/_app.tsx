@@ -61,7 +61,6 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
         setCurrentUser(user);
         setisFetch(true);
       } catch (error) {
-        console.log(error);
         if (error.response) {
           destroyCookie(null, 'idToken');
           alert(error.response.data.status_message);

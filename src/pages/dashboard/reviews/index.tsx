@@ -45,7 +45,9 @@ const IndexPage: React.FC<Props> = props => {
         {isValidating ? (
           <CustomLoader width={30} height={30} />
         ) : (
-          <MyReviews posts={posts} reviews={reviews} />
+          <Box pb={7}>
+            <MyReviews posts={posts} reviews={reviews} />
+          </Box>
         )}
       </Box>
     </LayoutDashboard>

@@ -25,6 +25,7 @@ type Props = {
 
 const StyledButtonWrapper = styled(Box)`
   text-align: center;
+  padding-bottom: 40px;
 `;
 const StyledBoxWrapper = styled(Box)`
   margin: auto;

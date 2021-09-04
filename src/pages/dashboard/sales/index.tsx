@@ -63,7 +63,7 @@ const IndexPage: React.FC<Props> = props => {
           <CustomLoader width={30} height={30} />
         ) : (
           <>
-            <Box my={3}>
+            <Box my={3} pb={7}>
               <Box mb={2} textAlign='right'>
                 <CustomSolidButton
                   sizing='small'
