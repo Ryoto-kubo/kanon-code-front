@@ -57,6 +57,7 @@ const IndexPage: React.FC<Props> = props => {
                       date={el.date}
                       tagArray={el.contents.tag_list}
                       userIcon={el.user_profile.icon_src}
+                      postStatus={el.post_status}
                     />
                   </Grid>
                 ))}
@@ -81,6 +82,7 @@ const IndexPage: React.FC<Props> = props => {
                       date={el.date}
                       tagArray={el.contents.tag_list}
                       userIcon={el.user_profile.icon_src}
+                      postStatus={el.post_status}
                     />
                   </Grid>
                 ))}
@@ -105,6 +107,7 @@ const IndexPage: React.FC<Props> = props => {
                       date={el.date}
                       tagArray={el.contents.tag_list}
                       userIcon={el.user_profile.icon_src}
+                      postStatus={el.post_status}
                     />
                   </Grid>
                 ))}

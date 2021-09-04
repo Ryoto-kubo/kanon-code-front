@@ -36,6 +36,7 @@ const StyledTextFieldService = styled(TextField)`
   width: 47%;
 `;
 const StyledButtonWrapper = styled(Box)`
+  margin-top: 48px;
   text-align: center;
 `;
 
@@ -201,16 +202,18 @@ const IndexPage: React.FC<Props> = props => {
         headingFontSize={24}
         marginBottom={0}
       >
-        {renderTextFields()}
-        <StyledButtonWrapper>
-          <CustomSolidButton
-            sizing='small'
-            onClick={update}
-            disabled={isDisabled}
-          >
-            登録
-          </CustomSolidButton>
-        </StyledButtonWrapper>
+        <Box pb={5}>
+          {renderTextFields()}
+          <StyledButtonWrapper>
+            <CustomSolidButton
+              sizing='small'
+              onClick={update}
+              disabled={isDisabled}
+            >
+              登録
+            </CustomSolidButton>
+          </StyledButtonWrapper>
+        </Box>
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',

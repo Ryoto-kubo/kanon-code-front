@@ -313,7 +313,7 @@ const IndexPage: React.FC<Props> = props => {
           <CustomLoader width={30} height={30} />
         ) : (
           <>
-            <Box mb={5}>
+            <Box mb={5} pb={5}>
               <StyledBoxWrapper mb={4}>
                 <StyledBoxLabel>銀行コード(半角数字)</StyledBoxLabel>
                 <Box>

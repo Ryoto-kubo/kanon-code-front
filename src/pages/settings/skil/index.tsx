@@ -6,6 +6,7 @@ import { YEARS_EXPERIENCES } from '@/consts/years-experiences';
 import { SettingLayout } from '@/layouts/setting/';
 import { UserProfileTypes, UserTypes } from '@/types/global';
 import { moveToTop } from '@/utils/move-page';
+import Box from '@material-ui/core/Box';
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -51,7 +52,7 @@ const IndexPage: React.FC<Props> = props => {
       title={`Kanon Code | スキル`}
       currentUser={props.currentUser}
     >
-      <section>
+      <Box component='section' pb={5}>
         {isInputeState ? (
           <ContentWrapper>
             <ContentHeader
@@ -86,7 +87,7 @@ const IndexPage: React.FC<Props> = props => {
             <StyledPairSkilSvg />
           </NoSettingDataWrapper>
         )}
-      </section>
+      </Box>
     </SettingLayout>
   );
 };

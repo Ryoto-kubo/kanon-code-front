@@ -8,6 +8,7 @@ import { useCredit } from '@/hooks/useCredit';
 import { SettingLayout } from '@/layouts/setting/';
 import { UserTypes } from '@/types/global';
 import { moveToTop } from '@/utils/move-page';
+import Box from '@material-ui/core/Box';
 import React from 'react';
 import styled from 'styled-components';
 import CreditSvg from '../../../assets/illustration/credit.svg';
@@ -43,7 +44,7 @@ const IndexPage: React.FC<Props> = props => {
         <CustomLoader width={30} height={30} />
       ) : (
         <>
-          <section>
+          <Box component='section' pb={5}>
             {credit ? (
               <ContentWrapper>
                 <ContentHeader
@@ -74,7 +75,7 @@ const IndexPage: React.FC<Props> = props => {
                 <StyledPairCreditSvg />
               </NoSettingDataWrapper>
             )}
-          </section>
+          </Box>
         </>
       )}
     </SettingLayout>

@@ -91,6 +91,7 @@ export const Reviews: React.FC<Props> = props => {
                     date={el.date}
                     tagArray={el.posted_contents.tag_list}
                     userIcon={el.user_profile.icon_src}
+                    postStatus={el.post_status}
                   />
                 </Grid>
               ))
@@ -118,6 +119,7 @@ export const Reviews: React.FC<Props> = props => {
                     date={el.date}
                     tagArray={el.posted_contents.tag_list}
                     userIcon={el.posted_user_profile.icon_src}
+                    postStatus={el.post_status}
                   />
                 </Grid>
               ))

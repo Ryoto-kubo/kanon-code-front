@@ -1,21 +1,27 @@
+import { AcceptReviewIcon } from '@/components/atoms/AcceptReviewIcon';
+import { StopReviewIcon } from '@/components/atoms/StopReviewIcon';
+import { CustomLoader } from '@/components/common/loader';
 import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader';
+import { ACCEPT_REVIEW, STOP_REVIEW } from '@/consts/const';
 import { useReviews } from '@/hooks/useReviews';
 import Layout from '@/layouts/standard';
-import { UserTypes } from '@/types/global';
-import { PostContentsTypes, ReviewTypes } from '@/types/global/';
+import { useIsReviewAccept } from '@/recoil/hooks/snackbarReviewAccept';
+import { GetContentTypes, UserTypes } from '@/types/global';
+import { ReviewTypes } from '@/types/global/';
 import { getContent } from '@/utils/api/get-content';
+import { Snackbar } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
-  post: PostContentsTypes;
+  post: GetContentTypes;
 };
 
 const StyledBoxBgGray = styled(Box)`
@@ -48,6 +54,12 @@ const IndexPage: React.FC<Props> = props => {
   const contributorId = post.partition_key;
   const isMe = myUserId === contributorId;
   const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
+  const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
+  const [postStatusValue, setPostStatusValue] = useState<number>(
+    post.post_status
+  );
+  const [isChanging, setIsChanging] = useState<boolean>(false);
+
   const {
     creditResponse,
     reviewsResponse,
@@ -77,6 +89,20 @@ const IndexPage: React.FC<Props> = props => {
         <StyledContainer maxWidth='md'>
           <Box mb={5}>
             <StyledBoxBgWhite>
+              <Box
+                position='relative'
+                component='span'
+                width={110}
+                display='inline-block'
+              >
+                {isChanging ? (
+                  <CustomLoader width={20} height={20} />
+                ) : postStatusValue === ACCEPT_REVIEW ? (
+                  <AcceptReviewIcon />
+                ) : (
+                  postStatusValue === STOP_REVIEW && <StopReviewIcon />
+                )}
+              </Box>
               <Box mb={5}>
                 <ReviewRequestItemHeader
                   contents={contents}
@@ -85,6 +111,9 @@ const IndexPage: React.FC<Props> = props => {
                   isMe={isMe}
                   myUserId={myUserId!}
                   postId={postId}
+                  postStatusValue={postStatusValue}
+                  setPostStatusValue={setPostStatusValue}
+                  setIsChanging={setIsChanging}
                 />
               </Box>
               <Box mb={0}>
@@ -101,6 +130,7 @@ const IndexPage: React.FC<Props> = props => {
                 isLoading={isLoading}
                 canReview={canReview}
                 updateDisplay={updateDisplay}
+                postStatusValue={postStatusValue}
               />
             </StyledBoxBgWhite>
           </Box>
@@ -122,6 +152,15 @@ const IndexPage: React.FC<Props> = props => {
           </StyledBoxBgWhite>
         </StyledContainer>
       </StyledBoxBgGray>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'right',
+        }}
+        open={isReviewAccept}
+        onClose={() => setIsReviewAccept(false)}
+        message='募集状況を変更しました。'
+      />
     </Layout>
   );
 };

@@ -547,7 +547,7 @@ const IndexPage: React.FC<Props> = props => {
       buttonText={buttonText}
     >
       <StyledContainer>
-        <Box component='section'>
+        <Box component='section' pb={5}>
           <Box mb={3} className='title-wrapper'>
             <InputPostTitleWrapper
               title={title}

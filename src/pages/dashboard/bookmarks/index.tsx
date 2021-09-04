@@ -39,7 +39,7 @@ const IndexPage: React.FC<Props> = props => {
       title='Kanon Code | ダッシュボード:ブックマーク'
       currentUser={props.currentUser}
     >
-      <Box width={'100%'} position='relative' minHeight='300px'>
+      <Box width={'100%'} position='relative' minHeight='300px' pb={10}>
         <CustomHeading2 fontSize={24} marginBottom={1}>
           Bookmarks
         </CustomHeading2>
@@ -59,6 +59,7 @@ const IndexPage: React.FC<Props> = props => {
                   date={item.date}
                   tagArray={item.posted_contents.tag_list}
                   userIcon={item.user_profile.icon_src}
+                  postStatus={item.post_status}
                 />
               </Grid>
             ))}
