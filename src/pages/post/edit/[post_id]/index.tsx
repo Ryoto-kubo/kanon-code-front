@@ -550,7 +550,7 @@ const IndexPage: React.FC<Props> = props => {
       postType={type}
     >
       <StyledContainer>
-        <Box component='section'>
+        <Box component='section' pb={5}>
           <Box mb={3} className='title-wrapper'>
             <InputPostTitleWrapper
               title={title}

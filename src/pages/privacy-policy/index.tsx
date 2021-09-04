@@ -45,7 +45,7 @@ const IndexPage: React.FC<Props> = props => {
       currentUser={props.currentUser}
     >
       <Container maxWidth='md'>
-        <Box my={10} component='section'>
+        <Box my={10} pb={5} component='section'>
           <StyledBoxPageTitle component='h1'>
             プライバシーポリシー
           </StyledBoxPageTitle>

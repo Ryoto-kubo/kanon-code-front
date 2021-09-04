@@ -34,7 +34,7 @@ const IndexPage: React.FC<Props> = props => {
   return (
     <Layout title='Kanon Code | 利用規約' currentUser={props.currentUser}>
       <Container maxWidth='md'>
-        <Box my={10} component='section'>
+        <Box my={10} pb={5} component='section'>
           <StyledBoxPageTitle component='h1'>利用規約</StyledBoxPageTitle>
           <StyledBoxText component='p' mb={4}>
             この利用規約（以下、「本規約」といいます。）は、本サービス（本サイトを含むものとし、以下、特に両者を区別しません。）の利用条件を定めるものです。本規約は、本サービスを利用するすべてのユーザーに適用されます。

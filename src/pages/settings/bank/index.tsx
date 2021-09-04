@@ -8,10 +8,12 @@ import { useBank } from '@/hooks/useBank';
 import { SettingLayout } from '@/layouts/setting/';
 import { UserTypes } from '@/types/global';
 import { moveToTop } from '@/utils/move-page';
+import Box from '@material-ui/core/Box';
 // import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import React from 'react';
 import styled from 'styled-components';
 import BankSvg from '../../../assets/illustration/bank.svg';
+
 type Props = {
   authUser: any;
   currentUser: UserTypes;
@@ -43,15 +45,17 @@ const IndexPage: React.FC<Props> = props => {
         <>
           <section>
             {!bank ? (
-              <NoSettingDataWrapper
-                text='お振込先を登録する'
-                description='売上の振込をするためにはお振込先の登録が必要です。'
-                href='/bank'
-                borderRadius={4}
-                mb={6}
-              >
-                <StyledPairBankSvg />
-              </NoSettingDataWrapper>
+              <Box pb={5}>
+                <NoSettingDataWrapper
+                  text='お振込先を登録する'
+                  description='売上の振込をするためにはお振込先の登録が必要です。'
+                  href='/bank'
+                  borderRadius={4}
+                  mb={6}
+                >
+                  <StyledPairBankSvg />
+                </NoSettingDataWrapper>
+              </Box>
             ) : (
               <ContentWrapper>
                 <ContentHeader

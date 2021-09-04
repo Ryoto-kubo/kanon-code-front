@@ -42,7 +42,7 @@ const IndexPage: React.FC<Props> = props => {
       currentUser={props.currentUser}
     >
       <Container>
-        <Box mt={4}>
+        <Box mt={4} pb={7}>
           <Box mb={3}>
             <ProfileArea
               introduction={userProfile.introduction}

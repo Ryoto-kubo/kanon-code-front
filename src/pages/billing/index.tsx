@@ -183,7 +183,7 @@ const Wrapper = ({
         {isLoading ? (
           <CustomLoader width={30} height={30} />
         ) : (
-          <Box textAlign='center'>
+          <Box textAlign='center' pb={5}>
             <StyledBox>
               <StyledBoxBgColorWhite>
                 <CardElement

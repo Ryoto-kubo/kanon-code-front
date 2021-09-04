@@ -8,11 +8,20 @@ import { UserTypes } from '@/types/global';
 import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import React from 'react';
+import styled from 'styled-components';
 
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
 };
+
+const StyledBoxWrapper = styled(Box)`
+  margin-top: 24px;
+  padding-bottom: 80px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    padding-bottom: 0px;
+  }
+`;
 
 const IndexPage: React.FC<Props> = props => {
   if (!props.authUser || !props.currentUser) {
@@ -45,9 +54,9 @@ const IndexPage: React.FC<Props> = props => {
         {isValidating ? (
           <CustomLoader width={30} height={30} />
         ) : (
-          <Box mt={3}>
+          <StyledBoxWrapper>
             <MyPaymentsTable posts={posts} imgWidth='40px' imgHeight='40px' />
-          </Box>
+          </StyledBoxWrapper>
         )}
       </Box>
     </LayoutDashboard>

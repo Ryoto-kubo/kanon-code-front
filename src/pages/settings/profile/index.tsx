@@ -126,7 +126,7 @@ const IndexPage: React.FC<Props> = props => {
   return (
     <SettingLayout title={`Kanon Code | プロフィール`} currentUser={user}>
       <>
-        <section>
+        <Box component='section' pb={5}>
           <ContentWrapper>
             <ContentHeader
               title='Profile'
@@ -200,7 +200,7 @@ const IndexPage: React.FC<Props> = props => {
               <IconArrowNext fontSize='large' color='action' />
             </ProfileContentLink>
           </ContentWrapper>
-        </section>
+        </Box>
         <CustomSnackbar
           isOpen={!canPublish.isValid}
           closeSnackBar={closeSnackBar}

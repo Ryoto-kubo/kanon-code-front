@@ -10,6 +10,7 @@ import { SettingLayout } from '@/layouts/setting/';
 import { EmailNoticesTypes, UserTypes } from '@/types/global';
 import { postEmailNotices } from '@/utils/api/post-email-notices';
 import { moveToTop } from '@/utils/move-page';
+import Box from '@material-ui/core/Box';
 import Snackbar from '@material-ui/core/Snackbar';
 import React, { useState } from 'react';
 
@@ -79,7 +80,7 @@ const IndexPage: React.FC<Props> = props => {
 
   return (
     <SettingLayout title={`Kanon Code | プロフィール`} currentUser={user}>
-      <section>
+      <Box component='section' pb={5}>
         <ContentWrapper>
           <ContentHeader
             title='Email Notice'
@@ -138,7 +139,7 @@ const IndexPage: React.FC<Props> = props => {
             <IconArrowNext fontSize='large' color='action' />
           </ProfileContentCheck>
         </ContentWrapper> */}
-      </section>
+      </Box>
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',
