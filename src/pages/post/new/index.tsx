@@ -149,8 +149,6 @@ const IndexPage: React.FC<Props> = props => {
   const [uuid] = useState(uuidv4());
 
   const execPreviousPageIfneeded = (isValidExistData: boolean) => {
-    console.log(isPosted, 'isPosted');
-    console.log(isValidExistData, 'isValidExistData');
     if (isValidExistData && !isPosted) {
       if (confirm('データが入力されています。保存せずに終了しますか？')) {
         history.back();

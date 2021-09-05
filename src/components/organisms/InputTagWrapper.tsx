@@ -178,7 +178,10 @@ export const InputTagWrapper: React.FC<Props> = React.memo(props => {
           {value.map((option, index) => (
             <StyledTag label={option} {...getTagProps({ index })} />
           ))}
-          <input {...getInputProps()} placeholder='select up to 5 tags' />
+          <input
+            {...getInputProps()}
+            placeholder='タグ入力後、改行で追加(5つまで)'
+          />
         </StyledDivInputWrapper>
       </Box>
       {groupedOptions.length > 0 ? (
