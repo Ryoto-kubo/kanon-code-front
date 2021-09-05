@@ -1,8 +1,8 @@
-import { FooterContents } from "@/components/organisms/FooterContents";
-import theme from "@/styles/theme";
-import { Container } from "@material-ui/core/";
-import React from "react";
-import styled from "styled-components";
+import { FooterContents } from '@/components/organisms/FooterContents';
+import theme from '@/styles/theme';
+import { Container } from '@material-ui/core/';
+import React from 'react';
+import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
   padding-top: 24px;
@@ -15,7 +15,7 @@ const StyledFooter = styled.footer`
 const StyledWrapper = styled(Container)`
   max-width: 1280px;
   width: 100%;
-  ${(props) => props.theme.breakpoints.up("sm")} {
+  ${props => props.theme.breakpoints.up('sm')} {
     margin-bottom: 16px;
     display: flex;
     justify-content: space-between;
@@ -37,9 +37,7 @@ export const TheFooter: React.FC = () => {
       <StyledWrapper>
         <FooterContents />
       </StyledWrapper>
-      <StyledSmall>
-        Copyright © 2021 KanonCode, Inc. All Rights Reserved.
-      </StyledSmall>
+      <StyledSmall>Copyright © 2021</StyledSmall>
     </StyledFooter>
   );
 };
