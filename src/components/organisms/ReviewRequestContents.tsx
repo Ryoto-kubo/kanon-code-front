@@ -37,8 +37,8 @@ const StyledBox = styled(Box)`
 `;
 const StyledBoxCode = styled(Box)`
   // ${props => props.theme.breakpoints.up('sm')} {
-    display: block;
-    height: 100%;
+  display: block;
+  height: 100%;
   // }
 `;
 
@@ -95,6 +95,8 @@ export const ReviewRequestContents: React.FC<Props> = props => {
               onChange={handleChange}
               indicatorColor='primary'
               textColor='primary'
+              variant='scrollable'
+              scrollButtons={'off'}
             >
               {inputFileNameLists.map((el, index) => (
                 <Tab key={index} label={el.fileName} />
