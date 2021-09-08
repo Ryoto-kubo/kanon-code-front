@@ -9,10 +9,13 @@ export const CommonHead = ({ title = 'This is the default title' }: Props) => (
     <title>{title}</title>
     <meta
       property='og:title'
-      content='KanonCode | コードレビュを全てのエンジニアへ'
+      content='Kanon Code | コードレビュを全てのエンジニアへ'
     />
     <meta property='og:type' content='website' />
-    <meta property='og:description' content='Kanon Code description' />
+    <meta
+      property='og:description'
+      content='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
+    />
     <meta property='og:url' content='https://stg.kanon-code.com' />
     <meta property='og:site_name' content='Kanon Code' />
     <meta
@@ -25,7 +28,12 @@ export const CommonHead = ({ title = 'This is the default title' }: Props) => (
     <meta name='twitter:site' content='@tcr_jp' />
     <meta name='twitter:url' content={'https://stg.kanon-code.com'} />
     <meta name='twitter:title' content={'Kanon Code'} />
-    <meta name='twitter:description' content={'description'} />
+    <meta
+      name='twitter:description'
+      content={
+        'Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
+      }
+    />
     <meta
       name='twitter:image'
       content={
