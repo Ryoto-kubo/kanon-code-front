@@ -1,4 +1,5 @@
 import { TypoHeading2 } from '@/components/atoms/TypoHeading2';
+import { CommonHead } from '@/components/common/head/index';
 // import { CustomLoader } from "@/components/common/loader";
 import { FirstView } from '@/components/organisms/FirstView';
 import { Post } from '@/components/organisms/Post';
@@ -11,6 +12,7 @@ import { Box, Container, Grid } from '@material-ui/core/';
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
+
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
@@ -38,6 +40,8 @@ const IndexPage: React.FC<Props> = props => {
       title='Kanon Code | コードレビュを全てのエンジニアへ'
       currentUser={props.currentUser}
     >
+      <CommonHead title={'Kanon Code | コードレビュを全てのエンジニアへ'} />
+
       <Container>
         {!props.currentUser && <FirstView />}
         {frontPosts.length > 0 && (

@@ -4,7 +4,9 @@ type Props = {
   title: string;
 };
 
-export const CommonHead = ({ title = 'This is the default title' }: Props) => (
+export const CommonHead = ({
+  title = 'Kanon Code | コードレビュを全てのエンジニアへ',
+}: Props) => (
   <Head>
     <title>{title}</title>
     <meta
