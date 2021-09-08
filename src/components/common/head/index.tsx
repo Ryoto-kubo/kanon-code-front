@@ -5,20 +5,14 @@ type Props = {
 };
 
 export const CommonHead = ({
-  title = 'Kanon Code | コードレビュを全てのエンジニアへ',
+  title = 'Kanon Code | コードレビューを全てのエンジニアへ',
 }: Props) => (
   <Head>
     <title>{title}</title>
     <meta name='viewport' content='width=device-width,initial-scale=1.0' />
-    <meta
-      property='og:title'
-      content='Kanon Code | コードレビュを全てのエンジニアへ'
-    />
+    <meta property='og:title' content='Kanon Code | テスト' />
     <meta property='og:type' content='website' />
-    <meta
-      property='og:description'
-      content='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
-    />
+    <meta property='og:description' content='Kanon テスト' />
     <meta property='og:url' content='https://stg.kanon-code.com' />
     <meta property='og:site_name' content='Kanon Code' />
     <meta
@@ -31,12 +25,7 @@ export const CommonHead = ({
     <meta name='twitter:site' content='@kanon_code_com' />
     <meta name='twitter:url' content={'https://stg.kanon-code.com'} />
     <meta name='twitter:title' content={'Kanon Code'} />
-    <meta
-      name='twitter:description'
-      content={
-        'Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
-      }
-    />
+    <meta name='twitter:description' content={'Kanon テスト'} />
     <meta
       name='twitter:image'
       content={
