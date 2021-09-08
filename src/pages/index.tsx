@@ -1,5 +1,4 @@
 import { TypoHeading2 } from '@/components/atoms/TypoHeading2';
-import { CommonHead } from '@/components/common/head/index';
 // import { CustomLoader } from "@/components/common/loader";
 import { FirstView } from '@/components/organisms/FirstView';
 import { Post } from '@/components/organisms/Post';
@@ -37,11 +36,9 @@ const IndexPage: React.FC<Props> = props => {
 
   return (
     <Layout
-      title='Kanon Code | コードレビュを全てのエンジニアへ'
+      title='Kanon Code | コードレビューを全てのエンジニアへ'
       currentUser={props.currentUser}
     >
-      <CommonHead title={'Kanon Code | コードレビュを全てのエンジニアへ'} />
-
       <Container>
         {!props.currentUser && <FirstView />}
         {frontPosts.length > 0 && (

@@ -1,5 +1,5 @@
 import { TheFooter } from '@/components/common/footer/index';
-// import { CommonHead } from '@/components/common/head/index';
+import { CommonHead } from '@/components/common/head/index';
 import { TheLoggedHeader } from '@/components/common/header/logged';
 import { TheRegisterHeader } from '@/components/common/header/register';
 import { TheStndardHeader } from '@/components/common/header/standard';
@@ -20,12 +20,12 @@ const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 
-const Layout: React.FC<Props> = ({ children, currentUser }) => {
+const Layout: React.FC<Props> = ({ children, title, currentUser }) => {
   const displayName = currentUser?.user_profile.display_name;
   const { isOpenSignin, setIsOpenSignin } = useIsOpenSignin();
   return (
     <>
-      {/* <CommonHead title={title} /> */}
+      <CommonHead title={title} />
       {displayName === '' ? (
         <TheRegisterHeader />
       ) : currentUser ? (
