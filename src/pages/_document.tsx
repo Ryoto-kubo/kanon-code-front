@@ -59,6 +59,28 @@ export default class CustomDocument extends NextDocument {
             content='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。まずは自分のコードを投稿してみましょう。'
           />
           <meta name='theme-color' content='#5C6BC0' key='themeColor' />
+          <meta property='og:title' content='Kanon Code | テスト' />
+          <meta property='og:type' content='website' />
+          <meta property='og:description' content='Kanon テスト' />
+          <meta property='og:url' content='https://stg.kanon-code.com' />
+          <meta property='og:site_name' content='Kanon Code' />
+          <meta
+            property='og:image'
+            content='https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/icons/angular.svg'
+          />
+          <meta property='og:image:width' content={String(1280)} />
+          <meta property='og:image:height' content={String(960)} />
+          <meta name='twitter:card' content='summary' />
+          <meta name='twitter:site' content='@kanon_code_com' />
+          <meta name='twitter:url' content={'https://stg.kanon-code.com'} />
+          <meta name='twitter:title' content={'Kanon Code'} />
+          <meta name='twitter:description' content={'Kanon テスト'} />
+          <meta
+            name='twitter:image'
+            content={
+              'https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/icons/angular.svg'
+            }
+          />
           <link rel='icon' href='/favicon.ico' />
           <link rel='preconnect' href='https://fonts.gstatic.com' />
           <link
