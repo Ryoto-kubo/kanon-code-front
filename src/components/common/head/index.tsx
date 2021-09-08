@@ -9,6 +9,7 @@ export const CommonHead = ({
 }: Props) => (
   <Head>
     <title>{title}</title>
+    <meta name='viewport' content='width=device-width,initial-scale=1.0' />
     <meta
       property='og:title'
       content='Kanon Code | コードレビュを全てのエンジニアへ'
@@ -27,7 +28,7 @@ export const CommonHead = ({
     <meta property='og:image:width' content={String(1280)} />
     <meta property='og:image:height' content={String(960)} />
     <meta name='twitter:card' content='summary' />
-    <meta name='twitter:site' content='@tcr_jp' />
+    <meta name='twitter:site' content='@kanon_code_com' />
     <meta name='twitter:url' content={'https://stg.kanon-code.com'} />
     <meta name='twitter:title' content={'Kanon Code'} />
     <meta
