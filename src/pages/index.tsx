@@ -122,7 +122,6 @@ const IndexPage: React.FC<Props> = props => {
 };
 // サーバーサイドで実行される
 export const getStaticProps = async () => {
-  // export const getServerSideProps = async () => {
   try {
     const response = await getContents();
     return {
