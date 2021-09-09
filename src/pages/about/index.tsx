@@ -299,7 +299,7 @@ const IndexPage: React.FC<Props> = props => {
       title='Kanon Code | Kanon Codeについて'
       currentUser={props.currentUser}
     >
-      <CommonHead />
+      <CommonHead title='Kanon Code | Kanon Codeについて' />
       <Container maxWidth='md'>
         <Box mt={10} component='section'>
           <StyledBoxAboutTitleWrapper mb={5}>
