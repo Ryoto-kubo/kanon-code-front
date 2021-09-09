@@ -14,7 +14,6 @@ import {
 import { Auth } from 'aws-amplify';
 import 'modern-css-reset/dist/reset.min.css';
 import { AppProps } from 'next/app';
-import Head from 'next/head';
 import { destroyCookie } from 'nookies';
 import 'nprogress/nprogress.css'; // バーのデフォルトスタイルのインポート
 import React, { useEffect, useState } from 'react';
@@ -77,13 +76,6 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       <StylesProvider injectFirst>
         <MaterialUIThemeProvider theme={theme}>
           <StyledComponentsThemeProvider theme={theme}>
-            <Head>
-              <meta
-                name='viewport'
-                content='width=device-width,height=device-height'
-                key='viewport'
-              />
-            </Head>
             <CssBaseline />
             <StyledWrapper>
               <>
