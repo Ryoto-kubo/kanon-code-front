@@ -1,4 +1,5 @@
 import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { CommonHead } from '@/components/common/head';
 import Layout from '@/layouts/standard';
 import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import theme from '@/styles/theme';
@@ -298,6 +299,7 @@ const IndexPage: React.FC<Props> = props => {
       title='Kanon Code | Kanon Codeについて'
       currentUser={props.currentUser}
     >
+      <CommonHead />
       <Container maxWidth='md'>
         <Box mt={10} component='section'>
           <StyledBoxAboutTitleWrapper mb={5}>
