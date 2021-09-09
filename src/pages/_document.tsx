@@ -19,6 +19,7 @@ export default class CustomDocument extends NextDocument {
     const styledComponentsSheet = new ServerStyleSheet();
     const materialUiSheets = new MaterialServerStyleSheets();
     const originalRenderPage = ctx.renderPage;
+    console.log(ctx);
 
     try {
       ctx.renderPage = (): RenderPageResult | Promise<RenderPageResult> =>
