@@ -459,11 +459,14 @@ const IndexPage: React.FC<Props> = props => {
 
   const deleteListsItem = useCallback(
     (key: string, index: number): void => {
+      const currentLength = inputFileNameLists.length;
+      // 最新のパスを消すかどうかの処理
+      const shourdSetIndex = index === currentLength - 1 ? index - 1 : index;
       const newLists = inputFileNameLists.filter(el => el.key !== key);
-      const currentItem = newLists[index];
+      const currentItem = newLists[shourdSetIndex];
       const sourceCode = currentItem.sourceCode;
       const newInputFileNameLists = newLists.slice();
-      setCurrentIndex(index);
+      setCurrentIndex(shourdSetIndex);
       setSourceCode(sourceCode);
       setInputFileNameLists(newInputFileNameLists);
     },
@@ -496,6 +499,39 @@ const IndexPage: React.FC<Props> = props => {
       const sourceCode = currentItem.sourceCode;
       setCurrentIndex(index);
       setSourceCode(sourceCode);
+    },
+    [sourceCode, inputFileNameLists]
+  );
+
+  const onBlurGetLang = useCallback(
+    (index: number) => {
+      const BACK_QUOTE_LENGTH = 3;
+      const currentItem = inputFileNameLists[index];
+      const splitedFileName = currentItem.fileName.split('/');
+      const sourceCode = currentItem.sourceCode;
+      const lastItem = splitedFileName.pop()!;
+      const targetIndex = lastItem.lastIndexOf('.');
+      if (targetIndex === -1) {
+        setCurrentIndex(index);
+        setSourceCode(sourceCode);
+      } else {
+        // 言語が既に入力されていたらファイルネームの言語にリプレイスする
+        let newSourceCode;
+        const newLang = lastItem.substring(targetIndex + 1);
+        const firstCharaLength = sourceCode.search('\n');
+        // 既に入力されている言語を取得
+        const oldLang = sourceCode.slice(BACK_QUOTE_LENGTH, firstCharaLength);
+        if (oldLang === '') {
+          // もし、バッククォートのみの場合はファイルネームの言語を差し込む
+          const backQuote = sourceCode.slice(0, BACK_QUOTE_LENGTH);
+          const restChara = sourceCode.slice(BACK_QUOTE_LENGTH);
+          newSourceCode = `${backQuote}${newLang}${restChara}`;
+        } else {
+          newSourceCode = sourceCode.replace(oldLang, newLang);
+        }
+        setCurrentIndex(index);
+        setSourceCode(newSourceCode);
+      }
     },
     [sourceCode, inputFileNameLists]
   );
@@ -591,7 +627,7 @@ const IndexPage: React.FC<Props> = props => {
                 </Box>
                 <Box className='input-wrapper'>
                   {inputFileNameLists.map((el, index) => (
-                    <StyledBoxInputWrapper mb={1.5} key={el.key}>
+                    <StyledBoxInputWrapper mb={2} key={el.key}>
                       <TextFieldWithCheckBox
                         index={index}
                         listLength={inputFileNameLists.length}
@@ -603,6 +639,7 @@ const IndexPage: React.FC<Props> = props => {
                         onDelete={() => deleteListsItem(el.key, index)}
                         onCnangeFileName={event => cnangeFileName(event, index)}
                         onFocusGetIndex={() => onFocusGetIndex(index)}
+                        onBlurGetLang={() => onBlurGetLang(index)}
                       />
                     </StyledBoxInputWrapper>
                   ))}
