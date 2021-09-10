@@ -1,10 +1,11 @@
 import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
+import { BaseTextField } from '@/components/atoms/TextField';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
 import { PROGRAMMING_ICONS } from '@/consts/programming-icons';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
-// import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from '@material-ui/core/DialogContent';
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
@@ -28,10 +29,15 @@ type ProgrammingIcons = {
   value: string;
   iconPath: string;
 }[];
+type ValidObject = {
+  isValid: boolean;
+  message: string;
+};
 type Props = {
   title: string;
   isSuccessed: boolean;
   isOpenDialog: boolean;
+  isValidBudget: ValidObject;
   closeDialog: () => void;
   contentsTitle: string;
   postId: string;
@@ -42,8 +48,10 @@ type Props = {
     text: string;
   }[];
   targetLanguageValue: number;
+  budget: number;
   programmingIcon: ProgrammingIcon;
   selectTargetLanguage: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  changeBudget: (event: React.ChangeEvent<HTMLInputElement>) => void;
   selectProgrammingIcon: (
     event: React.ChangeEvent<{}>,
     value: string | ProgrammingIcon | null
@@ -175,6 +183,25 @@ export const PostSettingDialog: React.FC<Props> = props => {
                   </StyledBoxFlex>
                 </RadioGroup>
               </FormControl>
+            </DialogContent>
+          </Box>
+          <Box>
+            <DialogContent>
+              <StyledTitle>Budget</StyledTitle>
+              <BaseTextField
+                id='price'
+                type='text'
+                value={props.budget}
+                label='予算（円）'
+                placeholder={'0'}
+                rows={0}
+                onChange={props.changeBudget}
+                inputMode='numeric'
+                error={false}
+              />
+              {!props.isValidBudget.isValid && (
+                <ValidMessage validText={props.isValidBudget.message} />
+              )}
             </DialogContent>
           </Box>
           <Box>

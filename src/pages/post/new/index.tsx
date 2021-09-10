@@ -7,6 +7,7 @@ import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrap
 import { PostSettingDialog } from '@/components/parts/postSettingDialog';
 import { TreeObjectDialog } from '@/components/parts/treeObjectDialog';
 import * as CONSTS from '@/consts/const';
+import { MAX_PRICE } from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { targetLanguages } from '@/consts/target-languages';
 import LayoutPost from '@/layouts/post';
@@ -81,6 +82,15 @@ const StyledBoxCordEditorWrapper = styled(Box)`
   }
 `;
 
+const validPrice = (price: number) => {
+  return price > 0 && price <= MAX_PRICE;
+};
+
+const validNumber = (price: string) => {
+  const regExp = new RegExp(/^[0-9]*$/);
+  return regExp.test(price);
+};
+
 const IndexPage: React.FC<Props> = props => {
   if (!props.authUser) {
     moveToTop();
@@ -108,6 +118,7 @@ const IndexPage: React.FC<Props> = props => {
     },
   ]);
   const [targetLanguageValue, setTargetLanguageValue] = useState(0);
+  const [budget, setBudget] = useState(0);
   const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
     id: 0,
     value: '',
@@ -145,6 +156,9 @@ const IndexPage: React.FC<Props> = props => {
     setIsValidSourceCodeObject,
   ] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
+  );
+  const [isValidBudget, setIsValidBudget] = useState<ValidObject>(
+    createValidObject(true, '')
   );
   const [uuid] = useState(uuidv4());
 
@@ -291,6 +305,10 @@ const IndexPage: React.FC<Props> = props => {
   // }, [title, tagList, description, inputFileNameLists]);
 
   const registerContent = async () => {
+    if (!isValidBudget.isValid) {
+      updateCanPublish(false, '正しい予算を設定してください');
+      return;
+    }
     if (programmingIcon.value === '') {
       updateCanPublish(false, 'アイコンを選択してください');
       return;
@@ -556,6 +574,23 @@ const IndexPage: React.FC<Props> = props => {
     setTargetLanguageValue(value);
   };
 
+  const changeBudget = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const isValidNumber = validNumber(event.target.value);
+    if (!isValidNumber) {
+      return;
+    }
+    const value = Number(event.target.value);
+    const isValid = validPrice(value);
+    if (!isValid) {
+      setIsValidBudget(
+        createValidObject(false, validMessages.ZERO_UNDER_OVER_MAX_PRICE)
+      );
+    } else {
+      setIsValidBudget(createValidObject(true, ''));
+    }
+    setBudget(value);
+  };
+
   const selectProgrammingIcon = (
     _: React.ChangeEvent<{}>,
     selectObject: string | ProgrammingIcon | null
@@ -673,15 +708,19 @@ const IndexPage: React.FC<Props> = props => {
       <PostSettingDialog
         title='PostSetting'
         isSuccessed={isSuccessed}
-        isOpenDialog={isOpenDialog}
+        isOpenDialog={true}
+        // isOpenDialog={isOpenDialog}
+        isValidBudget={isValidBudget}
         closeDialog={closeDialog}
         contentsTitle={title}
         postId={postId}
         displayName={props.currentUser!.user_profile.display_name}
         targetLanguages={targetLanguages}
         targetLanguageValue={targetLanguageValue}
+        budget={budget}
         programmingIcon={programmingIcon}
         selectTargetLanguage={selectTargetLanguage}
+        changeBudget={changeBudget}
         selectProgrammingIcon={selectProgrammingIcon}
         registerContent={registerContent}
       />
