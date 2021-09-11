@@ -7,7 +7,7 @@ import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
 import { useCredit } from '@/hooks/useCredit';
 import { SettingLayout } from '@/layouts/setting/';
 import { UserTypes } from '@/types/global';
-import { moveToTop } from '@/utils/move-page';
+// import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import React from 'react';
 import styled from 'styled-components';
@@ -29,10 +29,10 @@ const StyledPairCreditSvg = styled(CreditSvg)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser) {
-    moveToTop();
-    return <></>;
-  }
+  // if (!props.authUser) {
+  //   moveToTop();
+  //   return <></>;
+  // }
   const user = props.currentUser;
   const { credit, isLoading } = useCredit();
   return (

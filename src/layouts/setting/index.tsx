@@ -1,17 +1,17 @@
-import { CustomHeading2 } from "@/components/atoms/CustomHeading2";
-import { TheFooter } from "@/components/common/footer/index";
-import { CommonHead } from "@/components/common/head/index";
-import { TheLoggedHeader } from "@/components/common/header/logged";
-import { TheStndardHeader } from "@/components/common/header/standard";
-import { TabsHeader } from "@/components/organisms/TabsHeader";
-import { settingTabs } from "@/consts/setting-tabs";
-import { UserTypes } from "@/types/global";
+import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
+import { TheFooter } from '@/components/common/footer/index';
+import { CommonHead } from '@/components/common/head/index';
+import { TheLoggedHeader } from '@/components/common/header/logged';
+import { TheStndardHeader } from '@/components/common/header/standard';
+import { TabsHeader } from '@/components/organisms/TabsHeader';
+import { settingTabs } from '@/consts/setting-tabs';
+import { UserTypes } from '@/types/global';
 // import { Toolbar } from "@material-ui/core";
-import { Container } from "@material-ui/core/";
-import Box from "@material-ui/core/Box";
-import { useRouter } from "next/router";
-import React, { ReactNode } from "react";
-import styled from "styled-components";
+import { Container } from '@material-ui/core/';
+import Box from '@material-ui/core/Box';
+import { useRouter } from 'next/router';
+import React, { ReactNode, useEffect } from 'react';
+import styled from 'styled-components';
 
 type Props = {
   children: ReactNode;
@@ -29,10 +29,12 @@ const StyledContainer = styled(Container)`
 `;
 export const SettingLayout = ({ children, title, currentUser }: Props) => {
   const router = useRouter();
-  if (currentUser === null) {
-    router.push("/");
-    return null;
-  }
+  useEffect(() => {
+    if (currentUser === null) {
+      router.push('/');
+      return;
+    }
+  }, []);
   const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     event.preventDefault();
     router.push(newValue);
@@ -43,9 +45,8 @@ export const SettingLayout = ({ children, title, currentUser }: Props) => {
       <CommonHead title={title} />
       {currentUser && <TheLoggedHeader currentUser={currentUser} />}
       {currentUser === null && <TheStndardHeader />}
-      {/* <Toolbar /> */}
       <StyledContainer>
-        <StyleBoxMain mt={4} component="main">
+        <StyleBoxMain mt={4} component='main'>
           <CustomHeading2 fontSize={24} marginBottom={1}>
             Settings
           </CustomHeading2>

@@ -9,7 +9,7 @@ import { messages } from '@/consts/messages';
 import { SettingLayout } from '@/layouts/setting/';
 import { EmailNoticesTypes, UserTypes } from '@/types/global';
 import { postEmailNotices } from '@/utils/api/post-email-notices';
-import { moveToTop } from '@/utils/move-page';
+// import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import Snackbar from '@material-ui/core/Snackbar';
 import React, { useState } from 'react';
@@ -21,10 +21,10 @@ type Props = {
 type EmailNoticesKeyTypes = Readonly<'is_opened_review' | 'is_posted_review'>;
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser) {
-    moveToTop();
-    return <></>;
-  }
+  // if (!props.authUser) {
+  //   moveToTop();
+  //   return <></>;
+  // }
   const [emailNotices, setEmailNotices] = useState<EmailNoticesTypes>(
     props.currentUser!.email_notices
   );
