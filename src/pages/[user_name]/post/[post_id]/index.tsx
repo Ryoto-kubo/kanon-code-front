@@ -20,7 +20,8 @@ import styled from 'styled-components';
 
 type Props = {
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
+  isFetch: boolean;
   post: GetContentTypes;
 };
 
@@ -45,6 +46,9 @@ const StyledContainer = styled(Container)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   const post = props.post;
   const contents = props.post.contents;
   const title = contents.title;
@@ -169,7 +173,7 @@ const IndexPage: React.FC<Props> = props => {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 

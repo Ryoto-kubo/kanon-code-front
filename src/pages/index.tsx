@@ -15,7 +15,8 @@ import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
+  isFetch: boolean;
   data: {
     Count: number;
     frontPosts: GetContentsTypes[];
@@ -31,6 +32,13 @@ const StyledBoxWidthBorder = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return (
+      <>
+        <CommonHead title='Kanon Code | コードレビューを全てのエンジニアへ' />
+      </>
+    );
+  }
   const frontPosts = props.data.frontPosts;
   const backPosts = props.data.backPosts;
   const otherPosts = props.data.otherPosts;
@@ -40,7 +48,6 @@ const IndexPage: React.FC<Props> = props => {
       title='Kanon Code | コードレビューを全てのエンジニアへ'
       currentUser={props.currentUser}
     >
-      <CommonHead title='Kanon Code | コードレビューを全てのエンジニアへ' />
       <Container>
         {!props.currentUser && <FirstView />}
         {frontPosts.length > 0 && (
