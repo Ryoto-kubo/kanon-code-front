@@ -15,6 +15,7 @@ import {
 import { Auth } from 'aws-amplify';
 import 'modern-css-reset/dist/reset.min.css';
 import { AppProps } from 'next/app';
+import Head from 'next/head';
 import { destroyCookie } from 'nookies';
 import 'nprogress/nprogress.css'; // バーのデフォルトスタイルのインポート
 import React, { useEffect, useState } from 'react';
@@ -74,7 +75,41 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
     })();
   }, []);
   if (!isFetch) {
-    return <CustomLoader />;
+    return (
+      <>
+        <CustomLoader />;
+        <Head>
+          <title>Kanon Code | コードレビューを全てのエンジニアへ</title>
+          <meta
+            name='viewport'
+            content='width=device-width,height=device-height'
+            key='viewport'
+          />
+          <meta property='og:title' content='Kanon Code | テスト' />
+          <meta property='og:type' content='website' />
+          <meta property='og:description' content='Kanon テスト' />
+          <meta property='og:url' content='https://stg.kanon-code.com' />
+          <meta property='og:site_name' content='Kanon Code' />
+          <meta
+            property='og:image'
+            content='https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/icons/angular.svg'
+          />
+          <meta property='og:image:width' content={String(1280)} />
+          <meta property='og:image:height' content={String(960)} />
+          <meta name='twitter:card' content='summary' />
+          <meta name='twitter:site' content='@kanon_code_com' />
+          <meta name='twitter:url' content={'https://stg.kanon-code.com'} />
+          <meta name='twitter:title' content={'Kanon Code'} />
+          <meta name='twitter:description' content={'Kanon テスト'} />
+          <meta
+            name='twitter:image'
+            content={
+              'https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/icons/angular.svg'
+            }
+          />
+        </Head>
+      </>
+    );
   }
   return (
     <RecoilRoot>
