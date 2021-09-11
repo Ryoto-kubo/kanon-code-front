@@ -20,6 +20,7 @@ import styled from 'styled-components';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 type TypeParams = {
   language: string;
@@ -49,6 +50,9 @@ const renderOptions = (): JSX.Element[] => {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

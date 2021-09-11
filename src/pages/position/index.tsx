@@ -21,6 +21,7 @@ import styled from 'styled-components';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const StyledButtonWrapper = styled(Box)`
@@ -44,6 +45,9 @@ const StyledFormControlLabel = styled(FormControlLabel)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

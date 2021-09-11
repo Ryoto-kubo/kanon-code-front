@@ -17,6 +17,7 @@ import BankSvg from '../../../assets/illustration/bank.svg';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const StyledPairBankSvg = styled(BankSvg)`
@@ -30,6 +31,9 @@ const StyledPairBankSvg = styled(BankSvg)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

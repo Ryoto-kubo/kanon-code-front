@@ -32,6 +32,7 @@ import './style.scss';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 type ProgrammingIcon = {
   id: number;
@@ -97,6 +98,9 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

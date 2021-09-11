@@ -28,7 +28,8 @@ import './style.scss';
 
 type Props = {
   authUser: any;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes;
+  isFetch: boolean;
 };
 type ProgrammingIcon = {
   id: number;
@@ -82,6 +83,9 @@ const StyledBoxCordEditorWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;
