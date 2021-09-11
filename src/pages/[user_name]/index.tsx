@@ -33,11 +33,6 @@ type Props = {
 };
 
 const IndexPage: React.FC<Props> = props => {
-  // if (props.isFetch) {
-  //   return <></>;
-  // }
-  console.log(props);
-
   const userProfile = props.data ? props.data.user.profile : undefined;
   const posts = props.data ? props.data.posts : [];
   const reviews = props.data ? props.data.reviews : [];

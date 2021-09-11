@@ -38,7 +38,7 @@ const IndexPage: React.FC<Props> = props => {
         <CommonHead
           title='Kanon Code | コードレビューを全てのエンジニアへ'
           description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
-          image={`${process.env.NEXT_PUBLIC_HOST}/logo.png`}
+          image={`${process.env.NEXT_PUBLIC_BUCKET_URL}/images/logo.png`}
         />
       </>
     );
