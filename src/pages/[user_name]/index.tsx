@@ -33,6 +33,8 @@ type Props = {
 
 const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
+    console.log(props);
+
     return (
       <>
         <CommonHead
