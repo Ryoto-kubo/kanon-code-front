@@ -77,7 +77,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   if (!isFetch) {
     return (
       <>
-        <CustomLoader />;
+        <CustomLoader />
         <Head>
           <title>Kanon Code | コードレビューを全てのエンジニアへ</title>
           <meta
