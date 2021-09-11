@@ -7,7 +7,7 @@ import { SigninDialog } from '@/components/parts/signinDialog';
 import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import { UserTypes } from '@/types/global';
 import Box from '@material-ui/core/Box';
-import Head from 'next/head';
+// import Head from 'next/head';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
@@ -22,11 +22,13 @@ const StyleBoxMain = styled(Box)`
 `;
 
 const Layout: React.FC<Props> = ({ children, title, currentUser }) => {
+  console.log(title);
+
   const displayName = currentUser?.user_profile.display_name;
   const { isOpenSignin, setIsOpenSignin } = useIsOpenSignin();
   return (
     <>
-      <Head>
+      {/* <Head>
         <title>{title}</title>
         <meta
           name='viewport'
@@ -55,8 +57,7 @@ const Layout: React.FC<Props> = ({ children, title, currentUser }) => {
             'https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/icons/angular.svg'
           }
         />
-      </Head>
-      {/* <CommonHead title={title} /> */}
+      </Head> */}
       {displayName === '' ? (
         <TheRegisterHeader />
       ) : currentUser ? (

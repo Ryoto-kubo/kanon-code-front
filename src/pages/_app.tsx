@@ -43,10 +43,10 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   const [isFetch, setisFetch] = useState<boolean>(false);
   usePageView();
   useEffect(() => {
-    // const jssStyles = document.querySelector('#jss-server-side');
-    // if (jssStyles && jssStyles.parentNode) {
-    //   jssStyles.parentNode.removeChild(jssStyles);
-    // }
+    const jssStyles = document.querySelector('#jss-server-side');
+    if (jssStyles && jssStyles.parentNode) {
+      jssStyles.parentNode.removeChild(jssStyles);
+    }
     (async () => {
       try {
         const err = new Error();
