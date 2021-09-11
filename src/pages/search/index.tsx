@@ -10,7 +10,8 @@ import React, { MouseEvent, useState } from 'react';
 
 type Props = {
   title: string;
-  currentUser: null | UserTypes;
+  currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const formFunc = (e: React.FormEvent) => {
@@ -26,6 +27,9 @@ const formFunc = (e: React.FormEvent) => {
 // });
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   location.href = '/';
   return <></>;
   const router = useRouter();
