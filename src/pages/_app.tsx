@@ -41,6 +41,8 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(false);
+  console.log(isFetch);
+
   usePageView();
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
@@ -70,7 +72,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       }
     })();
   }, []);
-  if (!isFetch) return <></>;
+  // if (!isFetch) return <></>;
   return (
     <RecoilRoot>
       <StylesProvider injectFirst>
