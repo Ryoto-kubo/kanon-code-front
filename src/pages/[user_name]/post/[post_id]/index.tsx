@@ -50,11 +50,11 @@ const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
     return (
       <>
-        <CommonHead
+        {/* <CommonHead
           title='Kanon Code | コードレビューを全てのエンジニアへ'
           description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します'
           image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.post.contents.targetIcon.iconPath}`}
-        />
+        /> */}
       </>
     );
   }
@@ -98,6 +98,11 @@ const IndexPage: React.FC<Props> = props => {
 
   return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
+      <CommonHead
+        title={`Kanon Code | ${title}`}
+        description={contents.description.value}
+        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.post.contents.targetIcon.iconPath}`}
+      />
       <StyledBoxBgGray>
         <StyledContainer maxWidth='md'>
           <Box mb={5}>
