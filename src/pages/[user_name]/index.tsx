@@ -18,6 +18,7 @@ import React from 'react';
 type Props = {
   authUser: any;
   currentUser: null | UserTypes;
+  isFetch: boolean;
   data: {
     user: {
       profile: UserProfileTypes;
@@ -30,6 +31,9 @@ type Props = {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   const userProfile = props.data.user.profile;
   const displayName = userProfile.display_name;
   const userId = props.data.user.userId;
