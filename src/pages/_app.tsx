@@ -1,4 +1,5 @@
 import '@/aws/cognito/config';
+import { CustomLoader } from '@/components/common/loader';
 import { CustomNprogress } from '@/components/common/nextNprogress';
 import { MaintenanceView } from '@/components/parts/maintenance';
 import usePageView from '@/hooks/usePageView';
@@ -72,7 +73,9 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
       }
     })();
   }, []);
-  // if (!isFetch) return <></>;
+  if (!isFetch) {
+    return <CustomLoader />;
+  }
   return (
     <RecoilRoot>
       <StylesProvider injectFirst>
