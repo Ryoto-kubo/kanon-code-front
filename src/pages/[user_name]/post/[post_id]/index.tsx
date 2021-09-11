@@ -131,8 +131,9 @@ const IndexPage: React.FC<Props> = props => {
     setCanReview(false);
     setReviews(newReviews);
   };
-
-  return (
+  return props.currentUser ? (
+    <CustomLoader />
+  ) : (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <CommonHead
         title={`Kanon Code | ${title}`}
