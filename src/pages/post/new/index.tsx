@@ -28,7 +28,7 @@ import './style.scss';
 
 type Props = {
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
   isFetch: boolean;
 };
 type ProgrammingIcon = {

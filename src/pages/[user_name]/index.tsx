@@ -1,4 +1,5 @@
 // import { CommonHead } from '@/components/common/head';
+import { CommonHead } from '@/components/common/head';
 import { ProfileArea } from '@/components/organisms/ProfileArea';
 import { Reviews } from '@/components/organisms/Reviews';
 import { SkilsArea } from '@/components/organisms/SkilsArea';
@@ -33,22 +34,16 @@ type Props = {
 
 const IndexPage: React.FC<Props> = props => {
   // if (props.isFetch) {
-  //   console.log(props);
-
-  //   return (
-  //     <>
-  //       <CommonHead
-  //         title='Kanon Code | コードレビューを全てのエンジニアへ'
-  //         description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
-  //         image={`${process.env.NEXT_PUBLIC_HOST}/logo.png`}
-  //       />
-  //     </>
-  //   );
+  //   return <></>;
   // }
-  const userProfile = props.data.user.profile;
-  const displayName = userProfile.display_name;
-  const userId = props.data.user.userId;
-  const cognitoId = props.authUser ? props.authUser.username : null;
+  console.log(props);
+
+  const userProfile = props.data ? props.data.user.profile : undefined;
+  const posts = props.data ? props.data.posts : [];
+  const reviews = props.data ? props.data.reviews : [];
+  const displayName = userProfile ? userProfile.display_name : undefined;
+  const userId = props.data ? props.data.user.userId : undefined;
+  const cognitoId = props.authUser ? props.authUser.username : undefined;
   const isMe = cognitoId === userId;
 
   return (
@@ -56,29 +51,45 @@ const IndexPage: React.FC<Props> = props => {
       title={`Kanon Code | ${displayName}`}
       currentUser={props.currentUser}
     >
+      <CommonHead
+        title={`Kanon Code | ${displayName}`}
+        description={`${displayName}のマイページ`}
+        image={`${userProfile?.icon_src}`}
+      />
       <Container>
         <Box mt={4} pb={7}>
           <Box mb={3}>
             <ProfileArea
-              introduction={userProfile.introduction}
-              picture={userProfile.icon_src}
-              position={userProfile.position_type}
-              githubName={userProfile.github_name}
-              twitterName={userProfile.twitter_name}
-              webSite={userProfile.web_site}
-              displayName={userProfile.display_name}
+              introduction={userProfile ? userProfile.introduction : ''}
+              picture={userProfile ? userProfile.icon_src : ''}
+              position={userProfile ? userProfile.position_type : 0}
+              githubName={userProfile ? userProfile.github_name : ''}
+              twitterName={userProfile ? userProfile.twitter_name : ''}
+              webSite={userProfile ? userProfile.web_site : ''}
+              displayName={userProfile ? userProfile.display_name : ''}
               cognitoId={cognitoId}
               isMe={isMe}
             />
           </Box>
           <Box mb={3} component='section'>
-            <SkilsArea skils={userProfile.skils} />
+            <SkilsArea
+              skils={
+                userProfile
+                  ? userProfile.skils
+                  : [
+                      {
+                        language: '',
+                        years_experiences: 0,
+                      },
+                    ]
+              }
+            />
           </Box>
           <Box mb={3} component='section'>
             <Reviews
               user={props.authUser}
-              posts={props.data.posts}
-              reviews={props.data.reviews}
+              posts={posts}
+              reviews={reviews}
               isMe={isMe}
             />
           </Box>

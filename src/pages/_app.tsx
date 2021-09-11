@@ -37,8 +37,6 @@ const StyledWrapper = styled.div`
 `;
 
 const Init = ({ Component, pageProps }: any): JSX.Element => {
-  console.log(pageProps, 'pageProps');
-
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
   const [isFetch, setisFetch] = useState<boolean>(true);
