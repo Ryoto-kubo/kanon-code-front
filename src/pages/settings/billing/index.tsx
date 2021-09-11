@@ -7,7 +7,7 @@ import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
 import { useCredit } from '@/hooks/useCredit';
 import { SettingLayout } from '@/layouts/setting/';
 import { UserTypes } from '@/types/global';
-// import { moveToTop } from '@/utils/move-page';
+import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import React from 'react';
 import styled from 'styled-components';
@@ -16,6 +16,7 @@ import CreditSvg from '../../../assets/illustration/credit.svg';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const StyledPairCreditSvg = styled(CreditSvg)`
@@ -29,10 +30,13 @@ const StyledPairCreditSvg = styled(CreditSvg)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  // if (!props.authUser) {
-  //   moveToTop();
-  //   return <></>;
-  // }
+  if (props.isFetch) {
+    return <></>;
+  }
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const user = props.currentUser;
   const { credit, isLoading } = useCredit();
   return (

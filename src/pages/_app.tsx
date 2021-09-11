@@ -6,6 +6,7 @@ import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { getUser } from '@/utils/api/get-user';
 import { CognitoUser } from '@aws-amplify/auth';
+// import { CognitoUser } from '@aws-amplify/auth';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import {
   StylesProvider,
@@ -35,15 +36,10 @@ const StyledWrapper = styled.div`
   }
 `;
 
-const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
-  if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'MAINTENANCE')
-    return <MaintenanceView />;
+const Init = ({ Component, pageProps }: any): JSX.Element => {
   const [authUser, setAuthUser] = useState<CognitoUser | null>(null);
   const [currentUser, setCurrentUser] = useState<UserTypes | null>(null);
-  const [isFetch, setisFetch] = useState<boolean>(false);
-  console.log(isFetch);
-
-  usePageView();
+  const [isFetch, setisFetch] = useState<boolean>(true);
   useEffect(() => {
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles && jssStyles.parentNode) {
@@ -60,7 +56,7 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
         const user = result.Item as UserTypes;
         setAuthUser(payload);
         setCurrentUser(user);
-        setisFetch(true);
+        setisFetch(false);
       } catch (error) {
         if (error.response) {
           destroyCookie(null, 'idToken');
@@ -68,30 +64,42 @@ const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
           await Auth.signOut();
           return;
         }
-        setisFetch(true);
+        setisFetch(false);
       }
     })();
   }, []);
 
   return (
+    <StylesProvider injectFirst>
+      <MaterialUIThemeProvider theme={theme}>
+        <StyledComponentsThemeProvider theme={theme}>
+          <CssBaseline />
+          <StyledWrapper>
+            <>
+              <CustomNprogress />
+              <Component
+                {...pageProps}
+                authUser={authUser}
+                currentUser={currentUser}
+                isFetch={isFetch}
+              />
+            </>
+          </StyledWrapper>
+        </StyledComponentsThemeProvider>
+      </MaterialUIThemeProvider>
+    </StylesProvider>
+  );
+};
+
+const MyApp = ({ Component, pageProps }: AppProps): JSX.Element => {
+  if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'MAINTENANCE') {
+    return <MaintenanceView />;
+  }
+  usePageView();
+
+  return (
     <RecoilRoot>
-      <StylesProvider injectFirst>
-        <MaterialUIThemeProvider theme={theme}>
-          <StyledComponentsThemeProvider theme={theme}>
-            <CssBaseline />
-            <StyledWrapper>
-              <>
-                <CustomNprogress />
-                <Component
-                  {...pageProps}
-                  authUser={authUser}
-                  currentUser={currentUser}
-                />
-              </>
-            </StyledWrapper>
-          </StyledComponentsThemeProvider>
-        </MaterialUIThemeProvider>
-      </StylesProvider>
+      <Init Component={Component} pageProps={pageProps} />
     </RecoilRoot>
   );
 };

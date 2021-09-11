@@ -10,7 +10,7 @@ import { UserTypes } from '@/types/global';
 import { Container } from '@material-ui/core/';
 import Box from '@material-ui/core/Box';
 import { useRouter } from 'next/router';
-import React, { ReactNode, useEffect } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 type Props = {
@@ -29,12 +29,6 @@ const StyledContainer = styled(Container)`
 `;
 export const SettingLayout = ({ children, title, currentUser }: Props) => {
   const router = useRouter();
-  useEffect(() => {
-    if (currentUser === null) {
-      router.push('/');
-      return;
-    }
-  }, []);
   const changeTab = (event: React.ChangeEvent<{}>, newValue: string) => {
     event.preventDefault();
     router.push(newValue);

@@ -12,7 +12,7 @@ import { UserTypes } from '@/types/global';
 import { getPreSignedUrl } from '@/utils/api/get-presigned-url';
 import { postUserProfile } from '@/utils/api/post-user-profile';
 import * as S3 from '@/utils/api/s3';
-// import { moveToTop } from '@/utils/move-page';
+import { moveToTop } from '@/utils/move-page';
 import { PrepareImageBeforePost } from '@/utils/prepare-image-before-post';
 import Box from '@material-ui/core/Box';
 import React, { useCallback, useState } from 'react';
@@ -20,6 +20,7 @@ import React, { useCallback, useState } from 'react';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 type ValidObject = {
   isValid: boolean;
@@ -27,10 +28,13 @@ type ValidObject = {
 };
 
 const IndexPage: React.FC<Props> = props => {
-  // if (!props.authUser) {
-  //   moveToTop();
-  //   return <></>;
-  // }
+  if (props.isFetch) {
+    return <></>;
+  }
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const [user, setUser] = useState<UserTypes>(props.currentUser);
   const createValidObject = useCallback((defaultValue, defaultMessage) => {
     return {

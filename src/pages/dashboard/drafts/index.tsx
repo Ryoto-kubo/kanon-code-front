@@ -12,10 +12,14 @@ import React from 'react';
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
+  isFetch: boolean;
 };
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser || !props.currentUser) {
+  if (props.isFetch) {
+    return <></>;
+  }
+  if (!props.authUser) {
     moveToTop();
     return <></>;
   }

@@ -7,7 +7,7 @@ import { DEPOSIT_TYPES } from '@/consts/banks';
 import { useBank } from '@/hooks/useBank';
 import { SettingLayout } from '@/layouts/setting/';
 import { UserTypes } from '@/types/global';
-// import { moveToTop } from '@/utils/move-page';
+import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 // import { IconArrowNext } from "@/components/svg/materialIcons/IconArrowNext";
 import React from 'react';
@@ -17,6 +17,7 @@ import BankSvg from '../../../assets/illustration/bank.svg';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const StyledPairBankSvg = styled(BankSvg)`
@@ -30,10 +31,13 @@ const StyledPairBankSvg = styled(BankSvg)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  // if (!props.authUser) {
-  //   moveToTop();
-  //   return <></>;
-  // }
+  if (props.isFetch) {
+    return <></>;
+  }
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
   const user = props.currentUser;
   const { bank, isLoading } = useBank();
 

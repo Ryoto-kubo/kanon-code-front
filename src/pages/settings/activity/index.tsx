@@ -9,7 +9,7 @@ import { messages } from '@/consts/messages';
 import { SettingLayout } from '@/layouts/setting/';
 import { EmailNoticesTypes, UserTypes } from '@/types/global';
 import { postEmailNotices } from '@/utils/api/post-email-notices';
-// import { moveToTop } from '@/utils/move-page';
+import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import Snackbar from '@material-ui/core/Snackbar';
 import React, { useState } from 'react';
@@ -17,23 +17,23 @@ import React, { useState } from 'react';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 type EmailNoticesKeyTypes = Readonly<'is_opened_review' | 'is_posted_review'>;
 
 const IndexPage: React.FC<Props> = props => {
-  // if (!props.authUser) {
-  //   moveToTop();
-  //   return <></>;
-  // }
-  const [emailNotices, setEmailNotices] = useState<EmailNoticesTypes>(
-    props.currentUser!.email_notices
+  if (props.isFetch) {
+    return <></>;
+  }
+  if (!props.authUser) {
+    moveToTop();
+    return <></>;
+  }
+  const [emailNotices, setEmailNotices] = useState<EmailNoticesTypes | null>(
+    props.currentUser.email_notices
   );
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState('更新中...');
-  const user = props.currentUser;
-  // const linkOnGithub = (event: React.MouseEvent<HTMLButtonElement>) => {
-  //   console.log(event);
-  // };
 
   const resetUpdatingMessage = () => {
     setUpdatingMessage('更新中...');
@@ -44,9 +44,9 @@ const IndexPage: React.FC<Props> = props => {
     value: boolean
   ) => {
     setUpdatingMessage;
-    emailNotices[key] = value;
+    emailNotices![key] = value;
     const params = {
-      emailNotices,
+      emailNotices: emailNotices!,
     };
     const err = new Error();
     try {
@@ -62,7 +62,7 @@ const IndexPage: React.FC<Props> = props => {
 
   const changeOpenedReview = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.currentTarget.checked;
-    setEmailNotices({ ...emailNotices, is_opened_review: isChecked });
+    setEmailNotices({ ...emailNotices!, is_opened_review: isChecked });
     resetUpdatingMessage();
     setIsOpen(true);
     updateEmailNotices('is_opened_review', isChecked);
@@ -72,14 +72,17 @@ const IndexPage: React.FC<Props> = props => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const isChecked = event.currentTarget.checked;
-    setEmailNotices({ ...emailNotices, is_posted_review: isChecked });
+    setEmailNotices({ ...emailNotices!, is_posted_review: isChecked });
     resetUpdatingMessage();
     setIsOpen(true);
     updateEmailNotices('is_posted_review', isChecked);
   };
 
   return (
-    <SettingLayout title={`Kanon Code | プロフィール`} currentUser={user}>
+    <SettingLayout
+      title={`Kanon Code | プロフィール`}
+      currentUser={props.currentUser}
+    >
       <Box component='section' pb={5}>
         <ContentWrapper>
           <ContentHeader
@@ -90,22 +93,22 @@ const IndexPage: React.FC<Props> = props => {
           />
           <ProfileContentCheck
             label='レビューが投稿された時'
-            value={emailNotices.is_posted_review ? 'ON' : 'OFF'}
+            value={emailNotices!.is_posted_review ? 'ON' : 'OFF'}
             isDivider={true}
           >
             <CustomSwitch
               onChange={changeRequestedReview}
-              checked={emailNotices.is_posted_review}
+              checked={emailNotices!.is_posted_review}
             />
           </ProfileContentCheck>
           <ProfileContentCheck
             label='レビューが購入された時'
-            value={emailNotices.is_opened_review ? 'ON' : 'OFF'}
+            value={emailNotices!.is_opened_review ? 'ON' : 'OFF'}
             isDivider={false}
           >
             <CustomSwitch
               onChange={changeOpenedReview}
-              checked={emailNotices.is_opened_review}
+              checked={emailNotices!.is_opened_review}
             />
           </ProfileContentCheck>
         </ContentWrapper>

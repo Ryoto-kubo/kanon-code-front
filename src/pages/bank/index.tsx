@@ -25,6 +25,7 @@ import styled from 'styled-components';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 type BankKeyTypes = Readonly<
   | 'bank_code'
@@ -74,6 +75,9 @@ const StyledButtonWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;
