@@ -1,4 +1,5 @@
 import { TypoHeading2 } from '@/components/atoms/TypoHeading2';
+import { CommonHead } from '@/components/common/head';
 // import { CustomLoader } from "@/components/common/loader";
 import { FirstView } from '@/components/organisms/FirstView';
 import { Post } from '@/components/organisms/Post';
@@ -8,7 +9,6 @@ import { UserTypes } from '@/types/global';
 import { GetContentsTypes } from '@/types/global/';
 import { getContents } from '@/utils/api/get-contents';
 import { Box, Container, Grid } from '@material-ui/core/';
-import Head from 'next/head';
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -40,36 +40,7 @@ const IndexPage: React.FC<Props> = props => {
       title='Kanon Code | コードレビューを全てのエンジニアへ'
       currentUser={props.currentUser}
     >
-      <Head>
-        <title>Kanon Code | コードレビューを全てのエンジニアへ</title>
-        <meta
-          name='viewport'
-          content='width=device-width,height=device-height'
-          key='viewport'
-        />
-        <meta property='og:title' content='Kanon Code | テスト' />
-        <meta property='og:type' content='website' />
-        <meta property='og:description' content='Kanon テスト' />
-        <meta property='og:url' content='https://stg.kanon-code.com' />
-        <meta property='og:site_name' content='Kanon Code' />
-        <meta
-          property='og:image'
-          content='https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/icons/angular.svg'
-        />
-        <meta property='og:image:width' content={String(1280)} />
-        <meta property='og:image:height' content={String(960)} />
-        <meta name='twitter:card' content='summary' />
-        <meta name='twitter:site' content='@kanon_code_com' />
-        <meta name='twitter:url' content={'https://stg.kanon-code.com'} />
-        <meta name='twitter:title' content={'Kanon Code'} />
-        <meta name='twitter:description' content={'Kanon テスト'} />
-        <meta
-          name='twitter:image'
-          content={
-            'https://stg-contents-kanon-code.s3-ap-northeast-1.amazonaws.com/icons/angular.svg'
-          }
-        />
-      </Head>
+      <CommonHead title='Kanon Code | コードレビューを全てのエンジニアへ' />
       <Container>
         {!props.currentUser && <FirstView />}
         {frontPosts.length > 0 && (
