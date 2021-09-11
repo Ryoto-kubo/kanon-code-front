@@ -35,7 +35,11 @@ const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
     return (
       <>
-        <CommonHead title='Kanon Code | コードレビューを全てのエンジニアへ' />
+        <CommonHead
+          title='Kanon Code | コードレビューを全てのエンジニアへ'
+          description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します'
+          image={'./logo.png'}
+        />
       </>
     );
   }
