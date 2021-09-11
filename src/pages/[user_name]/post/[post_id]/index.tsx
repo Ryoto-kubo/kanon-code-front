@@ -131,7 +131,7 @@ const IndexPage: React.FC<Props> = props => {
     setCanReview(false);
     setReviews(newReviews);
   };
-  return !props.currentUser ? (
+  return props.isFetch ? (
     <CustomLoader />
   ) : (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
