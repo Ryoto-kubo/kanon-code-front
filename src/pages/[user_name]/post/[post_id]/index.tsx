@@ -1,5 +1,6 @@
 import { AcceptReviewIcon } from '@/components/atoms/AcceptReviewIcon';
 import { StopReviewIcon } from '@/components/atoms/StopReviewIcon';
+import { CommonHead } from '@/components/common/head';
 import { CustomLoader } from '@/components/common/loader';
 import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
@@ -47,7 +48,15 @@ const StyledContainer = styled(Container)`
 
 const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
-    return <></>;
+    return (
+      <>
+        <CommonHead
+          title='Kanon Code | コードレビューを全てのエンジニアへ'
+          description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します'
+          image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${props.post.contents.targetIcon.iconPath}`}
+        />
+      </>
+    );
   }
   const post = props.post;
   const contents = props.post.contents;
