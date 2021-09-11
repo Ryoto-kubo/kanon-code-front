@@ -1,3 +1,4 @@
+import { CommonHead } from '@/components/common/head';
 import { ProfileArea } from '@/components/organisms/ProfileArea';
 import { Reviews } from '@/components/organisms/Reviews';
 import { SkilsArea } from '@/components/organisms/SkilsArea';
@@ -32,7 +33,15 @@ type Props = {
 
 const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
-    return <></>;
+    return (
+      <>
+        <CommonHead
+          title='Kanon Code | コードレビューを全てのエンジニアへ'
+          description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
+          image={`${process.env.NEXT_PUBLIC_HOST}/logo.png`}
+        />
+      </>
+    );
   }
   const userProfile = props.data.user.profile;
   const displayName = userProfile.display_name;
