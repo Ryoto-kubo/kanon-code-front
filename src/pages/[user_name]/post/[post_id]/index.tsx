@@ -238,7 +238,7 @@ const IndexPage: React.FC<Props> = props => {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 
