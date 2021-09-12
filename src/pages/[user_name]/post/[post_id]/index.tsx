@@ -46,70 +46,80 @@ const StyledContainer = styled(Container)`
   padding-bottom: 48px;
 `;
 
-const initContents = {
-  tagList: [''],
-  targetIcon: {
-    id: 0,
-    value: '',
-    iconPath: '',
-    ogpPath: '',
-  },
-  description: {
-    bodyHtml: '',
-    value: '',
-  },
-  inputFileNameLists: [
-    {
-      bodyHtml: '',
-      fileName: '',
-      isValid: true,
-      key: '',
-      sourceCode: '',
-    },
-  ],
-  targetLanguage: 0,
-  source_tree: [
-    {
-      id: '',
-      name: '',
-    },
-  ],
-  node_ids: [''],
-  title: '',
-};
+// const initContents = {
+//   tagList: [''],
+//   targetIcon: {
+//     id: 0,
+//     value: '',
+//     iconPath: '',
+//     ogpPath: '',
+//   },
+//   description: {
+//     bodyHtml: '',
+//     value: '',
+//   },
+//   inputFileNameLists: [
+//     {
+//       bodyHtml: '',
+//       fileName: '',
+//       isValid: true,
+//       key: '',
+//       sourceCode: '',
+//     },
+//   ],
+//   targetLanguage: 0,
+//   source_tree: [
+//     {
+//       id: '',
+//       name: '',
+//     },
+//   ],
+//   node_ids: [''],
+//   title: '',
+// };
 
-const initUserProfile = {
-  display_name: '',
-  github_name: '',
-  icon_src: '',
-  introduction: '',
-  position_type: 0,
-  price: 0,
-  skils: [
-    {
-      language: '',
-      years_experiences: 0,
-    },
-  ],
-  twitter_name: '',
-  web_site: '',
-};
+// const initUserProfile = {
+//   display_name: '',
+//   github_name: '',
+//   icon_src: '',
+//   introduction: '',
+//   position_type: 0,
+//   price: 0,
+//   skils: [
+//     {
+//       language: '',
+//       years_experiences: 0,
+//     },
+//   ],
+//   twitter_name: '',
+//   web_site: '',
+// };
 
 const IndexPage: React.FC<Props> = props => {
-  console.log(props, 'props');
-
-  const title = props.post ? props.post.contents.title : '';
-  const postId = props.post ? props.post.sort_key : '';
-  const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
-  const userProfile = props.currentUser ? props.currentUser.user_profile : null;
-  const myUserId = props.currentUser ? props.currentUser.partition_key : '';
-  const contributorId = props.post ? props.post.partition_key : '';
+  const title = props.post.contents.title;
+  const postId = props.post.sort_key;
+  const ogpPath = props.post.contents.targetIcon.ogpPath;
+  const userProfile = props.currentUser.user_profile;
+  const myUserId = props.currentUser.partition_key;
+  const contributorId = props.post.partition_key;
   const isMe = myUserId === contributorId;
-  const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
+  const authUserName = props.authUser['cognito:username'];
   const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
   const [postStatusValue, setPostStatusValue] = useState<number>(
-    props.post ? props.post.post_status : 0
+    props.post.post_status
   );
+  // const title = props.post ? props.post.contents.title : '';
+  // const postId = props.post ? props.post.sort_key : '';
+  // const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
+  // const userProfile = props.currentUser ? props.currentUser.user_profile : null;
+  // const myUserId = props.currentUser ? props.currentUser.partition_key : '';
+  // const contributorId = props.post ? props.post.partition_key : '';
+  // const isMe = myUserId === contributorId;
+  // const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
+  // const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
+  // const [postStatusValue, setPostStatusValue] = useState<number>(
+  //   props.post ? props.post.post_status : 0
+  // );
   const [isChanging, setIsChanging] = useState<boolean>(false);
 
   const {
@@ -140,16 +150,21 @@ const IndexPage: React.FC<Props> = props => {
       <CustomLoader />
       <CommonHead
         title={`Kanon Code | ${title}`}
-        description={props.post ? props.post.contents.description.value : ''}
+        description={props.post.contents.description.value}
         image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
       />
+      {/* <CommonHead
+        title={`Kanon Code | ${title}`}
+        description={props.post ? props.post.contents.description.value : ''}
+        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
+      /> */}
     </>
   ) : (
     // return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <CommonHead
         title={`Kanon Code | ${title}`}
-        description={props.post ? props.post.contents.description.value : ''}
+        description={props.post.contents.description.value}
         image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
       />
       <StyledBoxBgGray>
@@ -172,11 +187,14 @@ const IndexPage: React.FC<Props> = props => {
               </Box>
               <Box mb={5}>
                 <ReviewRequestItemHeader
-                  contents={props.post ? props.post.contents : initContents}
-                  profile={
-                    props.post ? props.post.user_profile : initUserProfile
-                  }
-                  createDate={props.post ? props.post.date : ''}
+                  contents={props.post.contents}
+                  profile={props.post.user_profile}
+                  createDate={props.post.date}
+                  // contents={props.post ? props.post.contents : initContents}
+                  // profile={
+                  //   props.post ? props.post.user_profile : initUserProfile
+                  // }
+                  // createDate={props.post ? props.post.date : ''}
                   isMe={isMe}
                   myUserId={myUserId!}
                   postId={postId}
@@ -187,7 +205,8 @@ const IndexPage: React.FC<Props> = props => {
               </Box>
               <Box mb={0}>
                 <ReviewRequestContents
-                  contents={props.post ? props.post.contents : initContents}
+                  contents={props.post.contents}
+                  // contents={props.post ? props.post.contents : initContents}
                 />
               </Box>
             </StyledBoxBgWhite>
