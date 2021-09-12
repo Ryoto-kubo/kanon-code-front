@@ -49,9 +49,10 @@ const StyledContainer = styled(Container)`
 const initContents = {
   tagList: [''],
   targetIcon: {
-    iconPath: '',
     id: 0,
     value: '',
+    iconPath: '',
+    ogpPath: '',
   },
   description: {
     bodyHtml: '',
@@ -97,7 +98,7 @@ const initUserProfile = {
 const IndexPage: React.FC<Props> = props => {
   const title = props.post ? props.post.contents.title : '';
   const postId = props.post ? props.post.sort_key : '';
-  // const iconPath = props.post ? props.post.contents.targetIcon.iconPath : '';
+  const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
   const userProfile = props.currentUser ? props.currentUser.user_profile : null;
   const myUserId = props.currentUser ? props.currentUser.partition_key : '';
   const contributorId = props.post ? props.post.partition_key : '';
@@ -139,8 +140,7 @@ const IndexPage: React.FC<Props> = props => {
       <CommonHead
         title={`Kanon Code | ${title}`}
         description={props.post ? props.post.contents.description.value : ''}
-        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}icons/ogps/docker.png`}
-        // image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${iconPath}`}
+        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
       />
       <StyledBoxBgGray>
         <StyledContainer maxWidth='md'>
