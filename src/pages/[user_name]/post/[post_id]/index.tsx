@@ -97,7 +97,7 @@ const initUserProfile = {
 const IndexPage: React.FC<Props> = props => {
   const title = props.post ? props.post.contents.title : '';
   const postId = props.post ? props.post.sort_key : '';
-  const iconPath = props.post ? props.post.contents.targetIcon.iconPath : '';
+  // const iconPath = props.post ? props.post.contents.targetIcon.iconPath : '';
   const userProfile = props.currentUser ? props.currentUser.user_profile : null;
   const myUserId = props.currentUser ? props.currentUser.partition_key : '';
   const contributorId = props.post ? props.post.partition_key : '';
