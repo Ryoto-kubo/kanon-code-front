@@ -139,7 +139,8 @@ const IndexPage: React.FC<Props> = props => {
       <CommonHead
         title={`Kanon Code | ${title}`}
         description={props.post ? props.post.contents.description.value : ''}
-        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${iconPath}`}
+        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}icons/ogps/docker.png`}
+        // image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${iconPath}`}
       />
       <StyledBoxBgGray>
         <StyledContainer maxWidth='md'>
