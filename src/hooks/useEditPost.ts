@@ -89,8 +89,6 @@ export const useEditPost = (postId: string) => {
       try {
         const result = await getContent({ postId });
         const post = result.data.post;
-        console.log(post, 'post');
-
         setAurhorId(getAuthorId(post.partition_key));
         setKeys({
           ...keys,
