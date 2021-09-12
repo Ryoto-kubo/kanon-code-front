@@ -96,6 +96,8 @@ const initUserProfile = {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  console.log(props, 'props');
+
   const title = props.post ? props.post.contents.title : '';
   const postId = props.post ? props.post.sort_key : '';
   const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
