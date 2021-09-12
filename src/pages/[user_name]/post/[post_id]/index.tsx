@@ -133,7 +133,14 @@ const IndexPage: React.FC<Props> = props => {
     setReviews(newReviews);
   };
   return props.isFetch ? (
-    <CustomLoader />
+    <>
+      <CustomLoader />
+      <CommonHead
+        title={`Kanon Code | ${title}`}
+        description={props.post ? props.post.contents.description.value : ''}
+        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
+      />
+    </>
   ) : (
     // return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
