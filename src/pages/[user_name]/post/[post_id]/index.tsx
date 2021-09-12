@@ -132,6 +132,7 @@ const IndexPage: React.FC<Props> = props => {
     setCanReview(false);
     setReviews(newReviews);
   };
+
   return props.isFetch ? (
     <>
       <CustomLoader />
@@ -237,7 +238,7 @@ const IndexPage: React.FC<Props> = props => {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 
