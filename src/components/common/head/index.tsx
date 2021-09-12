@@ -26,8 +26,8 @@ export const CommonHead = ({
     <meta property='og:url' content={url} />
     <meta property='og:site_name' content='Kanon Code' />
     <meta property='og:image' content={image} />
-    {/* <meta property='og:image:width' content={String(1280)} />
-    <meta property='og:image:height' content={String(960)} /> */}
+    <meta property='og:image:width' content={String(1280)} />
+    <meta property='og:image:height' content={String(960)} />
     <meta name='twitter:card' content='summary' />
     <meta name='twitter:site' content='@kanon_code_com' />
     <meta name='twitter:url' content={url} />
