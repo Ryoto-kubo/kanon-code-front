@@ -95,6 +95,8 @@ const initUserProfile = {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  console.log('hoge');
+
   const title = props.post ? props.post.contents.title : '';
   const postId = props.post ? props.post.sort_key : '';
   const iconPath = props.post ? props.post.contents.targetIcon.iconPath : '';
