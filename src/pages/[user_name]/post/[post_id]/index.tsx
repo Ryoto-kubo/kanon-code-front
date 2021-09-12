@@ -132,10 +132,10 @@ const IndexPage: React.FC<Props> = props => {
     setCanReview(false);
     setReviews(newReviews);
   };
-  // return props.isFetch ? (
-  //   <CustomLoader />
-  // ) : (
-  return (
+  return props.isFetch ? (
+    <CustomLoader />
+  ) : (
+    // return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <CommonHead
         title={`Kanon Code | ${title}`}
