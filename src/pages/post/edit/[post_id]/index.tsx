@@ -13,7 +13,7 @@ import { errorMessages, validMessages } from '@/consts/error-messages';
 import { targetLanguages } from '@/consts/target-languages';
 import { useEditPost } from '@/hooks/useEditPost';
 import LayoutPostEdit from '@/layouts/postEdit';
-import { UserTypes } from '@/types/global';
+import { ProgrammingIcon, UserTypes } from '@/types/global';
 import { putContent } from '@/utils/api/put-content';
 import * as S3 from '@/utils/api/s3';
 import { moveToTop } from '@/utils/move-page';
@@ -32,12 +32,9 @@ import './style.scss';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
-type ProgrammingIcon = {
-  id: number;
-  value: string;
-  iconPath: string;
-};
+
 type ButtonText = Readonly<
   '投稿設定' | '編集設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
 >;
@@ -97,6 +94,9 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

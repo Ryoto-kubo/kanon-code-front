@@ -20,6 +20,7 @@ import React, { useCallback, useState } from 'react';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 type ValidObject = {
   isValid: boolean;
@@ -27,6 +28,9 @@ type ValidObject = {
 };
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

@@ -15,6 +15,7 @@ import SkilSvg from '../../../assets/illustration/skil.svg';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const StyledPairSkilSvg = styled(SkilSvg)`
@@ -28,6 +29,9 @@ const StyledPairSkilSvg = styled(SkilSvg)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

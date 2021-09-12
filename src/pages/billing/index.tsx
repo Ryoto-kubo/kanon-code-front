@@ -30,6 +30,7 @@ import styled from 'styled-components';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const StyledBox = styled(Box)(
@@ -59,10 +60,15 @@ const StyledAnchor = styled(`a`)`
 const Wrapper = ({
   authUser,
   currentUser,
+  isFetch,
 }: {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 }) => {
+  if (isFetch) {
+    return <></>;
+  }
   if (!authUser) {
     moveToTop();
     return <></>;
