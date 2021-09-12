@@ -20,6 +20,13 @@ type ParamsType = {
       bodyHtml: string;
       isValid: boolean;
     }[];
+    targetLanguage: number;
+    targetIcon: {
+      id: number;
+      value: string;
+      iconPath: string;
+      ogpPath: string;
+    };
   };
 };
 

@@ -10,7 +10,7 @@ import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { targetLanguages } from '@/consts/target-languages';
 import LayoutPost from '@/layouts/post';
-import { UserTypes } from '@/types/global';
+import { ProgrammingIcon, UserTypes } from '@/types/global';
 import { postContent } from '@/utils/api/post-content';
 import * as S3 from '@/utils/api/s3';
 import { moveToTop } from '@/utils/move-page';
@@ -31,11 +31,7 @@ type Props = {
   currentUser: UserTypes;
   isFetch: boolean;
 };
-type ProgrammingIcon = {
-  id: number;
-  value: string;
-  iconPath: string;
-};
+
 type ButtonText = Readonly<
   '投稿設定' | '編集設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
 >;
@@ -116,6 +112,7 @@ const IndexPage: React.FC<Props> = props => {
     id: 0,
     value: '',
     iconPath: '',
+    ogpPath: '',
   });
   const [activeStep, setActiveStep] = useState(0);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -535,6 +532,7 @@ const IndexPage: React.FC<Props> = props => {
       id: selectObject.id,
       value: selectObject.value,
       iconPath: selectObject.iconPath,
+      ogpPath: selectObject.ogpPath,
     });
   };
 
