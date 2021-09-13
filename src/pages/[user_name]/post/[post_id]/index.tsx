@@ -1,12 +1,12 @@
-import { AcceptReviewIcon } from '@/components/atoms/AcceptReviewIcon';
-import { StopReviewIcon } from '@/components/atoms/StopReviewIcon';
+// import { AcceptReviewIcon } from '@/components/atoms/AcceptReviewIcon';
+// import { StopReviewIcon } from '@/components/atoms/StopReviewIcon';
 import { CommonHead } from '@/components/common/head';
 import { CustomLoader } from '@/components/common/loader';
 import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader';
-import { ACCEPT_REVIEW, STOP_REVIEW } from '@/consts/const';
+// import { ACCEPT_REVIEW, STOP_REVIEW } from '@/consts/const';
 import { useReviews } from '@/hooks/useReviews';
 import Layout from '@/layouts/standard';
 import { useIsReviewAccept } from '@/recoil/hooks/snackbarReviewAccept';
@@ -98,12 +98,14 @@ const initUserProfile = {
 
 const IndexPage: React.FC<Props> = props => {
   const title = props.post ? props.post.contents.title : '';
+  const budget = props.post ? props.post.contents.budget : undefined;
   const postId = props.post ? props.post.sort_key : '';
   const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
   const userProfile = props.currentUser ? props.currentUser.user_profile : null;
   const myUserId = props.currentUser ? props.currentUser.partition_key : '';
   const contributorId = props.post ? props.post.partition_key : '';
   const isMe = myUserId === contributorId;
+  // const isDisplayAnnouncefForBudget = isMe && budget === undefined;
   const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
   const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
   const [postStatusValue, setPostStatusValue] = useState<number>(
@@ -155,20 +157,9 @@ const IndexPage: React.FC<Props> = props => {
         <StyledContainer maxWidth='md'>
           <Box mb={5}>
             <StyledBoxBgWhite>
-              <Box
-                position='relative'
-                component='span'
-                width={110}
-                display='inline-block'
-              >
-                {isChanging ? (
-                  <CustomLoader width={20} height={20} />
-                ) : postStatusValue === ACCEPT_REVIEW ? (
-                  <AcceptReviewIcon />
-                ) : (
-                  postStatusValue === STOP_REVIEW && <StopReviewIcon />
-                )}
-              </Box>
+              {/* {isDisplayAnnouncefForBudget && (
+                <p>編集からレビュー購入時の予算を設定できます。</p>
+              )} */}
               <Box mb={5}>
                 <ReviewRequestItemHeader
                   contents={props.post ? props.post.contents : initContents}
@@ -177,6 +168,7 @@ const IndexPage: React.FC<Props> = props => {
                   }
                   createDate={props.post ? props.post.date : ''}
                   isMe={isMe}
+                  isChanging={isChanging}
                   myUserId={myUserId!}
                   postId={postId}
                   postStatusValue={postStatusValue}

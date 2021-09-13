@@ -1,5 +1,8 @@
 // import { SolidLinkSecondary } from "@/components/atoms/SolidLinkSecondary";
+import { AcceptReviewIcon } from '@/components/atoms/AcceptReviewIcon';
 import { CustomIconButton } from '@/components/atoms/IconButton';
+import { StopReviewIcon } from '@/components/atoms/StopReviewIcon';
+import { CustomLoader } from '@/components/common/loader';
 import { BookmarkButton } from '@/components/molecules/BookmarkButton';
 import { RequestItemTitle } from '@/components/molecules/RequestItemTitle';
 import { RequestItemUser } from '@/components/molecules/RequestItemUser';
@@ -8,7 +11,7 @@ import { ACCEPT_REVIEW, STOP_REVIEW } from '@/consts/const';
 import { errorMessages } from '@/consts/error-messages';
 import { useGetBookmark } from '@/hooks/useGetBookmark';
 import { useIsReviewAccept } from '@/recoil/hooks/snackbarReviewAccept';
-import theme from '@/styles/theme';
+// import theme from '@/styles/theme';
 import { CamelContentTypes, UserProfileTypes } from '@/types/global/';
 import { postBookmark } from '@/utils/api/post-bookmark';
 import { postStatus } from '@/utils/api/post-post-status';
@@ -29,6 +32,7 @@ type Props = {
   profile: UserProfileTypes;
   createDate: string;
   isMe: boolean;
+  isChanging: boolean;
   myUserId: string;
   postId: string;
   postStatusValue: number;
@@ -42,12 +46,18 @@ const StyledBoxTitle = styled(Box)`
     margin-bottom: 0px;
   }
 `;
+const StyledBoxFlex = styled(Box)`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  position: relative;
+`;
 const StyledBoxImgWrapper = styled(Box)`
   margin-right: 0px;
   margin-bottom: 8px;
   display: flex;
   justify-content: center;
-  // border-bottom: 10px solid ${theme.palette.primary.main};
 `;
 const StyledBoxUserWrapper = styled(Box)`
   margin-bottom: 16px;
@@ -65,7 +75,6 @@ const StyledBoxMenuWrapper = styled(Box)`
   text-align: right;
 `;
 const StyledBoxButtonWrapper = styled(Box)`
-  margin-bottom: 24px;
   min-height: 30px;
 `;
 const StyledListItemIcon = styled(ListItemIcon)`
@@ -96,6 +105,22 @@ const ReviewOrderItem = (
         )
       )}
     </MenuItem>
+  );
+};
+
+const ReviewStatusItem = (isChanging: boolean, postStatusValue: number) => {
+  return (
+    <Box position='relative'>
+      {isChanging ? (
+        <Box width={110}>
+          <CustomLoader width={20} height={20} />
+        </Box>
+      ) : postStatusValue === ACCEPT_REVIEW ? (
+        <AcceptReviewIcon />
+      ) : (
+        postStatusValue === STOP_REVIEW && <StopReviewIcon />
+      )}
+    </Box>
   );
 };
 
@@ -164,46 +189,52 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
           {props.myUserId !== '' && (
             <StyledBoxMenuWrapper>
               {props.isMe ? (
-                <StyledBoxButtonWrapper>
-                  <CustomIconButton disableRipple={true} func={handleMenu}>
-                    <IconDot fontSize='small' />
-                  </CustomIconButton>
-                  <Menu
-                    id='menu-appbar'
-                    anchorEl={anchorEl}
-                    getContentAnchorEl={null}
-                    anchorOrigin={{
-                      vertical: 'bottom',
-                      horizontal: 'right',
-                    }}
-                    keepMounted
-                    transformOrigin={{
-                      vertical: 'top',
-                      horizontal: 'right',
-                    }}
-                    open={open}
-                    onClose={handleClose}
-                  >
-                    <MenuItem
-                      onClick={() => toPage(`/post/edit/${nonPrefixPostId}`)}
+                <StyledBoxFlex>
+                  {ReviewStatusItem(props.isChanging, props.postStatusValue)}
+                  <StyledBoxButtonWrapper>
+                    <CustomIconButton disableRipple={true} func={handleMenu}>
+                      <IconDot fontSize='small' />
+                    </CustomIconButton>
+                    <Menu
+                      id='menu-appbar'
+                      anchorEl={anchorEl}
+                      getContentAnchorEl={null}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                      }}
+                      keepMounted
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'right',
+                      }}
+                      open={open}
+                      onClose={handleClose}
                     >
-                      <StyledListItemIcon>
-                        <EditOutlinedIcon fontSize='small' />
-                      </StyledListItemIcon>
-                      <ListItemText secondary='編集' />
-                    </MenuItem>
-                    {ReviewOrderItem(props.postStatusValue, updatePostStatus)}
-                  </Menu>
-                </StyledBoxButtonWrapper>
+                      <MenuItem
+                        onClick={() => toPage(`/post/edit/${nonPrefixPostId}`)}
+                      >
+                        <StyledListItemIcon>
+                          <EditOutlinedIcon fontSize='small' />
+                        </StyledListItemIcon>
+                        <ListItemText secondary='編集' />
+                      </MenuItem>
+                      {ReviewOrderItem(props.postStatusValue, updatePostStatus)}
+                    </Menu>
+                  </StyledBoxButtonWrapper>
+                </StyledBoxFlex>
               ) : (
-                <StyledBoxButtonWrapper>
-                  <BookmarkButton
-                    sizing={'small'}
-                    variant={hasBookmark ? 'contained' : 'outlined'}
-                    color={'primary'}
-                    onClick={() => bookmark()}
-                  />
-                </StyledBoxButtonWrapper>
+                <StyledBoxFlex>
+                  {ReviewStatusItem(props.isChanging, props.postStatusValue)}
+                  <StyledBoxButtonWrapper>
+                    <BookmarkButton
+                      sizing={'small'}
+                      variant={hasBookmark ? 'contained' : 'outlined'}
+                      color={'primary'}
+                      onClick={() => bookmark()}
+                    />
+                  </StyledBoxButtonWrapper>
+                </StyledBoxFlex>
               )}
             </StyledBoxMenuWrapper>
           )}
