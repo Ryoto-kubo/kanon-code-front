@@ -304,6 +304,10 @@ const IndexPage: React.FC<Props> = props => {
   };
 
   const registerContent = async () => {
+    if (!isValidBudget.isValid) {
+      updateCanPublish(false, '正しい予算を設定してください');
+      return;
+    }
     if (programmingIcon.value === '') {
       updateCanPublish(false, 'アイコンを選択してください');
       return;
