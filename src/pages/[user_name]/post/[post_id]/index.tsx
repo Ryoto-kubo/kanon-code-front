@@ -51,6 +51,7 @@ const StyledBoxAnnotation = styled(Box)`
   margin-bottom: 16px;
   font-weight: bold;
   padding: 4px 0;
+  border-radius: 4px;
 `;
 
 const initContents = {
