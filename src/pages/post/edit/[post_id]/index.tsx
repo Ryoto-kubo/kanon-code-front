@@ -35,6 +35,13 @@ type Props = {
   currentUser: UserTypes;
   isFetch: boolean;
 };
+type FileNameType = {
+  key: string;
+  fileName: string;
+  sourceCode: string;
+  bodyHtml: string;
+  isValid: boolean;
+};
 
 type ButtonText = Readonly<
   '投稿設定' | '編集設定' | '下書き保存' | '保存中...' | '保存済み ✔︎'
@@ -215,22 +222,6 @@ const IndexPage: React.FC<Props> = props => {
       ...canPublish,
       isValid: true,
     });
-  };
-
-  const addListsItem = (): void => {
-    setInputFileNameLists([
-      ...inputFileNameLists,
-      {
-        key: uuidv4(),
-        fileName: '',
-        sourceCode: '```\n\n```',
-        bodyHtml: '',
-        isValid: true,
-      },
-    ]);
-    setIsValidFileNameObject(
-      createValidObject(false, validMessages.REQUIRED_FILE_NAME)
-    );
   };
 
   const validExistData = useCallback(() => {
@@ -473,18 +464,52 @@ const IndexPage: React.FC<Props> = props => {
     [activeStep]
   );
 
+  const isValidInputState = useCallback(
+    (newInputFileNameLists: FileNameType[]) => {
+      const inputStateList = newInputFileNameLists.map(
+        el => el.fileName === ''
+      );
+      return inputStateList.length > 0;
+    },
+    [sourceCode, inputFileNameLists]
+  );
+
+  const addListsItem = (): void => {
+    setInputFileNameLists([
+      ...inputFileNameLists,
+      {
+        key: uuidv4(),
+        fileName: '',
+        sourceCode: '```\n\n```',
+        bodyHtml: '',
+        isValid: true,
+      },
+    ]);
+    setIsValidFileNameObject(
+      createValidObject(false, validMessages.REQUIRED_FILE_NAME)
+    );
+  };
+
   const deleteListsItem = useCallback(
     (key: string, index: number): void => {
       const currentLength = inputFileNameLists.length;
-      // 最新のパスを消すかどうかの処理
+      // 最新のインプットタグを消すかどうかの処理
       const shourdSetIndex = index === currentLength - 1 ? index - 1 : index;
       const newLists = inputFileNameLists.filter(el => el.key !== key);
       const currentItem = newLists[shourdSetIndex];
       const sourceCode = currentItem.sourceCode;
       const newInputFileNameLists = newLists.slice();
+      // 現在のインプットタグの入力状況を検証する
+      const isExistsNotInputItem = isValidInputState(newInputFileNameLists);
       setCurrentIndex(shourdSetIndex);
       setSourceCode(sourceCode);
       setInputFileNameLists(newInputFileNameLists);
+      setIsValidFileNameObject(
+        createValidObject(
+          isExistsNotInputItem,
+          isExistsNotInputItem ? validMessages.REQUIRED_FILE_NAME : ''
+        )
+      );
     },
     [sourceCode, inputFileNameLists]
   );
