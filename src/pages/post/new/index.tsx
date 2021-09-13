@@ -7,6 +7,7 @@ import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrap
 import { PostSettingDialog } from '@/components/parts/postSettingDialog';
 import { TreeObjectDialog } from '@/components/parts/treeObjectDialog';
 import * as CONSTS from '@/consts/const';
+import { MAX_PRICE } from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { targetLanguages } from '@/consts/target-languages';
 import LayoutPost from '@/layouts/post';
@@ -30,6 +31,13 @@ type Props = {
   authUser: any;
   currentUser: UserTypes;
   isFetch: boolean;
+};
+type FileNameType = {
+  key: string;
+  fileName: string;
+  sourceCode: string;
+  bodyHtml: string;
+  isValid: boolean;
 };
 
 type ButtonText = Readonly<
@@ -78,6 +86,15 @@ const StyledBoxCordEditorWrapper = styled(Box)`
   }
 `;
 
+const validPrice = (price: number) => {
+  return price > 0 && price <= MAX_PRICE;
+};
+
+const validNumber = (price: string) => {
+  const regExp = new RegExp(/^[0-9]*$/);
+  return regExp.test(price);
+};
+
 const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
     return <></>;
@@ -98,7 +115,7 @@ const IndexPage: React.FC<Props> = props => {
   // const [tagList, setTagList] = useState<string[]>([]);
   const [description, setDescription] = useState('');
   const [sourceCode, setSourceCode] = useState('```\n\n```');
-  const [inputFileNameLists, setInputFileNameLists] = useState([
+  const [inputFileNameLists, setInputFileNameLists] = useState<FileNameType[]>([
     {
       key: uuidv4(),
       fileName: '',
@@ -108,6 +125,7 @@ const IndexPage: React.FC<Props> = props => {
     },
   ]);
   const [targetLanguageValue, setTargetLanguageValue] = useState(0);
+  const [budget, setBudget] = useState(0);
   const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
     id: 0,
     value: '',
@@ -146,6 +164,9 @@ const IndexPage: React.FC<Props> = props => {
     setIsValidSourceCodeObject,
   ] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
+  );
+  const [isValidBudget, setIsValidBudget] = useState<ValidObject>(
+    createValidObject(true, '')
   );
   const [uuid] = useState(uuidv4());
 
@@ -193,6 +214,7 @@ const IndexPage: React.FC<Props> = props => {
         inputFileNameLists: inputFileNameLists,
         targetLanguage: targetLanguageValue,
         targetIcon: programmingIcon,
+        budget: budget,
       },
     };
   };
@@ -202,22 +224,6 @@ const IndexPage: React.FC<Props> = props => {
       ...canPublish,
       isValid: true,
     });
-  };
-
-  const addListsItem = (): void => {
-    setInputFileNameLists([
-      ...inputFileNameLists,
-      {
-        key: uuidv4(),
-        fileName: '',
-        sourceCode: '```\n\n```',
-        bodyHtml: '',
-        isValid: true,
-      },
-    ]);
-    setIsValidFileNameObject(
-      createValidObject(false, validMessages.REQUIRED_FILE_NAME)
-    );
   };
 
   const validExistData = useCallback(() => {
@@ -292,6 +298,10 @@ const IndexPage: React.FC<Props> = props => {
   // }, [title, tagList, description, inputFileNameLists]);
 
   const registerContent = async () => {
+    if (!isValidBudget.isValid) {
+      updateCanPublish(false, '正しい予算を設定してください');
+      return;
+    }
     if (programmingIcon.value === '') {
       updateCanPublish(false, 'アイコンを選択してください');
       return;
@@ -458,15 +468,52 @@ const IndexPage: React.FC<Props> = props => {
     [activeStep]
   );
 
+  const isValidInputState = useCallback(
+    (newInputFileNameLists: FileNameType[]) => {
+      const inputStateList = newInputFileNameLists.map(
+        el => el.fileName === ''
+      );
+      return inputStateList.length > 0;
+    },
+    [sourceCode, inputFileNameLists]
+  );
+
+  const addListsItem = (): void => {
+    setInputFileNameLists([
+      ...inputFileNameLists,
+      {
+        key: uuidv4(),
+        fileName: '',
+        sourceCode: '```\n\n```',
+        bodyHtml: '',
+        isValid: true,
+      },
+    ]);
+    setIsValidFileNameObject(
+      createValidObject(false, validMessages.REQUIRED_FILE_NAME)
+    );
+  };
+
   const deleteListsItem = useCallback(
     (key: string, index: number): void => {
+      const currentLength = inputFileNameLists.length;
+      // 最新のインプットタグを消すかどうかの処理
+      const shourdSetIndex = index === currentLength - 1 ? index - 1 : index;
       const newLists = inputFileNameLists.filter(el => el.key !== key);
-      const currentItem = newLists[index];
+      const currentItem = newLists[shourdSetIndex];
       const sourceCode = currentItem.sourceCode;
       const newInputFileNameLists = newLists.slice();
-      setCurrentIndex(index);
+      // 現在のインプットタグの入力状況を検証する
+      const isExistsNotInputItem = isValidInputState(newInputFileNameLists);
+      setCurrentIndex(shourdSetIndex);
       setSourceCode(sourceCode);
       setInputFileNameLists(newInputFileNameLists);
+      setIsValidFileNameObject(
+        createValidObject(
+          isExistsNotInputItem,
+          isExistsNotInputItem ? validMessages.REQUIRED_FILE_NAME : ''
+        )
+      );
     },
     [sourceCode, inputFileNameLists]
   );
@@ -501,6 +548,39 @@ const IndexPage: React.FC<Props> = props => {
     [sourceCode, inputFileNameLists]
   );
 
+  const onBlurGetLang = useCallback(
+    (index: number) => {
+      const BACK_QUOTE_LENGTH = 3;
+      const currentItem = inputFileNameLists[index];
+      const splitedFileName = currentItem.fileName.split('/');
+      const sourceCode = currentItem.sourceCode;
+      const lastItem = splitedFileName.pop()!;
+      const targetIndex = lastItem.lastIndexOf('.');
+      if (targetIndex === -1) {
+        setCurrentIndex(index);
+        setSourceCode(sourceCode);
+      } else {
+        // 言語が既に入力されていたらファイルネームの言語にリプレイスする
+        let newSourceCode;
+        const newLang = lastItem.substring(targetIndex + 1);
+        const firstCharaLength = sourceCode.search('\n');
+        // 既に入力されている言語を取得
+        const oldLang = sourceCode.slice(BACK_QUOTE_LENGTH, firstCharaLength);
+        if (oldLang === '') {
+          // もし、バッククォートのみの場合はファイルネームの言語を差し込む
+          const backQuote = sourceCode.slice(0, BACK_QUOTE_LENGTH);
+          const restChara = sourceCode.slice(BACK_QUOTE_LENGTH);
+          newSourceCode = `${backQuote}${newLang}${restChara}`;
+        } else {
+          newSourceCode = sourceCode.replace(oldLang, newLang);
+        }
+        setCurrentIndex(index);
+        setSourceCode(newSourceCode);
+      }
+    },
+    [sourceCode, inputFileNameLists]
+  );
+
   const handleTabChange = useCallback(
     (_: React.ChangeEvent<{}>, index: number) => {
       setCurrentIndex(index);
@@ -519,6 +599,23 @@ const IndexPage: React.FC<Props> = props => {
   const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     setTargetLanguageValue(value);
+  };
+
+  const changeBudget = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const isValidNumber = validNumber(event.target.value);
+    if (!isValidNumber) {
+      return;
+    }
+    const value = Number(event.target.value);
+    const isValid = validPrice(value);
+    if (!isValid) {
+      setIsValidBudget(
+        createValidObject(false, validMessages.ZERO_UNDER_OVER_MAX_PRICE)
+      );
+    } else {
+      setIsValidBudget(createValidObject(true, ''));
+    }
+    setBudget(value);
   };
 
   const selectProgrammingIcon = (
@@ -593,7 +690,7 @@ const IndexPage: React.FC<Props> = props => {
                 </Box>
                 <Box className='input-wrapper'>
                   {inputFileNameLists.map((el, index) => (
-                    <StyledBoxInputWrapper mb={1.5} key={el.key}>
+                    <StyledBoxInputWrapper mb={2} key={el.key}>
                       <TextFieldWithCheckBox
                         index={index}
                         listLength={inputFileNameLists.length}
@@ -605,6 +702,7 @@ const IndexPage: React.FC<Props> = props => {
                         onDelete={() => deleteListsItem(el.key, index)}
                         onCnangeFileName={event => cnangeFileName(event, index)}
                         onFocusGetIndex={() => onFocusGetIndex(index)}
+                        onBlurGetLang={() => onBlurGetLang(index)}
                       />
                     </StyledBoxInputWrapper>
                   ))}
@@ -639,14 +737,17 @@ const IndexPage: React.FC<Props> = props => {
         title='PostSetting'
         isSuccessed={isSuccessed}
         isOpenDialog={isOpenDialog}
+        isValidBudget={isValidBudget}
         closeDialog={closeDialog}
         contentsTitle={title}
         postId={postId}
         displayName={props.currentUser!.user_profile.display_name}
         targetLanguages={targetLanguages}
         targetLanguageValue={targetLanguageValue}
+        budget={budget}
         programmingIcon={programmingIcon}
         selectTargetLanguage={selectTargetLanguage}
+        changeBudget={changeBudget}
         selectProgrammingIcon={selectProgrammingIcon}
         registerContent={registerContent}
       />

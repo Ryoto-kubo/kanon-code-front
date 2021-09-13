@@ -1,4 +1,3 @@
-import { Budget } from '@/components/atoms/Budget';
 import { CircleElement } from '@/components/atoms/Circle';
 import { ParagraphText } from '@/components/atoms/ParagraphText';
 import theme from '@/styles/theme';
@@ -10,7 +9,6 @@ import styled from 'styled-components';
 type Props = {
   name: string;
   date: string;
-  budget: number | undefined;
   userIcon: string;
   width?: string;
   height?: string;
@@ -23,7 +21,7 @@ const StyledAnchor = styled(`a`)`
     text-decoration: underline;
   }
 `;
-export const RequestItemUser: React.FC<Props> = React.memo(props => {
+export const ReviewUser: React.FC<Props> = React.memo(props => {
   return (
     <Box display='flex' alignItems='center'>
       <CircleElement width={`${props.width}`} height={`${props.height}`}>
@@ -46,14 +44,9 @@ export const RequestItemUser: React.FC<Props> = React.memo(props => {
             <Box component='p'>{props.name}</Box>
           </StyledAnchor>
         </Link>
-        <Box display='flex' alignItems='center'>
-          <Box mr={1}>
-            <ParagraphText variant='body2' component='p' color='textSecondary'>
-              {props.date}
-            </ParagraphText>
-          </Box>
-          <Budget budget={props.budget} />
-        </Box>
+        <ParagraphText variant='body2' component='p' color='textSecondary'>
+          {props.date}
+        </ParagraphText>
       </Box>
     </Box>
   );

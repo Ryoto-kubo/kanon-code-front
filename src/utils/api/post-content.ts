@@ -27,6 +27,7 @@ type ParamsType = {
       iconPath: string;
       ogpPath: string;
     };
+    budget: number;
   };
 };
 

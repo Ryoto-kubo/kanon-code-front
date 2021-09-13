@@ -48,5 +48,5 @@ export const validMessages = {
   OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.MAX_FILE_NAME_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.MAX_SOURCE_CODE_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_PRICE: `${CONSTS.MAX_PRICE_LENGTH}桁以下の数値を入力してください`,
-  ZERO_UNDER_OVER_MAX_PRICE: '¥0~¥100,000以上の金額を入力してください',
+  ZERO_UNDER_OVER_MAX_PRICE: '¥0~¥100,000以内の金額を入力してください',
 };

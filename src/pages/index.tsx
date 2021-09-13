@@ -66,6 +66,7 @@ const IndexPage: React.FC<Props> = props => {
                   <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                     <Post
                       title={el.contents.title}
+                      budget={el.contents.budget}
                       postUrl={el.post_url}
                       iconPath={el.contents.target_icon.icon_path}
                       name={el.user_profile.display_name}
@@ -91,6 +92,7 @@ const IndexPage: React.FC<Props> = props => {
                   <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                     <Post
                       title={el.contents.title}
+                      budget={el.contents.budget}
                       postUrl={el.post_url}
                       iconPath={el.contents.target_icon.icon_path}
                       name={el.user_profile.display_name}
@@ -116,6 +118,7 @@ const IndexPage: React.FC<Props> = props => {
                   <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                     <Post
                       title={el.contents.title}
+                      budget={el.contents.budget}
                       postUrl={el.post_url}
                       iconPath={el.contents.target_icon.icon_path}
                       name={el.user_profile.display_name}

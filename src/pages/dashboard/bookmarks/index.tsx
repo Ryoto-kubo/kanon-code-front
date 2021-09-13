@@ -57,6 +57,7 @@ const IndexPage: React.FC<Props> = props => {
               <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                 <Post
                   title={item.posted_contents.title}
+                  budget={item.posted_contents.budget}
                   postUrl={item.url}
                   iconPath={item.posted_contents.target_icon.icon_path}
                   name={item.user_profile.display_name}
