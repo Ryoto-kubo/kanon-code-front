@@ -2,6 +2,7 @@ import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
 import { BaseTextField } from '@/components/atoms/TextField';
 import { ValidMessage } from '@/components/molecules/ValidMessage';
 import { PROGRAMMING_ICONS } from '@/consts/programming-icons';
+import { ProgrammingIcon } from '@/types/global';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -19,16 +20,7 @@ import { TwitterIcon, TwitterShareButton } from 'next-share';
 import React from 'react';
 import styled from 'styled-components';
 
-type ProgrammingIcon = {
-  id: number;
-  value: string;
-  iconPath: string;
-};
-type ProgrammingIcons = {
-  id: number;
-  value: string;
-  iconPath: string;
-}[];
+type ProgrammingIcons = ProgrammingIcon[];
 type ValidObject = {
   isValid: boolean;
   message: string;

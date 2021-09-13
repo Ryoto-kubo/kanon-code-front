@@ -16,6 +16,7 @@ import CreditSvg from '../../../assets/illustration/credit.svg';
 type Props = {
   authUser: any;
   currentUser: UserTypes;
+  isFetch: boolean;
 };
 
 const StyledPairCreditSvg = styled(CreditSvg)`
@@ -29,6 +30,9 @@ const StyledPairCreditSvg = styled(CreditSvg)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  if (props.isFetch) {
+    return <></>;
+  }
   if (!props.authUser) {
     moveToTop();
     return <></>;

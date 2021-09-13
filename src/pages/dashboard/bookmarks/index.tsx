@@ -14,10 +14,14 @@ import { v4 as uuidv4 } from 'uuid';
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
+  isFetch: boolean;
 };
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser || !props.currentUser) {
+  if (props.isFetch) {
+    return <></>;
+  }
+  if (!props.authUser) {
     moveToTop();
     return <></>;
   }

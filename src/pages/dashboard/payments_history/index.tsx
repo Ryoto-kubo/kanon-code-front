@@ -13,6 +13,7 @@ import styled from 'styled-components';
 type Props = {
   authUser: any;
   currentUser: UserTypes | null;
+  isFetch: boolean;
 };
 
 const StyledBoxWrapper = styled(Box)`
@@ -24,7 +25,10 @@ const StyledBoxWrapper = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  if (!props.authUser || !props.currentUser) {
+  if (props.isFetch) {
+    return <></>;
+  }
+  if (!props.authUser) {
     moveToTop();
     return <></>;
   }

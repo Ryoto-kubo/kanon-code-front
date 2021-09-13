@@ -99,13 +99,16 @@ export type ContentTypes = {
   title: string;
 };
 
+export type ProgrammingIcon = {
+  id: number;
+  value: string;
+  iconPath: string;
+  ogpPath: string;
+};
+
 export type CamelContentTypes = {
   tagList: string[];
-  targetIcon: {
-    iconPath: string;
-    id: number;
-    value: string;
-  };
+  targetIcon: ProgrammingIcon;
   description: {
     bodyHtml: string;
     value: string;

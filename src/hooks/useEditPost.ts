@@ -1,13 +1,9 @@
 import { errorMessages, validMessages } from '@/consts/error-messages';
+import { ProgrammingIcon } from '@/types/global';
 import { getContent } from '@/utils/api/get-content';
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-type ProgrammingIcon = {
-  id: number;
-  value: string;
-  iconPath: string;
-};
 type ValidObject = {
   isValid: boolean;
   message: string;
@@ -61,6 +57,7 @@ export const useEditPost = (postId: string) => {
     id: 0,
     value: '',
     iconPath: '',
+    ogpPath: '',
   });
   const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_TITLE)
@@ -68,23 +65,30 @@ export const useEditPost = (postId: string) => {
   const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_TAGS)
   );
-  const [isValidDescriptionObject, setIsValidDescriptionObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_DESCRIPTION));
-  const [isValidFileNameObject, setIsValidFileNameObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_FILE_NAME));
-  const [isValidSourceCodeObject, setIsValidSourceCodeObject] = useState<
-    ValidObject
-  >(createValidObject(false, validMessages.REQUIRED_SOURCE_CODE));
+  const [
+    isValidDescriptionObject,
+    setIsValidDescriptionObject,
+  ] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_DESCRIPTION)
+  );
+  const [
+    isValidFileNameObject,
+    setIsValidFileNameObject,
+  ] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_FILE_NAME)
+  );
+  const [
+    isValidSourceCodeObject,
+    setIsValidSourceCodeObject,
+  ] = useState<ValidObject>(
+    createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
+  );
 
   useEffect(() => {
     (async () => {
       try {
         const result = await getContent({ postId });
         const post = result.data.post;
-        console.log(post, 'post');
-
         setAurhorId(getAuthorId(post.partition_key));
         setKeys({
           ...keys,

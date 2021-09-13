@@ -1,5 +1,6 @@
 import { AcceptReviewIcon } from '@/components/atoms/AcceptReviewIcon';
 import { StopReviewIcon } from '@/components/atoms/StopReviewIcon';
+import { CommonHead } from '@/components/common/head';
 import { CustomLoader } from '@/components/common/loader';
 import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
@@ -20,7 +21,8 @@ import styled from 'styled-components';
 
 type Props = {
   authUser: any;
-  currentUser: UserTypes | null;
+  currentUser: UserTypes;
+  isFetch: boolean;
   post: GetContentTypes;
 };
 
@@ -44,19 +46,67 @@ const StyledContainer = styled(Container)`
   padding-bottom: 48px;
 `;
 
+const initContents = {
+  tagList: [''],
+  targetIcon: {
+    id: 0,
+    value: '',
+    iconPath: '',
+    ogpPath: '',
+  },
+  description: {
+    bodyHtml: '',
+    value: '',
+  },
+  inputFileNameLists: [
+    {
+      bodyHtml: '',
+      fileName: '',
+      isValid: true,
+      key: '',
+      sourceCode: '',
+    },
+  ],
+  targetLanguage: 0,
+  source_tree: [
+    {
+      id: '',
+      name: '',
+    },
+  ],
+  node_ids: [''],
+  title: '',
+};
+
+const initUserProfile = {
+  display_name: '',
+  github_name: '',
+  icon_src: '',
+  introduction: '',
+  position_type: 0,
+  price: 0,
+  skils: [
+    {
+      language: '',
+      years_experiences: 0,
+    },
+  ],
+  twitter_name: '',
+  web_site: '',
+};
+
 const IndexPage: React.FC<Props> = props => {
-  const post = props.post;
-  const contents = props.post.contents;
-  const title = contents.title;
-  const postId = post.sort_key;
+  const title = props.post ? props.post.contents.title : '';
+  const postId = props.post ? props.post.sort_key : '';
+  const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
   const userProfile = props.currentUser ? props.currentUser.user_profile : null;
   const myUserId = props.currentUser ? props.currentUser.partition_key : '';
-  const contributorId = post.partition_key;
+  const contributorId = props.post ? props.post.partition_key : '';
   const isMe = myUserId === contributorId;
   const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
   const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
   const [postStatusValue, setPostStatusValue] = useState<number>(
-    post.post_status
+    props.post ? props.post.post_status : 0
   );
   const [isChanging, setIsChanging] = useState<boolean>(false);
 
@@ -83,8 +133,23 @@ const IndexPage: React.FC<Props> = props => {
     setReviews(newReviews);
   };
 
-  return (
+  return props.isFetch ? (
+    <>
+      <CustomLoader />
+      <CommonHead
+        title={`Kanon Code | ${title}`}
+        description={props.post ? props.post.contents.description.value : ''}
+        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
+      />
+    </>
+  ) : (
+    // return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
+      <CommonHead
+        title={`Kanon Code | ${title}`}
+        description={props.post ? props.post.contents.description.value : ''}
+        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
+      />
       <StyledBoxBgGray>
         <StyledContainer maxWidth='md'>
           <Box mb={5}>
@@ -105,9 +170,11 @@ const IndexPage: React.FC<Props> = props => {
               </Box>
               <Box mb={5}>
                 <ReviewRequestItemHeader
-                  contents={contents}
-                  profile={post.user_profile}
-                  createDate={post.date}
+                  contents={props.post ? props.post.contents : initContents}
+                  profile={
+                    props.post ? props.post.user_profile : initUserProfile
+                  }
+                  createDate={props.post ? props.post.date : ''}
                   isMe={isMe}
                   myUserId={myUserId!}
                   postId={postId}
@@ -117,7 +184,9 @@ const IndexPage: React.FC<Props> = props => {
                 />
               </Box>
               <Box mb={0}>
-                <ReviewRequestContents contents={contents} />
+                <ReviewRequestContents
+                  contents={props.post ? props.post.contents : initContents}
+                />
               </Box>
             </StyledBoxBgWhite>
           </Box>
@@ -169,7 +238,7 @@ const IndexPage: React.FC<Props> = props => {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: true,
+    fallback: 'blocking',
   };
 };
 
@@ -183,27 +252,5 @@ export const getStaticProps = async (props: any) => {
     revalidate: 30,
   };
 };
-
-// paramsには上記pathsで指定した値が入る（1postずつ）
-// export const getInitialProps = async (context: any) => {
-//   const postId = context.params.post_id;
-//   const result = await getContent({ postId: postId });
-//   return {
-//     props: {
-//       data: result.data.Items[0],
-//     },
-//   };
-// };
-
-// export const getServerSideProps = async (context: any) => {
-//   const postId = context.query.post_id;
-//   const result = await getContent({ postId: postId });
-//   return {
-//     props: {
-//       post: result.data.post,
-//       // data: result.data.Items[0],
-//     },
-//   };
-// };
 
 export default IndexPage;

@@ -7,6 +7,7 @@ import { SigninDialog } from '@/components/parts/signinDialog';
 import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import { UserTypes } from '@/types/global';
 import Box from '@material-ui/core/Box';
+// import Head from 'next/head';
 import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
@@ -20,14 +21,11 @@ const StyleBoxMain = styled(Box)`
   background: #ffffff;
 `;
 
-const Layout: React.FC<Props> = ({ children, title, currentUser }) => {
-  console.log(title);
-
+const Layout: React.FC<Props> = ({ children, currentUser }) => {
   const displayName = currentUser?.user_profile.display_name;
   const { isOpenSignin, setIsOpenSignin } = useIsOpenSignin();
   return (
     <>
-      {/* <CommonHead title={title} /> */}
       {displayName === '' ? (
         <TheRegisterHeader />
       ) : currentUser ? (
