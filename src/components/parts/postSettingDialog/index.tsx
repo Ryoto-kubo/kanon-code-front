@@ -2,6 +2,7 @@ import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
 import { BaseTextField } from '@/components/atoms/TextField';
 import { ValidMessage } from '@/components/molecules/ValidMessage';
 import { PROGRAMMING_ICONS } from '@/consts/programming-icons';
+import theme from '@/styles/theme';
 import { ProgrammingIcon } from '@/types/global';
 import { Player } from '@lottiefiles/react-lottie-player';
 import Box from '@material-ui/core/Box';
@@ -104,6 +105,11 @@ const StyledBoxMessageWrapper = styled(Box)`
   font-weight: bold;
   margin-bottom: 8px;
 `;
+const StyledBoxAnnotation = styled(Box)`
+  text-align: center;
+  padding: 0 4px 4px 4px;
+  color: ${theme.palette.secondary.main};
+`;
 
 export const PostSettingDialog: React.FC<Props> = props => {
   const SUCCESS_ANIMATION_SRC =
@@ -135,7 +141,7 @@ export const PostSettingDialog: React.FC<Props> = props => {
             <StyledBoxMessageWrapper>
               <Box>レビューを投稿しました！</Box>
             </StyledBoxMessageWrapper>
-            <Box textAlign='center'>
+            <Box textAlign='center' mb={2}>
               <TwitterShareButton
                 url={`${process.env.NEXT_PUBLIC_HOST}/${props.displayName}/post/${props.postId}`}
                 title={props.contentsTitle}
@@ -144,6 +150,9 @@ export const PostSettingDialog: React.FC<Props> = props => {
                 <TwitterIcon size={32} round />
               </TwitterShareButton>
             </Box>
+            <StyledBoxAnnotation>
+              トップ画面の反映には少し時間がかかります。
+            </StyledBoxAnnotation>
           </StyledBoxAbsolute>
         </Box>
       ) : (
