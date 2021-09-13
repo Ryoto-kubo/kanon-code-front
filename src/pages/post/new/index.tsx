@@ -207,6 +207,7 @@ const IndexPage: React.FC<Props> = props => {
         inputFileNameLists: inputFileNameLists,
         targetLanguage: targetLanguageValue,
         targetIcon: programmingIcon,
+        budget: budget,
       },
     };
   };
@@ -710,8 +711,7 @@ const IndexPage: React.FC<Props> = props => {
       <PostSettingDialog
         title='PostSetting'
         isSuccessed={isSuccessed}
-        isOpenDialog={true}
-        // isOpenDialog={isOpenDialog}
+        isOpenDialog={isOpenDialog}
         isValidBudget={isValidBudget}
         closeDialog={closeDialog}
         contentsTitle={title}

@@ -76,6 +76,7 @@ const initContents = {
   ],
   node_ids: [''],
   title: '',
+  budget: 0,
 };
 
 const initUserProfile = {
@@ -238,7 +239,7 @@ const IndexPage: React.FC<Props> = props => {
 export const getStaticPaths = async () => {
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 

@@ -12,6 +12,7 @@ import { StopReviewIcon } from '../atoms/StopReviewIcon';
 
 interface Props {
   title: string;
+  budget: number;
   postUrl: string;
   iconPath: string;
   name: string;
@@ -53,7 +54,9 @@ export const Post: React.FC<Props> = props => {
       <StyledBoxWraper>
         <StyledBoxBudget>
           <MonetizationOnOutlinedIcon fontSize='small' />
-          <Box ml={0.5}>~¥3000</Box>
+          <Box ml={0.5}>
+            {props.budget ? `~¥${props.budget}` : '予算未設定'}
+          </Box>
         </StyledBoxBudget>
         <Box textAlign='right' mb={1}>
           {props.postStatus === ACCEPT_REVIEW ? (
