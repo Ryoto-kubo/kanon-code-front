@@ -35,6 +35,7 @@ type Props = {
   isChanging: boolean;
   myUserId: string;
   postId: string;
+  budget: number | undefined;
   postStatusValue: number;
   setPostStatusValue: React.Dispatch<React.SetStateAction<number>>;
   setIsChanging: React.Dispatch<React.SetStateAction<boolean>>;
@@ -254,6 +255,7 @@ export const ReviewRequestItemHeader: React.FC<Props> = props => {
             <RequestItemUser
               name={name}
               date={props.createDate}
+              budget={props.budget}
               userIcon={userIcon}
               width={'32px'}
               height={'32px'}

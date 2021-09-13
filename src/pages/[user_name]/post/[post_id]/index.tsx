@@ -98,7 +98,7 @@ const initUserProfile = {
 
 const IndexPage: React.FC<Props> = props => {
   const title = props.post ? props.post.contents.title : '';
-  // const budget = props.post ? props.post.contents.budget : undefined;
+  const budget = props.post ? props.post.contents.budget : undefined;
   const postId = props.post ? props.post.sort_key : '';
   const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
   const userProfile = props.currentUser ? props.currentUser.user_profile : null;
@@ -171,6 +171,7 @@ const IndexPage: React.FC<Props> = props => {
                   isChanging={isChanging}
                   myUserId={myUserId!}
                   postId={postId}
+                  budget={budget}
                   postStatusValue={postStatusValue}
                   setPostStatusValue={setPostStatusValue}
                   setIsChanging={setIsChanging}

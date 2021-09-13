@@ -1,9 +1,8 @@
+import { Budget } from '@/components/atoms/Budget';
 import { CircleElement } from '@/components/atoms/Circle';
 import { ParagraphText } from '@/components/atoms/ParagraphText';
 import theme from '@/styles/theme';
 import { Box } from '@material-ui/core/';
-import { alpha } from '@material-ui/core/styles';
-import MonetizationOnOutlinedIcon from '@material-ui/icons/MonetizationOnOutlined';
 import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
@@ -26,16 +25,6 @@ const StyledAnchor = styled(`a`)`
 `;
 const StyledBoxNameWrapper = styled(Box)`
   word-break: break-all;
-`;
-const StyledBoxBudget = styled(Box)`
-  color: ${theme.palette.primary.main};
-  background: ${alpha(theme.palette.primary.main, 0.1)};
-  border-radius: 4px 0 4px 0;
-  padding: 2px 5px;
-  font-weight: bold;
-  font-size: 12px;
-  display: flex;
-  align-items: center;
 `;
 
 export const PostFooter: React.FC<Props> = props => {
@@ -67,12 +56,7 @@ export const PostFooter: React.FC<Props> = props => {
               {props.date}
             </ParagraphText>
           </Box>
-          <StyledBoxBudget>
-            <MonetizationOnOutlinedIcon style={{ fontSize: 17 }} />
-            <Box ml={0.5}>
-              {props.budget ? `~¥${props.budget}` : '予算未設定'}
-            </Box>
-          </StyledBoxBudget>
+          <Budget budget={props.budget} />
         </Box>
       </Box>
     </Box>
