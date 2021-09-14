@@ -154,7 +154,6 @@ const IndexPage: React.FC<Props> = props => {
       />
     </>
   ) : (
-    // return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <CommonHead
         title={`Kanon Code | ${title}`}
