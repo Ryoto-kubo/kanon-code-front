@@ -34,6 +34,14 @@
       text-decoration-color: #5c6bc0;
     }
   }
+  blockquote {
+    font-size: 14px;
+    font-style: italic;
+    margin: 1.4rem 0;
+    border-left: 3px solid #b3bfc7;
+    padding: 2px 0 2px 0.7em;
+    color: #626e77;
+  }
 }
 
 pre {
@@ -41,7 +49,7 @@ pre {
   border-radius: 3px;
   padding: 16px;
   overflow-x: auto;
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier,
+  font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier,
     monospace;
   code {
     color: #ffffff;
@@ -51,15 +59,20 @@ pre {
         color: #4ec9b0;
       }
     }
-    // .hljs-keyword {
-    //   color: #c485bf;
-    // }
   }
 }
 
 .post-item-wrapper {
   pre {
     margin: 1.3rem 0;
+  }
+  blockquote {
+    font-size: 14px;
+    font-style: italic;
+    margin: 1.4rem 0;
+    border-left: 3px solid #b3bfc7;
+    padding: 2px 0 2px 0.7em;
+    color: #626e77;
   }
 }
 .request-item-wrapper {
