@@ -1,5 +1,5 @@
-// import { CommonHead } from '@/components/common/head';
 import { CommonHead } from '@/components/common/head';
+import { CustomLoader } from '@/components/common/loader';
 import { ProfileArea } from '@/components/organisms/ProfileArea';
 import { Reviews } from '@/components/organisms/Reviews';
 import { SkilsArea } from '@/components/organisms/SkilsArea';
@@ -38,10 +38,20 @@ const IndexPage: React.FC<Props> = props => {
   const reviews = props.data ? props.data.reviews : [];
   const displayName = userProfile ? userProfile.display_name : undefined;
   const userId = props.data ? props.data.user.userId : undefined;
-  const cognitoId = props.authUser ? props.authUser.username : undefined;
+  const cognitoId = props.authUser
+    ? props.authUser['cognito:username']
+    : undefined;
   const isMe = cognitoId === userId;
-
-  return (
+  return props.isFetch ? (
+    <>
+      <CustomLoader />
+      <CommonHead
+        title={`Kanon Code | ${displayName}`}
+        description={`${displayName}のマイページ`}
+        image={`${userProfile?.icon_src}`}
+      />
+    </>
+  ) : (
     <Layout
       title={`Kanon Code | ${displayName}`}
       currentUser={props.currentUser}

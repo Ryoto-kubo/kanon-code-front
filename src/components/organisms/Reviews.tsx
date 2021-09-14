@@ -73,60 +73,68 @@ export const Reviews: React.FC<Props> = props => {
       </Box>
       <TabPanel value={value} index={0}>
         <Box mb={4}>
-          <Grid spacing={3} container>
-            {props.posts.length === 0 ? (
-              <NonWorkingIllustration marginBottom={2}>
-                <SolidLink href='/post/new' borderRadius={4}>
-                  レビューを依頼する
-                </SolidLink>
-              </NonWorkingIllustration>
-            ) : (
-              props.posts.map((el: PostsTypes) => (
-                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                  <Post
-                    title={el.posted_contents.title}
-                    budget={el.posted_contents.budget}
-                    postUrl={el.url}
-                    iconPath={el.posted_contents.target_icon.icon_path}
-                    name={el.user_profile.display_name}
-                    date={el.date}
-                    tagArray={el.posted_contents.tag_list}
-                    userIcon={el.user_profile.icon_src}
-                    postStatus={el.post_status}
-                  />
-                </Grid>
-              ))
-            )}
-          </Grid>
+          {props.posts.length === 0 && !props.isMe ? (
+            <p>まだレビュー依頼が投稿されていません。</p>
+          ) : (
+            <Grid spacing={3} container>
+              {props.posts.length === 0
+                ? props.isMe && (
+                    <NonWorkingIllustration marginBottom={2}>
+                      <SolidLink href='/post/new' borderRadius={4}>
+                        レビューを依頼する
+                      </SolidLink>
+                    </NonWorkingIllustration>
+                  )
+                : props.posts.map((el: PostsTypes) => (
+                    <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                      <Post
+                        title={el.posted_contents.title}
+                        budget={el.posted_contents.budget}
+                        postUrl={el.url}
+                        iconPath={el.posted_contents.target_icon.icon_path}
+                        name={el.user_profile.display_name}
+                        date={el.date}
+                        tagArray={el.posted_contents.tag_list}
+                        userIcon={el.user_profile.icon_src}
+                        postStatus={el.post_status}
+                      />
+                    </Grid>
+                  ))}
+            </Grid>
+          )}
         </Box>
       </TabPanel>
       <TabPanel value={value} index={1}>
         <Box mb={4}>
-          <Grid spacing={3} container>
-            {props.reviews.length === 0 ? (
-              <NonArticleIllustration marginBottom={2}>
-                <SolidLink href='/' borderRadius={4}>
-                  投稿を探しにいく！
-                </SolidLink>
-              </NonArticleIllustration>
-            ) : (
-              props.reviews.map((el: ReviewsTypes) => (
-                <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                  <Post
-                    title={el.posted_contents.title}
-                    budget={el.posted_contents.budget}
-                    postUrl={el.url}
-                    iconPath={el.posted_contents.target_icon.icon_path}
-                    name={el.posted_user_profile.display_name}
-                    date={el.date}
-                    tagArray={el.posted_contents.tag_list}
-                    userIcon={el.posted_user_profile.icon_src}
-                    postStatus={el.post_status}
-                  />
-                </Grid>
-              ))
-            )}
-          </Grid>
+          {props.reviews.length === 0 && !props.isMe ? (
+            <p>まだレビューを行っていません。</p>
+          ) : (
+            <Grid spacing={3} container>
+              {props.reviews.length === 0
+                ? props.isMe && (
+                    <NonArticleIllustration marginBottom={2}>
+                      <SolidLink href='/' borderRadius={4}>
+                        投稿を探しにいく！
+                      </SolidLink>
+                    </NonArticleIllustration>
+                  )
+                : props.reviews.map((el: ReviewsTypes) => (
+                    <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                      <Post
+                        title={el.posted_contents.title}
+                        budget={el.posted_contents.budget}
+                        postUrl={el.url}
+                        iconPath={el.posted_contents.target_icon.icon_path}
+                        name={el.posted_user_profile.display_name}
+                        date={el.date}
+                        tagArray={el.posted_contents.tag_list}
+                        userIcon={el.posted_user_profile.icon_src}
+                        postStatus={el.post_status}
+                      />
+                    </Grid>
+                  ))}
+            </Grid>
+          )}
         </Box>
       </TabPanel>
     </>

@@ -1,5 +1,4 @@
 // import { SolidLink } from "@/components/atoms/SolidLink";
-import { SolidLinkSecondary } from '@/components/atoms/SolidLinkSecondary';
 import { UserImgIcon } from '@/components/atoms/UserImgIcon';
 import { WhiteOutLink } from '@/components/atoms/WhiteOutLink';
 import { UserLinks } from '@/components/organisms/UserLinks';
@@ -124,14 +123,9 @@ export const ProfileArea: React.FC<Props> = props => {
               <StyledBoxUserName>{props.displayName}</StyledBoxUserName>
             </StyledBoxFlexDirection>
           </StyledBoxUserDescription>
-          {props.cognitoId &&
-            (props.isMe ? (
-              <WhiteOutLink href='/settings/profile'>Edit profile</WhiteOutLink>
-            ) : (
-              <SolidLinkSecondary href='/settings/profile' borderRadius={4}>
-                レビューリクエスト
-              </SolidLinkSecondary>
-            ))}
+          {props.cognitoId && props.isMe && (
+            <WhiteOutLink href='/settings/profile'>Edit profile</WhiteOutLink>
+          )}
         </StyledBoxUserProfile>
       </StyledBoxProfileArea>
       <StyledBoxIntroduction>{props.introduction}</StyledBoxIntroduction>
