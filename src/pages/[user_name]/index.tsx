@@ -36,7 +36,7 @@ const IndexPage: React.FC<Props> = props => {
   const userProfile = props.data ? props.data.user.profile : undefined;
   const posts = props.data ? props.data.posts : [];
   const reviews = props.data ? props.data.reviews : [];
-  const displayName = userProfile ? userProfile.display_name : undefined;
+  const displayName = userProfile ? userProfile.display_name : '';
   const userId = props.data ? props.data.user.userId : undefined;
   const cognitoId = props.authUser
     ? props.authUser['cognito:username']
