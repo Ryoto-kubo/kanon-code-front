@@ -218,7 +218,7 @@ const Wrapper: React.FC<Props> = ({
             />
           </div>
         </Box>
-        {(isSelfReviewItem || isPaymented) && (
+        {(isPaymented || isPaymentFree) && (
           <Reaction
             sortKey={sortKey}
             postId={postId}
