@@ -10,6 +10,7 @@ import { StopReviewIcon } from '../atoms/StopReviewIcon';
 
 interface Props {
   title: string;
+  budget: number;
   postUrl: string;
   iconPath: string;
   name: string;
@@ -21,6 +22,7 @@ interface Props {
 
 const StyledPaper = styled(Paper)`
   height: 100%;
+  position: relative;
 `;
 const StyledBoxWraper = styled(Box)`
   min-height: 175px;
@@ -60,6 +62,7 @@ export const Post: React.FC<Props> = props => {
             <PostFooter
               name={props.name}
               date={props.date}
+              budget={props.budget}
               userIcon={props.userIcon}
               width={'40px'}
               height={'40px'}

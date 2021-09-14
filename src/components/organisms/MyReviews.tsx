@@ -107,6 +107,7 @@ export const MyReviews: React.FC<Props> = props => {
                 <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                   <Post
                     title={post.posted_contents.title}
+                    budget={post.posted_contents.budget}
                     postUrl={post.url}
                     iconPath={post.posted_contents.target_icon.icon_path}
                     name={post.user_profile.display_name}
@@ -136,6 +137,7 @@ export const MyReviews: React.FC<Props> = props => {
                   <Post
                     key={uuidv4()}
                     title={review.posted_contents.title}
+                    budget={review.posted_contents.budget}
                     postUrl={review.url}
                     iconPath={review.posted_contents.target_icon.icon_path}
                     name={review.posted_user_profile.display_name}
@@ -157,6 +159,7 @@ export const MyReviews: React.FC<Props> = props => {
               <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
                 <Post
                   title={post.posted_contents.title}
+                  budget={post.posted_contents.budget}
                   postUrl={post.url}
                   iconPath={post.posted_contents.target_icon.icon_path}
                   name={post.user_profile.display_name}

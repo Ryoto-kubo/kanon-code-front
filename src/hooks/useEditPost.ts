@@ -53,6 +53,7 @@ export const useEditPost = (postId: string) => {
     },
   ]);
   const [targetLanguageValue, setTargetLanguageValue] = useState(0);
+  const [budget, setBudget] = useState(0);
   const [programmingIcon, setProgrammingIcon] = useState<ProgrammingIcon>({
     id: 0,
     value: '',
@@ -83,6 +84,9 @@ export const useEditPost = (postId: string) => {
   ] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
   );
+  const [isValidBudget, setIsValidBudget] = useState<ValidObject>(
+    createValidObject(false, validMessages.ZERO_UNDER_OVER_MAX_PRICE)
+  );
 
   useEffect(() => {
     (async () => {
@@ -105,6 +109,7 @@ export const useEditPost = (postId: string) => {
         setSourceCode(post.contents.inputFileNameLists[0].sourceCode);
         setInputFileNameLists(post.contents.inputFileNameLists);
         setTargetLanguageValue(post.contents.targetLanguage);
+        setBudget(post.contents.budget);
         setProgrammingIcon(post.contents.targetIcon);
         setIsValidTitleObject({
           ...isValidTitleObject,
@@ -144,6 +149,14 @@ export const useEditPost = (postId: string) => {
               ? ''
               : validMessages.REQUIRED_SOURCE_CODE,
         });
+        setIsValidBudget({
+          ...isValidBudget,
+          isValid: post.contents.budget > 0,
+          message:
+            post.contents.budget > 0
+              ? ''
+              : validMessages.ZERO_UNDER_OVER_MAX_PRICE,
+        });
 
         setIsLoading(false);
       } catch (error) {
@@ -173,6 +186,8 @@ export const useEditPost = (postId: string) => {
     setInputFileNameLists,
     targetLanguageValue,
     setTargetLanguageValue,
+    budget,
+    setBudget,
     programmingIcon,
     setProgrammingIcon,
     isValidTitleObject,
@@ -185,5 +200,7 @@ export const useEditPost = (postId: string) => {
     setIsValidFileNameObject,
     isValidSourceCodeObject,
     setIsValidSourceCodeObject,
+    isValidBudget,
+    setIsValidBudget,
   };
 };

@@ -2,7 +2,7 @@ import { Price } from '@/components/atoms/Price';
 import { ErrorView } from '@/components/common/error';
 import { CustomLoader } from '@/components/common/loader';
 import { AnnounceOpenReview } from '@/components/molecules/AnnounceOpenReview';
-import { RequestItemUser } from '@/components/molecules/RequestItemUser';
+import { ReviewUser } from '@/components/molecules/ReviewUser';
 import { RightBorderTitle } from '@/components/molecules/RightBorderTitle';
 import { RelaxIllustration } from '@/components/parts/illustrations/relax';
 import { PaymentDialog } from '@/components/parts/paymentDialog';
@@ -188,7 +188,7 @@ const Wrapper: React.FC<Props> = ({
     return (
       <Box key={index} component='section' mb={7}>
         <StyledBoxFlex mb={2}>
-          <RequestItemUser
+          <ReviewUser
             name={name}
             date={date}
             userIcon={iconSrc}
@@ -218,7 +218,7 @@ const Wrapper: React.FC<Props> = ({
             />
           </div>
         </Box>
-        {(isSelfReviewItem || isPaymented) && (
+        {(isPaymented || isPaymentFree) && (
           <Reaction
             sortKey={sortKey}
             postId={postId}

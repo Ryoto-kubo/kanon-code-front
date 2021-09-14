@@ -97,6 +97,7 @@ export type ContentTypes = {
   source_tree: SourceTreeTypes[];
   node_ids: string[];
   title: string;
+  budget: number;
 };
 
 export type ProgrammingIcon = {
@@ -124,6 +125,7 @@ export type CamelContentTypes = {
   source_tree: SourceTreeTypes[];
   node_ids: string[];
   title: string;
+  budget: number;
 };
 
 export type UserProfileTypes = {

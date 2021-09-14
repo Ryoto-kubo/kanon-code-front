@@ -1,3 +1,4 @@
+import { Budget } from '@/components/atoms/Budget';
 import { CircleElement } from '@/components/atoms/Circle';
 import { ParagraphText } from '@/components/atoms/ParagraphText';
 import theme from '@/styles/theme';
@@ -9,6 +10,7 @@ import styled from 'styled-components';
 interface Props {
   name: string;
   date: string;
+  budget: number;
   userIcon: string;
   width?: string;
   height?: string;
@@ -24,6 +26,7 @@ const StyledAnchor = styled(`a`)`
 const StyledBoxNameWrapper = styled(Box)`
   word-break: break-all;
 `;
+
 export const PostFooter: React.FC<Props> = props => {
   return (
     <Box display='flex' alignItems='center'>
@@ -47,9 +50,14 @@ export const PostFooter: React.FC<Props> = props => {
             <StyledBoxNameWrapper component='p'>{`${props.name}`}</StyledBoxNameWrapper>
           </StyledAnchor>
         </Link>
-        <ParagraphText variant='body2' component='p' color='textSecondary'>
-          {props.date}
-        </ParagraphText>
+        <Box display='flex' alignItems='center'>
+          <Box mr={1}>
+            <ParagraphText variant='body2' component='p' color='textSecondary'>
+              {props.date}
+            </ParagraphText>
+          </Box>
+          <Budget budget={props.budget} />
+        </Box>
       </Box>
     </Box>
   );
