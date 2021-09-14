@@ -722,7 +722,7 @@ const IndexPage: React.FC<Props> = props => {
                   activeStep={activeStep}
                   isValid={validLength(
                     sourceCode,
-                    CONSTS.MAX_DESCRIPTION_LENGTH
+                    CONSTS.MAX_SOURCE_CODE_LENGTH
                   )}
                   updateCanPublish={updateCanPublish}
                   uploadImageToS3={S3.uploadImageToS3}
