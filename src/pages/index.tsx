@@ -9,7 +9,6 @@ import { UserTypes } from '@/types/global';
 import { GetContentsTypes } from '@/types/global/';
 import { getContents } from '@/utils/api/get-contents';
 import { Box, Container, Grid } from '@material-ui/core/';
-import { useRouter } from 'next/router';
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -33,9 +32,7 @@ const StyledBoxWidthBorder = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  const router = useRouter();
-
-  if (router.isFallback) {
+  if (props.isFetch) {
     return (
       <>
         <CustomLoader />

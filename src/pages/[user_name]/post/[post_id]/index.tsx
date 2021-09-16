@@ -16,7 +16,6 @@ import { Snackbar } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
 import { alpha } from '@material-ui/core/styles';
-import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
@@ -57,7 +56,6 @@ const StyledBoxAnnotation = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  const router = useRouter();
   const title = props.post ? props.post.contents.title : '';
   const budget = props.post ? props.post.contents.budget : undefined;
   const postId = props.post ? props.post.sort_key : '';
@@ -96,8 +94,9 @@ const IndexPage: React.FC<Props> = props => {
     setCanReview(false);
     setReviews(newReviews);
   };
+  console.log(canReview, 'canReview');
 
-  return router.isFallback ? (
+  return props.isFetch ? (
     <>
       <CustomLoader />
       <CommonHead
