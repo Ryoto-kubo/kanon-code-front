@@ -10,12 +10,7 @@ import { AxiosResponse } from 'axios';
 import { useEffect, useState } from 'react';
 
 // HACK: とりあえずの実装。もっと綺麗な実装はあるはず。。。
-export const useReviews = (
-  postId: string,
-  isMe: boolean,
-  userId: string,
-  isFetch: boolean
-) => {
+export const useReviews = (postId: string, isMe: boolean, userId: string) => {
   const err = new Error();
   const errorObject = createErrorObject(errorMessages.SYSTEM_ERROR, 500);
   const [isLoading, setIsLoading] = useState(true);
@@ -65,7 +60,7 @@ export const useReviews = (
         setIsLoading(false);
       }
     })();
-  }, [isFetch]);
+  });
   return {
     creditResponse,
     reviewsResponse,

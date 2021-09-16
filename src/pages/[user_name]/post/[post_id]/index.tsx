@@ -84,7 +84,7 @@ const IndexPage: React.FC<Props> = props => {
     paymentedList,
     setPaymentedList,
     isLoading,
-  } = useReviews(postId, isMe, myUserId, isFetch);
+  } = useReviews(postId, isMe, myUserId);
   const status = reviewsResponse.data.status && creditResponse.data.status;
   const updateDisplay = (responseReview: ReviewTypes) => {
     // 投稿した直後は自身のものなので全文表示させる
