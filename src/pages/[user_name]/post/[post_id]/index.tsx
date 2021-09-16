@@ -71,7 +71,6 @@ const IndexPage: React.FC<Props> = props => {
     props.post ? props.post.post_status : 0
   );
   const [isChanging, setIsChanging] = useState<boolean>(false);
-  const isFetch = props.isFetch;
 
   const {
     creditResponse,
@@ -97,7 +96,7 @@ const IndexPage: React.FC<Props> = props => {
   };
   console.log(canReview, 'canReview');
 
-  return isFetch ? (
+  return props.isFetch ? (
     <>
       <CustomLoader />
       <CommonHead
