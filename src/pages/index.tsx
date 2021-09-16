@@ -1,5 +1,6 @@
 import { TypoHeading2 } from '@/components/atoms/TypoHeading2';
 import { CommonHead } from '@/components/common/head';
+import { CustomLoader } from '@/components/common/loader';
 import { FirstView } from '@/components/organisms/FirstView';
 import { Post } from '@/components/organisms/Post';
 import Layout from '@/layouts/standard';
@@ -31,19 +32,19 @@ const StyledBoxWidthBorder = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
-  // if (props.isFetch) {
-  //   return (
-  //     <>
-  //       <CustomLoader />
-  //       <CommonHead
-  //         title='Kanon Code | コードレビューを全てのエンジニアへ'
-  //         description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
-  //         url={process.env.NEXT_PUBLIC_HOST}
-  //         image={`${process.env.NEXT_PUBLIC_BUCKET_URL}images/logo.png`}
-  //       />
-  //     </>
-  //   );
-  // }
+  if (props.isFetch) {
+    return (
+      <>
+        <CustomLoader />
+        <CommonHead
+          title='Kanon Code | コードレビューを全てのエンジニアへ'
+          description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。'
+          url={process.env.NEXT_PUBLIC_HOST}
+          image={`${process.env.NEXT_PUBLIC_BUCKET_URL}images/logo.png`}
+        />
+      </>
+    );
+  }
   const frontPosts = props.data.frontPosts;
   const backPosts = props.data.backPosts;
   const otherPosts = props.data.otherPosts;
