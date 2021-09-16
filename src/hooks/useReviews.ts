@@ -60,7 +60,7 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
         setIsLoading(false);
       }
     })();
-  });
+  }, []);
   return {
     creditResponse,
     reviewsResponse,
