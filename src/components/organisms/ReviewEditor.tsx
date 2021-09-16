@@ -12,6 +12,7 @@ import { errorMessages, validMessages } from '@/consts/error-messages';
 import { ReviewTypes } from '@/types/global/';
 import { postReview } from '@/utils/api/post-review';
 import * as S3 from '@/utils/api/s3';
+import { initReview } from '@/utils/init-values';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
 import { validLength } from '@/utils/valid';
 import Box from '@material-ui/core/Box';
@@ -42,13 +43,6 @@ type ValidObject = {
   message: string;
 };
 
-const initReview = () => {
-  return `## よかった点
-
-## 改善点
-`;
-};
-
 const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
   return {
     isValid: defaultValue,
@@ -64,7 +58,7 @@ export const ReviewEditor: React.FC<Props> = React.memo(props => {
   const [updatingMessage, setUpdatingMessage] = useState('レビュー保存中...');
   const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [title, setTitle] = useState('');
-  const [review, setReview] = useState(initReview());
+  const [review, setReview] = useState(initReview);
   const [activeStep, setActiveStep] = useState(0);
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(

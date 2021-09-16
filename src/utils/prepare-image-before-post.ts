@@ -1,6 +1,6 @@
-import { errorMessages } from "@/consts/error-messages.ts";
-import imageCompression from "browser-image-compression";
-import { v4 as uuidv4 } from "uuid";
+import { errorMessages } from '@/consts/error-messages';
+import imageCompression from 'browser-image-compression';
+import { v4 as uuidv4 } from 'uuid';
 
 export class PrepareImageBeforePost {
   constructor(private fileObject: File) {}
@@ -10,7 +10,7 @@ export class PrepareImageBeforePost {
   }
 
   private getFileExtention(): string {
-    return this.fileObject.name.split(".").pop()!;
+    return this.fileObject.name.split('.').pop()!;
   }
 
   public async compressionImage(): Promise<File | null> {
@@ -35,14 +35,14 @@ export class PrepareImageBeforePost {
 
   public validImageExtention(): boolean {
     const ALLOW_FILE_EXTENTION_LIST = [
-      "jpeg",
-      "JPEG",
-      "jpg",
-      "JPG",
-      "png",
-      "PNG",
-      "gif",
-      "GIF",
+      'jpeg',
+      'JPEG',
+      'jpg',
+      'JPG',
+      'png',
+      'PNG',
+      'gif',
+      'GIF',
     ];
     const fileExtention = this.getFileExtention();
     return ALLOW_FILE_EXTENTION_LIST.includes(fileExtention);

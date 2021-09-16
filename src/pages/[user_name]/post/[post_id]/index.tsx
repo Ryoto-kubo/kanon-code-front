@@ -11,6 +11,7 @@ import theme from '@/styles/theme';
 import { GetContentTypes, UserTypes } from '@/types/global';
 import { ReviewTypes } from '@/types/global/';
 import { getContent } from '@/utils/api/get-content';
+import { initContents, initUserProfile } from '@/utils/init-values';
 import { Snackbar } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Container from '@material-ui/core/Container';
@@ -53,56 +54,6 @@ const StyledBoxAnnotation = styled(Box)`
   padding: 4px 0;
   border-radius: 4px;
 `;
-
-const initContents = {
-  tagList: [''],
-  targetIcon: {
-    id: 0,
-    value: '',
-    iconPath: '',
-    ogpPath: '',
-  },
-  description: {
-    bodyHtml: '',
-    value: '',
-  },
-  inputFileNameLists: [
-    {
-      bodyHtml: '',
-      fileName: '',
-      isValid: true,
-      key: '',
-      sourceCode: '',
-    },
-  ],
-  targetLanguage: 0,
-  source_tree: [
-    {
-      id: '',
-      name: '',
-    },
-  ],
-  node_ids: [''],
-  title: '',
-  budget: 0,
-};
-
-const initUserProfile = {
-  display_name: '',
-  github_name: '',
-  icon_src: '',
-  introduction: '',
-  position_type: 0,
-  price: 0,
-  skils: [
-    {
-      language: '',
-      years_experiences: 0,
-    },
-  ],
-  twitter_name: '',
-  web_site: '',
-};
 
 const IndexPage: React.FC<Props> = props => {
   const title = props.post ? props.post.contents.title : '';

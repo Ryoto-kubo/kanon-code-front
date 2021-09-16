@@ -47,8 +47,6 @@ const StyledBoxTitleWrapper = styled(Box)`
   border-bottom: 3px solid ${theme.palette.primary.main};
 `;
 const StyledBoxBorder = styled(Box)`
-  // border: 1px dashed #dddddd;
-  // border: 1px solid ${theme.palette.primary.main};
   width: 100%;
   margin: 8px 0;
 `;
