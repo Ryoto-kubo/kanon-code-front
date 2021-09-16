@@ -71,6 +71,7 @@ const IndexPage: React.FC<Props> = props => {
     props.post ? props.post.post_status : 0
   );
   const [isChanging, setIsChanging] = useState<boolean>(false);
+  const isFetch = props.isFetch;
 
   const {
     creditResponse,
@@ -83,7 +84,7 @@ const IndexPage: React.FC<Props> = props => {
     paymentedList,
     setPaymentedList,
     isLoading,
-  } = useReviews(postId, isMe, myUserId);
+  } = useReviews(postId, isMe, myUserId, isFetch);
   const status = reviewsResponse.data.status && creditResponse.data.status;
   const updateDisplay = (responseReview: ReviewTypes) => {
     // 投稿した直後は自身のものなので全文表示させる
@@ -96,7 +97,7 @@ const IndexPage: React.FC<Props> = props => {
   };
   console.log(canReview, 'canReview');
 
-  return props.isFetch ? (
+  return isFetch ? (
     <>
       <CustomLoader />
       <CommonHead
