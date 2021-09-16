@@ -1,5 +1,4 @@
 import { CommonHead } from '@/components/common/head';
-import { CustomLoader } from '@/components/common/loader';
 import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
@@ -96,16 +95,17 @@ const IndexPage: React.FC<Props> = props => {
   };
   console.log(canReview, 'canReview');
 
-  return props.isFetch ? (
-    <>
-      <CustomLoader />
-      <CommonHead
-        title={`Kanon Code | ${title}`}
-        description={props.post ? props.post.contents.description.value : ''}
-        image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
-      />
-    </>
-  ) : (
+  // return props.isFetch ? (
+  //   <>
+  //     <CustomLoader />
+  //     <CommonHead
+  //       title={`Kanon Code | ${title}`}
+  //       description={props.post ? props.post.contents.description.value : ''}
+  //       image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
+  //     />
+  //   </>
+  // ) : (
+  return (
     <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
       <CommonHead
         title={`Kanon Code | ${title}`}
