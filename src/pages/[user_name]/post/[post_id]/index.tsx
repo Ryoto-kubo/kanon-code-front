@@ -55,13 +55,21 @@ const StyledBoxAnnotation = styled(Box)`
 `;
 
 const IndexPage: React.FC<Props> = props => {
+  const title = props.post ? props.post.contents.title : '';
+  const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
   if (props.isFetch) {
-    return <></>;
+    return (
+      <>
+        <CommonHead
+          title={`Kanon Code | ${title}`}
+          description={props.post ? props.post.contents.description.value : ''}
+          image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
+        />
+      </>
+    );
   } else {
-    const title = props.post ? props.post.contents.title : '';
     const budget = props.post ? props.post.contents.budget : undefined;
     const postId = props.post ? props.post.sort_key : '';
-    const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
     const userProfile = props.currentUser
       ? props.currentUser.user_profile
       : null;
