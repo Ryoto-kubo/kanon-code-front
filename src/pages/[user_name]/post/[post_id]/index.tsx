@@ -55,6 +55,31 @@ const StyledBoxAnnotation = styled(Box)`
   border-radius: 4px;
 `;
 
+const RenderReviewEditor = (
+  props: Props,
+  canReview: boolean,
+  isLoading: boolean,
+  updateDisplay: (responseReview: ReviewTypes) => void,
+  postStatusValue: number
+) => {
+  const postId = props.post ? props.post.sort_key : '';
+  const myUserId = props.currentUser ? props.currentUser.partition_key : '';
+  const contributorId = props.post ? props.post.partition_key : '';
+  const isMe = myUserId === contributorId;
+
+  return (
+    <ReviewEditor
+      myUserId={myUserId}
+      postId={postId}
+      isMe={isMe}
+      isLoading={isLoading}
+      canReview={canReview}
+      updateDisplay={updateDisplay}
+      postStatusValue={postStatusValue}
+    />
+  );
+};
+
 const IndexPage: React.FC<Props> = props => {
   const title = props.post ? props.post.contents.title : '';
   const budget = props.post ? props.post.contents.budget : undefined;
@@ -148,15 +173,13 @@ const IndexPage: React.FC<Props> = props => {
           </Box>
           <Box mb={5}>
             <StyledBoxBgWhite>
-              <ReviewEditor
-                myUserId={myUserId}
-                postId={postId}
-                isMe={isMe}
-                isLoading={isLoading}
-                canReview={canReview}
-                updateDisplay={updateDisplay}
-                postStatusValue={postStatusValue}
-              />
+              {RenderReviewEditor(
+                props,
+                canReview,
+                isLoading,
+                updateDisplay,
+                postStatusValue
+              )}
             </StyledBoxBgWhite>
           </Box>
           <StyledBoxBgWhite>
