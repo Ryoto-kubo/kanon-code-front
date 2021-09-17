@@ -29,8 +29,6 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
 
   useEffect(() => {
     (async () => {
-      console.log('useReview');
-
       try {
         const results = await Promise.all([
           await getCredit(),
@@ -48,10 +46,6 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
         );
         const isReviewed = reviewedUserIds.includes(userId);
         // 自分の投稿ではない、ログインしている、まだレビューをしていなければレビューをできる
-        console.log(isMe, 'isMe');
-        console.log(userId, 'userId');
-        console.log(isReviewed, 'isReviewed');
-
         setCanReview(!isMe && userId !== '' && !isReviewed);
         setCreditResponse(responseCredit);
         setReviewsResponse(responseReviews);
