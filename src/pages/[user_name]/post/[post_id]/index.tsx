@@ -1,4 +1,5 @@
 import { CommonHead } from '@/components/common/head';
+import { CustomLoader } from '@/components/common/loader';
 import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
@@ -60,6 +61,7 @@ const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
     return (
       <>
+        <CustomLoader />
         <CommonHead
           title={`Kanon Code | ${title}`}
           description={props.post ? props.post.contents.description.value : ''}
