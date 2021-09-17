@@ -1,13 +1,13 @@
-import { errorMessages } from "@/consts/error-messages";
-import { ResponseCreditType } from "@/types/api/get-credit";
-import { ResponseReviewsTypes } from "@/types/api/get-reviews";
-import { CustomReviewTypes, ErrorTypes } from "@/types/global";
-import { CreditTypes } from "@/types/global/";
-import { createErrorObject } from "@/utils/api/error";
-import { getCredit } from "@/utils/api/get-credit";
-import { getReviews } from "@/utils/api/get-reviews";
-import { AxiosResponse } from "axios";
-import { useEffect, useState } from "react";
+import { errorMessages } from '@/consts/error-messages';
+import { ResponseCreditType } from '@/types/api/get-credit';
+import { ResponseReviewsTypes } from '@/types/api/get-reviews';
+import { CustomReviewTypes, ErrorTypes } from '@/types/global';
+import { CreditTypes } from '@/types/global/';
+import { createErrorObject } from '@/utils/api/error';
+import { getCredit } from '@/utils/api/get-credit';
+import { getReviews } from '@/utils/api/get-reviews';
+import { AxiosResponse } from 'axios';
+import { useEffect, useState } from 'react';
 
 // HACK: とりあえずの実装。もっと綺麗な実装はあるはず。。。
 export const useReviews = (postId: string, isMe: boolean, userId: string) => {
@@ -46,7 +46,7 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
         );
         const isReviewed = reviewedUserIds.includes(userId);
         // 自分の投稿ではない、ログインしている、まだレビューをしていなければレビューをできる
-        setCanReview(!isMe && userId !== "" && !isReviewed);
+        setCanReview(!isMe && userId !== '' && !isReviewed);
         setCreditResponse(responseCredit);
         setReviewsResponse(responseReviews);
         setCredit(responseCredit.data.Item);

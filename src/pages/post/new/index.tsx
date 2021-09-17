@@ -14,6 +14,7 @@ import LayoutPost from '@/layouts/post';
 import { ProgrammingIcon, UserTypes } from '@/types/global';
 import { postContent } from '@/utils/api/post-content';
 import * as S3 from '@/utils/api/s3';
+import { initDescription } from '@/utils/init-values';
 import { moveToTop } from '@/utils/move-page';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
 import { validLength } from '@/utils/valid';
@@ -113,7 +114,7 @@ const IndexPage: React.FC<Props> = props => {
   const [postId, setPostId] = useState('');
   const [isSuccessed, setIsSuccessed] = useState(false);
   // const [tagList, setTagList] = useState<string[]>([]);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(initDescription);
   const [sourceCode, setSourceCode] = useState('```\n\n```');
   const [inputFileNameLists, setInputFileNameLists] = useState<FileNameType[]>([
     {
