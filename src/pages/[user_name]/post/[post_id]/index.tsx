@@ -54,38 +54,10 @@ const StyledBoxAnnotation = styled(Box)`
   border-radius: 4px;
 `;
 
-// const RenderReviewEditor = (
-//   props: Props,
-//   canReview: boolean,
-//   isLoading: boolean,
-//   updateDisplay: (responseReview: ReviewTypes) => void,
-//   postStatusValue: number
-// ) => {
-//   const [test, setTest] = useState(0);
-//   console.log(test, setTest(1));
-
-//   console.log(props);
-
-//   const postId = props.post.sort_key;
-//   const myUserId = props.currentUser.partition_key;
-//   const contributorId = props.post.partition_key;
-//   const isMe = myUserId === contributorId;
-
-//   return (
-//     <ReviewEditor
-//       myUserId={myUserId}
-//       postId={postId}
-//       isMe={isMe}
-//       isLoading={isLoading}
-//       canReview={canReview}
-//       updateDisplay={updateDisplay}
-//       postStatusValue={postStatusValue}
-//     />
-//   );
-// };
-
 const IndexPage: React.FC<Props> = props => {
-  if (!props.isFetch) {
+  if (props.isFetch) {
+    return <></>;
+  } else {
     const title = props.post ? props.post.contents.title : '';
     const budget = props.post ? props.post.contents.budget : undefined;
     const postId = props.post ? props.post.sort_key : '';
@@ -218,139 +190,7 @@ const IndexPage: React.FC<Props> = props => {
         />
       </Layout>
     );
-  } else {
-    return <></>;
   }
-
-  // const title = props.post ? props.post.contents.title : '';
-  // const budget = props.post ? props.post.contents.budget : undefined;
-  // const postId = props.post ? props.post.sort_key : '';
-  // const ogpPath = props.post ? props.post.contents.targetIcon.ogpPath : '';
-  // const userProfile = props.currentUser ? props.currentUser.user_profile : null;
-  // const myUserId = props.currentUser ? props.currentUser.partition_key : '';
-  // const contributorId = props.post ? props.post.partition_key : '';
-  // const isMe = myUserId === contributorId;
-  // const isDisplayAnnouncefForBudget = isMe && budget === undefined;
-  // const authUserName = props.authUser ? props.authUser['cognito:username'] : '';
-  // const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
-  // const [postStatusValue, setPostStatusValue] = useState<number>(
-  //   props.post ? props.post.post_status : 0
-  // );
-  // const [isChanging, setIsChanging] = useState<boolean>(false);
-  // const {
-  //   creditResponse,
-  //   reviewsResponse,
-  //   credit,
-  //   reviews,
-  //   setReviews,
-  //   canReview,
-  //   setCanReview,
-  //   paymentedList,
-  //   setPaymentedList,
-  //   isLoading,
-  // } = useReviews(postId, isMe, myUserId);
-  // const status = reviewsResponse.data.status && creditResponse.data.status;
-  // const updateDisplay = (responseReview: ReviewTypes) => {
-  //   // 投稿した直後は自身のものなので全文表示させる
-  //   responseReview.contents.review.display_body_html =
-  //     responseReview.contents.review.body_html;
-  //   const newReviews = reviews!.slice();
-  //   newReviews.unshift(responseReview);
-  //   setCanReview(false);
-  //   setReviews(newReviews);
-  // };
-  // console.log(canReview, 'canReview');
-
-  // return props.isFetch ? (
-  //   <>
-  //     <CustomLoader />
-  //     <CommonHead
-  //       title={`Kanon Code | ${title}`}
-  //       description={props.post ? props.post.contents.description.value : ''}
-  //       image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
-  //     />
-  //   </>
-  // ) : (
-  // return (
-  // <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
-  //   <CommonHead
-  //     title={`Kanon Code | ${title}`}
-  //     description={props.post ? props.post.contents.description.value : ''}
-  //     image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
-  //   />
-  //   <StyledBoxBgGray>
-  //     <StyledContainer maxWidth='md'>
-  //       <Box mb={5}>
-  //         <StyledBoxBgWhite>
-  //           {isDisplayAnnouncefForBudget && (
-  //             <StyledBoxAnnotation>
-  //               <p>編集からレビュー購入時の予算を設定できます。</p>
-  //             </StyledBoxAnnotation>
-  //           )}
-  //           <Box mb={5}>
-  //             <ReviewRequestItemHeader
-  //               contents={props.post ? props.post.contents : initContents}
-  //               profile={
-  //                 props.post ? props.post.user_profile : initUserProfile
-  //               }
-  //               createDate={props.post ? props.post.date : ''}
-  //               isMe={isMe}
-  //               isChanging={isChanging}
-  //               myUserId={myUserId!}
-  //               postId={postId}
-  //               budget={budget}
-  //               postStatusValue={postStatusValue}
-  //               setPostStatusValue={setPostStatusValue}
-  //               setIsChanging={setIsChanging}
-  //             />
-  //           </Box>
-  //           <Box mb={0}>
-  //             <ReviewRequestContents
-  //               contents={props.post ? props.post.contents : initContents}
-  //             />
-  //           </Box>
-  //         </StyledBoxBgWhite>
-  //       </Box>
-  //       <Box mb={5}>
-  //         <StyledBoxBgWhite>
-  //           {RenderReviewEditor(
-  //             props,
-  //             canReview,
-  //             isLoading,
-  //             updateDisplay,
-  //             postStatusValue
-  //           )}
-  //         </StyledBoxBgWhite>
-  //       </Box>
-  //       <StyledBoxBgWhite>
-  //         <ReviewList
-  //           status={status}
-  //           credit={credit!}
-  //           reviews={reviews!}
-  //           setReviews={setReviews}
-  //           isMe={isMe}
-  //           isLoading={isLoading}
-  //           authUserName={authUserName}
-  //           postId={postId}
-  //           isReviewsLoading={isLoading}
-  //           userProfile={userProfile}
-  //           paymentedList={paymentedList!}
-  //           setPaymentedList={setPaymentedList}
-  //         />
-  //       </StyledBoxBgWhite>
-  //     </StyledContainer>
-  //   </StyledBoxBgGray>
-  //   <Snackbar
-  //     anchorOrigin={{
-  //       vertical: 'bottom',
-  //       horizontal: 'right',
-  //     }}
-  //     open={isReviewAccept}
-  //     onClose={() => setIsReviewAccept(false)}
-  //     message='募集状況を変更しました。'
-  //   />
-  // </Layout>
-  // );
 };
 
 // サーバーサイドで実行される
