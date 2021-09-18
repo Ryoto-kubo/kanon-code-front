@@ -5,7 +5,12 @@ import styled from 'styled-components';
 
 interface Props {
   fontSize: number;
-  listArray: { id: string; href: string; value: string }[];
+  listArray: {
+    id: string;
+    href: string;
+    value: string;
+    isTargetBlank: boolean;
+  }[];
   color?: string;
 }
 
@@ -29,7 +34,9 @@ export const List: React.FC<Props> = props => {
       {props.listArray.map(el => (
         <StyledList key={el.id}>
           <Link href={el.href} passHref>
-            <StyledAnchor>{el.value}</StyledAnchor>
+            <StyledAnchor target={el.isTargetBlank ? '_blank' : '_self'}>
+              {el.value}
+            </StyledAnchor>
           </Link>
         </StyledList>
       ))}
