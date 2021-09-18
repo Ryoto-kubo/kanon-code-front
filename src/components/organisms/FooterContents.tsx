@@ -25,8 +25,8 @@ const abouts = [
   },
   {
     id: uuidv4(),
-    href: '/changelog',
-    value: 'チェンジログ',
+    href: '/updatelog',
+    value: 'アップデート情報',
     isTargetBlank: false,
   },
 ];
