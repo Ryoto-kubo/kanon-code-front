@@ -216,14 +216,16 @@ const Wrapper: React.FC<Props> = ({
             />
           </div>
         </Box>
-        {(isPaymented || isPaymentFree) && (
+        {(isPaymented || isPaymentFree || isSelfReviewItem) && (
           <Reaction
+            authUserName={authUserName}
             sortKey={sortKey}
             postId={postId}
             isReaction={el.is_reaction}
             reactionUsers={el.reaction_users}
-            displayName={userProfile!.display_name}
-            userIcon={userProfile!.icon_src}
+            displayName={userProfile ? userProfile.display_name : ''}
+            userIcon={userProfile ? userProfile.icon_src : ''}
+            setIsOpenSignin={setIsOpenSignin}
           />
         )}
         {!isSelfReviewItem && !isPaymentFree && !isPaymented && (
