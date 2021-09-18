@@ -6,7 +6,12 @@ import styled from 'styled-components';
 
 interface Props {
   text: string;
-  listArray: { id: string; href: string; value: string }[];
+  listArray: {
+    id: string;
+    href: string;
+    value: string;
+    isTargetBlank: boolean;
+  }[];
   color?: string;
 }
 
