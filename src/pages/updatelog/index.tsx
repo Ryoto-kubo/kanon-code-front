@@ -95,14 +95,14 @@ const articles = [
     url: 'https://note.com/kanon_code/n/n519fa674ea42',
     date: '2021/09/13',
     className: '',
-    desciption: 'OGPが設定できるようになりました。',
+    desciption: 'OGPが表示されるようになりました。',
   },
   {
     title: 'Kanon CodeのUpdate情報 【募集中の表示】 - vol-01',
     url: 'https://note.com/kanon_code/n/n0f9fe9fd8f89',
     date: '2021/09/05',
     className: '',
-    desciption: 'レビュー募集中と停止を表示できるようになりました。',
+    desciption: 'レビュー募集中と停止中を表示できるようになりました。',
   },
 ];
 
@@ -142,7 +142,7 @@ const IndexPage: React.FC<Props> = props => {
           {articles.map(el => (
             <StyledSection className={el.className}>
               <StyledTime dateTime={el.date} className='time-wrapper'>
-                2021/09/14
+                {el.date}
               </StyledTime>
               <Box mb={2}>{UpdateItem()}</Box>
               <Box mb={2} maxWidth='350px' width='100%'>
