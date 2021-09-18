@@ -10,6 +10,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 type Props = {
+  authUserName: string;
   sortKey: string;
   postId: string;
   isReaction: boolean;
@@ -19,6 +20,7 @@ type Props = {
   }[];
   displayName: string;
   userIcon: string;
+  setIsOpenSignin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const StyledBoxWrapper = styled(Box)`
@@ -65,12 +67,14 @@ const StyledBoxButtonWrapper = styled(Box)`
 `;
 
 export const Reaction: React.FC<Props> = ({
+  authUserName,
   sortKey,
   postId,
   isReaction,
   reactionUsers,
   displayName,
   userIcon,
+  setIsOpenSignin,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isMyReaction, setIsMyReaction] = useState(isReaction);
@@ -79,6 +83,10 @@ export const Reaction: React.FC<Props> = ({
   >(reactionUsers || []);
 
   const post = async () => {
+    if (authUserName === '') {
+      setIsOpenSignin(true);
+      return;
+    }
     try {
       const result = await postReaction({ sortKey, postId });
       const action = result.data.resultAction;
