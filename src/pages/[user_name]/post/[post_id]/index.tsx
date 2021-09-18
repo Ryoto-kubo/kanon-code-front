@@ -109,7 +109,6 @@ const IndexPage: React.FC<Props> = props => {
       setCanReview(false);
       setReviews(newReviews);
     };
-    console.log(canReview, 'canReview');
 
     return (
       <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
