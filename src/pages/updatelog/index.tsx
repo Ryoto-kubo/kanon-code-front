@@ -1,3 +1,5 @@
+// import { v4 as uuidv4 } from 'uuid';
+import { articles } from '@/articles';
 import { ParagraphText } from '@/components/atoms/ParagraphText';
 import Layout from '@/layouts/standard';
 import theme from '@/styles/theme';
@@ -7,8 +9,6 @@ import { alpha, Box, Container, Paper } from '@material-ui/core';
 import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
-// import { v4 as uuidv4 } from 'uuid';
-import { articles } from './aritcles';
 
 type Props = {
   authUser: any;
