@@ -3,12 +3,14 @@ import { CommonHead } from '@/components/common/head';
 import { CustomLoader } from '@/components/common/loader';
 import { FirstView } from '@/components/organisms/FirstView';
 import { Post } from '@/components/organisms/Post';
+import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
 import Layout from '@/layouts/standard';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { GetContentsTypes } from '@/types/global/';
 import { getContents } from '@/utils/api/get-contents';
 import { Box, Container, Grid } from '@material-ui/core/';
+import Link from 'next/link';
 import React from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -29,6 +31,14 @@ type Props = {
 const StyledBoxWidthBorder = styled(Box)`
   border-left: 3px solid ${theme.palette.primary.main};
   padding-left: 8px;
+`;
+const StyledAnchor = styled(`a`)`
+  color: ${theme.palette.primary.main};
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
 `;
 
 const IndexPage: React.FC<Props> = props => {
@@ -62,6 +72,18 @@ const IndexPage: React.FC<Props> = props => {
       />
       <Container>
         {!props.currentUser && <FirstView />}
+        {props.currentUser && (
+          <Box mb={3} display='flex' justifyContent='flex-end'>
+            <Link href='/updatelog'>
+              <StyledAnchor>
+                <Box component='p' display='flex' alignItems='center'>
+                  Kanon CodeのUpdate情報 【Update情報ページ追加】 - vol-04
+                  <IconArrowNext fontSize='small' color='primary' />
+                </Box>
+              </StyledAnchor>
+            </Link>
+          </Box>
+        )}
         {frontPosts.length > 0 && (
           <Box component='section' mb={10}>
             <StyledBoxWidthBorder mb={2}>
