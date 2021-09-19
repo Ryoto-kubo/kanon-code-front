@@ -26,7 +26,7 @@ const generateSitemapXml = async () => {
     const lastmod = modyfyedDate(post.date);
     xml += `
       <url>
-        <loc>${HOST}${post.post_url}</loc>
+        <loc>${HOST}/${post.post_url}</loc>
         <lastmod>${lastmod}</lastmod>
         <changefreq>weekly</changefreq>
       </url>
