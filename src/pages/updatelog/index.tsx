@@ -1,3 +1,5 @@
+// import { v4 as uuidv4 } from 'uuid';
+import { articles } from '@/articles';
 import { ParagraphText } from '@/components/atoms/ParagraphText';
 import Layout from '@/layouts/standard';
 import theme from '@/styles/theme';
@@ -7,7 +9,6 @@ import { alpha, Box, Container, Paper } from '@material-ui/core';
 import Image from 'next/image';
 import React from 'react';
 import styled from 'styled-components';
-// import { v4 as uuidv4 } from 'uuid';
 
 type Props = {
   authUser: any;
@@ -82,30 +83,6 @@ const StyledUpdate = styled(Box)`
   font-size: 12px;
 `;
 
-const articles = [
-  {
-    title: 'Kanon CodeのUpdate情報 【予算の設定】 - vol-03',
-    url: 'https://note.com/kanon_code/n/nbeaf2bc4cb4d',
-    date: '2021/09/14',
-    className: 'first',
-    desciption: 'レビュー依頼時に予算を設定できるようになりました。',
-  },
-  {
-    title: 'Kanon CodeのUpdate情報 【OGPの表示】 - vol-02',
-    url: 'https://note.com/kanon_code/n/n519fa674ea42',
-    date: '2021/09/13',
-    className: '',
-    desciption: 'OGPが表示されるようになりました。',
-  },
-  {
-    title: 'Kanon CodeのUpdate情報 【募集中の表示】 - vol-01',
-    url: 'https://note.com/kanon_code/n/n0f9fe9fd8f89',
-    date: '2021/09/05',
-    className: '',
-    desciption: 'レビュー募集中と停止中を表示できるようになりました。',
-  },
-];
-
 const RenderArticle = (title: string, url: string, date: string) => {
   return (
     <StyledBoxWrapper>
@@ -145,9 +122,13 @@ const IndexPage: React.FC<Props> = props => {
                 {el.date}
               </StyledTime>
               <Box mb={2}>{UpdateItem()}</Box>
-              <Box mb={2} maxWidth='350px' width='100%'>
-                <Paper square>{RenderArticle(el.title, el.url, el.date)}</Paper>
-              </Box>
+              {el.hasNote ? (
+                <Box mb={2} maxWidth='350px' width='100%'>
+                  <Paper>{RenderArticle(el.title, el.url, el.date)}</Paper>
+                </Box>
+              ) : (
+                <StyledTitle>{el.title}</StyledTitle>
+              )}
               <Box mb={1}>
                 <ParagraphText
                   variant='body2'
