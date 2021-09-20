@@ -74,7 +74,7 @@ const IndexPage: React.FC<Props> = props => {
         {!props.currentUser && <FirstView />}
         {props.currentUser && (
           <Box mb={3} display='flex' justifyContent='flex-end'>
-            <Link href='/updatelog'>
+            <Link href='/changelog'>
               <StyledAnchor>
                 <Box component='p' display='flex' alignItems='center'>
                   Kanon CodeのUpdate情報 【Update情報ページ追加】 - vol-04
