@@ -1,4 +1,3 @@
-// import { v4 as uuidv4 } from 'uuid';
 import { articles } from '@/articles';
 import { ParagraphText } from '@/components/atoms/ParagraphText';
 import Layout from '@/layouts/standard';
@@ -115,9 +114,9 @@ const IndexPage: React.FC<Props> = props => {
     <Layout title='Kanon Code | Change logs' currentUser={props.currentUser}>
       <Container maxWidth='md'>
         <Box my={10} pb={5} component='section'>
-          <StyledBoxPageTitle component='h1'>Updatelog</StyledBoxPageTitle>
+          <StyledBoxPageTitle component='h1'>Changelog</StyledBoxPageTitle>
           {articles.map(el => (
-            <StyledSection className={el.className}>
+            <StyledSection className={el.className} key={el.key}>
               <StyledTime dateTime={el.date} className='time-wrapper'>
                 {el.date}
               </StyledTime>
