@@ -1,5 +1,8 @@
+import { v4 as uuidv4 } from 'uuid';
+
 export const articles = [
   {
+    key: uuidv4(),
     title: 'Kanon CodeのUpdate情報 【Update情報ページ追加】 - vol-04',
     url: 'https://note.com/kanon_code/n/ncc8b137a9c1b',
     date: '2021/09/19',
@@ -8,6 +11,7 @@ export const articles = [
     hasNote: true,
   },
   {
+    key: uuidv4(),
     title: 'レビュー依頼に初期テンプレートを挿入',
     url: '',
     date: '2021/09/15',
@@ -16,6 +20,7 @@ export const articles = [
     hasNote: false,
   },
   {
+    key: uuidv4(),
     title: 'Kanon CodeのUpdate情報 【予算の設定】 - vol-03',
     url: 'https://note.com/kanon_code/n/nbeaf2bc4cb4d',
     date: '2021/09/14',
@@ -24,6 +29,7 @@ export const articles = [
     hasNote: true,
   },
   {
+    key: uuidv4(),
     title: 'Kanon CodeのUpdate情報 【OGPの表示】 - vol-02',
     url: 'https://note.com/kanon_code/n/n519fa674ea42',
     date: '2021/09/13',
@@ -32,6 +38,7 @@ export const articles = [
     hasNote: true,
   },
   {
+    key: uuidv4(),
     title: 'Kanon CodeのUpdate情報 【募集中の表示】 - vol-01',
     url: 'https://note.com/kanon_code/n/n0f9fe9fd8f89',
     date: '2021/09/05',
