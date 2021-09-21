@@ -12,6 +12,9 @@ import NextDocument, {
 import React from 'react';
 import { ServerStyleSheet } from 'styled-components';
 
+const description =
+  'Kanon Codeは全てのエンジニアにコードレビューの機会を提供するサービスです。Python、JavaScript、Ruby、PHP、Goなど様々な言語に対応しています。「誰かにレビューしてもらいたい」そう思ったら、Kanon Codeでコードレビューを依頼してみてください。';
+
 export default class CustomDocument extends NextDocument {
   static async getInitialProps(
     ctx: DocumentContext
@@ -53,10 +56,7 @@ export default class CustomDocument extends NextDocument {
       <Html lang='ja-JP'>
         <Head>
           <meta charSet='utf-8' />
-          <meta
-            name='description'
-            content='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。まずは自分のコードを投稿してみましょう。'
-          />
+          <meta name='description' content={description} />
           <meta name='theme-color' content='#5C6BC0' key='themeColor' />
           <link rel='icon' href='/favicon.ico' />
           <link rel='preconnect' href='https://fonts.gstatic.com' />
