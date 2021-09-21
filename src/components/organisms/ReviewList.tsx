@@ -24,6 +24,7 @@ import { Elements, useStripe } from '@stripe/react-stripe-js';
 import marked from 'marked';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { CommentEditor } from './CommentEditor';
 
 type Props = {
   status: boolean;
@@ -54,6 +55,9 @@ const StyledBoxFlex = styled(Box)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+const StyledBoxComponentWrapper = styled(Box)`
+  margin-bottom: 40px;
 `;
 
 const Wrapper: React.FC<Props> = ({
@@ -207,7 +211,7 @@ const Wrapper: React.FC<Props> = ({
         <StyledBoxTitleWrapper>
           <h1>{title}</h1>
         </StyledBoxTitleWrapper>
-        <Box mb={5}>
+        <StyledBoxComponentWrapper>
           <div className='review-item-wrapper'>
             <span
               dangerouslySetInnerHTML={{
@@ -215,7 +219,16 @@ const Wrapper: React.FC<Props> = ({
               }}
             />
           </div>
-        </Box>
+        </StyledBoxComponentWrapper>
+        {/* ここにコメントをmapで表示させる */}
+        {/* エディタを表示 */}
+        <StyledBoxComponentWrapper>
+          <CommentEditor
+            reviewId=''
+            // updateDisplay=
+            postStatusValue={0}
+          />
+        </StyledBoxComponentWrapper>
         {(isPaymented || isPaymentFree || isSelfReviewItem) && (
           <Reaction
             authUserName={authUserName}

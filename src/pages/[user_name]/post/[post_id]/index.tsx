@@ -152,13 +152,6 @@ const IndexPage: React.FC<Props> = props => {
             </Box>
             <Box mb={5}>
               <StyledBoxBgWhite>
-                {/* {RenderReviewEditor(
-                  props,
-                  canReview,
-                  isLoading,
-                  updateDisplay,
-                  postStatusValue
-                )} */}
                 <ReviewEditor
                   myUserId={myUserId}
                   postId={postId}

@@ -32,6 +32,7 @@ export const validMessages = {
   REQUIRED_TITLE: 'タイトルを入力してください',
   REQUIRED_TAGS: 'タグを一つ以上入力してください',
   REQUIRED_DESCRIPTION: 'デスクリプションを入力してください',
+  REQUIRED_COMMENT: 'コメントを入力してください',
   REQUIRED_FILE_NAME: 'ファイル名を入力してください',
   REQUIRED_SOURCE_CODE: 'ソースコードを入力してください',
   ONLY_SINGLEBYTE_AND_UNDERSCORE:
@@ -45,6 +46,7 @@ export const validMessages = {
   OVER_FILE_SIZE: '10MB以下の画像を選択してください',
   OVER_LENGTH_TITLE: `タイトルは${CONSTS.MAX_TITLE_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_DESCRIPION: `デスクリプションは${CONSTS.MAX_DESCRIPTION_LENGTH}文字以下で入力してください`,
+  OVER_LENGTH_COMMENT: `コメントは${CONSTS.MAX_COMMENT_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_FILE_NAME: `ファイル名は${CONSTS.MAX_FILE_NAME_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_SOURCE_CODE: `ソースコードは${CONSTS.MAX_SOURCE_CODE_LENGTH}文字以下で入力してください`,
   OVER_LENGTH_PRICE: `${CONSTS.MAX_PRICE_LENGTH}桁以下の数値を入力してください`,

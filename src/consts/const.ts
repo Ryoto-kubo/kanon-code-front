@@ -14,6 +14,7 @@ export const MAX_INTRODUCTION_LENGTH = 300;
 export const MAX_DESCRIPTION_LENGTH = 1500;
 export const MAX_SOURCE_CODE_LENGTH = 10_000;
 export const MAX_REVIEW_LENGTH = 10_000;
+export const MAX_COMMENT_LENGTH = 1_000;
 export const MAX_FILE_NAME_LENGTH = 64;
 export const MAX_FILE_SIZE = 10_000_000; // 10MB
 export const MAX_PRICE = 100_000; // 10MB
