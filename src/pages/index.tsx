@@ -40,7 +40,8 @@ const StyledAnchor = styled(`a`)`
     cursor: pointer;
   }
 `;
-
+const description =
+  'Kanon Codeは全てのエンジニアにコードレビューの機会を提供するサービスです。Python、JavaScript、Ruby、PHP、Goなど様々な言語に対応しています。「誰かにレビューしてもらいたい」そう思ったら、Kanon Codeでコードレビューを依頼してみてください。';
 const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
     return (
@@ -48,7 +49,7 @@ const IndexPage: React.FC<Props> = props => {
         <CustomLoader />
         <CommonHead
           title='Kanon Code | コードレビューを全てのエンジニアへ'
-          description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供するサービスです。「誰かにレビューしてもらいたい」このように思ったらKanon Codeでコードレビューを依頼してみてください。'
+          description={description}
           url={process.env.NEXT_PUBLIC_HOST}
           image={`${process.env.NEXT_PUBLIC_BUCKET_URL}images/logo.png`}
         />
@@ -66,7 +67,7 @@ const IndexPage: React.FC<Props> = props => {
     >
       <CommonHead
         title='Kanon Code | コードレビューを全てのエンジニアへ'
-        description='Kanon Codeは全てのエンジニアにコードレビューの機会を提供します。「誰かにレビューしてもらいたい」このように思ったらKanon Codeでコードレビューを依頼してみてください。'
+        description={description}
         url={process.env.NEXT_PUBLIC_HOST}
         image={`${process.env.NEXT_PUBLIC_BUCKET_URL}images/logo.png`}
       />
