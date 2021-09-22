@@ -10,6 +10,7 @@ export const apis = {
   MY_BOOKMARKS: '/api/myBookmarks',
   CONTENTS: '/api/contents',
   CONTENT: '/api/content',
+  COMMENT: '/api/comment',
   PAGES_URL: '/api/pagesUrl',
   DISPLAY_NAME: '/api/displayName',
   REGISTER_CONTENT: '/api/registerContent',

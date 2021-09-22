@@ -3,10 +3,18 @@ import { ResponseReviewTypes } from '@/types/api/get-review';
 import { axios } from '@/utils/axios';
 import { AxiosResponse } from 'axios';
 
-type ParamsType = any;
+type ParamsType = {
+  postReviewJointId: string;
+  contents: {
+    comment: {
+      value: string;
+      body_html: string;
+    };
+  };
+};
 
 export const postComment = async (
   params: ParamsType
 ): Promise<AxiosResponse<ResponseReviewTypes>> => {
-  return await axios.post(apis.REVIEW, params);
+  return await axios.post(apis.COMMENT, params);
 };

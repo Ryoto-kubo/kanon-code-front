@@ -42,7 +42,7 @@ type Props = {
     React.SetStateAction<{ [key: string]: boolean } | null>
   >;
 };
-
+const StyledBoxReviewWrapper = Box;
 const StyledBoxTitleWrapper = styled(Box)`
   margin-bottom: 24px;
   border-bottom: 3px solid ${theme.palette.primary.main};
@@ -88,6 +88,7 @@ const Wrapper: React.FC<Props> = ({
   const [reviewerId, setReviewerId] = useState('');
   const [isSucceeded, setIsSucceeded] = useState(false);
   const stripe = useStripe();
+
   const showToggleDialog = (
     argReviewId: string,
     argTitle: string,
@@ -114,6 +115,7 @@ const Wrapper: React.FC<Props> = ({
     setReviewerId(argReviewerId);
     setIsOpenPayment(true);
   };
+
   const createParams = () => {
     return {
       postId,
@@ -125,6 +127,7 @@ const Wrapper: React.FC<Props> = ({
       customerId: credit!.customer_id,
     };
   };
+
   const createRegisterPaymentParams = () => {
     const profile = userProfile!;
     return {
@@ -135,6 +138,7 @@ const Wrapper: React.FC<Props> = ({
       price,
     };
   };
+
   const payment = async () => {
     if (!credit) return;
     const err = new Error();
@@ -174,6 +178,8 @@ const Wrapper: React.FC<Props> = ({
   };
 
   const renderReviewedItem = (el: CustomReviewTypes, index: number) => {
+    console.log(el);
+
     const name = el.user_profile.display_name;
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
@@ -208,27 +214,31 @@ const Wrapper: React.FC<Props> = ({
             />
           )}
         </StyledBoxFlex>
-        <StyledBoxTitleWrapper>
-          <h1>{title}</h1>
-        </StyledBoxTitleWrapper>
-        <StyledBoxComponentWrapper>
-          <div className='review-item-wrapper'>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: marked(displayBodyHtml),
-              }}
-            />
-          </div>
-        </StyledBoxComponentWrapper>
+        <StyledBoxReviewWrapper component='section'>
+          <StyledBoxTitleWrapper>
+            <h1>{title}</h1>
+          </StyledBoxTitleWrapper>
+          <StyledBoxComponentWrapper>
+            <div className='review-item-wrapper'>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: marked(displayBodyHtml),
+                }}
+              />
+            </div>
+          </StyledBoxComponentWrapper>
+        </StyledBoxReviewWrapper>
         {/* ここにコメントをmapで表示させる */}
         {/* エディタを表示 */}
-        <StyledBoxComponentWrapper>
-          <CommentEditor
-            reviewId=''
-            // updateDisplay=
-            postStatusValue={0}
-          />
-        </StyledBoxComponentWrapper>
+        {(isPaymented || isPaymentFree || isSelfReviewItem) && (
+          <StyledBoxComponentWrapper>
+            <CommentEditor
+              authUserName={authUserName}
+              reviewId={sortKey}
+              // updateDisplay=
+            />
+          </StyledBoxComponentWrapper>
+        )}
         {(isPaymented || isPaymentFree || isSelfReviewItem) && (
           <Reaction
             authUserName={authUserName}
@@ -256,6 +266,7 @@ const Wrapper: React.FC<Props> = ({
       </Box>
     );
   };
+
   return (
     <>
       {isLoading ? (

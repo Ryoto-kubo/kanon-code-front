@@ -24,6 +24,8 @@ export const errorMessages = {
     'ブックマークの登録又は解除に失敗しました。しばらく時間をおいてやり直してください。',
   REVIEW_ERROR:
     'レビューの投稿に失敗しました。しばらく時間をおいてやり直してください。',
+  COMMENT_ERROR:
+    'コメントの投稿に失敗しました。しばらく時間をおいてやり直してください。',
   EXISTED_NAME: '既に使用されている名前です。',
   IMAGE_COMPRESSION_ERROR: '画像の圧縮に失敗しました',
   INVAILD_VALUE: '不正な値です',

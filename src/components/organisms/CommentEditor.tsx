@@ -1,3 +1,4 @@
+import { CustomSnackbar } from '@/components/atoms/CustomSnackbar';
 import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { SigninDialog } from '@/components/parts/signinDialog';
 import * as CONSTS from '@/consts/const';
@@ -21,9 +22,9 @@ const Editor = dynamic(
 );
 
 type Props = {
+  authUserName: string;
   reviewId: string;
   // updateDisplay: (responseReview: ReviewTypes) => void;
-  postStatusValue: number;
 };
 type ValidObject = {
   isValid: boolean;
@@ -38,25 +39,25 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 export const CommentEditor: React.FC<Props> = React.memo(props => {
+  const { authUserName, reviewId } = props;
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState('コメント登録中...');
   const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [comment, setComment] = useState('');
   const [activeStep, setActiveStep] = useState(0);
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [canPublish, setCanPUblish] = useState<ValidObject>(
+  const [canPublish, setCanPublish] = useState<ValidObject>(
     createValidObject(true, '')
   );
-  const [isValidReviewObject, setIsValidReviewObject] = useState<ValidObject>(
+  const [isValidCommentObject, setIsValidCommentObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_COMMENT)
   );
 
-  const changeReview = useCallback(
+  const changeComment = useCallback(
     (value: string): void => {
       const prepareContentBeforePost = new PrepareContentBeforePost(
         value,
-        setIsValidReviewObject,
-        isValidReviewObject
+        setIsValidCommentObject,
+        isValidCommentObject
       );
       const isValidMaxLength = prepareContentBeforePost.validLength(
         CONSTS.MAX_DESCRIPTION_LENGTH,
@@ -81,65 +82,51 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
   );
 
   const updateCanPublish = useCallback((isValid: boolean, message = '') => {
-    setCanPUblish({
+    setCanPublish({
       ...canPublish,
       isValid: isValid,
       message: message,
     });
   }, []);
 
-  const createParams = (
-    paymentType: number,
-    beginPaymentArea: number | null,
-    price: number,
-    displayBodyHtml: string,
-    remainingLength: number
-  ) => {
+  const closeSnackBar = () => {
+    setCanPublish({
+      ...canPublish,
+      isValid: true,
+    });
+  };
+
+  const createParams = () => {
     return {
-      postId: props.reviewId,
+      postReviewJointId: reviewId,
       contents: {
-        review: {
+        comment: {
           value: comment,
           body_html: marked(comment),
-          display_body_html: displayBodyHtml,
         },
       },
-      remainingLength,
-      paymentType,
-      paymentArea: beginPaymentArea,
-      price,
     };
   };
 
-  const post = () => {
-    console.log('post');
-  };
-
-  const registerContent = async (
-    paymentType: number,
-    beginPaymentArea: number | null,
-    price: number,
-    displayBodyHtml: string,
-    remainingLength: number
-  ) => {
+  const registerComment = async () => {
+    if (authUserName === '') {
+      setIsOpenSignin(true);
+      return;
+    }
+    if (!isValidCommentObject.isValid) {
+      updateCanPublish(false, isValidCommentObject.message);
+      return;
+    }
     const err = new Error();
-    const params = createParams(
-      paymentType,
-      beginPaymentArea,
-      price,
-      displayBodyHtml,
-      remainingLength
-    );
+    const params = createParams();
     setIsOpen(true);
-    setIsOpenDialog(!isOpenDialog);
     try {
       const response = await postComment(params);
       if (!response.data.status) throw err;
       setUpdatingMessage('コメントを投稿しました');
-      // props.updateDisplay(response.data.Item);
     } catch (error) {
       console.error(error);
-      alert(errorMessages.REVIEW_ERROR);
+      alert(errorMessages.COMMENT_ERROR);
       setIsOpen(false);
     }
   };
@@ -151,7 +138,7 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
           id='editor'
           isFullDisplayButton={true}
           headerText='Comment'
-          onChange={changeReview}
+          onChange={changeComment}
           changeActiveStep={changeActiveStep}
           value={comment}
           activeStep={activeStep}
@@ -162,7 +149,11 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
         />
       </Box>
       <Box textAlign='right'>
-        <CustomSolidButton sizing='small' onClick={post} color='primary'>
+        <CustomSolidButton
+          sizing='small'
+          onClick={registerComment}
+          color='primary'
+        >
           コメントする
         </CustomSolidButton>
       </Box>
@@ -178,6 +169,12 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
         open={isOpen}
         message={updatingMessage}
       />
+      <CustomSnackbar
+        isOpen={!canPublish.isValid}
+        closeSnackBar={closeSnackBar}
+      >
+        <Box fontWeight='bold'>{canPublish.message}</Box>
+      </CustomSnackbar>
     </>
   );
 });
