@@ -2,6 +2,9 @@
   padding: 8px;
   font-weight: bold;
   background: #dadce0;
+  position: fixed;
+  z-index: 1;
+  width: 100%;
 }
 .preview-header {
   padding: 8px;
@@ -12,6 +15,10 @@
 .border_radius {
   border-radius: 8px 8px 0 0;
 }
+.dummy-header {
+  height: 37px;
+}
+
 .error {
   color: #ff604f;
 }
@@ -30,12 +37,11 @@
   .CodeMirror {
     border: none;
     border-radius: 0 0 8px 8px;
-    font-family: "Open sans";
+    font-family: 'Open sans';
     font-size: 16px;
-    // transform: scale(0.8);
   }
   .CodeMirror-placeholder {
     letter-spacing: 1.5px;
-    font-family: "Open Sans";
+    font-family: 'Open Sans';
   }
 }

@@ -61,6 +61,8 @@ const StyledBoxMaxWidth = styled(Box)`
 `;
 const StyledBoxPreviewWrapper = styled(Box)`
   padding: 16px;
+  max-height: 350px;
+  overflow-y: scroll;
 `;
 const StyledBoxEditorWrapper = styled(Box)`
   width: 100%;
@@ -229,6 +231,7 @@ export const Editor: React.FC<Props> = React.memo(props => {
               >
                 {props.headerText}
               </div>
+              <div className='dummy-header'></div>
               <SimpleMDE
                 id={props.id}
                 className='editor'
@@ -243,18 +246,9 @@ export const Editor: React.FC<Props> = React.memo(props => {
                   spellChecker: false,
                   styleSelectedText: false,
                   lineWrapping: true,
+                  maxHeight: '350px',
                 }}
               />
-              <Box textAlign='right' p={1} paddingRight={'10px'}>
-                {props.value.length} /&nbsp;
-                <Box
-                  component='span'
-                  fontWeight='bold'
-                  className={!props.isValid ? 'error' : ''}
-                >
-                  {props.MAX_LENGTH}
-                </Box>
-              </Box>
             </StyledBoxEditorWrapper>
             <StyledBoxEditorWrapper>
               <div
@@ -286,6 +280,16 @@ export const Editor: React.FC<Props> = React.memo(props => {
           isUploading={isUploading}
         />
       </StyledBoxFlex>
+      <Box textAlign='right' p={1} paddingRight={'10px'}>
+        {props.value.length} /&nbsp;
+        <Box
+          component='span'
+          fontWeight='bold'
+          className={!props.isValid ? 'error' : ''}
+        >
+          {props.MAX_LENGTH}
+        </Box>
+      </Box>
     </>
   );
 });
