@@ -184,6 +184,7 @@ const Wrapper: React.FC<Props> = ({
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
     const contents = el.contents;
+    const postId = el.id;
     const title = contents.review.title;
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`;
     const displayBodyHtml = contents.review.display_body_html;
@@ -234,7 +235,8 @@ const Wrapper: React.FC<Props> = ({
           <StyledBoxComponentWrapper>
             <CommentEditor
               authUserName={authUserName}
-              reviewId={sortKey}
+              postId={postId}
+              postReviewJointId={sortKey}
               // updateDisplay=
             />
           </StyledBoxComponentWrapper>

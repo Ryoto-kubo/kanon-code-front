@@ -4,6 +4,7 @@ import { axios } from '@/utils/axios';
 import { AxiosResponse } from 'axios';
 
 type ParamsType = {
+  postId: string;
   postReviewJointId: string;
   contents: {
     comment: {

@@ -23,13 +23,15 @@ const Editor = dynamic(
 
 type Props = {
   authUserName: string;
-  reviewId: string;
+  postId: string;
+  postReviewJointId: string;
   // updateDisplay: (responseReview: ReviewTypes) => void;
 };
 type ValidObject = {
   isValid: boolean;
   message: string;
 };
+type CommentMessage = 'コメント投稿中...' | 'コメントを投稿しました';
 
 const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
   return {
@@ -39,9 +41,11 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 export const CommentEditor: React.FC<Props> = React.memo(props => {
-  const { authUserName, reviewId } = props;
+  const { authUserName, postId, postReviewJointId } = props;
   const [isOpen, setIsOpen] = useState(false);
-  const [updatingMessage, setUpdatingMessage] = useState('コメント登録中...');
+  const [updatingMessage, setUpdatingMessage] = useState<CommentMessage>(
+    'コメント投稿中...'
+  );
   const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [comment, setComment] = useState('');
   const [activeStep, setActiveStep] = useState(0);
@@ -98,7 +102,8 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
 
   const createParams = () => {
     return {
-      postReviewJointId: reviewId,
+      postId, // post_xxx-xxx-xxx
+      postReviewJointId: postReviewJointId,
       contents: {
         comment: {
           value: comment,
@@ -119,11 +124,15 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
     }
     const err = new Error();
     const params = createParams();
+    setUpdatingMessage('コメント投稿中...');
     setIsOpen(true);
     try {
       const response = await postComment(params);
       if (!response.data.status) throw err;
       setUpdatingMessage('コメントを投稿しました');
+      setTimeout(() => {
+        setIsOpen(false);
+      }, 2000);
     } catch (error) {
       console.error(error);
       alert(errorMessages.COMMENT_ERROR);

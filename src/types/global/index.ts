@@ -73,6 +73,7 @@ export type ReviewTypes = {
   update_month: number;
   update_day: number;
   is_delete: boolean;
+  id: string;
 };
 
 export type ContentTypes = {
@@ -212,6 +213,7 @@ export type CustomReviewTypes = {
   update_month: number;
   update_day: number;
   is_delete: boolean;
+  id: string;
 };
 
 export type CustomReviewContentsTypes = {
