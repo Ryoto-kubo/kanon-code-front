@@ -78,6 +78,14 @@ const StyledTabs = styled(Tabs)`
   max-width: 733.59px;
   border-radius: 8px 8px 0 0;
 `;
+const StyledBoxInputCharaWrapper = styled(Box)`
+  text-align: right;
+  padding: 8px;
+  padding-right: 0px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    padding-right: 60px;
+  }
+`;
 
 export const Editor: React.FC<Props> = React.memo(props => {
   const [instance, setInstance] = useState<EasyMDE>();
@@ -280,7 +288,7 @@ export const Editor: React.FC<Props> = React.memo(props => {
           isUploading={isUploading}
         />
       </StyledBoxFlex>
-      <Box textAlign='right' p={1} paddingRight={'10px'}>
+      <StyledBoxInputCharaWrapper>
         {props.value.length} /&nbsp;
         <Box
           component='span'
@@ -289,7 +297,7 @@ export const Editor: React.FC<Props> = React.memo(props => {
         >
           {props.MAX_LENGTH}
         </Box>
-      </Box>
+      </StyledBoxInputCharaWrapper>
     </>
   );
 });
