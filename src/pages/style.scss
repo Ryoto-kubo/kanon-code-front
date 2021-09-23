@@ -9,7 +9,8 @@
 }
 
 .description-wrapper,
-.review-item-wrapper {
+.review-item-wrapper,
+.comment-item-wrapper {
   h1 {
     border-bottom: 1px solid #dddddd;
     margin-bottom: 16px;
@@ -41,6 +42,16 @@
     border-left: 3px solid #b3bfc7;
     padding: 2px 0 2px 0.7em;
     color: #626e77;
+  }
+}
+
+.comment-item-wrapper {
+  span {
+    h2 {
+      &:first-child {
+        margin-top: 0px;
+      }
+    }
   }
 }
 
