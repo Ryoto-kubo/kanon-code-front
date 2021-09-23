@@ -75,7 +75,7 @@ export const AnnounceOpenReview: React.FC<Props> = ({
       <Box textAlign='center' color='#6f7372' mb={3}>
         {commentListLength > 0
           ? `残り${remainingLength}文字のレビューと${commentListLength}個のコメントがあります`
-          : `残り${remainingLength}文字`}
+          : `残り${remainingLength}文字のレビューがあります`}
       </Box>
       <Box textAlign='center'>レビューを購入する</Box>
       <StyledBoxReviewInfo>
