@@ -66,6 +66,7 @@ const StyledBoxCommentWrapper = styled(Box)`
   }
 `;
 const StyledBoxCommentListWrapper = styled(Box)`
+  padding-top: 1px;
   padding-left: 44px;
   padding-bottom: 24px;
   position: relative;
@@ -300,7 +301,7 @@ const Wrapper: React.FC<Props> = ({
                     />
                   </Box>
                   <StyledBoxCommentListWrapper>
-                    <div className='review-item-wrapper'>
+                    <div className='comment-item-wrapper'>
                       <span
                         dangerouslySetInnerHTML={{
                           __html: marked(
