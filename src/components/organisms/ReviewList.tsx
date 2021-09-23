@@ -285,41 +285,44 @@ const Wrapper: React.FC<Props> = ({
           </StyledBoxComponentWrapper>
         </StyledBoxReviewWrapper>
         {/* コメントリスト : 購入済みか無料のレビューならコメントを表示*/}
-        {(isPaymented || isPaymentFree) && commentList[sortKey] && (
-          <StyledBoxCommentWrapper mb={3}>
-            {commentList[sortKey].map(commentItem => (
-              <Box key={uuidv4()}>
-                <Box mb={2}>
-                  <ReviewUser
-                    name={commentItem.user_profile.display_name}
-                    date={commentItem.date}
-                    userIcon={commentItem.user_profile.icon_src}
-                    width={'32px'}
-                    height={'32px'}
-                  />
-                </Box>
-                <StyledBoxCommentListWrapper>
-                  <div className='review-item-wrapper'>
-                    <span
-                      dangerouslySetInnerHTML={{
-                        __html: marked(commentItem.contents.comment.body_html),
-                      }}
+        {(isPaymented || isPaymentFree || isSelfReviewItem) &&
+          commentList[sortKey] && (
+            <StyledBoxCommentWrapper mb={3}>
+              {commentList[sortKey].map(commentItem => (
+                <Box key={uuidv4()}>
+                  <Box mb={2}>
+                    <ReviewUser
+                      name={commentItem.user_profile.display_name}
+                      date={commentItem.date}
+                      userIcon={commentItem.user_profile.icon_src}
+                      width={'32px'}
+                      height={'32px'}
                     />
-                  </div>
-                </StyledBoxCommentListWrapper>
+                  </Box>
+                  <StyledBoxCommentListWrapper>
+                    <div className='review-item-wrapper'>
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: marked(
+                            commentItem.contents.comment.body_html
+                          ),
+                        }}
+                      />
+                    </div>
+                  </StyledBoxCommentListWrapper>
+                </Box>
+              ))}
+              <Box mt={1} fontWeight='bold'>
+                <ParagraphText
+                  variant='body2'
+                  component='p'
+                  color='textSecondary'
+                >
+                  No more comments
+                </ParagraphText>
               </Box>
-            ))}
-            <Box mt={1} fontWeight='bold'>
-              <ParagraphText
-                variant='body2'
-                component='p'
-                color='textSecondary'
-              >
-                No more comments
-              </ParagraphText>
-            </Box>
-          </StyledBoxCommentWrapper>
-        )}
+            </StyledBoxCommentWrapper>
+          )}
 
         {/* エディタを表示 */}
         {(isPaymented || isPaymentFree || isSelfReviewItem) && (
