@@ -284,8 +284,8 @@ const Wrapper: React.FC<Props> = ({
             </div>
           </StyledBoxComponentWrapper>
         </StyledBoxReviewWrapper>
-        {/* コメントリスト */}
-        {commentList[sortKey] && (
+        {/* コメントリスト : 購入済みか無料のレビューならコメントを表示*/}
+        {(isPaymented || isPaymentFree) && commentList[sortKey] && (
           <StyledBoxCommentWrapper mb={3}>
             {commentList[sortKey].map(commentItem => (
               <Box key={uuidv4()}>
@@ -349,6 +349,7 @@ const Wrapper: React.FC<Props> = ({
             title={title}
             price={price}
             remainingLength={remainingLength}
+            commentList={commentList[sortKey]}
             reactionUsers={el.reaction_users}
             showToggleDialog={() =>
               showTogglePaymentReviewDialog(
