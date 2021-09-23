@@ -1,5 +1,5 @@
 import { apis } from '@/consts/api/';
-import { ResponseReviewTypes } from '@/types/api/get-review';
+import { ResponseCommentTypes } from '@/types/api/post-comment';
 import { axios } from '@/utils/axios';
 import { AxiosResponse } from 'axios';
 
@@ -16,6 +16,6 @@ type ParamsType = {
 
 export const postComment = async (
   params: ParamsType
-): Promise<AxiosResponse<ResponseReviewTypes>> => {
+): Promise<AxiosResponse<ResponseCommentTypes>> => {
   return await axios.post(apis.COMMENT, params);
 };

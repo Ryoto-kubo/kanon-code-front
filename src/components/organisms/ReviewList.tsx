@@ -12,7 +12,11 @@ import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from '@/consts/const';
 import { errorMessages } from '@/consts/error-messages';
 import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import theme from '@/styles/theme';
-import { CustomReviewTypesInCommentsTypes } from '@/types/global';
+import {
+  CommentListTypes,
+  CustomReviewTypes,
+  ResponseCommentTypes,
+} from '@/types/global';
 import { CreditTypes, UserProfileTypes } from '@/types/global/';
 import { deleteRegisterPayment } from '@/utils/api/delete-register-payment';
 import { postPayment } from '@/utils/api/post-payment';
@@ -32,10 +36,8 @@ import { CommentEditor } from './CommentEditor';
 type Props = {
   status: boolean;
   credit: CreditTypes;
-  reviews: CustomReviewTypesInCommentsTypes[];
-  setReviews: React.Dispatch<
-    React.SetStateAction<CustomReviewTypesInCommentsTypes[] | null>
-  >;
+  reviews: CustomReviewTypes[];
+  setReviews: React.Dispatch<React.SetStateAction<CustomReviewTypes[] | null>>;
   isMe: boolean;
   isLoading: boolean;
   authUserName: string;
@@ -46,6 +48,8 @@ type Props = {
   setPaymentedList: React.Dispatch<
     React.SetStateAction<{ [key: string]: boolean } | null>
   >;
+  commentList: CommentListTypes;
+  setCommentList: React.Dispatch<React.SetStateAction<CommentListTypes | null>>;
 };
 const StyledBoxReviewWrapper = Box;
 const StyledBoxCommentWrapper = styled(Box)`
@@ -104,6 +108,8 @@ const Wrapper: React.FC<Props> = ({
   userProfile,
   paymentedList,
   setPaymentedList,
+  commentList,
+  setCommentList,
 }) => {
   const partitionKey = `${USER_PREFIX}#${authUserName}`; // my user id
   const myReviewId = `${postId}#${REVIEW_PREFIX}#${authUserName}`;
@@ -209,15 +215,11 @@ const Wrapper: React.FC<Props> = ({
     }
   };
 
-  const renderReviewedItem = (
-    el: CustomReviewTypesInCommentsTypes,
-    index: number
-  ) => {
+  const renderReviewedItem = (el: CustomReviewTypes, index: number) => {
     const name = el.user_profile.display_name;
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
     const contents = el.contents;
-    const comments = el.comments;
     const postId = el.id;
     const title = contents.review.title;
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`;
@@ -228,6 +230,25 @@ const Wrapper: React.FC<Props> = ({
     const sortKey = el.sort_key;
     const reviewerId = el.user_id;
     const isPaymented = paymentedList[sortKey];
+
+    const addComment = (
+      postReviewJointId: string,
+      comment: ResponseCommentTypes
+    ) => {
+      let newComments;
+      const newCommentList = { ...commentList };
+      const isExistsCommentList = newCommentList[postReviewJointId];
+      if (isExistsCommentList) {
+        newComments = newCommentList[postReviewJointId].slice();
+      } else {
+        newCommentList[postReviewJointId] = [];
+        newComments = newCommentList[postReviewJointId].slice();
+      }
+      newComments.push(comment);
+      newCommentList[postReviewJointId] = newComments;
+      setCommentList(newCommentList);
+    };
+
     return (
       <Box key={index} component='section' mb={7}>
         <StyledBoxFlex mb={2}>
@@ -264,9 +285,9 @@ const Wrapper: React.FC<Props> = ({
           </StyledBoxComponentWrapper>
         </StyledBoxReviewWrapper>
         {/* コメントリスト */}
-        {comments.length > 0 && (
+        {commentList[sortKey] && (
           <StyledBoxCommentWrapper mb={3}>
-            {comments.map(commentItem => (
+            {commentList[sortKey].map(commentItem => (
               <Box key={uuidv4()}>
                 <Box mb={2}>
                   <ReviewUser
@@ -307,7 +328,7 @@ const Wrapper: React.FC<Props> = ({
               authUserName={authUserName}
               postId={postId}
               postReviewJointId={sortKey}
-              // updateDisplay=
+              addComment={addComment}
             />
           </StyledBoxComponentWrapper>
         )}

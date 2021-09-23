@@ -3,6 +3,7 @@ import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
+import { ResponseCommentTypes } from '@/types/global';
 import { postComment } from '@/utils/api/post-comment';
 import * as S3 from '@/utils/api/s3';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
@@ -26,7 +27,10 @@ type Props = {
   authUserName: string;
   postId: string;
   postReviewJointId: string;
-  // updateDisplay: (responseReview: ReviewTypes) => void;
+  addComment: (
+    postReviewJointId: string,
+    comment: ResponseCommentTypes
+  ) => void;
 };
 type ValidObject = {
   isValid: boolean;
@@ -42,7 +46,7 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 export const CommentEditor: React.FC<Props> = React.memo(props => {
-  const { authUserName, postId, postReviewJointId } = props;
+  const { authUserName, postId, postReviewJointId, addComment } = props;
   const { setIsOpenSignin } = useIsOpenSignin();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -126,8 +130,12 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
     setIsOpen(true);
     try {
       const response = await postComment(params);
+      const comment = response.data.data;
+      console.log(comment);
+
       if (!response.data.status) throw err;
       setUpdatingMessage('コメントを投稿しました');
+      addComment(postReviewJointId, comment);
       setTimeout(() => {
         setIsOpen(false);
       }, 2000);

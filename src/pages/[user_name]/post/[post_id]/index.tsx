@@ -100,6 +100,8 @@ const IndexPage: React.FC<Props> = props => {
       setCanReview,
       paymentedList,
       setPaymentedList,
+      commentList,
+      setCommentList,
       isLoading,
     } = useReviews(postId, isMe, myUserId);
     const status = reviewsResponse.data.status && creditResponse.data.status;
@@ -180,6 +182,8 @@ const IndexPage: React.FC<Props> = props => {
                 userProfile={userProfile}
                 paymentedList={paymentedList!}
                 setPaymentedList={setPaymentedList}
+                commentList={commentList!}
+                setCommentList={setCommentList}
               />
             </StyledBoxBgWhite>
           </StyledContainer>

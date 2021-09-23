@@ -304,6 +304,10 @@ export type ResponseCommentTypes = {
   date: string;
 };
 
-export type CustomReviewTypesInCommentsTypes = CustomReviewTypes & {
-  comments: ResponseCommentTypes[];
+export type CommentListTypes = {
+  [key: string]: ResponseCommentTypes[];
 };
+
+// export type CustomReviewTypesInCommentsTypes = CustomReviewTypes & {
+//   comments: ResponseCommentTypes[];
+// };

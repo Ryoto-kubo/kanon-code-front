@@ -1,7 +1,11 @@
 import { errorMessages } from '@/consts/error-messages';
 import { ResponseCreditType } from '@/types/api/get-credit';
 import { ResponseReviewsTypes } from '@/types/api/get-reviews';
-import { CustomReviewTypesInCommentsTypes, ErrorTypes } from '@/types/global';
+import {
+  CommentListTypes,
+  CustomReviewTypes,
+  ErrorTypes,
+} from '@/types/global';
 import { CreditTypes } from '@/types/global/';
 import { createErrorObject } from '@/utils/api/error';
 import { getCredit } from '@/utils/api/get-credit';
@@ -16,9 +20,7 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [canReview, setCanReview] = useState(false);
   const [credit, setCredit] = useState<CreditTypes | null>(null);
-  const [reviews, setReviews] = useState<
-    CustomReviewTypesInCommentsTypes[] | null
-  >(null);
+  const [reviews, setReviews] = useState<CustomReviewTypes[] | null>(null);
   const [creditResponse, setCreditResponse] = useState<
     AxiosResponse<ResponseCreditType> | ErrorTypes
   >(errorObject);
@@ -28,6 +30,7 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
   const [paymentedList, setPaymentedList] = useState<{
     [key: string]: boolean;
   } | null>(null);
+  const [commentList, setCommentList] = useState<CommentListTypes | null>(null);
 
   useEffect(() => {
     (async () => {
@@ -39,12 +42,13 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
 
         const responseCredit = results[0];
         const responseReviews = results[1];
-        responseReviews.data.Items.reviews;
+        console.log(responseReviews);
+
         const creditStatus = responseCredit.data.status;
         const reviewsStatus = responseReviews.data.status;
         if (!creditStatus || !reviewsStatus) throw err;
         const reviewedUserIds = responseReviews.data.Items.reviews.map(
-          (el: CustomReviewTypesInCommentsTypes) => el.partition_key
+          (el: CustomReviewTypes) => el.partition_key
         );
         const isReviewed = reviewedUserIds.includes(userId);
         // 自分の投稿ではない、ログインしている、まだレビューをしていなければレビューをできる
@@ -54,6 +58,7 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
         setCredit(responseCredit.data.Item);
         setReviews(responseReviews.data.Items.reviews);
         setPaymentedList(responseReviews.data.Items.paymentedList);
+        setCommentList(responseReviews.data.Items.commentList);
       } catch {
         console.error(err);
       } finally {
@@ -71,6 +76,8 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
     setCanReview,
     paymentedList,
     setPaymentedList,
+    commentList,
+    setCommentList,
     isLoading,
   };
 };
