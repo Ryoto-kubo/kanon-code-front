@@ -1,7 +1,8 @@
-import { CustomReviewTypes } from "@/types/global";
+import { CustomReviewTypesInCommentsTypes } from '@/types/global';
+
 export type ResponseReviewsTypes = {
   Items: {
-    reviews: CustomReviewTypes[];
+    reviews: CustomReviewTypesInCommentsTypes[];
     paymentedList: { [key: string]: boolean };
   };
   status: boolean;

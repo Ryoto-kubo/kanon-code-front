@@ -8,29 +8,34 @@ import { RelaxIllustration } from '@/components/parts/illustrations/relax';
 import { PaymentDialog } from '@/components/parts/paymentDialog';
 import { Reaction } from '@/components/parts/reaction';
 import { RegistCreditAnnounceDialog } from '@/components/parts/registCreditAnnounceDialog';
-import { SigninDialog } from '@/components/parts/signinDialog';
 import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from '@/consts/const';
 import { errorMessages } from '@/consts/error-messages';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import theme from '@/styles/theme';
-import { CustomReviewTypes } from '@/types/global';
+import { CustomReviewTypesInCommentsTypes } from '@/types/global';
 import { CreditTypes, UserProfileTypes } from '@/types/global/';
 import { deleteRegisterPayment } from '@/utils/api/delete-register-payment';
 import { postPayment } from '@/utils/api/post-payment';
 import { postRegisterPayment } from '@/utils/api/post-register-payment';
 import * as gtag from '@/utils/gtag';
 import { getStripe } from '@/utils/stripe';
+import { alpha } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import marked from 'marked';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
+import { ParagraphText } from '../atoms/ParagraphText';
 import { CommentEditor } from './CommentEditor';
 
 type Props = {
   status: boolean;
   credit: CreditTypes;
-  reviews: CustomReviewTypes[];
-  setReviews: React.Dispatch<React.SetStateAction<CustomReviewTypes[] | null>>;
+  reviews: CustomReviewTypesInCommentsTypes[];
+  setReviews: React.Dispatch<
+    React.SetStateAction<CustomReviewTypesInCommentsTypes[] | null>
+  >;
   isMe: boolean;
   isLoading: boolean;
   authUserName: string;
@@ -43,6 +48,33 @@ type Props = {
   >;
 };
 const StyledBoxReviewWrapper = Box;
+const StyledBoxCommentWrapper = styled(Box)`
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    background: ${alpha(theme.palette.primary.light, 0.3)};
+    width: 3px;
+    height: 31px;
+    left: 15px;
+    top: -31px;
+    bottom: 0;
+  }
+`;
+const StyledBoxCommentListWrapper = styled(Box)`
+  padding-left: 44px;
+  padding-bottom: 24px;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    background: ${alpha(theme.palette.primary.light, 0.3)};
+    width: 3px;
+    left: 15px;
+    top: -13px;
+    bottom: 0;
+  }
+`;
 const StyledBoxTitleWrapper = styled(Box)`
   margin-bottom: 24px;
   border-bottom: 3px solid ${theme.palette.primary.main};
@@ -76,10 +108,10 @@ const Wrapper: React.FC<Props> = ({
   const partitionKey = `${USER_PREFIX}#${authUserName}`; // my user id
   const myReviewId = `${postId}#${REVIEW_PREFIX}#${authUserName}`;
   const redirectUri = encodeURIComponent(location.pathname);
+  const { setIsOpenSignin } = useIsOpenSignin();
   const [isOpenPayment, setIsOpenPayment] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isOpenCreditAnnounce, setIsOpenCreditAnnounce] = useState(false);
-  const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [iconSrc, setIconSrc] = useState('');
@@ -177,13 +209,17 @@ const Wrapper: React.FC<Props> = ({
     }
   };
 
-  const renderReviewedItem = (el: CustomReviewTypes, index: number) => {
+  const renderReviewedItem = (
+    el: CustomReviewTypesInCommentsTypes,
+    index: number
+  ) => {
     console.log(el);
 
     const name = el.user_profile.display_name;
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
     const contents = el.contents;
+    const comments = el.comments;
     const postId = el.id;
     const title = contents.review.title;
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`;
@@ -215,7 +251,7 @@ const Wrapper: React.FC<Props> = ({
             />
           )}
         </StyledBoxFlex>
-        <StyledBoxReviewWrapper component='section'>
+        <StyledBoxReviewWrapper>
           <StyledBoxTitleWrapper>
             <h1>{title}</h1>
           </StyledBoxTitleWrapper>
@@ -229,7 +265,43 @@ const Wrapper: React.FC<Props> = ({
             </div>
           </StyledBoxComponentWrapper>
         </StyledBoxReviewWrapper>
-        {/* ここにコメントをmapで表示させる */}
+        {/* コメントリスト */}
+        {comments.length > 0 && (
+          <StyledBoxCommentWrapper mb={3}>
+            {comments.map(commentItem => (
+              <Box key={uuidv4()}>
+                <Box mb={2}>
+                  <ReviewUser
+                    name={commentItem.user_profile.display_name}
+                    date={commentItem.date}
+                    userIcon={commentItem.user_profile.icon_src}
+                    width={'32px'}
+                    height={'32px'}
+                  />
+                </Box>
+                <StyledBoxCommentListWrapper>
+                  <div className='review-item-wrapper'>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: marked(commentItem.contents.comment.body_html),
+                      }}
+                    />
+                  </div>
+                </StyledBoxCommentListWrapper>
+              </Box>
+            ))}
+            <Box mt={1} fontWeight='bold'>
+              <ParagraphText
+                variant='body2'
+                component='p'
+                color='textSecondary'
+              >
+                No more comments
+              </ParagraphText>
+            </Box>
+          </StyledBoxCommentWrapper>
+        )}
+
         {/* エディタを表示 */}
         {(isPaymented || isPaymentFree || isSelfReviewItem) && (
           <StyledBoxComponentWrapper>
@@ -304,15 +376,11 @@ const Wrapper: React.FC<Props> = ({
         isOpenDialog={isOpenCreditAnnounce}
         showToggleDialog={() => setIsOpenCreditAnnounce(false)}
       />
-      <SigninDialog
-        isOpenDialog={isOpenSignin}
-        closeDialog={() => setIsOpenSignin(false)}
-      />
     </>
   );
 };
 
-export const ReviewList = (props: Props) => {
+export const ReviewList: React.FC<Props> = React.memo(props => {
   const promiseStripe = getStripe();
 
   return (
@@ -327,4 +395,4 @@ export const ReviewList = (props: Props) => {
       )}
     </Elements>
   );
-};
+});

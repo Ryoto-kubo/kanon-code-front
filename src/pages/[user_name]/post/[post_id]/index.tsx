@@ -4,6 +4,7 @@ import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader';
+// import { SigninDialog } from '@/components/parts/signinDialog';
 import { useReviews } from '@/hooks/useReviews';
 import Layout from '@/layouts/standard';
 import { useIsReviewAccept } from '@/recoil/hooks/snackbarReviewAccept';
@@ -82,6 +83,7 @@ const IndexPage: React.FC<Props> = props => {
     const authUserName = props.authUser
       ? props.authUser['cognito:username']
       : '';
+
     const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
     const [postStatusValue, setPostStatusValue] = useState<number>(
       props.post ? props.post.post_status : 0
@@ -153,7 +155,7 @@ const IndexPage: React.FC<Props> = props => {
             <Box mb={5}>
               <StyledBoxBgWhite>
                 <ReviewEditor
-                  myUserId={myUserId}
+                  authUserName={authUserName}
                   postId={postId}
                   isMe={isMe}
                   isLoading={isLoading}

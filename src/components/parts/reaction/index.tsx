@@ -7,6 +7,7 @@ import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import SentimentSatisfiedOutlinedIcon from '@material-ui/icons/SentimentSatisfiedOutlined';
 import React, { useState } from 'react';
+import { SetterOrUpdater } from 'recoil';
 import styled from 'styled-components';
 
 type Props = {
@@ -20,7 +21,7 @@ type Props = {
   }[];
   displayName: string;
   userIcon: string;
-  setIsOpenSignin: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpenSignin: SetterOrUpdater<boolean>;
 };
 
 const StyledBoxWrapper = styled(Box)`
@@ -112,7 +113,9 @@ export const Reaction: React.FC<Props> = ({
   return (
     <StyledBoxWrapper>
       <StyledBoxTitleWrapper component='span'>
-        このレビューをみんなにもオススメしますか？
+        {!authUserName
+          ? 'サインイン後にオススメできます'
+          : 'このレビューをみんなにもオススメしますか？'}
       </StyledBoxTitleWrapper>
       <StyledBoxButtonWrapper>
         <StyledButton

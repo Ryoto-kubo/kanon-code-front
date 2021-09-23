@@ -1,7 +1,7 @@
 import { errorMessages } from '@/consts/error-messages';
 import { ResponseCreditType } from '@/types/api/get-credit';
 import { ResponseReviewsTypes } from '@/types/api/get-reviews';
-import { CustomReviewTypes, ErrorTypes } from '@/types/global';
+import { CustomReviewTypesInCommentsTypes, ErrorTypes } from '@/types/global';
 import { CreditTypes } from '@/types/global/';
 import { createErrorObject } from '@/utils/api/error';
 import { getCredit } from '@/utils/api/get-credit';
@@ -16,7 +16,9 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
   const [isLoading, setIsLoading] = useState(true);
   const [canReview, setCanReview] = useState(false);
   const [credit, setCredit] = useState<CreditTypes | null>(null);
-  const [reviews, setReviews] = useState<CustomReviewTypes[] | null>(null);
+  const [reviews, setReviews] = useState<
+    CustomReviewTypesInCommentsTypes[] | null
+  >(null);
   const [creditResponse, setCreditResponse] = useState<
     AxiosResponse<ResponseCreditType> | ErrorTypes
   >(errorObject);
@@ -42,7 +44,7 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
         const reviewsStatus = responseReviews.data.status;
         if (!creditStatus || !reviewsStatus) throw err;
         const reviewedUserIds = responseReviews.data.Items.reviews.map(
-          (el: CustomReviewTypes) => el.partition_key
+          (el: CustomReviewTypesInCommentsTypes) => el.partition_key
         );
         const isReviewed = reviewedUserIds.includes(userId);
         // 自分の投稿ではない、ログインしている、まだレビューをしていなければレビューをできる

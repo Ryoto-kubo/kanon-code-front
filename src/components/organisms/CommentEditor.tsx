@@ -1,8 +1,8 @@
 import { CustomSnackbar } from '@/components/atoms/CustomSnackbar';
 import { CustomSolidButton } from '@/components/atoms/SolidButton';
-import { SigninDialog } from '@/components/parts/signinDialog';
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import { postComment } from '@/utils/api/post-comment';
 import * as S3 from '@/utils/api/s3';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
@@ -12,6 +12,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import marked from 'marked';
 import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
+import { SigninAnnounce } from '../molecules/SinginAnnounce';
 
 const Editor = dynamic(
   () => {
@@ -42,11 +43,12 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 
 export const CommentEditor: React.FC<Props> = React.memo(props => {
   const { authUserName, postId, postReviewJointId } = props;
+  const { setIsOpenSignin } = useIsOpenSignin();
+
   const [isOpen, setIsOpen] = useState(false);
   const [updatingMessage, setUpdatingMessage] = useState<CommentMessage>(
     'コメント投稿中...'
   );
-  const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [comment, setComment] = useState('');
   const [activeStep, setActiveStep] = useState(0);
   const [canPublish, setCanPublish] = useState<ValidObject>(
@@ -114,10 +116,6 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
   };
 
   const registerComment = async () => {
-    if (authUserName === '') {
-      setIsOpenSignin(true);
-      return;
-    }
     if (!isValidCommentObject.isValid) {
       updateCanPublish(false, isValidCommentObject.message);
       return;
@@ -140,7 +138,12 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
     }
   };
 
-  return (
+  return !authUserName ? (
+    <SigninAnnounce
+      text='コメントをするにはサインインが必要です。'
+      setIsOpenSignin={setIsOpenSignin}
+    />
+  ) : (
     <>
       <Box mb={2}>
         <Editor
@@ -166,10 +169,6 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
           コメントする
         </CustomSolidButton>
       </Box>
-      <SigninDialog
-        isOpenDialog={isOpenSignin}
-        closeDialog={() => setIsOpenSignin(false)}
-      />
       <Snackbar
         anchorOrigin={{
           vertical: 'bottom',

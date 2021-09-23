@@ -74,6 +74,8 @@ export type ReviewTypes = {
   update_day: number;
   is_delete: boolean;
   id: string;
+  // TODO:実際にこの型ではcommentsは要らない。のけ方がわからないのでとりあえず入れておく
+  comments: ResponseCommentTypes[];
 };
 
 export type ContentTypes = {
@@ -287,4 +289,21 @@ export type SaleTypes = {
   day: number;
   date: string;
   price: number;
+};
+
+export type CommentContentsTypes = {
+  comment: {
+    value: string;
+    body_html: string;
+  };
+};
+
+export type ResponseCommentTypes = {
+  user_profile: UserProfileTypes;
+  contents: CommentContentsTypes;
+  date: string;
+};
+
+export type CustomReviewTypesInCommentsTypes = CustomReviewTypes & {
+  comments: ResponseCommentTypes[];
 };
