@@ -42,8 +42,6 @@ export const useReviews = (postId: string, isMe: boolean, userId: string) => {
 
         const responseCredit = results[0];
         const responseReviews = results[1];
-        console.log(responseReviews);
-
         const creditStatus = responseCredit.data.status;
         const reviewsStatus = responseReviews.data.status;
         if (!creditStatus || !reviewsStatus) throw err;

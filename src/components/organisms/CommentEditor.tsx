@@ -155,7 +155,7 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
     <>
       <Box mb={2}>
         <Editor
-          id='editor'
+          id='comment-editor'
           isFullDisplayButton={true}
           headerText='Comment'
           onChange={changeComment}
