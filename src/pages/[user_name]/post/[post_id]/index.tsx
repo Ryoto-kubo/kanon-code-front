@@ -29,6 +29,7 @@ type Props = {
 
 const StyledBoxBgGray = styled(Box)`
   padding: 40px 0px;
+  margin-bottom: 29px;
   ${props => props.theme.breakpoints.up('sm')} {
     background: #fafafa;
     padding: 40px 16px;

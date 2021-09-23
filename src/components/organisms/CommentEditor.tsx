@@ -140,7 +140,7 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
 
   return !authUserName ? (
     <SigninAnnounce
-      text='コメントをするにはサインインが必要です。'
+      text='サインインするとコメントできます'
       setIsOpenSignin={setIsOpenSignin}
     />
   ) : (

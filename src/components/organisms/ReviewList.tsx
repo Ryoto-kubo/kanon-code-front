@@ -121,7 +121,7 @@ const Wrapper: React.FC<Props> = ({
   const [isSucceeded, setIsSucceeded] = useState(false);
   const stripe = useStripe();
 
-  const showToggleDialog = (
+  const showTogglePaymentReviewDialog = (
     argReviewId: string,
     argTitle: string,
     argName: string,
@@ -213,8 +213,6 @@ const Wrapper: React.FC<Props> = ({
     el: CustomReviewTypesInCommentsTypes,
     index: number
   ) => {
-    console.log(el);
-
     const name = el.user_profile.display_name;
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
@@ -332,7 +330,14 @@ const Wrapper: React.FC<Props> = ({
             remainingLength={remainingLength}
             reactionUsers={el.reaction_users}
             showToggleDialog={() =>
-              showToggleDialog(sortKey, title, name, iconSrc, price, reviewerId)
+              showTogglePaymentReviewDialog(
+                sortKey,
+                title,
+                name,
+                iconSrc,
+                price,
+                reviewerId
+              )
             }
           />
         )}

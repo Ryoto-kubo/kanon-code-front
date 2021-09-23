@@ -114,7 +114,7 @@ export const Reaction: React.FC<Props> = ({
     <StyledBoxWrapper>
       <StyledBoxTitleWrapper component='span'>
         {!authUserName
-          ? 'サインイン後にオススメできます'
+          ? 'サインインするとオススメできます'
           : 'このレビューをみんなにもオススメしますか？'}
       </StyledBoxTitleWrapper>
       <StyledBoxButtonWrapper>

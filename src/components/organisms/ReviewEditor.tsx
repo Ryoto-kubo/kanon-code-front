@@ -38,7 +38,6 @@ type Props = {
   canReview: boolean;
   updateDisplay: (responseReview: ReviewTypes) => void;
   postStatusValue: number;
-  // setIsOpenSignin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 type ValidObject = {
   isValid: boolean;
@@ -249,7 +248,7 @@ export const ReviewEditor: React.FC<Props> = React.memo(props => {
         </>
       ) : !props.authUserName ? (
         <SigninAnnounce
-          text='レビューをするにはサインインが必要です。'
+          text='サインインするとレビューができます'
           setIsOpenSignin={setIsOpenSignin}
         />
       ) : props.postStatusValue === STOP_REVIEW ? (
