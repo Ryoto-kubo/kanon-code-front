@@ -5,10 +5,10 @@ import { RightBorderTitle } from '@/components/molecules/RightBorderTitle';
 import { ValidMessage } from '@/components/molecules/ValidMessage';
 import { InputPostTitleWrapper } from '@/components/organisms/InputPostTitleWrapper';
 import { ReviewSettingDialog } from '@/components/parts/reviewSettingDialog';
-import { SigninDialog } from '@/components/parts/signinDialog';
 import * as CONSTS from '@/consts/const';
 import { STOP_REVIEW } from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import { ReviewTypes } from '@/types/global/';
 import { postReview } from '@/utils/api/post-review';
 import * as S3 from '@/utils/api/s3';
@@ -20,6 +20,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import marked from 'marked';
 import dynamic from 'next/dynamic';
 import React, { useCallback, useState } from 'react';
+import { SigninAnnounce } from '../molecules/SinginAnnounce';
 
 const Editor = dynamic(
   () => {
@@ -30,7 +31,7 @@ const Editor = dynamic(
 );
 
 type Props = {
-  myUserId: string;
+  authUserName: string;
   postId: string;
   isMe: boolean;
   isLoading: boolean;
@@ -51,12 +52,13 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 export const ReviewEditor: React.FC<Props> = React.memo(props => {
+  const { setIsOpenSignin } = useIsOpenSignin();
+
   const [isOpen, setIsOpen] = useState(false);
   const [reviewedMessage, setReviewedMessage] = useState(
     'レビューをいただいております。'
   );
   const [updatingMessage, setUpdatingMessage] = useState('レビュー保存中...');
-  const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [title, setTitle] = useState('');
   const [review, setReview] = useState(initReview);
   const [activeStep, setActiveStep] = useState(0);
@@ -244,17 +246,11 @@ export const ReviewEditor: React.FC<Props> = React.memo(props => {
             </CustomSolidButton>
           </Box>
         </>
-      ) : !props.myUserId ? (
-        <Box textAlign='center'>
-          <Box mb={1}>レビューをするにはサインインが必要です。</Box>
-          <CustomSolidButton
-            sizing='small'
-            onClick={() => setIsOpenSignin(true)}
-            color='primary'
-          >
-            サインイン
-          </CustomSolidButton>
-        </Box>
+      ) : !props.authUserName ? (
+        <SigninAnnounce
+          text='サインインするとレビューができます'
+          setIsOpenSignin={setIsOpenSignin}
+        />
       ) : props.postStatusValue === STOP_REVIEW ? (
         <Box textAlign='center'>
           <p>レビューの受付は終了しています</p>
@@ -274,10 +270,6 @@ export const ReviewEditor: React.FC<Props> = React.memo(props => {
         isOpenDialog={isOpenDialog}
         showToggleDialog={showToggleDialog}
         registerContent={registerContent}
-      />
-      <SigninDialog
-        isOpenDialog={isOpenSignin}
-        closeDialog={() => setIsOpenSignin(false)}
       />
       <Snackbar
         anchorOrigin={{

@@ -61,6 +61,8 @@ const StyledBoxMaxWidth = styled(Box)`
 `;
 const StyledBoxPreviewWrapper = styled(Box)`
   padding: 16px;
+  max-height: 350px;
+  overflow-y: scroll;
 `;
 const StyledBoxEditorWrapper = styled(Box)`
   width: 100%;
@@ -75,6 +77,14 @@ const StyledTabs = styled(Tabs)`
   width: 100%;
   max-width: 733.59px;
   border-radius: 8px 8px 0 0;
+`;
+const StyledBoxInputCharaWrapper = styled(Box)`
+  text-align: right;
+  padding: 8px;
+  padding-right: 0px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    padding-right: 60px;
+  }
 `;
 
 export const Editor: React.FC<Props> = React.memo(props => {
@@ -229,6 +239,7 @@ export const Editor: React.FC<Props> = React.memo(props => {
               >
                 {props.headerText}
               </div>
+              <div className='dummy-header'></div>
               <SimpleMDE
                 id={props.id}
                 className='editor'
@@ -243,18 +254,9 @@ export const Editor: React.FC<Props> = React.memo(props => {
                   spellChecker: false,
                   styleSelectedText: false,
                   lineWrapping: true,
+                  maxHeight: '350px',
                 }}
               />
-              <Box textAlign='right' p={1} paddingRight={'10px'}>
-                {props.value.length} /&nbsp;
-                <Box
-                  component='span'
-                  fontWeight='bold'
-                  className={!props.isValid ? 'error' : ''}
-                >
-                  {props.MAX_LENGTH}
-                </Box>
-              </Box>
             </StyledBoxEditorWrapper>
             <StyledBoxEditorWrapper>
               <div
@@ -286,6 +288,16 @@ export const Editor: React.FC<Props> = React.memo(props => {
           isUploading={isUploading}
         />
       </StyledBoxFlex>
+      <StyledBoxInputCharaWrapper>
+        {props.value.length} /&nbsp;
+        <Box
+          component='span'
+          fontWeight='bold'
+          className={!props.isValid ? 'error' : ''}
+        >
+          {props.MAX_LENGTH}
+        </Box>
+      </StyledBoxInputCharaWrapper>
     </>
   );
 });

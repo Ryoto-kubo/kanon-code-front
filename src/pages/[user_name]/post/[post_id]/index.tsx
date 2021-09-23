@@ -4,6 +4,7 @@ import { ReviewEditor } from '@/components/organisms/ReviewEditor';
 import { ReviewList } from '@/components/organisms/ReviewList';
 import { ReviewRequestContents } from '@/components/organisms/ReviewRequestContents';
 import { ReviewRequestItemHeader } from '@/components/organisms/ReviewRequestItemHeader';
+// import { SigninDialog } from '@/components/parts/signinDialog';
 import { useReviews } from '@/hooks/useReviews';
 import Layout from '@/layouts/standard';
 import { useIsReviewAccept } from '@/recoil/hooks/snackbarReviewAccept';
@@ -28,6 +29,7 @@ type Props = {
 
 const StyledBoxBgGray = styled(Box)`
   padding: 40px 0px;
+  margin-bottom: 29px;
   ${props => props.theme.breakpoints.up('sm')} {
     background: #fafafa;
     padding: 40px 16px;
@@ -82,6 +84,7 @@ const IndexPage: React.FC<Props> = props => {
     const authUserName = props.authUser
       ? props.authUser['cognito:username']
       : '';
+
     const { isReviewAccept, setIsReviewAccept } = useIsReviewAccept();
     const [postStatusValue, setPostStatusValue] = useState<number>(
       props.post ? props.post.post_status : 0
@@ -97,6 +100,8 @@ const IndexPage: React.FC<Props> = props => {
       setCanReview,
       paymentedList,
       setPaymentedList,
+      commentList,
+      setCommentList,
       isLoading,
     } = useReviews(postId, isMe, myUserId);
     const status = reviewsResponse.data.status && creditResponse.data.status;
@@ -152,15 +157,8 @@ const IndexPage: React.FC<Props> = props => {
             </Box>
             <Box mb={5}>
               <StyledBoxBgWhite>
-                {/* {RenderReviewEditor(
-                  props,
-                  canReview,
-                  isLoading,
-                  updateDisplay,
-                  postStatusValue
-                )} */}
                 <ReviewEditor
-                  myUserId={myUserId}
+                  authUserName={authUserName}
                   postId={postId}
                   isMe={isMe}
                   isLoading={isLoading}
@@ -184,6 +182,8 @@ const IndexPage: React.FC<Props> = props => {
                 userProfile={userProfile}
                 paymentedList={paymentedList!}
                 setPaymentedList={setPaymentedList}
+                commentList={commentList!}
+                setCommentList={setCommentList}
               />
             </StyledBoxBgWhite>
           </StyledContainer>

@@ -141,7 +141,7 @@ const IndexPage: React.FC<Props> = props => {
   const [isOpenDialog, setIsOpenDialog] = useState(false);
   const [isOpenTreeDialog, setIsOpenTreeDialog] = useState(false);
   const [buttonText, setButtonText] = useState<ButtonText>('下書き保存');
-  const [canPublish, setCanPUblish] = useState<ValidObject>(
+  const [canPublish, setCanPublish] = useState<ValidObject>(
     createValidObject(true, '')
   );
   const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
@@ -192,7 +192,7 @@ const IndexPage: React.FC<Props> = props => {
   }, [title, description, inputFileNameLists, isPosted]);
   // }, [title, tagList, description, inputFileNameLists, isPosted]);
   const closeSnackBar = () => {
-    setCanPUblish({
+    setCanPublish({
       ...canPublish,
       isValid: true,
     });
@@ -223,7 +223,7 @@ const IndexPage: React.FC<Props> = props => {
   };
 
   const initCanPublish = () => {
-    setCanPUblish({
+    setCanPublish({
       ...canPublish,
       isValid: true,
     });
@@ -260,7 +260,7 @@ const IndexPage: React.FC<Props> = props => {
   }, []);
 
   const updateCanPublish = useCallback((isValid: boolean, message = '') => {
-    setCanPUblish({
+    setCanPublish({
       ...canPublish,
       isValid: isValid,
       message: message,

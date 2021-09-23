@@ -8,22 +8,30 @@ import { RelaxIllustration } from '@/components/parts/illustrations/relax';
 import { PaymentDialog } from '@/components/parts/paymentDialog';
 import { Reaction } from '@/components/parts/reaction';
 import { RegistCreditAnnounceDialog } from '@/components/parts/registCreditAnnounceDialog';
-import { SigninDialog } from '@/components/parts/signinDialog';
 import { PAYMENT_FREE, REVIEW_PREFIX, USER_PREFIX } from '@/consts/const';
 import { errorMessages } from '@/consts/error-messages';
+import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import theme from '@/styles/theme';
-import { CustomReviewTypes } from '@/types/global';
+import {
+  CommentListTypes,
+  CustomReviewTypes,
+  ResponseCommentTypes,
+} from '@/types/global';
 import { CreditTypes, UserProfileTypes } from '@/types/global/';
 import { deleteRegisterPayment } from '@/utils/api/delete-register-payment';
 import { postPayment } from '@/utils/api/post-payment';
 import { postRegisterPayment } from '@/utils/api/post-register-payment';
 import * as gtag from '@/utils/gtag';
 import { getStripe } from '@/utils/stripe';
+import { alpha } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import { Elements, useStripe } from '@stripe/react-stripe-js';
 import marked from 'marked';
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
+import { ParagraphText } from '../atoms/ParagraphText';
+import { CommentEditor } from './CommentEditor';
 
 type Props = {
   status: boolean;
@@ -40,8 +48,37 @@ type Props = {
   setPaymentedList: React.Dispatch<
     React.SetStateAction<{ [key: string]: boolean } | null>
   >;
+  commentList: CommentListTypes;
+  setCommentList: React.Dispatch<React.SetStateAction<CommentListTypes | null>>;
 };
-
+const StyledBoxReviewWrapper = Box;
+const StyledBoxCommentWrapper = styled(Box)`
+  position: relative;
+  &::after {
+    content: '';
+    position: absolute;
+    background: ${alpha(theme.palette.primary.light, 0.3)};
+    width: 3px;
+    height: 31px;
+    left: 15px;
+    top: -31px;
+    bottom: 0;
+  }
+`;
+const StyledBoxCommentListWrapper = styled(Box)`
+  padding-left: 44px;
+  padding-bottom: 24px;
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    background: ${alpha(theme.palette.primary.light, 0.3)};
+    width: 3px;
+    left: 15px;
+    top: -13px;
+    bottom: 0;
+  }
+`;
 const StyledBoxTitleWrapper = styled(Box)`
   margin-bottom: 24px;
   border-bottom: 3px solid ${theme.palette.primary.main};
@@ -54,6 +91,9 @@ const StyledBoxFlex = styled(Box)`
   display: flex;
   justify-content: space-between;
   align-items: center;
+`;
+const StyledBoxComponentWrapper = styled(Box)`
+  margin-bottom: 40px;
 `;
 
 const Wrapper: React.FC<Props> = ({
@@ -68,14 +108,16 @@ const Wrapper: React.FC<Props> = ({
   userProfile,
   paymentedList,
   setPaymentedList,
+  commentList,
+  setCommentList,
 }) => {
   const partitionKey = `${USER_PREFIX}#${authUserName}`; // my user id
   const myReviewId = `${postId}#${REVIEW_PREFIX}#${authUserName}`;
   const redirectUri = encodeURIComponent(location.pathname);
+  const { setIsOpenSignin } = useIsOpenSignin();
   const [isOpenPayment, setIsOpenPayment] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
   const [isOpenCreditAnnounce, setIsOpenCreditAnnounce] = useState(false);
-  const [isOpenSignin, setIsOpenSignin] = useState(false);
   const [title, setTitle] = useState('');
   const [name, setName] = useState('');
   const [iconSrc, setIconSrc] = useState('');
@@ -84,7 +126,8 @@ const Wrapper: React.FC<Props> = ({
   const [reviewerId, setReviewerId] = useState('');
   const [isSucceeded, setIsSucceeded] = useState(false);
   const stripe = useStripe();
-  const showToggleDialog = (
+
+  const showTogglePaymentReviewDialog = (
     argReviewId: string,
     argTitle: string,
     argName: string,
@@ -110,6 +153,7 @@ const Wrapper: React.FC<Props> = ({
     setReviewerId(argReviewerId);
     setIsOpenPayment(true);
   };
+
   const createParams = () => {
     return {
       postId,
@@ -121,6 +165,7 @@ const Wrapper: React.FC<Props> = ({
       customerId: credit!.customer_id,
     };
   };
+
   const createRegisterPaymentParams = () => {
     const profile = userProfile!;
     return {
@@ -131,6 +176,7 @@ const Wrapper: React.FC<Props> = ({
       price,
     };
   };
+
   const payment = async () => {
     if (!credit) return;
     const err = new Error();
@@ -174,6 +220,7 @@ const Wrapper: React.FC<Props> = ({
     const iconSrc = el.user_profile.icon_src;
     const price = el.price;
     const contents = el.contents;
+    const postId = el.id;
     const title = contents.review.title;
     const date = `${el.create_year}/${el.create_month}/${el.create_day}`;
     const displayBodyHtml = contents.review.display_body_html;
@@ -183,6 +230,25 @@ const Wrapper: React.FC<Props> = ({
     const sortKey = el.sort_key;
     const reviewerId = el.user_id;
     const isPaymented = paymentedList[sortKey];
+
+    const addComment = (
+      postReviewJointId: string,
+      comment: ResponseCommentTypes
+    ) => {
+      let newComments;
+      const newCommentList = { ...commentList };
+      const isExistsCommentList = newCommentList[postReviewJointId];
+      if (isExistsCommentList) {
+        newComments = newCommentList[postReviewJointId].slice();
+      } else {
+        newCommentList[postReviewJointId] = [];
+        newComments = newCommentList[postReviewJointId].slice();
+      }
+      newComments.push(comment);
+      newCommentList[postReviewJointId] = newComments;
+      setCommentList(newCommentList);
+    };
+
     return (
       <Box key={index} component='section' mb={7}>
         <StyledBoxFlex mb={2}>
@@ -204,18 +270,68 @@ const Wrapper: React.FC<Props> = ({
             />
           )}
         </StyledBoxFlex>
-        <StyledBoxTitleWrapper>
-          <h1>{title}</h1>
-        </StyledBoxTitleWrapper>
-        <Box mb={5}>
-          <div className='review-item-wrapper'>
-            <span
-              dangerouslySetInnerHTML={{
-                __html: marked(displayBodyHtml),
-              }}
+        <StyledBoxReviewWrapper>
+          <StyledBoxTitleWrapper>
+            <h1>{title}</h1>
+          </StyledBoxTitleWrapper>
+          <StyledBoxComponentWrapper>
+            <div className='review-item-wrapper'>
+              <span
+                dangerouslySetInnerHTML={{
+                  __html: marked(displayBodyHtml),
+                }}
+              />
+            </div>
+          </StyledBoxComponentWrapper>
+        </StyledBoxReviewWrapper>
+        {/* コメントリスト : 購入済みか無料のレビューならコメントを表示*/}
+        {(isPaymented || isPaymentFree) && commentList[sortKey] && (
+          <StyledBoxCommentWrapper mb={3}>
+            {commentList[sortKey].map(commentItem => (
+              <Box key={uuidv4()}>
+                <Box mb={2}>
+                  <ReviewUser
+                    name={commentItem.user_profile.display_name}
+                    date={commentItem.date}
+                    userIcon={commentItem.user_profile.icon_src}
+                    width={'32px'}
+                    height={'32px'}
+                  />
+                </Box>
+                <StyledBoxCommentListWrapper>
+                  <div className='review-item-wrapper'>
+                    <span
+                      dangerouslySetInnerHTML={{
+                        __html: marked(commentItem.contents.comment.body_html),
+                      }}
+                    />
+                  </div>
+                </StyledBoxCommentListWrapper>
+              </Box>
+            ))}
+            <Box mt={1} fontWeight='bold'>
+              <ParagraphText
+                variant='body2'
+                component='p'
+                color='textSecondary'
+              >
+                No more comments
+              </ParagraphText>
+            </Box>
+          </StyledBoxCommentWrapper>
+        )}
+
+        {/* エディタを表示 */}
+        {(isPaymented || isPaymentFree || isSelfReviewItem) && (
+          <StyledBoxComponentWrapper>
+            <CommentEditor
+              authUserName={authUserName}
+              postId={postId}
+              postReviewJointId={sortKey}
+              addComment={addComment}
             />
-          </div>
-        </Box>
+          </StyledBoxComponentWrapper>
+        )}
         {(isPaymented || isPaymentFree || isSelfReviewItem) && (
           <Reaction
             authUserName={authUserName}
@@ -233,9 +349,17 @@ const Wrapper: React.FC<Props> = ({
             title={title}
             price={price}
             remainingLength={remainingLength}
+            commentList={commentList[sortKey]}
             reactionUsers={el.reaction_users}
             showToggleDialog={() =>
-              showToggleDialog(sortKey, title, name, iconSrc, price, reviewerId)
+              showTogglePaymentReviewDialog(
+                sortKey,
+                title,
+                name,
+                iconSrc,
+                price,
+                reviewerId
+              )
             }
           />
         )}
@@ -243,6 +367,7 @@ const Wrapper: React.FC<Props> = ({
       </Box>
     );
   };
+
   return (
     <>
       {isLoading ? (
@@ -278,15 +403,11 @@ const Wrapper: React.FC<Props> = ({
         isOpenDialog={isOpenCreditAnnounce}
         showToggleDialog={() => setIsOpenCreditAnnounce(false)}
       />
-      <SigninDialog
-        isOpenDialog={isOpenSignin}
-        closeDialog={() => setIsOpenSignin(false)}
-      />
     </>
   );
 };
 
-export const ReviewList = (props: Props) => {
+export const ReviewList: React.FC<Props> = React.memo(props => {
   const promiseStripe = getStripe();
 
   return (
@@ -301,4 +422,4 @@ export const ReviewList = (props: Props) => {
       )}
     </Elements>
   );
-};
+});
