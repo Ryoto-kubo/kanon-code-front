@@ -131,8 +131,6 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
     try {
       const response = await postComment(params);
       const comment = response.data.data;
-      console.log(comment);
-
       if (!response.data.status) throw err;
       setUpdatingMessage('コメントを投稿しました');
       addComment(postReviewJointId, comment);

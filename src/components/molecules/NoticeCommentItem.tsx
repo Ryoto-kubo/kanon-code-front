@@ -56,8 +56,6 @@ const StyledButton = styled('button')`
 `;
 
 export const NoticeCommentItem: React.FC<Props> = props => {
-  console.log(props);
-
   const router = useRouter();
   const movePage = async (
     partitionKey: string,
