@@ -19,7 +19,9 @@ type Props = {
   currentUser: UserTypes;
   isFetch: boolean;
 };
-type EmailNoticesKeyTypes = Readonly<'is_opened_review' | 'is_posted_review'>;
+type EmailNoticesKeyTypes = Readonly<
+  'is_opened_review' | 'is_posted_review' | 'is_commented_review'
+>;
 
 const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
@@ -78,6 +80,16 @@ const IndexPage: React.FC<Props> = props => {
     updateEmailNotices('is_posted_review', isChecked);
   };
 
+  const changeCommentedReview = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const isChecked = event.currentTarget.checked;
+    setEmailNotices({ ...emailNotices!, is_commented_review: isChecked });
+    resetUpdatingMessage();
+    setIsOpen(true);
+    updateEmailNotices('is_commented_review', isChecked);
+  };
+
   return (
     <SettingLayout
       title={`Kanon Code | プロフィール`}
@@ -92,7 +104,7 @@ const IndexPage: React.FC<Props> = props => {
             marginBottom={1}
           />
           <ProfileContentCheck
-            label='レビューが投稿された時'
+            label='レビューが投稿されたとき'
             value={emailNotices!.is_posted_review ? 'ON' : 'OFF'}
             isDivider={true}
           >
@@ -102,13 +114,23 @@ const IndexPage: React.FC<Props> = props => {
             />
           </ProfileContentCheck>
           <ProfileContentCheck
-            label='レビューが購入された時'
+            label='レビューが購入されたとき'
             value={emailNotices!.is_opened_review ? 'ON' : 'OFF'}
             isDivider={false}
           >
             <CustomSwitch
               onChange={changeOpenedReview}
               checked={emailNotices!.is_opened_review}
+            />
+          </ProfileContentCheck>
+          <ProfileContentCheck
+            label='自身のレビューにコメントされたとき'
+            value={emailNotices!.is_commented_review ? 'ON' : 'OFF'}
+            isDivider={false}
+          >
+            <CustomSwitch
+              onChange={changeCommentedReview}
+              checked={emailNotices!.is_commented_review}
             />
           </ProfileContentCheck>
         </ContentWrapper>

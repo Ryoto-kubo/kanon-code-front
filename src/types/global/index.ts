@@ -149,6 +149,7 @@ export type UserProfileTypes = {
 export type EmailNoticesTypes = {
   is_opened_review: boolean;
   is_posted_review: boolean;
+  is_commented_review: boolean;
 };
 
 export type BankTypes = {
