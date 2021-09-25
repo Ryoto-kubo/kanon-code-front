@@ -111,7 +111,7 @@ const UpdateItem = () => {
 
 const IndexPage: React.FC<Props> = props => {
   return (
-    <Layout title='Kanon Code | Change logs' currentUser={props.currentUser}>
+    <Layout title='Change logs | Kanon Code' currentUser={props.currentUser}>
       <Container maxWidth='md'>
         <Box my={10} pb={5} component='section'>
           <StyledBoxPageTitle component='h1'>Changelog</StyledBoxPageTitle>

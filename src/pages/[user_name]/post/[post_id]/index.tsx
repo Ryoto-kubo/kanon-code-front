@@ -65,7 +65,7 @@ const IndexPage: React.FC<Props> = props => {
       <>
         <CustomLoader />
         <CommonHead
-          title={`Kanon Code | ${title}`}
+          title={`${title} | Kanon Code`}
           description={props.post ? props.post.contents.description.value : ''}
           image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
         />
@@ -116,9 +116,9 @@ const IndexPage: React.FC<Props> = props => {
     };
 
     return (
-      <Layout title={`Kanon Code | ${title}`} currentUser={props.currentUser}>
+      <Layout title={`${title} | Kanon Code`} currentUser={props.currentUser}>
         <CommonHead
-          title={`Kanon Code | ${title}`}
+          title={`${title} | Kanon Code`}
           description={props.post ? props.post.contents.description.value : ''}
           image={`${process.env.NEXT_PUBLIC_BUCKET_URL}${ogpPath}`}
         />

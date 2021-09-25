@@ -295,7 +295,7 @@ const IndexPage: React.FC<Props> = props => {
 
   return (
     <Layout
-      title='Kanon Code | Kanon Codeについて'
+      title='Kanon Codeについて | Kanon Code'
       currentUser={props.currentUser}
     >
       <Container maxWidth='md'>

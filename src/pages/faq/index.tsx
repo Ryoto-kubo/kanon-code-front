@@ -56,10 +56,7 @@ const StyledAnchor = styled(`a`)`
 
 const IndexPage: React.FC<Props> = props => {
   return (
-    <Layout
-      title='Kanon Code | プライバシーポリシー'
-      currentUser={props.currentUser}
-    >
+    <Layout title='よくある質問 | Kanon Code' currentUser={props.currentUser}>
       <Container maxWidth='md'>
         <Box my={10} pb={5} component='section'>
           <StyledBoxPageTitle component='h1'>よくある質問</StyledBoxPageTitle>
