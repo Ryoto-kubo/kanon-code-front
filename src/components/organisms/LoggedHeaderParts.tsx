@@ -132,7 +132,7 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                   }}
                   PaperProps={{
                     style: {
-                      maxHeight: ITEM_HEIGHT * 4.5,
+                      maxHeight: ITEM_HEIGHT * 3,
                     },
                   }}
                 >
