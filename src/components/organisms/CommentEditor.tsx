@@ -24,6 +24,7 @@ const Editor = dynamic(
 );
 
 type Props = {
+  index: number;
   authUserName: string;
   postId: string;
   postReviewJointId: string;
@@ -46,7 +47,7 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 };
 
 export const CommentEditor: React.FC<Props> = React.memo(props => {
-  const { authUserName, postId, postReviewJointId, addComment } = props;
+  const { index, authUserName, postId, postReviewJointId, addComment } = props;
   const { setIsOpenSignin } = useIsOpenSignin();
 
   const [isOpen, setIsOpen] = useState(false);
@@ -153,7 +154,7 @@ export const CommentEditor: React.FC<Props> = React.memo(props => {
     <>
       <Box mb={2}>
         <Editor
-          id='comment-editor'
+          id={`comment-editor-${index}`}
           isFullDisplayButton={true}
           headerText='Comment'
           onChange={changeComment}

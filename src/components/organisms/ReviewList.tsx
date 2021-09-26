@@ -329,6 +329,7 @@ const Wrapper: React.FC<Props> = ({
         {(isPaymented || isPaymentFree || isSelfReviewItem) && (
           <StyledBoxComponentWrapper>
             <CommentEditor
+              index={index}
               authUserName={authUserName}
               postId={postId}
               postReviewJointId={sortKey}
