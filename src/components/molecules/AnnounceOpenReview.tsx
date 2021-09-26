@@ -1,6 +1,7 @@
 import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { ReactionUsers } from '@/components/molecules/ReactionUsers';
 import { ReactionUsersDialog } from '@/components/parts/reactionUsersDialog';
+import { ResponseCommentTypes } from '@/types/global';
 import Box from '@material-ui/core/Box';
 import React, { useState } from 'react';
 import styled from 'styled-components';
@@ -9,6 +10,7 @@ type Props = {
   title: string;
   price: number;
   remainingLength: number;
+  commentList: ResponseCommentTypes[];
   reactionUsers: {
     display_name: string;
     icon_src: string;
@@ -56,6 +58,7 @@ export const AnnounceOpenReview: React.FC<Props> = ({
   title,
   price,
   remainingLength,
+  commentList,
   reactionUsers,
   showToggleDialog,
 }) => {
@@ -63,13 +66,16 @@ export const AnnounceOpenReview: React.FC<Props> = ({
   const closeDialog = () => {
     setIsOpen(false);
   };
+  const commentListLength = commentList.length;
   return (
     <>
       <StyledBoxShowMessage>
         <StyledBoxBg>レビューの続きを見るには</StyledBoxBg>
       </StyledBoxShowMessage>
       <Box textAlign='center' color='#6f7372' mb={3}>
-        残り{remainingLength}文字
+        {commentListLength > 0
+          ? `残り${remainingLength}文字のレビューと${commentListLength}個のコメントがあります`
+          : `残り${remainingLength}文字のレビューがあります`}
       </Box>
       <Box textAlign='center'>レビューを購入する</Box>
       <StyledBoxReviewInfo>

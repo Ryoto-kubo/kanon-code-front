@@ -1,5 +1,6 @@
 import { SolidLink } from '@/components/atoms/SolidLink';
 import { CustomLoader } from '@/components/common/loader';
+import { NoticeCommentItem } from '@/components/molecules/NoticeCommentItem';
 import { NoticePaymentItem } from '@/components/molecules/NoticePaymentItem';
 import { NoticeReviewItem } from '@/components/molecules/NoticeReviewItem';
 import { NotificationsButton } from '@/components/molecules/NotificationsButton';
@@ -131,7 +132,7 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                   }}
                   PaperProps={{
                     style: {
-                      maxHeight: ITEM_HEIGHT * 4.5,
+                      maxHeight: ITEM_HEIGHT * 3,
                     },
                   }}
                 >
@@ -155,13 +156,30 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                           height={'35px'}
                         />
                       </StyledMenuItem>
+                    ) : el.type === 'payment' ? (
+                      <StyledMenuItem
+                        key={uuidv4()}
+                        className={el.is_read ? '' : 'non-read'}
+                      >
+                        <NoticePaymentItem
+                          title={el.title}
+                          paymentedName={el.profile.display_name}
+                          iconSrc={el.profile.icon_src}
+                          partitionKey={el.partition_key}
+                          sortKey={el.sort_key}
+                          isRead={el.is_read}
+                          date={el.date}
+                          width={'35px'}
+                          height={'35px'}
+                        />
+                      </StyledMenuItem>
                     ) : (
-                      el.type === 'payment' && (
+                      el.type === 'comment' && (
                         <StyledMenuItem
                           key={uuidv4()}
                           className={el.is_read ? '' : 'non-read'}
                         >
-                          <NoticePaymentItem
+                          <NoticeCommentItem
                             title={el.title}
                             paymentedName={el.profile.display_name}
                             iconSrc={el.profile.icon_src}
@@ -169,6 +187,7 @@ export const LoggedHeaderParts: React.FC<Props> = props => {
                             sortKey={el.sort_key}
                             isRead={el.is_read}
                             date={el.date}
+                            url={el.url}
                             width={'35px'}
                             height={'35px'}
                           />

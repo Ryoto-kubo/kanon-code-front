@@ -22,7 +22,6 @@ import { RecoilRoot } from 'recoil';
 import styled, {
   ThemeProvider as StyledComponentsThemeProvider,
 } from 'styled-components';
-import './editor.scss';
 import './style.scss';
 
 const StyledWrapper = styled.div`

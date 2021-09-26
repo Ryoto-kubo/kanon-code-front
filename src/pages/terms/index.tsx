@@ -32,7 +32,7 @@ const StyledUl = styled('ul')`
 
 const IndexPage: React.FC<Props> = props => {
   return (
-    <Layout title='Kanon Code | 利用規約' currentUser={props.currentUser}>
+    <Layout title='利用規約 | Kanon Code' currentUser={props.currentUser}>
       <Container maxWidth='md'>
         <Box my={10} pb={5} component='section'>
           <StyledBoxPageTitle component='h1'>利用規約</StyledBoxPageTitle>

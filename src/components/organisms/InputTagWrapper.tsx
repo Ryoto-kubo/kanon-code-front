@@ -132,8 +132,6 @@ const StyledListbox = styled(List)(
 );
 
 export const InputTagWrapper: React.FC<Props> = React.memo(props => {
-  console.log(props);
-
   const [tagValue, setTagValue] = useState('');
   const suggestWordList = SUGGEST_LIST.map(el => el.value);
   const MAX_LENGTH = 25;

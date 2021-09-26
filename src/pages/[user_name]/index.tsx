@@ -46,18 +46,18 @@ const IndexPage: React.FC<Props> = props => {
     <>
       <CustomLoader />
       <CommonHead
-        title={`Kanon Code | ${displayName}`}
+        title={`${displayName} | Kanon Code`}
         description={`${displayName}のマイページ`}
         image={`${userProfile?.icon_src}`}
       />
     </>
   ) : (
     <Layout
-      title={`Kanon Code | ${displayName}`}
+      title={`${displayName} | Kanon Code`}
       currentUser={props.currentUser}
     >
       <CommonHead
-        title={`Kanon Code | ${displayName}`}
+        title={`${displayName} | Kanon Code`}
         description={`${displayName}のマイページ`}
         image={`${userProfile?.icon_src}`}
       />
