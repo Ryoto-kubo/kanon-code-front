@@ -48,7 +48,7 @@ const IndexPage: React.FC<Props> = props => {
       <>
         <CustomLoader />
         <CommonHead
-          title='Kanon Code | コードレビューを全てのエンジニアへ'
+          title='コードレビューを全てのエンジニアへ | Kanon Code'
           description={description}
           url={process.env.NEXT_PUBLIC_HOST}
           image={`${process.env.NEXT_PUBLIC_BUCKET_URL}images/logo.png`}
@@ -62,11 +62,11 @@ const IndexPage: React.FC<Props> = props => {
 
   return (
     <Layout
-      title='Kanon Code | コードレビューを全てのエンジニアへ'
+      title='コードレビューを全てのエンジニアへ | Kanon Code'
       currentUser={props.currentUser}
     >
       <CommonHead
-        title='Kanon Code | コードレビューを全てのエンジニアへ'
+        title='コードレビューを全てのエンジニアへ | Kanon Code'
         description={description}
         url={process.env.NEXT_PUBLIC_HOST}
         image={`${process.env.NEXT_PUBLIC_BUCKET_URL}images/logo.png`}
