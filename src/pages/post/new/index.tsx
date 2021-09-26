@@ -97,8 +97,6 @@ const validNumber = (price: string) => {
 };
 
 const IndexPage: React.FC<Props> = props => {
-  console.log('render');
-
   if (props.isFetch) {
     return <></>;
   }
