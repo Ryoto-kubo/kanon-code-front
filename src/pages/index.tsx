@@ -78,7 +78,7 @@ const IndexPage: React.FC<Props> = props => {
             <Link href='/changelog'>
               <StyledAnchor>
                 <Box component='p' display='flex' alignItems='center'>
-                  Kanon CodeのUpdate情報 【Update情報ページ追加】 - vol-04
+                  Kanon CodeのUpdate情報 【コメント機能追加】 - vol-05
                   <IconArrowNext fontSize='small' color='primary' />
                 </Box>
               </StyledAnchor>
