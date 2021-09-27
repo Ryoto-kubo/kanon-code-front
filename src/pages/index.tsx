@@ -4,6 +4,7 @@ import { CustomLoader } from '@/components/common/loader';
 import { FirstView } from '@/components/organisms/FirstView';
 import { Post } from '@/components/organisms/Post';
 import { TopBenefit } from '@/components/organisms/TopBenefit';
+import { TopCanDo } from '@/components/organisms/TopCanDo';
 import { TopSituation } from '@/components/organisms/TopSituation';
 import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
 import Layout from '@/layouts/standard';
@@ -173,6 +174,11 @@ const IndexPage: React.FC<Props> = props => {
         {!props.currentUser && (
           <Box component='section' mb={10}>
             <TopBenefit />
+          </Box>
+        )}
+        {!props.currentUser && (
+          <Box component='section' mb={10}>
+            <TopCanDo />
           </Box>
         )}
       </Container>

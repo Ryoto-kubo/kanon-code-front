@@ -2,10 +2,10 @@ import { Box } from '@material-ui/core';
 import styled from 'styled-components';
 
 const StyledBoxWapper = styled(Box)`
-  background: #122239;
+  background: #162b48;
 `;
 const StyledBoxTitleWrapper = styled(Box)`
-  padding: 40px 16px;
+  padding: 32px 16px;
 `;
 const StyledBoxPageTitle = styled(Box)`
   font-size: 24px;
@@ -15,12 +15,12 @@ const StyledBoxPageTitle = styled(Box)`
   display: inline-block;
   width: 100%;
   color: #ffffff;
-  ${props => props.theme.breakpoints.up('md')} {
-    font-size: 32px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    font-size: 40px;
   }
 `;
 const StyledBoxDescriptionWrapper = styled(Box)`
-  line-height: 1.7;
+  line-height: 1.8;
   text-align: center;
   font-size: 16px;
   max-width: 530px;

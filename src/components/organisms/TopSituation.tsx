@@ -11,13 +11,12 @@ const StyledBoxPageTitle = styled(Box)`
   margin-bottom: 24px;
   line-height: 1.7;
   text-align: center;
-  ${props => props.theme.breakpoints.up('md')} {
-    font-size: 32px;
+  ${props => props.theme.breakpoints.up('sm')} {
+    font-size: 40px;
   }
 `;
 const StyledPaper = styled(Paper)`
   margin-bottom: 8px;
-
   background: #fafafa;
 `;
 const StyledBoxIconWrapper = styled(Box)`
@@ -26,11 +25,13 @@ const StyledBoxIconWrapper = styled(Box)`
 `;
 const StyledBoxDescriptionWrapper = styled(Box)`
   background: #ffffff;
-  min-height: 110px;
+  ${props => props.theme.breakpoints.up('xs')} {
+    min-height: 110px;
+  }
 `;
 const StyledBoxDescription = styled(Box)`
   padding: 8px;
-  line-height: 1.7;
+  line-height: 1.8;
 `;
 
 export const TopSituation: React.FC = () => {
@@ -63,10 +64,9 @@ export const TopSituation: React.FC = () => {
             </Box>
             <StyledBoxDescriptionWrapper>
               <StyledBoxDescription component='p'>
-                フロントエンドの進化はとても早いです。
+                フロントエンドの進化はとても早くトレンドの移り変わりが激しいです。
                 <br />
-                今、実装しているコードが本当に最適なのかどうか。
-                <br />
+                実装しているコードが本当に最適なのかどうか。
                 実装背景も記載しレビュー依頼を出すと確実な回答が得られます。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
@@ -79,7 +79,7 @@ export const TopSituation: React.FC = () => {
             </Box>
             <StyledBoxDescriptionWrapper>
               <StyledBoxDescription component='p'>
-                デファクトスタンダードになりつつあるTypeScript。
+                フロントエンドのデファクトスタンダードになりつつあるTypeScript。
                 <br />
                 適切な型を用いたコーディングができるように、レビュー依頼を出すのも一つの使い方です。
               </StyledBoxDescription>
