@@ -3,6 +3,7 @@ import { CommonHead } from '@/components/common/head';
 import { CustomLoader } from '@/components/common/loader';
 import { FirstView } from '@/components/organisms/FirstView';
 import { Post } from '@/components/organisms/Post';
+import { TopSituation } from '@/components/organisms/TopSituation';
 import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
 import Layout from '@/layouts/standard';
 import theme from '@/styles/theme';
@@ -161,6 +162,11 @@ const IndexPage: React.FC<Props> = props => {
                 ))}
               </Grid>
             </Box>
+          </Box>
+        )}
+        {!props.currentUser && (
+          <Box component='section' mb={10}>
+            <TopSituation />
           </Box>
         )}
       </Container>
