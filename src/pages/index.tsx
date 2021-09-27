@@ -168,17 +168,17 @@ const IndexPage: React.FC<Props> = props => {
         )}
         {!props.currentUser && (
           <Box component='section' mb={10}>
+            <TopCanDo />
+          </Box>
+        )}
+        {!props.currentUser && (
+          <Box component='section' mb={10}>
             <TopSituation />
           </Box>
         )}
         {!props.currentUser && (
           <Box component='section' mb={10}>
             <TopBenefit />
-          </Box>
-        )}
-        {!props.currentUser && (
-          <Box component='section' mb={10}>
-            <TopCanDo />
           </Box>
         )}
       </Container>
