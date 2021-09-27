@@ -19,10 +19,7 @@ const StyledPaper = styled(Paper)`
   margin-bottom: 8px;
   padding: 16px;
 `;
-const StyledBoxIconWrapper = styled(Box)`
-  text-align: center;
-  padding: 16px;
-`;
+
 const StyledBoxDescriptionWrapper = styled(Box)`
   background: #ffffff;
   min-height: 110px;
