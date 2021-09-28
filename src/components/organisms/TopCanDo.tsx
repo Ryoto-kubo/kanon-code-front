@@ -1,5 +1,5 @@
 import theme from '@/styles/theme';
-import { Box, Grid, Paper } from '@material-ui/core';
+import { Box, Card, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { IconLaravel } from '../svg/programing/IconLaravel';
 import { IconNode } from '../svg/programing/IconNode';
@@ -15,15 +15,20 @@ const StyledBoxPageTitle = styled(Box)`
     font-size: 40px;
   }
 `;
-const StyledPaper = styled(Paper)`
+const StyledGrid = styled(Grid)`
+  display: flex;
+`;
+const StyledCard = styled(Card)`
   margin-bottom: 8px;
   background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
-
 const StyledBoxDescriptionWrapper = styled(Box)`
   background: #ffffff;
-  min-height: 110px;
   padding: 16px;
+  flex-grow: 1;
 `;
 const StyledBoxContentsTitle = styled(Box)`
   color: ${theme.palette.primary.main};
@@ -45,9 +50,9 @@ export const TopCanDo: React.FC = () => {
       <StyledBoxPageTitle component='h2'>
         Kanon Codeだからできること。
       </StyledBoxPageTitle>
-      <Grid spacing={3} container>
-        <Grid item xs={12} sm={12} md={4} lg={4}>
-          <StyledPaper>
+      <Grid spacing={3} container alignItems='stretch'>
+        <StyledGrid item xs={12} sm={12} md={4} lg={4}>
+          <StyledCard>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
                 レビュー依頼はずっと無料
@@ -62,10 +67,10 @@ export const TopCanDo: React.FC = () => {
             <StyledBoxIconWrapper>
               <IconNode width={100} height={100} />
             </StyledBoxIconWrapper>
-          </StyledPaper>
-        </Grid>
-        <Grid item xs={12} sm={12} md={4} lg={4}>
-          <StyledPaper>
+          </StyledCard>
+        </StyledGrid>
+        <StyledGrid item xs={12} sm={12} md={4} lg={4}>
+          <StyledCard>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
                 レビューを販売できる
@@ -80,10 +85,10 @@ export const TopCanDo: React.FC = () => {
             <StyledBoxIconWrapper>
               <IconReact width={100} height={100} />
             </StyledBoxIconWrapper>
-          </StyledPaper>
-        </Grid>
-        <Grid item xs={12} sm={12} md={4} lg={4}>
-          <StyledPaper>
+          </StyledCard>
+        </StyledGrid>
+        <StyledGrid item xs={12} sm={12} md={4} lg={4}>
+          <StyledCard>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
                 自身以外へのレビューも見れる
@@ -99,8 +104,8 @@ export const TopCanDo: React.FC = () => {
             <StyledBoxIconWrapper>
               <IconLaravel width={100} height={100} />
             </StyledBoxIconWrapper>
-          </StyledPaper>
-        </Grid>
+          </StyledCard>
+        </StyledGrid>
       </Grid>
     </StyledBoxWapper>
   );

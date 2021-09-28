@@ -1,4 +1,4 @@
-import { Box, Grid, Paper } from '@material-ui/core';
+import { Box, Card, Grid } from '@material-ui/core';
 import styled from 'styled-components';
 import { IconFlutter } from '../svg/programing/IconFlutter';
 import { IconHtml } from '../svg/programing/IconHtml';
@@ -6,6 +6,17 @@ import { IconNext } from '../svg/programing/IconNext';
 import { IconTypeScript } from '../svg/programing/IconTypeScript';
 
 const StyledBoxWapper = styled(Box)``;
+const StyledGrid = styled(Grid)`
+  display: flex;
+`;
+const StyledCard = styled(Card)`
+  margin-bottom: 8px;
+  background: #fafafa;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
 const StyledBoxPageTitle = styled(Box)`
   font-size: 24px;
   margin-bottom: 8px;
@@ -23,19 +34,17 @@ const StyledBoxSubTitle = styled(Box)`
     font-size: 16px;
   }
 `;
-const StyledPaper = styled(Paper)`
-  margin-bottom: 8px;
-  background: #fafafa;
-`;
+
 const StyledBoxIconWrapper = styled(Box)`
   text-align: center;
   padding: 16px;
 `;
 const StyledBoxDescriptionWrapper = styled(Box)`
   background: #ffffff;
+  padding: 16px;
+  flex-grow: 1;
 `;
 const StyledBoxDescription = styled(Box)`
-  padding: 8px;
   line-height: 1.8;
 `;
 
@@ -54,9 +63,9 @@ export const TopSituation: React.FC = () => {
           あらゆる言語のレビュー依頼に対応しています。
         </StyledBoxSubTitle>
       </Box>
-      <Grid spacing={4} container>
-        <Grid item xs={12} sm={6} md={6} lg={3}>
-          <StyledPaper>
+      <Grid spacing={4} container alignItems='stretch'>
+        <StyledGrid item xs={12} sm={6} md={6} lg={3}>
+          <StyledCard>
             <StyledBoxIconWrapper>
               <IconHtml width={100} height={100} />
             </StyledBoxIconWrapper>
@@ -67,10 +76,10 @@ export const TopSituation: React.FC = () => {
                 セマンティックを意識しコーディングが行えているか、レビュー依頼を出してみるのも良いでしょう。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
-          </StyledPaper>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={3}>
-          <StyledPaper>
+          </StyledCard>
+        </StyledGrid>
+        <StyledGrid item xs={12} sm={6} md={6} lg={3}>
+          <StyledCard>
             <Box textAlign='center' p={2}>
               <IconNext width={100} height={100} />
             </Box>
@@ -82,10 +91,10 @@ export const TopSituation: React.FC = () => {
                 実装背景も記載すると確実な回答が得られることでしょう。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
-          </StyledPaper>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={3}>
-          <StyledPaper>
+          </StyledCard>
+        </StyledGrid>
+        <StyledGrid item xs={12} sm={6} md={6} lg={3}>
+          <StyledCard>
             <Box textAlign='center' p={2}>
               <IconTypeScript width={100} height={100} />
             </Box>
@@ -96,10 +105,10 @@ export const TopSituation: React.FC = () => {
                 適切な型を用いたコーディングができるように、レビュー依頼を出すのも一つの使い方です。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
-          </StyledPaper>
-        </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={3}>
-          <StyledPaper>
+          </StyledCard>
+        </StyledGrid>
+        <StyledGrid item xs={12} sm={6} md={6} lg={3}>
+          <StyledCard>
             <Box textAlign='center' p={2}>
               <IconFlutter width={100} height={100} />
             </Box>
@@ -110,8 +119,8 @@ export const TopSituation: React.FC = () => {
                 世界的に注目を集め始めているフレームワークを一足先に自分のものにしてしまいましょう。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
-          </StyledPaper>
-        </Grid>
+          </StyledCard>
+        </StyledGrid>
       </Grid>
     </StyledBoxWapper>
   );
