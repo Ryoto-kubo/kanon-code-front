@@ -17,12 +17,13 @@ const StyledBoxPageTitle = styled(Box)`
 `;
 const StyledPaper = styled(Paper)`
   margin-bottom: 8px;
-  padding: 16px;
+  background: #fafafa;
 `;
 
 const StyledBoxDescriptionWrapper = styled(Box)`
   background: #ffffff;
   min-height: 110px;
+  padding: 16px;
 `;
 const StyledBoxContentsTitle = styled(Box)`
   color: ${theme.palette.primary.main};
@@ -33,6 +34,10 @@ const StyledBoxContentsTitle = styled(Box)`
 const StyledBoxDescription = styled(Box)`
   line-height: 1.7;
 `;
+const StyledBoxIconWrapper = styled(Box)`
+  text-align: center;
+  padding: 16px;
+`;
 
 export const TopCanDo: React.FC = () => {
   return (
@@ -41,7 +46,7 @@ export const TopCanDo: React.FC = () => {
         Kanon Codeだからできること。
       </StyledBoxPageTitle>
       <Grid spacing={3} container>
-        <Grid item xs={12} sm={6} md={6} lg={4}>
+        <Grid item xs={12} sm={12} md={4} lg={4}>
           <StyledPaper>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
@@ -50,47 +55,50 @@ export const TopCanDo: React.FC = () => {
               <StyledBoxDescription component='p'>
                 レビュー依頼を無料で投稿することができます。
                 <br />
-                更に、もらったレビューに対して質問をし、知見を増やしていけるのもKanon
-                Codeの一つの魅力です。分からない部分はどんどん質問して知見に変えていきましょう。
+                もらったレビューに対して質問をし、知見を増やしていけるのもKanon
+                Codeの一つの魅力です。分からない部分はどんどん質問して知見や技術に変えていきましょう。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
-            <Box textAlign='center' pt={2}>
+            <StyledBoxIconWrapper>
               <IconNode width={100} height={100} />
-            </Box>
+            </StyledBoxIconWrapper>
           </StyledPaper>
         </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={4}>
+        <Grid item xs={12} sm={12} md={4} lg={4}>
           <StyledPaper>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
                 レビューを販売できる
               </StyledBoxContentsTitle>
               <StyledBoxDescription component='p'>
-                自身のレビューを有料で販売することができます。
+                レビューを有料で販売することができます。
                 <br />
                 もちろん無料でのレビューも可能です。文字数やボリュームで有料か
                 無料かを自身で選びレビューしてみてください。あなたのレビューを待っている人がいます。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
-            <Box textAlign='center' pt={2}>
+            <StyledBoxIconWrapper>
               <IconReact width={100} height={100} />
-            </Box>
+            </StyledBoxIconWrapper>
           </StyledPaper>
         </Grid>
-        <Grid item xs={12} sm={6} md={6} lg={4}>
+        <Grid item xs={12} sm={12} md={4} lg={4}>
           <StyledPaper>
             <StyledBoxDescriptionWrapper>
-              <StyledBoxContentsTitle>考え中</StyledBoxContentsTitle>
+              <StyledBoxContentsTitle>
+                自身以外へのレビューも見れる
+              </StyledBoxContentsTitle>
               <StyledBoxDescription component='p'>
-                自身のレビューを有料で販売することができます。
+                自身以外に宛てたレビューも見ることができます。
                 <br />
-                もちろん無料でのレビューも可能です。文字数やボリュームで有料か
-                無料かを自身で選びレビューしてみてください。あなたのレビューを待っている人がいます。
+                全ての無料レビューは誰でも閲覧でき、有料レビューは誰でも購入が可能です。
+                様々なレビューを閲覧できるKanon
+                Codeは、技術が集まるプラットフォームです。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
-            <Box textAlign='center' pt={2}>
+            <StyledBoxIconWrapper>
               <IconLaravel width={100} height={100} />
-            </Box>
+            </StyledBoxIconWrapper>
           </StyledPaper>
         </Grid>
       </Grid>

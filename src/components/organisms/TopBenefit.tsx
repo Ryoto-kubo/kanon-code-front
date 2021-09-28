@@ -5,7 +5,7 @@ const StyledBoxWapper = styled(Box)`
   background: #162b48;
 `;
 const StyledBoxTitleWrapper = styled(Box)`
-  padding: 32px 16px;
+  padding: 40px 16px;
 `;
 const StyledBoxPageTitle = styled(Box)`
   font-size: 24px;
@@ -36,15 +36,16 @@ export const TopBenefit: React.FC = () => {
         <StyledBoxPageTitle component='h2'>
           エンジニアに必要な能力。
           <br />
-          それは、分からない部分を言葉にする力。
+          それは、分からないことを言葉にする力。
         </StyledBoxPageTitle>
         <StyledBoxDescriptionWrapper>
           伝わりやすく、かつ簡潔に質問をする。
           <br />
           自分の中で曖昧になっている部分を言葉にする能力は、エンジニアにとって大切な能力です。
           コードレビューでは、コードをただ記載するだけではなく、実装背景や困っている箇所、重点的に見て欲しい箇所を言葉にする必要があります。
-          確かに大変な作業ですが、コードレビューを依頼すると同時にKanon
-          Codeで言語化スキルもアップさせてみませんか？
+          これらは確かに大変な作業ですが、確実にあなたの技術力を上げる近道になるでしょう。
+          コードレビューを依頼すると同時にKanon
+          Codeでエンジニアスキルをアップさせてみませんか？
         </StyledBoxDescriptionWrapper>
       </StyledBoxTitleWrapper>
     </StyledBoxWapper>

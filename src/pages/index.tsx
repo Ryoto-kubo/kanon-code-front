@@ -2,6 +2,7 @@ import { TypoHeading2 } from '@/components/atoms/TypoHeading2';
 import { CommonHead } from '@/components/common/head';
 import { CustomLoader } from '@/components/common/loader';
 import { FirstView } from '@/components/organisms/FirstView';
+import { GoSignin } from '@/components/organisms/GoSignin';
 import { Post } from '@/components/organisms/Post';
 import { TopBenefit } from '@/components/organisms/TopBenefit';
 import { TopCanDo } from '@/components/organisms/TopCanDo';
@@ -74,114 +75,124 @@ const IndexPage: React.FC<Props> = props => {
         url={process.env.NEXT_PUBLIC_HOST}
         image={`${process.env.NEXT_PUBLIC_BUCKET_URL}images/logo.png`}
       />
-      <Container>
-        {!props.currentUser && <FirstView />}
-        {props.currentUser && (
-          <Box mb={3} display='flex' justifyContent='flex-end'>
-            <Link href='/changelog'>
-              <StyledAnchor>
-                <Box component='p' display='flex' alignItems='center'>
-                  Kanon CodeのUpdate情報 【コメント機能追加】 - vol-05
-                  <IconArrowNext fontSize='small' color='primary' />
-                </Box>
-              </StyledAnchor>
-            </Link>
-          </Box>
-        )}
-        {frontPosts.length > 0 && (
-          <Box component='section' mb={10}>
-            <StyledBoxWidthBorder mb={2}>
-              <TypoHeading2 color='initial'>Front-end</TypoHeading2>
-            </StyledBoxWidthBorder>
-            <Box mb={4}>
-              <Grid spacing={3} container>
-                {frontPosts.map(el => (
-                  <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                    <Post
-                      title={el.contents.title}
-                      budget={el.contents.budget}
-                      postUrl={el.post_url}
-                      iconPath={el.contents.target_icon.icon_path}
-                      name={el.user_profile.display_name}
-                      date={el.date}
-                      tagArray={el.contents.tag_list}
-                      userIcon={el.user_profile.icon_src}
-                      postStatus={el.post_status}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
+      <Box mb={16}>
+        <Container>
+          {!props.currentUser && <FirstView />}
+          {props.currentUser && (
+            <Box mb={3} display='flex' justifyContent='flex-end'>
+              <Link href='/changelog'>
+                <StyledAnchor>
+                  <Box component='p' display='flex' alignItems='center'>
+                    Kanon CodeのUpdate情報 【コメント機能追加】 - vol-05
+                    <IconArrowNext fontSize='small' color='primary' />
+                  </Box>
+                </StyledAnchor>
+              </Link>
             </Box>
-          </Box>
-        )}
-        {backPosts.length > 0 && (
-          <Box component='section' mb={10}>
-            <StyledBoxWidthBorder mb={2}>
-              <TypoHeading2 color='initial'>Back-end</TypoHeading2>
-            </StyledBoxWidthBorder>
-            <Box mb={4}>
-              <Grid spacing={3} container>
-                {backPosts.map(el => (
-                  <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                    <Post
-                      title={el.contents.title}
-                      budget={el.contents.budget}
-                      postUrl={el.post_url}
-                      iconPath={el.contents.target_icon.icon_path}
-                      name={el.user_profile.display_name}
-                      date={el.date}
-                      tagArray={el.contents.tag_list}
-                      userIcon={el.user_profile.icon_src}
-                      postStatus={el.post_status}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
+          )}
+          {frontPosts.length > 0 && (
+            <Box component='section' mb={10}>
+              <StyledBoxWidthBorder mb={2}>
+                <TypoHeading2 color='initial'>Front-end</TypoHeading2>
+              </StyledBoxWidthBorder>
+              <Box mb={4}>
+                <Grid spacing={3} container>
+                  {frontPosts.map(el => (
+                    <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                      <Post
+                        title={el.contents.title}
+                        budget={el.contents.budget}
+                        postUrl={el.post_url}
+                        iconPath={el.contents.target_icon.icon_path}
+                        name={el.user_profile.display_name}
+                        date={el.date}
+                        tagArray={el.contents.tag_list}
+                        userIcon={el.user_profile.icon_src}
+                        postStatus={el.post_status}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
             </Box>
-          </Box>
-        )}
-        {otherPosts.length > 0 && (
-          <Box component='section' mb={10}>
-            <StyledBoxWidthBorder mb={2}>
-              <TypoHeading2 color='initial'>Other</TypoHeading2>
-            </StyledBoxWidthBorder>
-            <Box mb={4}>
-              <Grid spacing={3} container>
-                {otherPosts.map(el => (
-                  <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
-                    <Post
-                      title={el.contents.title}
-                      budget={el.contents.budget}
-                      postUrl={el.post_url}
-                      iconPath={el.contents.target_icon.icon_path}
-                      name={el.user_profile.display_name}
-                      date={el.date}
-                      tagArray={el.contents.tag_list}
-                      userIcon={el.user_profile.icon_src}
-                      postStatus={el.post_status}
-                    />
-                  </Grid>
-                ))}
-              </Grid>
+          )}
+          {backPosts.length > 0 && (
+            <Box component='section' mb={10}>
+              <StyledBoxWidthBorder mb={2}>
+                <TypoHeading2 color='initial'>Back-end</TypoHeading2>
+              </StyledBoxWidthBorder>
+              <Box mb={4}>
+                <Grid spacing={3} container>
+                  {backPosts.map(el => (
+                    <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                      <Post
+                        title={el.contents.title}
+                        budget={el.contents.budget}
+                        postUrl={el.post_url}
+                        iconPath={el.contents.target_icon.icon_path}
+                        name={el.user_profile.display_name}
+                        date={el.date}
+                        tagArray={el.contents.tag_list}
+                        userIcon={el.user_profile.icon_src}
+                        postStatus={el.post_status}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
             </Box>
-          </Box>
-        )}
-        {!props.currentUser && (
-          <Box component='section' mb={10}>
-            <TopCanDo />
-          </Box>
-        )}
-        {!props.currentUser && (
-          <Box component='section' mb={10}>
-            <TopSituation />
-          </Box>
-        )}
+          )}
+          {otherPosts.length > 0 && (
+            <Box component='section' mb={10}>
+              <StyledBoxWidthBorder mb={2}>
+                <TypoHeading2 color='initial'>Other</TypoHeading2>
+              </StyledBoxWidthBorder>
+              <Box mb={4}>
+                <Grid spacing={3} container>
+                  {otherPosts.map(el => (
+                    <Grid item xs={12} sm={6} md={6} lg={4} key={uuidv4()}>
+                      <Post
+                        title={el.contents.title}
+                        budget={el.contents.budget}
+                        postUrl={el.post_url}
+                        iconPath={el.contents.target_icon.icon_path}
+                        name={el.user_profile.display_name}
+                        date={el.date}
+                        tagArray={el.contents.tag_list}
+                        userIcon={el.user_profile.icon_src}
+                        postStatus={el.post_status}
+                      />
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Box>
+          )}
+          {!props.currentUser && (
+            <Box component='section' mb={10}>
+              <TopCanDo />
+            </Box>
+          )}
+          {!props.currentUser && (
+            <Box component='section' mb={10}>
+              <TopSituation />
+            </Box>
+          )}
+        </Container>
+
         {!props.currentUser && (
           <Box component='section' mb={10}>
             <TopBenefit />
           </Box>
         )}
-      </Container>
+        <Container>
+          {!props.currentUser && (
+            <Box component='section' mb={10}>
+              <GoSignin />
+            </Box>
+          )}
+        </Container>
+      </Box>
     </Layout>
   );
 };

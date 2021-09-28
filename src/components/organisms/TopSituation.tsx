@@ -8,11 +8,19 @@ import { IconTypeScript } from '../svg/programing/IconTypeScript';
 const StyledBoxWapper = styled(Box)``;
 const StyledBoxPageTitle = styled(Box)`
   font-size: 24px;
-  margin-bottom: 24px;
+  margin-bottom: 8px;
   line-height: 1.7;
   text-align: center;
   ${props => props.theme.breakpoints.up('sm')} {
     font-size: 40px;
+  }
+`;
+const StyledBoxSubTitle = styled(Box)`
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.8;
+  ${props => props.theme.breakpoints.up('sm')} {
+    font-size: 16px;
   }
 `;
 const StyledPaper = styled(Paper)`
@@ -25,9 +33,6 @@ const StyledBoxIconWrapper = styled(Box)`
 `;
 const StyledBoxDescriptionWrapper = styled(Box)`
   background: #ffffff;
-  ${props => props.theme.breakpoints.up('xs')} {
-    min-height: 110px;
-  }
 `;
 const StyledBoxDescription = styled(Box)`
   padding: 8px;
@@ -37,9 +42,18 @@ const StyledBoxDescription = styled(Box)`
 export const TopSituation: React.FC = () => {
   return (
     <StyledBoxWapper>
-      <StyledBoxPageTitle component='h2'>
-        言語に制限はありません。
-      </StyledBoxPageTitle>
+      <Box mb={4} textAlign='center'>
+        <StyledBoxPageTitle component='h2'>
+          コードレビューの言語制限？
+          <br />
+          いいえ、制限などありません。
+        </StyledBoxPageTitle>
+        <StyledBoxSubTitle component='p'>
+          HTMLやCSS、フロント言語やサーバー言語。
+          <br />
+          あらゆる言語のレビュー依頼に対応しています。
+        </StyledBoxSubTitle>
+      </Box>
       <Grid spacing={4} container>
         <Grid item xs={12} sm={6} md={6} lg={3}>
           <StyledPaper>
@@ -48,11 +62,9 @@ export const TopSituation: React.FC = () => {
             </StyledBoxIconWrapper>
             <StyledBoxDescriptionWrapper>
               <StyledBoxDescription component='p'>
-                タグを正しく理解し適切に使いマークアップしていく。
+                正しく理解し適切にマークアップすることは、簡単なことではありません。
                 <br />
-                この作業は簡単なことではありません。
-                <br />
-                正しいコーディングができるようにレビュー依頼を出すのも良いでしょう。
+                セマンティックを意識しコーディングが行えているか、レビュー依頼を出してみるのも良いでしょう。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
           </StyledPaper>
@@ -64,10 +76,10 @@ export const TopSituation: React.FC = () => {
             </Box>
             <StyledBoxDescriptionWrapper>
               <StyledBoxDescription component='p'>
-                フロントエンドの進化はとても早くトレンドの移り変わりが激しいです。
+                フロントエンドの進化はとても早くトレンドの移り変わりも激しいです。
                 <br />
-                実装しているコードが本当に最適なのかどうか。
-                実装背景も記載しレビュー依頼を出すと確実な回答が得られます。
+                実装しているコードが本当に最適かどうか、
+                実装背景も記載すると確実な回答が得られることでしょう。
               </StyledBoxDescription>
             </StyledBoxDescriptionWrapper>
           </StyledPaper>
@@ -79,7 +91,7 @@ export const TopSituation: React.FC = () => {
             </Box>
             <StyledBoxDescriptionWrapper>
               <StyledBoxDescription component='p'>
-                フロントエンドのデファクトスタンダードになりつつあるTypeScript。
+                デファクトスタンダードになりつつあるMicroSoftから生まれたTypeScript。
                 <br />
                 適切な型を用いたコーディングができるように、レビュー依頼を出すのも一つの使い方です。
               </StyledBoxDescription>
