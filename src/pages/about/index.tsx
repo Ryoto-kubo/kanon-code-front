@@ -1,6 +1,5 @@
-import { CustomSolidButton } from '@/components/atoms/SolidButton';
+import { GoSignin } from '@/components/organisms/GoSignin';
 import Layout from '@/layouts/standard';
-import { useIsOpenSignin } from '@/recoil/hooks/openSignin';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { Box, Container, Divider } from '@material-ui/core/';
@@ -15,7 +14,6 @@ import AboutKanonCodeSvg from '../../assets/illustration/about/about-kanoncode.s
 import TermsSvg from '../../assets/illustration/Accept-terms.svg';
 import QuestionsSvg from '../../assets/illustration/Questions.svg';
 import SecuritySvg from '../../assets/illustration/Security-pana.svg';
-import KanonCodeSvg from '../../assets/logo/kanon-code.svg';
 
 type Props = {
   authUser: any;
@@ -124,19 +122,6 @@ const StyledBoxTrans = styled(Box)`
   color: ${theme.palette.primary.main};
   font-weight: bold;
 `;
-const StyledBoxSignin = styled(Box)`
-  padding: 30px;
-  text-align: center;
-`;
-const StyledLogo = styled(KanonCodeSvg)`
-  width: 80%;
-  ${props => props.theme.breakpoints.up('sm')} {
-    width: 80%;
-  }
-  ${props => props.theme.breakpoints.up('md')} {
-    width: 500px;
-  }
-`;
 const StyledAboutKanonCodeSvg = styled(AboutKanonCodeSvg)`
   width: 100%;
   height: auto;
@@ -152,14 +137,6 @@ const StyledAbout02Svg = styled(About02Svg)`
 const StyledAbout03Svg = styled(About03Svg)`
   width: 100%;
   height: auto;
-`;
-const StyledBoxSinginTitle = styled(Box)`
-  font-size: 24px;
-  margin-bottom: 8px;
-  ${props => props.theme.breakpoints.up('sm')} {
-    font-size: 32px;
-    margin-bottom: 24px;
-  }
 `;
 const StyledBoxLearnMoreTitle = styled(Box)`
   font-size: 24px;
@@ -291,8 +268,6 @@ const CircleInSvg = (svg: any, text: string) => {
 };
 
 const IndexPage: React.FC<Props> = props => {
-  const { setIsOpenSignin } = useIsOpenSignin();
-
   return (
     <Layout
       title='Kanon Codeについて | Kanon Code'
@@ -365,20 +340,7 @@ const IndexPage: React.FC<Props> = props => {
             </StyledUl>
           </Box>
           <Box mb={5}>
-            <StyledBoxSignin>
-              <StyledBoxSinginTitle component='h2'>
-                さぁ、Kanon Codeへ
-              </StyledBoxSinginTitle>
-              <Box mb={3}>
-                <StyledLogo />
-              </Box>
-              <CustomSolidButton
-                sizing='small'
-                onClick={() => setIsOpenSignin(true)}
-              >
-                サインイン
-              </CustomSolidButton>
-            </StyledBoxSignin>
+            <GoSignin />
           </Box>
           <Box pb={8}>
             <StyledBoxLearnMoreTitle component='h2'>
