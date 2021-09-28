@@ -51,7 +51,7 @@ export const TopCanDo: React.FC = () => {
         Kanon Codeだからできること。
       </StyledBoxPageTitle>
       <Grid spacing={3} container alignItems='stretch'>
-        <StyledGrid item xs={12} sm={12} md={4} lg={4}>
+        <StyledGrid item xs={12} sm={4} md={4} lg={4}>
           <StyledCard>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
@@ -69,7 +69,7 @@ export const TopCanDo: React.FC = () => {
             </StyledBoxIconWrapper>
           </StyledCard>
         </StyledGrid>
-        <StyledGrid item xs={12} sm={12} md={4} lg={4}>
+        <StyledGrid item xs={12} sm={4} md={4} lg={4}>
           <StyledCard>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
@@ -87,7 +87,7 @@ export const TopCanDo: React.FC = () => {
             </StyledBoxIconWrapper>
           </StyledCard>
         </StyledGrid>
-        <StyledGrid item xs={12} sm={12} md={4} lg={4}>
+        <StyledGrid item xs={12} sm={4} md={4} lg={4}>
           <StyledCard>
             <StyledBoxDescriptionWrapper>
               <StyledBoxContentsTitle>
