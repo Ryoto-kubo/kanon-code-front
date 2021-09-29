@@ -3,10 +3,19 @@ import { v4 as uuidv4 } from 'uuid';
 export const articles = [
   {
     key: uuidv4(),
+    title: 'Kanon CodeのUpdate情報 【サイト紹介追加】 - vol-6',
+    url: 'https://note.com/kanon_code/n/need4bb39444d',
+    date: '2021/09/30',
+    className: 'first',
+    desciption: 'トップページにサイト紹介を追加しました。',
+    hasNote: true,
+  },
+  {
+    key: uuidv4(),
     title: 'Kanon CodeのUpdate情報 【コメント機能追加】 - vol-05',
     url: 'https://note.com/kanon_code/n/n835d810f3e30',
     date: '2021/09/26',
-    className: 'first',
+    className: '',
     desciption: 'レビューにコメントを投稿できるようになりました。',
     hasNote: true,
   },
