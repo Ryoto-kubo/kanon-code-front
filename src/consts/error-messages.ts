@@ -29,6 +29,7 @@ export const errorMessages = {
   EXISTED_NAME: '既に使用されている名前です。',
   IMAGE_COMPRESSION_ERROR: '画像の圧縮に失敗しました',
   INVAILD_VALUE: '不正な値です',
+  INVAILD_ACTION: '不正な操作です',
 };
 export const validMessages = {
   REQUIRED_TITLE: 'タイトルを入力してください',

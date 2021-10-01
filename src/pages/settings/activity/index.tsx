@@ -1,27 +1,21 @@
 import { CustomSwitch } from '@/components/atoms/CustomSwitch';
 import { ContentHeader } from '@/components/molecules/ContentHeader';
-// import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
+import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { ProfileContentCheck } from '@/components/molecules/ProfileContentCheck';
 import { ContentWrapper } from '@/components/organisms/ContentWrapper';
-// import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
-import { errorMessages } from '@/consts/error-messages';
-import { messages } from '@/consts/messages';
+import { useSettingActivity } from '@/hooks/useSettingActivity';
 import { SettingLayout } from '@/layouts/setting/';
-import { EmailNoticesTypes, UserTypes } from '@/types/global';
-import { postEmailNotices } from '@/utils/api/post-email-notices';
+import { UserTypes } from '@/types/global';
 import { moveToTop } from '@/utils/move-page';
 import Box from '@material-ui/core/Box';
 import Snackbar from '@material-ui/core/Snackbar';
-import React, { useState } from 'react';
+import React from 'react';
 
 type Props = {
   authUser: any;
   currentUser: UserTypes;
   isFetch: boolean;
 };
-type EmailNoticesKeyTypes = Readonly<
-  'is_opened_review' | 'is_posted_review' | 'is_commented_review'
->;
 
 const IndexPage: React.FC<Props> = props => {
   if (props.isFetch) {
@@ -31,64 +25,16 @@ const IndexPage: React.FC<Props> = props => {
     moveToTop();
     return <></>;
   }
-  const [emailNotices, setEmailNotices] = useState<EmailNoticesTypes | null>(
-    props.currentUser.email_notices
-  );
-  const [isOpen, setIsOpen] = useState(false);
-  const [updatingMessage, setUpdatingMessage] = useState('更新中...');
-
-  const resetUpdatingMessage = () => {
-    setUpdatingMessage('更新中...');
-  };
-
-  const updateEmailNotices = async (
-    key: EmailNoticesKeyTypes,
-    value: boolean
-  ) => {
-    setUpdatingMessage;
-    emailNotices![key] = value;
-    const params = {
-      emailNotices: emailNotices!,
-    };
-    const err = new Error();
-    try {
-      setUpdatingMessage(messages.UPDATED_MESSAGE);
-      const result = await postEmailNotices(params);
-      if (!result.data.status) throw err;
-      setIsOpen(false);
-    } catch (error) {
-      alert(errorMessages.SYSTEM_ERROR);
-      setIsOpen(false);
-    }
-  };
-
-  const changeOpenedReview = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const isChecked = event.currentTarget.checked;
-    setEmailNotices({ ...emailNotices!, is_opened_review: isChecked });
-    resetUpdatingMessage();
-    setIsOpen(true);
-    updateEmailNotices('is_opened_review', isChecked);
-  };
-
-  const changeRequestedReview = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const isChecked = event.currentTarget.checked;
-    setEmailNotices({ ...emailNotices!, is_posted_review: isChecked });
-    resetUpdatingMessage();
-    setIsOpen(true);
-    updateEmailNotices('is_posted_review', isChecked);
-  };
-
-  const changeCommentedReview = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const isChecked = event.currentTarget.checked;
-    setEmailNotices({ ...emailNotices!, is_commented_review: isChecked });
-    resetUpdatingMessage();
-    setIsOpen(true);
-    updateEmailNotices('is_commented_review', isChecked);
-  };
+  const {
+    emailNotices,
+    isOpen,
+    updatingMessage,
+    hasGithubAccessToken,
+    linkToGithub,
+    changeOpenedReview,
+    changeRequestedReview,
+    changeCommentedReview,
+  } = useSettingActivity(props.currentUser);
 
   return (
     <SettingLayout
@@ -134,7 +80,7 @@ const IndexPage: React.FC<Props> = props => {
             />
           </ProfileContentCheck>
         </ContentWrapper>
-        {/* <ContentWrapper>
+        <ContentWrapper>
           <ContentHeader
             title='Link'
             description='Github連携を行うことでKanon Codeをより使いやすく設定できます。'
@@ -143,12 +89,17 @@ const IndexPage: React.FC<Props> = props => {
           />
           <ProfileContentCheck
             label='Github連携'
-            value={false ? 'ON' : 'OFF'}
+            value={hasGithubAccessToken ? '連携ずみ' : ''}
             isDivider={false}
           >
-            <LinkGithubButton onClick={linkOnGithub} />
+            <LinkGithubButton
+              text={
+                hasGithubAccessToken ? 'Githubと連携ずみ' : 'Githubと連携する'
+              }
+              onClick={linkToGithub}
+            />
           </ProfileContentCheck>
-        </ContentWrapper> */}
+        </ContentWrapper>
         {/* <ContentWrapper>
           <ContentHeader
             title='Delete Account'

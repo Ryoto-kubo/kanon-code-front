@@ -30,4 +30,5 @@ export const apis = {
   REACTION: 'api/reaction',
   WITHDRAWAL: 'api/withdrawal',
   POST_STATUS: 'api/postStatus',
+  GITHUB_OAUTH: 'api/githubOAuth',
 };
