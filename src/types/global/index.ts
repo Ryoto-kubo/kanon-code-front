@@ -309,6 +309,16 @@ export type CommentListTypes = {
   [key: string]: ResponseCommentTypes[];
 };
 
+export type GithubReposTypes = {
+  name: string;
+  fullName: string;
+  branches: GihubBranchesTypes[];
+};
+
+export type GihubBranchesTypes = {
+  name: string;
+};
+
 // export type CustomReviewTypesInCommentsTypes = CustomReviewTypes & {
 //   comments: ResponseCommentTypes[];
 // };

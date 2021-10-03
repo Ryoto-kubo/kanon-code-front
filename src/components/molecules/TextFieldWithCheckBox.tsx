@@ -11,7 +11,7 @@ type Props = TextFieldProps & {
   listLength: number;
   onClick: VoidFunction;
   onDelete: VoidFunction;
-  onCnangeFileName: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onChangeFileName: (event: React.ChangeEvent<HTMLInputElement>) => void;
   onFocusGetIndex: (event: React.FocusEvent<HTMLInputElement>) => void;
   onBlurGetLang: (event: React.FocusEvent<HTMLInputElement>) => void;
 };
@@ -27,7 +27,7 @@ export const TextFieldWithCheckBox: React.FC<Props> = React.memo(props => {
     listLength,
     onClick,
     onDelete,
-    onCnangeFileName,
+    onChangeFileName,
     onFocusGetIndex,
     onBlurGetLang,
     ...textFieldProps
@@ -37,7 +37,7 @@ export const TextFieldWithCheckBox: React.FC<Props> = React.memo(props => {
       <Box mr={1} width='100%'>
         <TextField
           {...textFieldProps}
-          onChange={onCnangeFileName}
+          onChange={onChangeFileName}
           onFocus={onFocusGetIndex}
           onBlur={onBlurGetLang}
           fullWidth
