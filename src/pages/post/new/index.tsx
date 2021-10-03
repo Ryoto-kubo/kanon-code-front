@@ -124,6 +124,7 @@ const IndexPage: React.FC<Props> = props => {
     updateButtonText,
     updateCanPublish,
     getRepos,
+    getBranches,
   } = usePost();
 
   // const HelpToolTip = () => {
@@ -264,6 +265,7 @@ const IndexPage: React.FC<Props> = props => {
         repos={repos}
         isOpen={isOpenGithubDialog}
         isFetch={isFetchGithubData}
+        getBranches={getBranches}
         closeDialog={() => setIsOpenGithubDialog(false)}
       />
       <TreeObjectDialog

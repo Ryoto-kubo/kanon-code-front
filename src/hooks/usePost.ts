@@ -1,7 +1,10 @@
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { ProgrammingIcon } from '@/types/global';
-import { GihubReposTypes } from '@/types/global/index';
+import { GithubReposTypes } from '@/types/global/index';
+import { getGithubBranches } from '@/utils/api/get-github-branches';
+import { getGithubAccessToken } from '@/utils/api/get-github-oauth';
+import { getGithubRepos } from '@/utils/api/get-github-repos';
 import { postContent } from '@/utils/api/post-content';
 import { initDescription } from '@/utils/init-values';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
@@ -9,8 +12,6 @@ import marked from 'marked';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { getGithubAccessToken } from './../utils/api/get-github-oauth';
-import { getGithubRepos } from './../utils/api/get-github-repos';
 
 type FileNameType = {
   key: string;
@@ -113,7 +114,7 @@ export const usePost = () => {
   const [hasGithubAccessToken, setHasGithubAccessToken] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [isFetchGithubData, setIsFetchGithubData] = useState(true);
-  const [repos, setRepos] = useState<GihubReposTypes[] | []>([]);
+  const [repos, setRepos] = useState<GithubReposTypes[] | []>([]);
   const [uuid] = useState(uuidv4());
 
   useEffect(() => {
@@ -616,6 +617,24 @@ export const usePost = () => {
     }
   };
 
+  const getBranches = async (repository: string) => {
+    try {
+      const result = await getGithubBranches({ repository });
+      const newRepos = repos.slice();
+      for (const repo of newRepos) {
+        if (repo.fullName === repository) {
+          repo.branches = result.data.branches;
+          break;
+        }
+      }
+      setRepos(newRepos);
+      setIsFetchGithubData(false);
+    } catch (error) {
+      console.error(error);
+      alert(errorMessages.SYSTEM_ERROR);
+    }
+  };
+
   return {
     title,
     postId,
@@ -667,5 +686,6 @@ export const usePost = () => {
     updateButtonText,
     updateCanPublish,
     getRepos,
+    getBranches,
   };
 };
