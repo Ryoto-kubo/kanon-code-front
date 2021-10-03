@@ -15,6 +15,7 @@ export const useSettingActivity = (currentUser: UserTypes) => {
     currentUser.email_notices
   );
   const [isOpen, setIsOpen] = useState(false);
+  const [isFetch, setIsFetch] = useState(true);
   const [updatingMessage, setUpdatingMessage] = useState('更新中...');
   const [hasGithubAccessToken, setHasGithubAccessToken] = useState(false);
 
@@ -25,6 +26,7 @@ export const useSettingActivity = (currentUser: UserTypes) => {
         const accessToken = result.data.access_token;
         const hasAccessToken = accessToken !== undefined && accessToken !== '';
         setHasGithubAccessToken(hasAccessToken);
+        setIsFetch(false);
       } catch {
         alert(errorMessages.SYSTEM_ERROR);
       }
@@ -94,6 +96,7 @@ export const useSettingActivity = (currentUser: UserTypes) => {
     isOpen,
     updatingMessage,
     hasGithubAccessToken,
+    isFetch,
     linkToGithub,
     changeOpenedReview,
     changeRequestedReview,

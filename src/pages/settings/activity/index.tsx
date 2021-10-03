@@ -1,4 +1,5 @@
 import { CustomSwitch } from '@/components/atoms/CustomSwitch';
+import { CustomLoader } from '@/components/common/loader';
 import { ContentHeader } from '@/components/molecules/ContentHeader';
 import { LinkGithubButton } from '@/components/molecules/LinkGithubButton';
 import { ProfileContentCheck } from '@/components/molecules/ProfileContentCheck';
@@ -30,6 +31,7 @@ const IndexPage: React.FC<Props> = props => {
     isOpen,
     updatingMessage,
     hasGithubAccessToken,
+    isFetch,
     linkToGithub,
     changeOpenedReview,
     changeRequestedReview,
@@ -92,12 +94,22 @@ const IndexPage: React.FC<Props> = props => {
             value={hasGithubAccessToken ? '連携ずみ' : ''}
             isDivider={false}
           >
-            <LinkGithubButton
-              text={
-                hasGithubAccessToken ? 'Githubと連携ずみ' : 'Githubと連携する'
-              }
-              onClick={linkToGithub}
-            />
+            <Box position='relative' height='36px'>
+              {isFetch ? (
+                <Box position='absolute' top='20px' left='-70px'>
+                  <CustomLoader width={25} height={25} />
+                </Box>
+              ) : (
+                <LinkGithubButton
+                  text={
+                    hasGithubAccessToken
+                      ? 'Githubと連携ずみ'
+                      : 'Githubと連携する'
+                  }
+                  onClick={linkToGithub}
+                />
+              )}
+            </Box>
           </ProfileContentCheck>
         </ContentWrapper>
         {/* <ContentWrapper>
