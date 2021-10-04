@@ -183,7 +183,7 @@ export type GithubSourceTreeTypes = {
   id: string;
   name: string;
   type?: 'blob' | 'tree';
-  encodedContetnt?: string;
+  sha?: string;
   children?: GithubSourceTreeTypes[];
 };
 

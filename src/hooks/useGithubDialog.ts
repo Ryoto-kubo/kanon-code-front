@@ -1,6 +1,8 @@
+import { errorMessages } from '@/consts/error-messages';
 import { ResponseGithubSourceTreeTypes } from '@/types/api/get-github-source-tree';
 import { SourceTreeTypes } from '@/types/global';
 import { GithubBranchesTypes, GithubReposTypes } from '@/types/global/index';
+import { getGithubEncodeContent } from '@/utils/api/get-github-encode-content';
 import { AxiosResponse } from 'axios';
 import { useState } from 'react';
 
@@ -52,6 +54,14 @@ export const useGithubDialog = (
     setChoosedBranch(branch);
   };
 
+  const decodeContent = (name: string, encodeContent: string) => {
+    const lang = name.split('.').pop();
+    const decodeContent = window.atob(encodeContent);
+    const bedginMd = `\`\`\`\`${lang}\n`;
+    const mdContent = `${bedginMd}${decodeContent}`;
+    setDecodedContent(mdContent.replace(/ /g, '\u00A0'));
+  };
+
   const getTree = async () => {
     try {
       const result = await getSourceTreeByBranch(
@@ -66,15 +76,20 @@ export const useGithubDialog = (
       setTreeObject(insertObject);
     } catch (error) {
       console.error(error);
+      alert(errorMessages.SYSTEM_ERROR);
     }
   };
 
-  const decodeContent = (name: string, encodeContent: string) => {
-    const lang = name.split('.').pop();
-    const decodeContent = window.atob(encodeContent);
-    const bedginMd = `\`\`\`\`${lang}\n`;
-    const mdContent = `${bedginMd}${decodeContent}`;
-    setDecodedContent(mdContent.replace(/ /g, '\u00A0'));
+  const getContent = async (name: string, sha: string) => {
+    const repository = choosedRepository;
+    try {
+      const result = await getGithubEncodeContent({ repository, sha });
+      const encodeContent = result.data.content;
+      decodeContent(name, encodeContent);
+    } catch (error) {
+      console.error(error);
+      alert(errorMessages.SYSTEM_ERROR);
+    }
   };
 
   return {
@@ -87,6 +102,6 @@ export const useGithubDialog = (
     choosedRepositoryBranches,
     selectBranch,
     getTree,
-    decodeContent,
+    getContent,
   };
 };

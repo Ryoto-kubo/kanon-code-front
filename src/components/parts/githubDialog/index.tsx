@@ -98,7 +98,7 @@ export const GithubDialog: React.FC<Props> = props => {
     choosedRepositoryBranches,
     selectBranch,
     getTree,
-    decodeContent,
+    getContent,
   } = useGithubDialog(repos, getBranches, getSourceTreeByBranch);
 
   const key = `${choosedRepository}#${choosedBranch}`;
@@ -179,7 +179,7 @@ export const GithubDialog: React.FC<Props> = props => {
                   </StyledBoxGetCodeButton>
                   <GithubSourceTree
                     sourceTree={treeObject[key]}
-                    decodeContent={decodeContent}
+                    getContent={getContent}
                   />
                 </>
               )}
