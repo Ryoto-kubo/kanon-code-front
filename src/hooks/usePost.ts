@@ -12,6 +12,7 @@ import marked from 'marked';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { getGithubSourceTree } from '../utils/api/get-github-source-tree';
 
 type FileNameType = {
   key: string;
@@ -635,6 +636,10 @@ export const usePost = () => {
     }
   };
 
+  const getSourceTreeByBranch = async (repository: string, branch: string) => {
+    return await getGithubSourceTree({ repository, branch });
+  };
+
   return {
     title,
     postId,
@@ -687,5 +692,6 @@ export const usePost = () => {
     updateCanPublish,
     getRepos,
     getBranches,
+    getSourceTreeByBranch,
   };
 };
