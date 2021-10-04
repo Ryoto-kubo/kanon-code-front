@@ -179,6 +179,14 @@ export type SourceTreeTypes = {
   children?: SourceTreeTypes[];
 };
 
+export type GithubSourceTreeTypes = {
+  id: string;
+  name: string;
+  type?: 'blob' | 'tree';
+  encodedContetnt?: string;
+  children?: GithubSourceTreeTypes[];
+};
+
 export type BookmarkTypes = {
   partition_key: string;
   sort_key: string;
@@ -312,10 +320,10 @@ export type CommentListTypes = {
 export type GithubReposTypes = {
   name: string;
   fullName: string;
-  branches: GihubBranchesTypes[];
+  branches: GithubBranchesTypes[];
 };
 
-export type GihubBranchesTypes = {
+export type GithubBranchesTypes = {
   name: string;
 };
 
