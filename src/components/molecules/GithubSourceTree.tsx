@@ -12,7 +12,7 @@ import styled from 'styled-components';
 
 type Props = {
   sourceTree: GithubSourceTreeTypes[];
-  decodeContent: (name: string, encodedContetnt: string) => void;
+  getContent: (name: string, sha: string) => Promise<void>;
 };
 
 const StyledTreeView = styled(TreeView)`
@@ -39,7 +39,7 @@ const StyledBoxNameWrapper = styled(Box)`
 
 export const GithubSourceTree: React.FC<Props> = ({
   sourceTree,
-  decodeContent,
+  getContent,
 }) => {
   const data: GithubSourceTreeTypes = {
     id: 'root',
@@ -72,7 +72,7 @@ export const GithubSourceTree: React.FC<Props> = ({
       <StyledButton
         key={nodes.id}
         disableRipple
-        onClick={() => decodeContent(nodes.name, nodes.encodedContetnt!)}
+        onClick={() => getContent(nodes.name, nodes.sha!)}
       >
         <TreeItem nodeId={nodes.id} label={label(nodes.name, nodes.type!)} />
       </StyledButton>

@@ -34,4 +34,5 @@ export const apis = {
   GITHUB_REPOS: 'api/githubRepos',
   GITHUB_BRANCHES: 'api/githubBranches',
   GITHUB_SOURCE_TREE: 'api/githubSourceTree',
+  GITHUB_ENCODE_CONTENT: 'api/githubEncodeContent',
 };
