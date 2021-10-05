@@ -23,6 +23,7 @@ export const useGithubDialog = (
   const [isChoosedRepository, setIsChoosedRepository] = useState(true);
   const [isChoosedBranch, setIsChoosedBranch] = useState(true);
   const [isBranchFetch, setIsBranchFetch] = useState(false);
+  const [isTreeFetch, setIsTreeFetch] = useState(false);
   const [treeObject, setTreeObject] = useState<TreeTypes>({});
   const [decodedContent, setDecodedContent] = useState('');
 
@@ -87,6 +88,7 @@ export const useGithubDialog = (
     const key = `${choosedRepository}#${choosedBranch}`;
     // すでにtreeを取得ずみのrepository & branchの組み合わせはreturnしておく
     if (treeObject[key] !== undefined) return;
+    setIsTreeFetch(true);
     try {
       const result = await getSourceTreeByBranch(
         choosedRepository,
@@ -94,9 +96,11 @@ export const useGithubDialog = (
       );
       const tree = result.data.tree.children!;
       setTreeObject({ ...treeObject, [key]: tree });
+      setIsTreeFetch(false);
     } catch (error) {
       console.error(error);
       alert(errorMessages.SYSTEM_ERROR);
+      setIsTreeFetch(false);
     }
   };
 
@@ -118,6 +122,7 @@ export const useGithubDialog = (
     isChoosedRepository,
     isChoosedBranch,
     isBranchFetch,
+    isTreeFetch,
     treeObject,
     decodedContent,
     getBranchesBySelectedRepo,

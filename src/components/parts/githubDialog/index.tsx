@@ -55,6 +55,7 @@ const StyledBoxSettingWrapper = styled(Box)`
   margin-bottom: 24px;
   ${props => props.theme.breakpoints.up('sm')} {
     width: 30%;
+    max-width: 320px;
   }
 `;
 const StyledBoxAutoCompleteChild = styled(Box)`
@@ -64,11 +65,15 @@ const StyledBoxGetCodeButton = styled(Box)`
   text-align: right;
   margin-bottom: 32px;
 `;
+const StyledBoxTreeWrapper = styled(Box)`
+  position: relative;
+  padding-bottom: 20px;
+`;
 const StyledBoxSourceCodeWrapper = styled(Box)`
   text-align: left;
   width: 100%;
   ${props => props.theme.breakpoints.up('sm')} {
-    width: 68%;
+    width: 77%;
   }
 `;
 
@@ -93,6 +98,7 @@ export const GithubDialog: React.FC<Props> = props => {
     choosedRepository,
     choosedBranch,
     isBranchFetch,
+    isTreeFetch,
     treeObject,
     decodedContent,
     isChoosedRepository,
@@ -200,10 +206,16 @@ export const GithubDialog: React.FC<Props> = props => {
                       コードを取得
                     </CustomSolidButton>
                   </StyledBoxGetCodeButton>
-                  <GithubSourceTree
-                    sourceTree={treeObject[key]}
-                    getContent={getContent}
-                  />
+                  <StyledBoxTreeWrapper>
+                    {isTreeFetch ? (
+                      <CustomLoader width={25} height={25} />
+                    ) : (
+                      <GithubSourceTree
+                        sourceTree={treeObject[key]}
+                        getContent={getContent}
+                      />
+                    )}
+                  </StyledBoxTreeWrapper>
                 </>
               )}
             </StyledBoxSettingWrapper>
