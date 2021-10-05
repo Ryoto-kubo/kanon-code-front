@@ -2,6 +2,7 @@ import { CustomHeading2 } from '@/components/atoms/CustomHeading2';
 import { CustomSolidButton } from '@/components/atoms/SolidButton';
 import { CustomLoader } from '@/components/common/loader';
 import { GithubSourceTree } from '@/components/molecules/GithubSourceTree';
+import { ValidMessage } from '@/components/molecules/ValidMessage';
 import { useGithubDialog } from '@/hooks/useGithubDialog';
 import { ResponseGithubSourceTreeTypes } from '@/types/api/get-github-source-tree';
 import { GithubReposTypes } from '@/types/global/index';
@@ -94,13 +95,14 @@ export const GithubDialog: React.FC<Props> = props => {
     isBranchFetch,
     treeObject,
     decodedContent,
+    isChoosedRepository,
+    isChoosedBranch,
     getBranchesBySelectedRepo,
-    choosedRepositoryBranches,
+    getChoosedRepositoryBranches,
     selectBranch,
     getTree,
     getContent,
   } = useGithubDialog(repos, getBranches, getSourceTreeByBranch);
-  console.log(treeObject);
 
   const key = `${choosedRepository}#${choosedBranch}`;
   return (
@@ -139,35 +141,55 @@ export const GithubDialog: React.FC<Props> = props => {
               ) : (
                 <>
                   <StyledBoxAutoCompleteChild>
-                    <Autocomplete
-                      disablePortal
-                      autoHighlight
-                      autoSelect
-                      id='repository'
-                      options={repos}
-                      style={{ width: '100%' }}
-                      getOptionLabel={option => option.name}
-                      renderInput={(params: any) => (
-                        <TextField {...params} label='Repository' />
-                      )}
-                      onChange={getBranchesBySelectedRepo}
-                    />
+                    <Box mb={0.5}>
+                      <Autocomplete
+                        disablePortal
+                        autoHighlight
+                        autoSelect
+                        id='repository'
+                        options={repos}
+                        style={{ width: '100%' }}
+                        getOptionLabel={option => option.name}
+                        renderInput={(params: any) => (
+                          <TextField
+                            {...params}
+                            label='Repository'
+                            error={!isChoosedRepository}
+                          />
+                        )}
+                        onChange={getBranchesBySelectedRepo}
+                      />
+                    </Box>
+                    {!isChoosedRepository && (
+                      <ValidMessage validText='リポジトリを選択してください' />
+                    )}
                   </StyledBoxAutoCompleteChild>
                   <StyledBoxAutoCompleteChild>
-                    <Autocomplete
-                      disablePortal
-                      autoHighlight
-                      autoSelect
-                      id='branch'
-                      options={choosedRepositoryBranches(choosedRepository)}
-                      style={{ width: '100%' }}
-                      getOptionLabel={option => option.name}
-                      renderInput={(params: any) => (
-                        <TextField {...params} label='Branch' />
-                      )}
-                      loading={isBranchFetch}
-                      onChange={selectBranch}
-                    />
+                    <Box mb={0.5}>
+                      <Autocomplete
+                        disablePortal
+                        autoHighlight
+                        autoSelect
+                        id='branch'
+                        options={getChoosedRepositoryBranches(
+                          choosedRepository
+                        )}
+                        style={{ width: '100%' }}
+                        getOptionLabel={option => option.name}
+                        renderInput={(params: any) => (
+                          <TextField
+                            {...params}
+                            label='Branch'
+                            error={!isChoosedBranch}
+                          />
+                        )}
+                        loading={isBranchFetch}
+                        onChange={selectBranch}
+                      />
+                    </Box>
+                    {!isChoosedBranch && (
+                      <ValidMessage validText='ブランチを選択してください' />
+                    )}
                   </StyledBoxAutoCompleteChild>
                   <StyledBoxGetCodeButton>
                     <CustomSolidButton

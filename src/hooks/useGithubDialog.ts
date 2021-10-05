@@ -9,6 +9,7 @@ import { useState } from 'react';
 type TreeTypes = {
   [key: string]: SourceTreeTypes[];
 };
+
 export const useGithubDialog = (
   repos: GithubReposTypes[],
   getBranches: (repository: string) => Promise<void>,
@@ -19,12 +20,13 @@ export const useGithubDialog = (
 ) => {
   const [choosedRepository, setChoosedRepository] = useState('');
   const [choosedBranch, setChoosedBranch] = useState('');
+  const [isChoosedRepository, setIsChoosedRepository] = useState(true);
+  const [isChoosedBranch, setIsChoosedBranch] = useState(true);
   const [isBranchFetch, setIsBranchFetch] = useState(false);
   const [treeObject, setTreeObject] = useState<TreeTypes>({});
   const [decodedContent, setDecodedContent] = useState('');
-  // const [decodedContent, setDecodedContent] = useState<string[]>([]);
 
-  const choosedRepositoryBranches = (repositoryName: string) => {
+  const getChoosedRepositoryBranches = (repositoryName: string) => {
     const repository = repos.filter(el => el.fullName === repositoryName);
     if (repository.length <= 0) return [];
     return repository[0].branches;
@@ -34,12 +36,18 @@ export const useGithubDialog = (
     _: React.ChangeEvent<{}>,
     githubRepos: GithubReposTypes | null
   ) => {
+    if (githubRepos === null) {
+      setChoosedRepository('');
+      return;
+    }
     const currentRepoFullName = githubRepos!.fullName;
     // 同じリポジトリを選択した場合は、returnする
     if (currentRepoFullName === choosedRepository) return;
+    setChoosedBranch('');
+    setIsChoosedRepository(true);
     setChoosedRepository(currentRepoFullName);
-    const branches = choosedRepositoryBranches(currentRepoFullName);
-    // ブランチが存在する場合は、過去に選択されたリポジトリなので、apiを叩かなくて良い
+    const branches = getChoosedRepositoryBranches(currentRepoFullName);
+    // 選択したリポジトリにブランチが存在する場合は、過去に選択されたリポジトリなので、apiを叩かない
     if (branches.length > 0) return;
     setIsBranchFetch(true);
     await getBranches(currentRepoFullName);
@@ -50,7 +58,12 @@ export const useGithubDialog = (
     _: React.ChangeEvent<{}>,
     value: GithubBranchesTypes | null
   ) => {
+    if (value === null) {
+      setChoosedBranch('');
+      return;
+    }
     const branch = value!.name;
+    setIsChoosedBranch(true);
     setChoosedBranch(branch);
   };
 
@@ -63,6 +76,8 @@ export const useGithubDialog = (
   };
 
   const validSelectedRepositoryAndBranch = () => {
+    setIsChoosedRepository(choosedRepository !== '');
+    setIsChoosedBranch(choosedBranch !== '');
     return choosedRepository !== '' && choosedBranch !== '';
   };
 
@@ -100,11 +115,13 @@ export const useGithubDialog = (
   return {
     choosedRepository,
     choosedBranch,
+    isChoosedRepository,
+    isChoosedBranch,
     isBranchFetch,
     treeObject,
     decodedContent,
     getBranchesBySelectedRepo,
-    choosedRepositoryBranches,
+    getChoosedRepositoryBranches,
     selectBranch,
     getTree,
     getContent,
