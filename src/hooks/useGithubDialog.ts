@@ -62,18 +62,23 @@ export const useGithubDialog = (
     setDecodedContent(mdContent.replace(/ /g, '\u00A0'));
   };
 
+  const validSelectedRepositoryAndBranch = () => {
+    return choosedRepository !== '' && choosedBranch !== '';
+  };
+
   const getTree = async () => {
+    const isValid = validSelectedRepositoryAndBranch();
+    if (!isValid) return;
+    const key = `${choosedRepository}#${choosedBranch}`;
+    // すでにtreeを取得ずみのrepository & branchの組み合わせはreturnしておく
+    if (treeObject[key] !== undefined) return;
     try {
       const result = await getSourceTreeByBranch(
         choosedRepository,
         choosedBranch
       );
-      const key = `${choosedRepository}#${choosedBranch}`;
       const tree = result.data.tree.children!;
-      const insertObject = {
-        [key]: tree,
-      };
-      setTreeObject(insertObject);
+      setTreeObject({ ...treeObject, [key]: tree });
     } catch (error) {
       console.error(error);
       alert(errorMessages.SYSTEM_ERROR);

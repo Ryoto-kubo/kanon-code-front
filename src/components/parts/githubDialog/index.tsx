@@ -100,6 +100,7 @@ export const GithubDialog: React.FC<Props> = props => {
     getTree,
     getContent,
   } = useGithubDialog(repos, getBranches, getSourceTreeByBranch);
+  console.log(treeObject);
 
   const key = `${choosedRepository}#${choosedBranch}`;
   return (
