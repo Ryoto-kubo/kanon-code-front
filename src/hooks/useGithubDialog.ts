@@ -105,6 +105,9 @@ export const useGithubDialog = (
   };
 
   const getContent = async (name: string, sha: string) => {
+    const isValid = validSelectedRepositoryAndBranch();
+    if (!isValid) return;
+    if (sha === undefined) return;
     const repository = choosedRepository;
     try {
       const result = await getGithubEncodeContent({ repository, sha });
