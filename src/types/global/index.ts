@@ -121,6 +121,7 @@ export type CamelContentTypes = {
     bodyHtml: string;
     fileName: string;
     isValid: boolean;
+    isAuto: boolean;
     key: string;
     sourceCode: string;
   }[];

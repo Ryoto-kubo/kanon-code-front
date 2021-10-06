@@ -48,6 +48,8 @@ export const ThePostHeader: React.FC<Props> = React.memo(props => {
   };
   const switchPublish = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.currentTarget.checked;
+    console.log(isChecked);
+
     const value: ButtonText = isChecked ? '投稿設定' : '下書き保存';
     const color = isChecked ? mainTextColor : disabledColor;
     props.updateButtonText(value);

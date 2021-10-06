@@ -8,6 +8,7 @@ import { getGithubRepos } from '@/utils/api/get-github-repos';
 import { postContent } from '@/utils/api/post-content';
 import { initDescription } from '@/utils/init-values';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
+import { Validation } from '@/utils/validation';
 import marked from 'marked';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
@@ -32,32 +33,22 @@ type ValidObject = {
   message: string;
 };
 
+const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
+  return {
+    isValid: defaultValue,
+    message: defaultMessage,
+  };
+};
+
 export const usePost = () => {
   const router = useRouter();
-  const createValidObject = useCallback((defaultValue, defaultMessage) => {
-    return {
-      isValid: defaultValue,
-      message: defaultMessage,
-    };
-  }, []);
-
-  const validPrice = (price: number) => {
-    return price > 0 && price <= CONSTS.MAX_PRICE;
-  };
-
-  const validNumber = (price: string) => {
-    const regExp = new RegExp(/^[0-9]*$/);
-    return regExp.test(price);
-  };
 
   const [title, setTitle] = useState('');
   const [postId, setPostId] = useState('');
   const [isSuccessed, setIsSuccessed] = useState(false);
   const [description, setDescription] = useState(initDescription);
   const [sourceCode, setSourceCode] = useState('```\n\n```');
-
   // const [tagList, setTagList] = useState<string[]>([]);
-
   const [inputFileNameLists, setInputFileNameLists] = useState<FileNameType[]>([
     {
       key: uuidv4(),
@@ -236,7 +227,17 @@ export const usePost = () => {
     [sourceCode, inputFileNameLists]
   );
 
-  const prepareValidRegister = useCallback(() => {
+  const validAllFileNameLength = useCallback(() => {
+    let isValid = false;
+    for (const item of inputFileNameLists) {
+      const fileName = item.fileName;
+      isValid = Validation.validLength(fileName, CONSTS.MAX_FILE_NAME_LENGTH);
+      if (!isValid) break;
+    }
+    return isValid;
+  }, [inputFileNameLists]);
+
+  const prepareValidRegister = () => {
     if (!isValidTitleObject.isValid) {
       updateCanPublish(false, isValidTitleObject.message);
       return;
@@ -249,8 +250,8 @@ export const usePost = () => {
       updateCanPublish(false, isValidDescriptionObject.message);
       return;
     }
-    if (!isValidFileNameObject.isValid) {
-      updateCanPublish(false, isValidFileNameObject.message);
+    if (!validAllFileNameLength()) {
+      updateCanPublish(false, validMessages.OVER_LENGTH_FILE_NAME);
       return;
     }
     if (!isValidSourceCodeObject.isValid) {
@@ -259,8 +260,7 @@ export const usePost = () => {
     }
     initCanPublish();
     setIsOpenDialog(true);
-  }, [title, description, inputFileNameLists]);
-  // }, [title, tagList, description, inputFileNameLists]);
+  };
 
   const registerContent = async () => {
     if (!isValidBudget.isValid) {
@@ -378,47 +378,55 @@ export const usePost = () => {
   );
 
   const changeFileName = useCallback(
-    (event: React.ChangeEvent<HTMLInputElement>, index: number) => {
-      const value = event.target.value;
-      const prepareContentBeforePost = new PrepareContentBeforePost(
-        value,
-        setIsValidFileNameObject,
-        isValidFileNameObject
-      );
-      const isValidMaxLength = prepareContentBeforePost.validLength(
-        CONSTS.MAX_FILE_NAME_LENGTH,
-        validMessages.OVER_LENGTH_FILE_NAME
-      );
-      if (!isValidMaxLength) return;
-      const isExist = prepareContentBeforePost.validEmpty(
-        validMessages.REQUIRED_FILE_NAME
-      );
-      if (isValidMaxLength && isExist) {
-        prepareContentBeforePost.successed();
-      }
-      setCurrentIndex(index);
+    (value: string, index: number) => {
       updateInputFileNameLists('fileName', value, index);
+      const isValidMaxLength = Validation.validLength(
+        value,
+        CONSTS.MAX_FILE_NAME_LENGTH
+      );
+      if (!isValidMaxLength) {
+        setIsValidFileNameObject(
+          createValidObject(false, validMessages.OVER_LENGTH_FILE_NAME)
+        );
+        return;
+      }
+
+      const isExists = Validation.validEmpty(value);
+      if (!isExists) {
+        setIsValidFileNameObject(
+          createValidObject(false, validMessages.REQUIRED_FILE_NAME)
+        );
+        return;
+      }
+
+      setIsValidFileNameObject(createValidObject(true, ''));
+      setCurrentIndex(index);
     },
     [sourceCode, inputFileNameLists]
   );
 
   const changeSourceCode = useCallback(
     (value: string): void => {
-      const prepareContentBeforePost = new PrepareContentBeforePost(
+      const isValidMaxLength = Validation.validLength(
         value,
-        setIsValidSourceCodeObject,
-        isValidSourceCodeObject
+        CONSTS.MAX_SOURCE_CODE_LENGTH
       );
-      const isValidMaxLength = prepareContentBeforePost.validLength(
-        CONSTS.MAX_SOURCE_CODE_LENGTH,
-        validMessages.OVER_LENGTH_SOURCE_CODE
-      );
-      const isExist = prepareContentBeforePost.validEmpty(
-        validMessages.REQUIRED_SOURCE_CODE
-      );
-      if (isValidMaxLength && isExist) {
-        prepareContentBeforePost.successed();
+      if (!isValidMaxLength) {
+        setIsValidSourceCodeObject(
+          createValidObject(false, validMessages.OVER_LENGTH_SOURCE_CODE)
+        );
+        return;
       }
+
+      const isExists = Validation.validEmpty(value);
+      if (!isExists) {
+        setIsValidSourceCodeObject(
+          createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
+        );
+        return;
+      }
+
+      setIsValidSourceCodeObject(createValidObject(true, ''));
       setSourceCode(value);
       updateIsValidSourceCode(isValidMaxLength);
       updateSourceCodeAndBodyHtml(value, currentIndex);
@@ -555,25 +563,18 @@ export const usePost = () => {
     [sourceCode, inputFileNameLists]
   );
 
-  // const getRepos = useCallback(
-  //   (event: React.MouseEvent<HTMLButtonElement>) => {
-  //     console.log(event);
-  //   },
-  //   []
-  // );
-
   const selectTargetLanguage = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     setTargetLanguageValue(value);
   };
 
   const changeBudget = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const isValidNumber = validNumber(event.target.value);
+    const isValidNumber = Validation.validNumber(event.target.value);
     if (!isValidNumber) {
       return;
     }
     const value = Number(event.target.value);
-    const isValid = validPrice(value);
+    const isValid = Validation.validPrice(value);
     if (!isValid) {
       setIsValidBudget(
         createValidObject(false, validMessages.ZERO_UNDER_OVER_MAX_PRICE)
@@ -652,16 +653,80 @@ export const usePost = () => {
       // リポジトリダイアログ内で選択されているファイルと、inputタグに入力があるファイルしか残さない
       if (isIncludes || (isExistsFileName && !item.isAuto)) {
         resultList.push(item);
+        // 手動で入力されたデータをvalidation checkする
+        validationForFileName(item.fileName);
+        validationForSourceCode(item.sourceCode);
       }
     }
     return resultList;
+  };
+
+  const validationForFileName = (fileName: string) => {
+    const isValidMaxLength = Validation.validLength(
+      fileName,
+      CONSTS.MAX_FILE_NAME_LENGTH
+    );
+    if (!isValidMaxLength) {
+      setIsValidFileNameObject(
+        createValidObject(false, validMessages.OVER_LENGTH_FILE_NAME)
+      );
+      return;
+    }
+
+    const isExists = Validation.validEmpty(fileName);
+    if (!isExists) {
+      setIsValidFileNameObject(
+        createValidObject(false, validMessages.REQUIRED_FILE_NAME)
+      );
+      return;
+    }
+  };
+
+  const validationForSourceCode = (sourceCode: string) => {
+    const isValidMaxLength = Validation.validLength(
+      sourceCode,
+      CONSTS.MAX_SOURCE_CODE_LENGTH
+    );
+    if (!isValidMaxLength) {
+      setIsValidSourceCodeObject(
+        createValidObject(false, validMessages.OVER_LENGTH_SOURCE_CODE)
+      );
+      return;
+    }
+
+    const isExists = Validation.validEmpty(sourceCode);
+    if (!isExists) {
+      setIsValidSourceCodeObject(
+        createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
+      );
+      return;
+    }
+  };
+
+  const execuDecodeContent = (
+    selectFullPath: string,
+    encodeContents: { [key: string]: string }
+  ) => {
+    const lang = selectFullPath.split('.').pop();
+    const encodeContent = encodeContents[selectFullPath];
+    const decodeContent = window.atob(encodeContent);
+    const bedginMd = `\`\`\`${lang}\n`;
+    const endMd = '\n```';
+    return `${bedginMd}${decodeContent}${endMd}`;
+  };
+
+  const initValidFileNameAndSourceCode = () => {
+    setIsValidFileNameObject(createValidObject(true, ''));
+    setIsValidSourceCodeObject(createValidObject(true, ''));
   };
 
   const insertToInputFileNameLists = (
     choosedFullPathList: string[],
     encodeContents: { [key: string]: string }
   ) => {
-    // リポジトリダイアログ内で削除したファイルは消す
+    // 一度validationの状態をリセットする
+    initValidFileNameAndSourceCode();
+    // リポジトリダイアログ内で削除したファイルは消しつつ、手動で入力したものは残す処理
     const newInputFileNameLists = embedDiffInputFileNameLists(
       choosedFullPathList
     );
@@ -669,14 +734,14 @@ export const usePost = () => {
       const existsItem = newInputFileNameLists.filter(
         el => el.fileName === selectFullPath
       );
-
       if (existsItem.length > 0) continue;
-      const lang = selectFullPath.split('.').pop();
-      const encodeContent = encodeContents[selectFullPath];
-      const decodeContent = window.atob(encodeContent);
-      const bedginMd = `\`\`\`${lang}\n`;
-      const endMd = '\n```';
-      const mdContent = `${bedginMd}${decodeContent}${endMd}`;
+      const mdContent = execuDecodeContent(selectFullPath, encodeContents);
+      if (isValidFileNameObject.isValid) {
+        validationForFileName(selectFullPath);
+      }
+      if (isValidSourceCodeObject.isValid) {
+        validationForSourceCode(mdContent);
+      }
       newInputFileNameLists.push({
         key: uuidv4(),
         fileName: selectFullPath,
@@ -714,10 +779,6 @@ export const usePost = () => {
     isOpenGithubDialog,
     buttonText,
     canPublish,
-    isValidTitleObject,
-    isValidDescriptionObject,
-    isValidFileNameObject,
-    isValidSourceCodeObject,
     isValidBudget,
     hasGithubAccessToken,
     isLoading,
