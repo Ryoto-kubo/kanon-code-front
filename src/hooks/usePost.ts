@@ -43,23 +43,12 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
 export const usePost = () => {
   const router = useRouter();
 
-  const validPrice = (price: number) => {
-    return price > 0 && price <= CONSTS.MAX_PRICE;
-  };
-
-  const validNumber = (price: string) => {
-    const regExp = new RegExp(/^[0-9]*$/);
-    return regExp.test(price);
-  };
-
   const [title, setTitle] = useState('');
   const [postId, setPostId] = useState('');
   const [isSuccessed, setIsSuccessed] = useState(false);
   const [description, setDescription] = useState(initDescription);
   const [sourceCode, setSourceCode] = useState('```\n\n```');
-
   // const [tagList, setTagList] = useState<string[]>([]);
-
   const [inputFileNameLists, setInputFileNameLists] = useState<FileNameType[]>([
     {
       key: uuidv4(),
