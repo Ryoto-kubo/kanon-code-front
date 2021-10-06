@@ -212,7 +212,9 @@ const IndexPage: React.FC<Props> = props => {
                         placeholder='some/path/file.ext'
                         onClick={() => addListsItem()}
                         onDelete={() => deleteListsItem(el.key, index)}
-                        onChangeFileName={event => changeFileName(event, index)}
+                        onChangeFileName={event =>
+                          changeFileName(event.target.value, index)
+                        }
                         onFocusGetIndex={() => onFocusGetIndex(index)}
                         onBlurGetLang={() => onBlurGetLang(index)}
                       />
