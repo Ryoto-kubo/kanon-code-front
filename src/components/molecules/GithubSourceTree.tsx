@@ -8,6 +8,7 @@ import TreeItem from '@material-ui/lab/TreeItem';
 import TreeView from '@material-ui/lab/TreeView';
 import React from 'react';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 type TreeObjectTypes = {
   tree: GithubSourceTreeTypes[];
@@ -56,7 +57,7 @@ export const GithubSourceTree: React.FC<Props> = ({
   const renderTree = (nodes: GithubSourceTreeTypes) => {
     return nodes.children ? (
       <TreeItem
-        key={nodes.id}
+        key={uuidv4()}
         nodeId={nodes.id}
         label={label(nodes.name, nodes.type!)}
       >
@@ -66,7 +67,7 @@ export const GithubSourceTree: React.FC<Props> = ({
       </TreeItem>
     ) : (
       <TreeItem
-        key={nodes.id}
+        key={uuidv4()}
         nodeId={nodes.id}
         label={label(nodes.name, nodes.type!)}
         onLabelClick={() => getContent(nodes.name, nodes.sha!, nodes.fullPath!)}

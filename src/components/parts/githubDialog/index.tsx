@@ -65,6 +65,7 @@ const StyledBoxSettingWrapper = styled(Box)`
   ${props => props.theme.breakpoints.up('md')} {
     width: 30%;
     max-width: 320px;
+    min-width: 320px;
     margin-right: 24px;
   }
 `;
@@ -203,11 +204,13 @@ export const GithubDialog: React.FC<Props> = props => {
                             options={repos}
                             style={{ width: '100%' }}
                             getOptionLabel={option => option.name}
+                            disabled={isFetchTree}
                             renderInput={(params: any) => (
                               <TextField
                                 {...params}
                                 label='Repository'
                                 error={!isChoosedRepository}
+                                disabled={isFetchTree}
                               />
                             )}
                             onChange={getBranchesBySelectedRepo}
@@ -229,11 +232,13 @@ export const GithubDialog: React.FC<Props> = props => {
                             )}
                             style={{ width: '100%' }}
                             getOptionLabel={option => option.name}
+                            disabled={isFetchTree}
                             renderInput={(params: any) => (
                               <TextField
                                 {...params}
                                 label='Branch'
                                 error={!isChoosedBranch}
+                                disabled={isFetchTree}
                               />
                             )}
                             loading={isFetchBranch}
@@ -249,6 +254,7 @@ export const GithubDialog: React.FC<Props> = props => {
                           sizing='small'
                           color='primary'
                           onClick={getTree}
+                          disabled={isFetchTree}
                         >
                           コードを取得
                         </CustomSolidButton>
