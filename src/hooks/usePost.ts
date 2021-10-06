@@ -1,19 +1,19 @@
 import * as CONSTS from '@/consts/const';
 import { errorMessages, validMessages } from '@/consts/error-messages';
 import { ProgrammingIcon } from '@/types/global';
-import { getContent } from '@/utils/api/get-content';
+import { GithubReposTypes } from '@/types/global/index';
 import { getGithubBranches } from '@/utils/api/get-github-branches';
+import { getGithubAccessToken } from '@/utils/api/get-github-oauth';
 import { getGithubRepos } from '@/utils/api/get-github-repos';
-import { getGithubSourceTree } from '@/utils/api/get-github-source-tree';
-import { putContent } from '@/utils/api/put-content';
+import { postContent } from '@/utils/api/post-content';
+import { initDescription } from '@/utils/init-values';
 import { PrepareContentBeforePost } from '@/utils/prepare-content-before-post';
 import { Validation } from '@/utils/validation';
 import marked from 'marked';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { GithubReposTypes } from './../types/global/index';
-import { getGithubAccessToken } from './../utils/api/get-github-oauth';
+import { getGithubSourceTree } from '../utils/api/get-github-source-tree';
 
 type FileNameType = {
   key: string;
@@ -21,7 +21,7 @@ type FileNameType = {
   sourceCode: string;
   bodyHtml: string;
   isValid: boolean;
-  isAuto?: boolean;
+  isAuto: boolean;
 };
 
 type ButtonText = Readonly<
@@ -33,11 +33,6 @@ type ValidObject = {
   message: string;
 };
 
-const getAuthorId = (partitionKey: string) => {
-  const userIdIndex = 1;
-  return partitionKey.split('#')[userIdIndex];
-};
-
 const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
   return {
     isValid: defaultValue,
@@ -45,28 +40,16 @@ const createValidObject = (defaultValue: boolean, defaultMessage: string) => {
   };
 };
 
-export const useEditPost = (postId: string) => {
+export const usePost = () => {
   const router = useRouter();
 
-  const [authorId, setAurhorId] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [type, setType] = useState<'post_published' | 'post_draft' | ''>('');
-  const [buttonText, setButtonText] = useState<ButtonText>(
-    type === 'post_published' ? '編集設定' : '下書き保存'
-  );
-  const [keys, setKeys] = useState<{
-    partition_key: string;
-    sort_key: string;
-  }>({
-    partition_key: '',
-    sort_key: '',
-  });
   const [title, setTitle] = useState('');
+  const [postId, setPostId] = useState('');
   const [isSuccessed, setIsSuccessed] = useState(false);
-  // const [tagList, setTagList] = useState<string[]>([]);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(initDescription);
   const [sourceCode, setSourceCode] = useState('```\n\n```');
-  const [inputFileNameLists, setInputFileNameLists] = useState([
+  // const [tagList, setTagList] = useState<string[]>([]);
+  const [inputFileNameLists, setInputFileNameLists] = useState<FileNameType[]>([
     {
       key: uuidv4(),
       fileName: '',
@@ -84,12 +67,23 @@ export const useEditPost = (postId: string) => {
     iconPath: '',
     ogpPath: '',
   });
+  const [activeStep, setActiveStep] = useState(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isPosted, setIsPosted] = useState(false);
+  const [isOpenDialog, setIsOpenDialog] = useState(false);
+  const [isOpenTreeDialog, setIsOpenTreeDialog] = useState(false);
+  const [isOpenGithubDialog, setIsOpenGithubDialog] = useState(false);
+  const [buttonText, setButtonText] = useState<ButtonText>('下書き保存');
+
+  const [canPublish, setCanPublish] = useState<ValidObject>(
+    createValidObject(true, '')
+  );
   const [isValidTitleObject, setIsValidTitleObject] = useState<ValidObject>(
     createValidObject(false, validMessages.REQUIRED_TITLE)
   );
-  const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
-    createValidObject(false, validMessages.REQUIRED_TAGS)
-  );
+  // const [isValidTagsObject, setIsValidTagsObject] = useState<ValidObject>(
+  //   createValidObject(false, validMessages.REQUIRED_TAGS)
+  // );
   const [
     isValidDescriptionObject,
     setIsValidDescriptionObject,
@@ -109,97 +103,23 @@ export const useEditPost = (postId: string) => {
     createValidObject(false, validMessages.REQUIRED_SOURCE_CODE)
   );
   const [isValidBudget, setIsValidBudget] = useState<ValidObject>(
-    createValidObject(false, validMessages.ZERO_UNDER_OVER_MAX_PRICE)
-  );
-  const [isPosted, setIsPosted] = useState(false);
-  const [activeStep, setActiveStep] = useState(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isOpenDialog, setIsOpenDialog] = useState(false);
-  const [isOpenTreeDialog, setIsOpenTreeDialog] = useState(false);
-  const [isOpenGithubDialog, setIsOpenGithubDialog] = useState(false);
-  const [canPublish, setCanPublish] = useState<ValidObject>(
     createValidObject(true, '')
   );
   const [hasGithubAccessToken, setHasGithubAccessToken] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isFetchGithubData, setIsFetchGithubData] = useState(true);
   const [repos, setRepos] = useState<GithubReposTypes[] | []>([]);
+  const [uuid] = useState(uuidv4());
 
   useEffect(() => {
     (async () => {
       try {
-        const resultAccessToken = await getGithubAccessToken();
-        const accessToken = resultAccessToken.data.access_token;
+        const result = await getGithubAccessToken();
+        const accessToken = result.data.access_token;
         const hasAccessToken = accessToken !== undefined && accessToken !== '';
         setHasGithubAccessToken(hasAccessToken);
-        const result = await getContent({ postId });
-        const post = result.data.post;
-        setAurhorId(getAuthorId(post.partition_key));
-        setKeys({
-          ...keys,
-          partition_key: post.partition_key,
-          sort_key: post.sort_key,
-        });
-        setType(post.type);
-        setButtonText(
-          post.type === 'post_published' ? '編集設定' : '下書き保存'
-        );
-        setTitle(post.contents.title);
-        // setTagList(post.contents.tagList);
-        setDescription(post.contents.description.value);
-        setSourceCode(post.contents.inputFileNameLists[0].sourceCode);
-        setInputFileNameLists(post.contents.inputFileNameLists);
-        setTargetLanguageValue(post.contents.targetLanguage);
-        setBudget(post.contents.budget);
-        setProgrammingIcon(post.contents.targetIcon);
-        setIsValidTitleObject({
-          ...isValidTitleObject,
-          isValid: post.contents.title !== '',
-          message:
-            post.contents.title !== '' ? '' : validMessages.REQUIRED_TITLE,
-        });
-        setIsValidTagsObject({
-          ...isValidTagsObject,
-          isValid: post.contents.tagList.length > 0,
-          message:
-            post.contents.tagList.length > 0
-              ? ''
-              : validMessages.REQUIRED_TITLE,
-        });
-        setIsValidDescriptionObject({
-          ...isValidDescriptionObject,
-          isValid: post.contents.title !== '',
-          message:
-            post.contents.title !== ''
-              ? ''
-              : validMessages.REQUIRED_DESCRIPTION,
-        });
-        setIsValidFileNameObject({
-          ...isValidFileNameObject,
-          isValid: post.contents.inputFileNameLists[0].fileName !== '',
-          message:
-            post.contents.inputFileNameLists[0].fileName !== ''
-              ? ''
-              : validMessages.REQUIRED_FILE_NAME,
-        });
-        setIsValidSourceCodeObject({
-          ...isValidSourceCodeObject,
-          isValid: post.contents.inputFileNameLists[0].sourceCode !== '',
-          message:
-            post.contents.inputFileNameLists[0].sourceCode !== ''
-              ? ''
-              : validMessages.REQUIRED_SOURCE_CODE,
-        });
-        setIsValidBudget({
-          ...isValidBudget,
-          isValid: post.contents.budget > 0,
-          message:
-            post.contents.budget > 0
-              ? ''
-              : validMessages.ZERO_UNDER_OVER_MAX_PRICE,
-        });
-
         setIsLoading(false);
-      } catch (error) {
+      } catch {
         alert(errorMessages.SYSTEM_ERROR);
       }
     })();
@@ -223,6 +143,7 @@ export const useEditPost = (postId: string) => {
     execPreviousPageIfneeded(isValidExistData);
   }, [title, description, inputFileNameLists, isPosted]);
   // }, [title, tagList, description, inputFileNameLists, isPosted]);
+
   const closeSnackBar = () => {
     setCanPublish({
       ...canPublish,
@@ -236,8 +157,7 @@ export const useEditPost = (postId: string) => {
 
   const createParams = (key: string) => {
     return {
-      partitionKey: keys.partition_key,
-      sortKey: keys.sort_key,
+      uuid: uuid,
       postType: key,
       contents: {
         title: title,
@@ -354,16 +274,17 @@ export const useEditPost = (postId: string) => {
     const err = new Error();
     const params = createParams('published');
     try {
-      const result = await putContent(params);
+      const result = await postContent(params);
       if (result.status !== 200) throw err;
       setIsPosted(true);
       setIsSuccessed(true);
+      setPostId(result.data.postId);
     } catch {
       alert(errorMessages.SYSTEM_ERROR);
     }
   };
 
-  const draftContent = async () => {
+  const draftContent = useCallback(async () => {
     if (!isValidTitleObject.isValid) {
       updateCanPublish(false, isValidTitleObject.message);
       return;
@@ -382,14 +303,14 @@ export const useEditPost = (postId: string) => {
     const params = createParams('draft');
     updateButtonText('保存中...');
     try {
-      const result = await putContent(params);
+      const result = await postContent(params);
       if (result.status !== 200) throw err;
       setIsPosted(true);
       updateButtonText('保存済み ✔︎');
     } catch {
       alert(errorMessages.SYSTEM_ERROR);
     }
-  };
+  }, [title, description, inputFileNameLists]);
 
   const changeTitle = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -463,8 +384,6 @@ export const useEditPost = (postId: string) => {
         value,
         CONSTS.MAX_FILE_NAME_LENGTH
       );
-      console.log(isValidMaxLength, 'isValidMaxLength');
-
       if (!isValidMaxLength) {
         setIsValidFileNameObject(
           createValidObject(false, validMessages.OVER_LENGTH_FILE_NAME)
@@ -843,9 +762,8 @@ export const useEditPost = (postId: string) => {
   };
 
   return {
-    authorId,
     title,
-    type,
+    postId,
     isSuccessed,
     description,
     sourceCode,

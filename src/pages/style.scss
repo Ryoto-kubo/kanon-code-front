@@ -73,7 +73,8 @@ pre {
   }
 }
 
-.post-item-wrapper {
+.post-item-wrapper,
+.decode-item-wrapper {
   font-size: 16px;
   pre {
     margin: 1.3rem 0;
@@ -94,6 +95,10 @@ pre {
     height: 100%;
     max-height: 700px;
   }
+}
+
+.decode-item-wrapper pre {
+  margin: 0;
 }
 
 .non-read {

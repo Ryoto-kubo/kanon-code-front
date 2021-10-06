@@ -36,6 +36,8 @@ const LayoutPostEdit = ({
   buttonText,
   postType,
 }: Props) => {
+  console.log(postType);
+
   return (
     <>
       <CommonHead title={title} />

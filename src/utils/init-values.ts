@@ -27,6 +27,7 @@ export const initContents = {
       bodyHtml: '',
       fileName: '',
       isValid: true,
+      isAuto: false,
       key: '',
       sourceCode: '',
     },

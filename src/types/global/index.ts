@@ -121,6 +121,7 @@ export type CamelContentTypes = {
     bodyHtml: string;
     fileName: string;
     isValid: boolean;
+    isAuto: boolean;
     key: string;
     sourceCode: string;
   }[];
@@ -177,6 +178,15 @@ export type SourceTreeTypes = {
   name: string;
   active_step?: number;
   children?: SourceTreeTypes[];
+};
+
+export type GithubSourceTreeTypes = {
+  id: string;
+  name: string;
+  fullPath?: string;
+  type: 'file' | 'dir';
+  sha?: string;
+  children?: GithubSourceTreeTypes[];
 };
 
 export type BookmarkTypes = {
@@ -307,6 +317,16 @@ export type ResponseCommentTypes = {
 
 export type CommentListTypes = {
   [key: string]: ResponseCommentTypes[];
+};
+
+export type GithubReposTypes = {
+  name: string;
+  fullName: string;
+  branches: GithubBranchesTypes[];
+};
+
+export type GithubBranchesTypes = {
+  name: string;
 };
 
 // export type CustomReviewTypesInCommentsTypes = CustomReviewTypes & {
