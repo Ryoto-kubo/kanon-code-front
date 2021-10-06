@@ -1,6 +1,5 @@
 import { GithubSourceTreeTypes } from '@/types/global';
 import { Box } from '@material-ui/core';
-import Button from '@material-ui/core/Button';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -10,24 +9,20 @@ import TreeView from '@material-ui/lab/TreeView';
 import React from 'react';
 import styled from 'styled-components';
 
+type TreeObjectTypes = {
+  tree: GithubSourceTreeTypes[];
+  contents: {
+    [key: string]: string;
+  };
+};
+
 type Props = {
-  sourceTree: GithubSourceTreeTypes[];
-  getContent: (name: string, sha: string) => Promise<void>;
+  sourceTreeObject: TreeObjectTypes;
+  getContent: (name: string, sha: string, path: string) => Promise<void>;
 };
 
 const StyledTreeView = styled(TreeView)`
   text-align: left;
-`;
-const StyledButton = styled(Button)`
-  padding: 0;
-  background: none;
-  width: 100%;
-  display: block;
-  text-align: left;
-  &:hover {
-    background: none;
-  }
-  border-radius: 50px;s
 `;
 const StyledBoxTreeItem = styled(Box)`
   display: flex;
@@ -38,17 +33,18 @@ const StyledBoxNameWrapper = styled(Box)`
 `;
 
 export const GithubSourceTree: React.FC<Props> = ({
-  sourceTree,
+  sourceTreeObject,
   getContent,
 }) => {
   const data: GithubSourceTreeTypes = {
     id: 'root',
     name: 'Source Tree',
-    children: sourceTree,
+    type: 'dir',
+    children: sourceTreeObject === undefined ? [] : sourceTreeObject.tree,
   };
 
-  const label = (name: string, type: 'blob' | 'tree') => {
-    const LabelIcon = type === 'blob' ? CodeRoundedIcon : FolderOpenIcon;
+  const label = (name: string, type: 'file' | 'dir') => {
+    const LabelIcon = type === 'file' ? CodeRoundedIcon : FolderOpenIcon;
     return (
       <StyledBoxTreeItem>
         <LabelIcon color='primary' />
@@ -69,13 +65,12 @@ export const GithubSourceTree: React.FC<Props> = ({
           : null}
       </TreeItem>
     ) : (
-      <StyledButton
+      <TreeItem
         key={nodes.id}
-        disableRipple
-        onClick={() => getContent(nodes.name, nodes.sha!)}
-      >
-        <TreeItem nodeId={nodes.id} label={label(nodes.name, nodes.type!)} />
-      </StyledButton>
+        nodeId={nodes.id}
+        label={label(nodes.name, nodes.type!)}
+        onLabelClick={() => getContent(nodes.name, nodes.sha!, nodes.fullPath!)}
+      />
     );
   };
 

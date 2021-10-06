@@ -93,7 +93,6 @@ const IndexPage: React.FC<Props> = props => {
     isOpenTreeDialog,
     setIsOpenTreeDialog,
     isOpenGithubDialog,
-    setIsOpenGithubDialog,
     buttonText,
     canPublish,
     isValidBudget,
@@ -126,6 +125,8 @@ const IndexPage: React.FC<Props> = props => {
     getRepos,
     getBranches,
     getSourceTreeByBranch,
+    insertToInputFileNameLists,
+    closeGithubDialog,
   } = usePost();
 
   // const HelpToolTip = () => {
@@ -268,7 +269,8 @@ const IndexPage: React.FC<Props> = props => {
         isFetch={isFetchGithubData}
         getBranches={getBranches}
         getSourceTreeByBranch={getSourceTreeByBranch}
-        closeDialog={() => setIsOpenGithubDialog(false)}
+        insertToInputFileNameLists={insertToInputFileNameLists}
+        closeDialog={closeGithubDialog}
       />
       <TreeObjectDialog
         isOpenDialog={isOpenTreeDialog}

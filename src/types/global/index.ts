@@ -182,7 +182,8 @@ export type SourceTreeTypes = {
 export type GithubSourceTreeTypes = {
   id: string;
   name: string;
-  type?: 'blob' | 'tree';
+  fullPath?: string;
+  type: 'file' | 'dir';
   sha?: string;
   children?: GithubSourceTreeTypes[];
 };

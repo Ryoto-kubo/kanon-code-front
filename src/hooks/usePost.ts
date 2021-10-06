@@ -20,6 +20,7 @@ type FileNameType = {
   sourceCode: string;
   bodyHtml: string;
   isValid: boolean;
+  isAuto: boolean;
 };
 
 type ButtonText = Readonly<
@@ -64,6 +65,7 @@ export const usePost = () => {
       sourceCode: '```\n\n```',
       bodyHtml: '',
       isValid: true,
+      isAuto: false,
     },
   ]);
   const [targetLanguageValue, setTargetLanguageValue] = useState(0);
@@ -450,6 +452,7 @@ export const usePost = () => {
         sourceCode: '```\n\n```',
         bodyHtml: '',
         isValid: true,
+        isAuto: false,
       },
     ]);
     setIsValidFileNameObject(
@@ -495,7 +498,7 @@ export const usePost = () => {
 
   const updateInputFileNameLists = (key: string, value: any, index: number) => {
     const currentItem = inputFileNameLists[index];
-    const newFileItem = { ...currentItem, [key]: value };
+    const newFileItem = { ...currentItem, [key]: value, isAuto: false };
     const newInputFileNameLists = inputFileNameLists.slice();
     newInputFileNameLists[index] = newFileItem;
     setInputFileNameLists(newInputFileNameLists);
@@ -640,6 +643,59 @@ export const usePost = () => {
     return await getGithubSourceTree({ repository, branch });
   };
 
+  const embedDiffInputFileNameLists = (choosedFullPathList: string[]) => {
+    const resultList = [];
+    for (const item of inputFileNameLists) {
+      const fileName = item.fileName;
+      const isIncludes = choosedFullPathList.includes(fileName);
+      const isExistsFileName = fileName !== '';
+      // リポジトリダイアログ内で選択されているファイルと、inputタグに入力があるファイルしか残さない
+      if (isIncludes || (isExistsFileName && !item.isAuto)) {
+        resultList.push(item);
+      }
+    }
+    return resultList;
+  };
+
+  const insertToInputFileNameLists = (
+    choosedFullPathList: string[],
+    encodeContents: { [key: string]: string }
+  ) => {
+    // リポジトリダイアログ内で削除したファイルは消す
+    const newInputFileNameLists = embedDiffInputFileNameLists(
+      choosedFullPathList
+    );
+    for (const selectFullPath of choosedFullPathList) {
+      const existsItem = newInputFileNameLists.filter(
+        el => el.fileName === selectFullPath
+      );
+
+      if (existsItem.length > 0) continue;
+      const lang = selectFullPath.split('.').pop();
+      const encodeContent = encodeContents[selectFullPath];
+      const decodeContent = window.atob(encodeContent);
+      const bedginMd = `\`\`\`${lang}\n`;
+      const endMd = '\n```';
+      const mdContent = `${bedginMd}${decodeContent}${endMd}`;
+      newInputFileNameLists.push({
+        key: uuidv4(),
+        fileName: selectFullPath,
+        sourceCode: mdContent,
+        bodyHtml: marked(mdContent),
+        isValid: true,
+        isAuto: true,
+      });
+    }
+    onFocusGetIndex(0);
+    setInputFileNameLists(newInputFileNameLists);
+    setSourceCode(newInputFileNameLists[0].sourceCode);
+    setIsOpenGithubDialog(false);
+  };
+
+  const closeGithubDialog = () => {
+    setIsOpenGithubDialog(false);
+  };
+
   return {
     title,
     postId,
@@ -656,7 +712,6 @@ export const usePost = () => {
     isOpenTreeDialog,
     setIsOpenTreeDialog,
     isOpenGithubDialog,
-    setIsOpenGithubDialog,
     buttonText,
     canPublish,
     isValidTitleObject,
@@ -693,5 +748,7 @@ export const usePost = () => {
     getRepos,
     getBranches,
     getSourceTreeByBranch,
+    insertToInputFileNameLists,
+    closeGithubDialog,
   };
 };
