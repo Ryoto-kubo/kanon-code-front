@@ -8,11 +8,11 @@ import { TopBenefit } from '@/components/organisms/TopBenefit';
 import { TopCanDo } from '@/components/organisms/TopCanDo';
 import { TopSituation } from '@/components/organisms/TopSituation';
 import { IconArrowNext } from '@/components/svg/materialIcons/IconArrowNext';
+import ContentsInteractor from '@/interactors/contents/ContentsInteractor';
 import Layout from '@/layouts/standard';
 import theme from '@/styles/theme';
 import { UserTypes } from '@/types/global';
 import { GetContentsTypes } from '@/types/global/';
-import { getContents } from '@/utils/api/get-contents';
 import { Box, Container, Grid } from '@material-ui/core/';
 import Link from 'next/link';
 import React from 'react';
@@ -199,10 +199,10 @@ const IndexPage: React.FC<Props> = props => {
 // サーバーサイドで実行される
 export const getStaticProps = async () => {
   try {
-    const response = await getContents();
+    const response = await new ContentsInteractor().findAll();
     return {
       props: {
-        data: response.data,
+        data: response,
       },
       revalidate: 30,
     };

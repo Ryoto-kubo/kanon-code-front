@@ -328,7 +328,3 @@ export type GithubReposTypes = {
 export type GithubBranchesTypes = {
   name: string;
 };
-
-// export type CustomReviewTypesInCommentsTypes = CustomReviewTypes & {
-//   comments: ResponseCommentTypes[];
-// };
