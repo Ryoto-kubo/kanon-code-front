@@ -1,4 +1,6 @@
-import { getContents } from '@/utils/api/get-contents';
+import ContentsInteractor from '@/interactors/contents/ContentsInteractor';
+import { GetContentsTypes } from '@/types/global';
+// import { getContents } from '@/utils/api/get-contents';
 import { GetServerSidePropsContext } from 'next';
 
 const modyfyedDate = (date: string) => {
@@ -16,11 +18,11 @@ const generateSitemapXml = async () => {
   xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`;
 
   // ここでurlを足していく
-  const response = await getContents();
-  const result = response.data;
+  const response = await new ContentsInteractor().findAll();
+  const result = response;
   const HOST = process.env.NEXT_PUBLIC_HOST;
-  const postList = result.frontPosts.concat(
-    result.backPosts.concat(result.otherPosts)
+  const postList = (result.frontPosts as GetContentsTypes[]).concat(
+    (result.backPosts as GetContentsTypes[]).concat(result.otherPosts)
   );
   postList.forEach((post: any) => {
     const lastmod = modyfyedDate(post.date);
